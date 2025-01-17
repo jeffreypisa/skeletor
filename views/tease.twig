@@ -1,0 +1,13 @@
+<article class="tease tease-{{post.type}}" id="tease-{{post.id}}">
+	{% block content %}
+		<a href="{{post.link}}" class="card">
+			{% if post.thumbnail %}
+				<img class="card-img-top" src="{{ post.thumbnail.src }}" alt="{{ post.thumbnail.alt }}" />
+			{% endif %}
+			<div class="card-body">
+				<h5 class="card-title">{{ post.title }}</h5>
+				<p class="card-text">{{ post.excerpt }}</p>
+			</div>
+		</a>
+	{% endblock %}
+</article>

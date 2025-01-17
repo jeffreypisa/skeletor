@@ -1,0 +1,24 @@
+<ul class="navbar-nav">
+	{% for item in items %}
+		<li class="nav-item {% if item.children|length > 0 %}dropdown{% endif %} {{ item.classes | join(' ') }}">
+			<a 
+				class="nav-link {% if item.children|length > 0 %}dropdown-toggle{% endif %}" 
+				href="{{ item.link }}" 
+				{% if item.target %}target="{{ item.target }}"{% endif %}
+				{% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false"{% endif %}
+			>
+				{{ item.title }}
+			</a>
+
+			{% if item.children|length > 0 %}
+				<ul class="dropdown-menu">
+					{% for child in item.children %}
+						<li class="dropdown-item {{ child.classes | join(' ') }}">
+							<a href="{{ child.link }}" target="{{ child.target }}">{{ child.title }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</li>
+	{% endfor %}
+</ul>

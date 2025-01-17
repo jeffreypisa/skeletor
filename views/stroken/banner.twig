@@ -1,0 +1,30 @@
+{% if not post.verberg_banner %}
+	<section class="strook-banner bg-dark text-white">
+		<div class="achtergrond bg-cover" style="background-image: url('{{ post.banner_afbeelding.url }}')"></div>
+		<div class="content">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-lg-7 col-xl-6">
+						{% if post.banner_titel %}
+							<h2 class="{% if post.banner_titel_groter %}h1{% else %}mb-3{% endif %}">{{ post.banner_titel }}
+							</h2>
+						{% endif %}
+						{% if post.banner_tekst %}
+							<p class="lead">{{ post.banner_tekst }}</p>
+						{% endif %}
+						{% if post.link_actie or item.link_verdieping %}
+							<div class="btn-wrap">
+								{% if post.link_actie %}
+									<a href="{{ post.link_actie.url }}" target="{{ post.link_actie.target }}" class="btn btn-primary">{{ post.link_actie.title }}</a>
+								{% endif %}
+								{% if post.link_verdieping%}
+									<a href="{{ post.link_verdieping.url }}" target="{{ post.link_verdieping.target }}" class="btn btn-outline-primary">{{ post.link_verdieping.title }}</a>
+								{% endif %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endif %}

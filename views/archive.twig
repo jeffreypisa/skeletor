@@ -1,0 +1,21 @@
+{# This file demonstrates using most of the index.twig template and modifying 
+   just a small part. See `search.twig` for an example of another approach #}
+
+{% extends "index.twig" %}
+
+{% block content %}
+	<section>
+		<div class="container">
+			<h2>{{ title }}</h2>
+			<div class="row">
+				{% for post in posts %}
+				<div class="col-md-6 col-xl-4">
+					{% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
+				</div>
+				{% endfor %}
+			</div>
+		
+			{% include 'components/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	{% include 'stroken/banner.twig' %}
+	{% if post.content %}
+		<section class="strook-content">
+			<div class="container">
+				{{ post.content }}
+			</div>
+		</section>
+	{% endif %}
+	{% include 'stroken.twig' %}
+{% endblock %}

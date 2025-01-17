@@ -1,0 +1,6 @@
+<footer id="footer">
+	<div class="container">
+		{% include "components/menu.twig" with {'items': footermenu.get_items} %}
+		Copyright {{"now"|date('Y')}}
+	</div>
+</footer>

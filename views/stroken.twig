@@ -1,0 +1,12 @@
+{% set sectionno = '0' %}
+
+{% for item in post.meta('stroken') %}
+
+	{% set sectionno = sectionno + '1' %}
+	
+	{% if item.acf_fc_layout == 'content' %}
+		{% include 'stroken/content.twig' %}
+	
+	{% endif %}
+  
+{% endfor %}
