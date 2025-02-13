@@ -6,126 +6,109 @@ use Timber\Site;
 /**
  * Class StarterSite
  */
- 
 class StarterSite extends Site {
 	public function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
-
-		add_filter( 'timber/context', array( $this, 'add_to_context' ) );
-		add_filter( 'timber/twig', array( $this, 'add_to_twig' ) );
-		add_filter( 'timber/twig/environment/options', [ $this, 'update_twig_environment_options' ] );
+		add_action('after_setup_theme', [$this, 'theme_supports']);
+		add_filter('timber/context', [$this, 'add_to_context']);
+		add_filter('timber/twig', [$this, 'add_to_twig']);
+		add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
 
 		parent::__construct();
 	}
 
 	/**
-	 * This is where you add some context
+	 * Voeg context toe aan Timber
 	 *
-	 * @param string $context context['this'] Being the Twig's {{ this }}.
+	 * @param array $context Context-array voor Twig.
+	 * @return array
 	 */
-	public function add_to_context( $context ) {
+	public function add_to_context($context) {
 		$context['site'] = $this;
-	
-		// Gebruik Timber::get_menu() om de menu's op te halen
+
+		// Haal menu's op
 		$context['headermenu'] = \Timber\Timber::get_menu('headermenu');
 		$context['footermenu'] = \Timber\Timber::get_menu('footermenu');
-	
+		$context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
+		
+		// Voeg optiespagina velden toe
+		$context['options'] = get_fields('options');
+
+		// Voeg een helperfunctie toe voor thumbnails
+		$context['get_thumbnail'] = function ($post_id) {
+			$thumbnail_url = get_the_post_thumbnail_url($post_id);
+			if ($thumbnail_url) {
+				return [
+					'url' => $thumbnail_url,
+					'alt' => get_post_meta(get_post_thumbnail_id($post_id), '_wp_attachment_image_alt', true) ?: '',
+				];
+			}
+			return null;
+		};
+
+		// Voeg een extra waarde toe voor front-page controle
+		$context['is_front_page'] = is_front_page();
+
 		return $context;
 	}
 
+	/**
+	 * Schakel thema-ondersteuning in
+	 */
 	public function theme_supports() {
-		add_theme_support( 'menus' );
-		
-		// Add default posts and comments RSS feed links to head.
-		add_theme_support( 'automatic-feed-links' );
-
-		/*
-		 * Let WordPress manage the document title.
-		 * By adding theme support, we declare that this theme does not use a
-		 * hard-coded <title> tag in the document head, and expect WordPress to
-		 * provide it for us.
-		 */
-		add_theme_support( 'title-tag' );
-
-		/*
-		 * Enable support for Post Thumbnails on posts and pages.
-		 *
-		 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		 */
-		add_theme_support( 'post-thumbnails' );
-
-		/*
-		 * Switch default core markup for search form, comment form, and comments
-		 * to output valid HTML5.
-		 */
+		add_theme_support('menus');
+		add_theme_support('automatic-feed-links');
+		add_theme_support('title-tag');
+		add_theme_support('post-thumbnails');
 		add_theme_support(
 			'html5',
-			array(
-				'comment-form',
-				'comment-list',
-				'gallery',
-				'caption',
-			)
+			['comment-form', 'comment-list', 'gallery', 'caption']
 		);
-
-		/*
-		 * Enable support for Post Formats.
-		 *
-		 * See: https://codex.wordpress.org/Post_Formats
-		 */
 		add_theme_support(
 			'post-formats',
-			array(
-				'aside',
-				'image',
-				'video',
-				'quote',
-				'link',
-				'gallery',
-				'audio',
-			)
+			['aside', 'image', 'video', 'quote', 'link', 'gallery', 'audio']
 		);
 	}
 
 	/**
-	 * his would return 'foo bar!'.
+	 * Voeg aangepaste functies en filters toe aan Twig
 	 *
-	 * @param string $text being 'foo', then returned 'foo bar!'.
+	 * @param Twig\Environment $twig Twig-object.
+	 * @return Twig\Environment
 	 */
-	public function myfoo( $text ) {
-		$text .= ' bar!';
-		return $text;
-	}
+	public function add_to_twig($twig) {
+		// Voeg een custom filter toe om HTML te strippen
+		$twig->addFilter(new \Twig\TwigFilter('strip_html', function ($content) {
+			return wp_strip_all_tags($content);
+		}));
+		
+		// Voeg custom Twig-functie `post_thumbnail_url` toe
+		$twig->addFunction(new \Twig\TwigFunction('post_thumbnail_url', function ($post_id) {
+			return get_the_post_thumbnail_url($post_id);
+		}));
 
-	/**
-	 * This is where you can add your own functions to twig.
-	 *
-	 * @param Twig\Environment $twig get extension.
-	 */
-	public function add_to_twig( $twig ) {
-		/**
-		 * Required when you want to use Twig’s template_from_string.
-		 * @link https://twig.symfony.com/doc/3.x/functions/template_from_string.html
-		 */
-		// $twig->addExtension( new Twig\Extension\StringLoaderExtension() );
-
-		$twig->addFilter( new Twig\TwigFilter( 'myfoo', [ $this, 'myfoo' ] ) );
+		// Voeg custom Twig-functie `get_thumbnail` toe
+		$twig->addFunction(new \Twig\TwigFunction('get_thumbnail', function ($post_id) {
+			$thumbnail_url = get_the_post_thumbnail_url($post_id);
+			if ($thumbnail_url) {
+				return [
+					'url' => $thumbnail_url,
+					'alt' => get_post_meta(get_post_thumbnail_id($post_id), '_wp_attachment_image_alt', true) ?: '',
+				];
+			}
+			return null;
+		}));
 
 		return $twig;
 	}
 
 	/**
-	 * Updates Twig environment options.
+	 * Pas Twig-omgeving opties aan
 	 *
-	 * @link https://twig.symfony.com/doc/2.x/api.html#environment-options
-	 *
-	 * \@param array $options An array of environment options.
-	 *
-	 * @return array
+	 * @param array $options Array met Twig-opties.
+	 * @return array Aangepaste Twig-opties.
 	 */
-	function update_twig_environment_options( $options ) {
-	    // $options['autoescape'] = true;
-
-	    return $options;
+	public function update_twig_environment_options($options) {
+		// $options['autoescape'] = true; // Indien nodig inschakelen
+		return $options;
 	}
 }

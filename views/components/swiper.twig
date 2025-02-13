@@ -1,0 +1,70 @@
+{# 
+Swiper Component
+
+Gebruik:
+{{ swiper(slides, settings, template) }}
+
+Parameters:
+- slides (array, vereist): De inhoud van de slides (HTML per slide).
+- settings (array, optioneel): Configuratie-instellingen voor de Swiper-instantie.
+  - direction (string): Richting van de slider ('horizontal', 'vertical'). Standaard: 'horizontal'.
+  - loop (bool): Of de slides in een loop moeten worden weergegeven. Standaard: false.
+  - slidesPerView (int): Aantal slides dat tegelijkertijd zichtbaar is. Standaard: 1.
+  - spaceBetween (int): Ruimte tussen de slides (in pixels). Standaard: 0.
+  - loopAdditionalSlides (int): Extra slides in de loop. Standaard: 0.
+  - centeredSlides (bool): Slides centreren. Standaard: false.
+  - speed (int): Overgangssnelheid in milliseconden. Standaard: 500.
+  - autoplay (bool|object): Automatische weergave. Standaard: false.
+  - arrows (bool): Pijlen tonen voor navigatie. Standaard: true.
+  - dots (bool): Navigatiedots tonen. Standaard: false.
+  - arrowPrevIcon (string): Font Awesome-icoon voor de vorige-knop. Standaard: 'fa-chevron-left'.
+  - arrowNextIcon (string): Font Awesome-icoon voor de volgende-knop. Standaard: 'fa-chevron-right'.
+  - arrowIconStyle (string): Stijl voor Font Awesome-icoon ('light', 'solid', 'brands'). Standaard: 'light'.
+  - breakpoints (object): Responsieve instellingen op basis van schermgrootte.
+- template (string, optioneel): Twig-template voor individuele slides. Standaard: 'tease.twig'.
+
+Voorbeelden:
+
+1. Basisvoorbeeld:
+   {{ swiper(item.slides, {
+	   slidesPerView: 1,
+	   spaceBetween: 20
+   }) }}
+
+2. Geavanceerd voorbeeld met specifieke tease-template:
+   {{ swiper(item.slides, {
+	   slidesPerView: 1,
+	   spaceBetween: 20,
+	   arrows: true,
+	   dots: false,
+	   loop: false,
+	   overflowHidden: false,
+	   nextSlideVisible: true,
+	   class: '',
+	   arrowPrevIcon: 'fa-chevron-left',
+	   arrowNextIcon: 'fa-chevron-right',
+	   arrowIconStyle: 'light',
+	   breakpoints: {
+		   768: { slidesPerView: 3, spaceBetween: 10 }
+	   }
+   }, 'tease.twig') }}
+#}
+
+<div class="swiper-container js-swiper {{ settings.class }}" data-swiper-id="{{ swiper_id }}" data-swiper-settings='{{ settings|json_encode|raw }}'>
+	<div class="swiper-wrapper">
+		{% for slide in slides %}
+			<div class="swiper-slide">{{ slide|raw }}</div>
+		{% endfor %}
+	</div>
+	{% if settings.arrows %}
+		<div class="swiper-button-prev swiper-button-prev-{{ swiper_id }}">
+			<i class="fa{{ settings.arrowIconStyle[0] }} {{ settings.arrowPrevIcon }}"></i>
+		</div>
+		<div class="swiper-button-next swiper-button-next-{{ swiper_id }}">
+			<i class="fa{{ settings.arrowIconStyle[0] }} {{ settings.arrowNextIcon }}"></i>
+		</div>
+	{% endif %}
+	{% if settings.dots %}
+		<div class="swiper-pagination"></div>
+	{% endif %}
+</div>

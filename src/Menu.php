@@ -21,5 +21,6 @@ class Menu extends Site {
 	public function register_nav_menus() {
 		register_nav_menu('headermenu', __('Header menu'));
 		register_nav_menu('footermenu', __('Footer menu'));
+		register_nav_menu('mobielmenu', __('Mobiel menu'));
 	}
 }

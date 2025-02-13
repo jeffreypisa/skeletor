@@ -2,28 +2,38 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
 window.bootstrap = bootstrap;
 
 // Init plugins
-import { lightgallery_init } from './plugins/lightgallery_init.js';
-import { matchheight_init } from './plugins/matchheight_init.js';
-import { swiper_init } from './plugins/swiper_init.js';
+import { lightgalleryInit } from './plugins/lightgalleryInit.js';
+import { matchheightInit } from './plugins/matchheightInit.js';
+import { swiperInit } from './plugins/swiperInit.js';
 
 // Scripts
+import { cta } from './scripts/cta.js';
 import { footer } from './scripts/footer.js';
 import { header } from './scripts/header.js';
-import { mobilemenu } from './scripts/mobilemenu.js';
-import { nvr } from './scripts/nvr.js';
-import { site_is_loaded } from './scripts/site_is_loaded.js';
+import { mobileMenu } from './scripts/mobileMenu.js';
+import { scrollAnimations } from './scripts/scrollAnimations.js';
+import { scrollToNextSection } from './scripts/scrollToNextSection.js';
+import { siteIsLoaded } from './scripts/siteIsLoaded.js';
+import { vimeo } from './scripts/vimeo.js';
+import { wcag } from './scripts/wcag.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
 	// Initialiseer plugins en scripts in volgorde
 	header();
-	mobilemenu();
-	matchheight_init();
+	mobileMenu();
 	footer();
+	scrollToNextSection();
 
 	// Init plugins die afhankelijk zijn van DOM-content
-	lightgallery_init();
-	swiper_init();
+	lightgalleryInit();
+	swiperInit();
+	wcag();
+	cta();
+	scrollAnimations();
+	matchheightInit();
 	
 	// Alles is geladen
-	site_is_loaded();
+	vimeo();
+	siteIsLoaded();
 });

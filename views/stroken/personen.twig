@@ -1,0 +1,42 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-greylight') }}">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-lg-9 col-xl-8">		
+				{{ heading(item.titel) }}
+				{{ text(item.tekst) }}
+			</div>
+		</div>
+		{% if item.personen %}	
+			<div class="row pt-4">
+				{% for item in item.personen %}
+					<div class="col-6 col-md-4 mb-5">
+						{{ image(item.afbeelding, {
+						   figure_class: 'rounded bg-orange mb-3',
+						   img_class: 'rounded',
+						   lazyload: true,
+						   style: 'max-width: 141px'
+						}) }}
+						{{ heading(item.naam, {
+							level: 'h3',
+							class: 'h4 mt-0 mb-1'
+						}) }}
+						{{ text(item.functie, {
+						   class: 'mb-0 text-blue',
+						   tag: 'span'
+						}) }}
+						{{ text(item.periode, {
+						   class: 'mb-0 text-blue',
+						   tag: 'span'
+						}) }}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if item.link_primair or item.link_secundair %}
+			<div class="d-flex justify-content-center gap-3 pt-4 pt-md-5">
+				{{ button(item.link_primair, 'primary') }}
+				{{ button(item.link_secundair, 'outline-primary') }}
+			</div>
+		{% endif %}
+	</div>
+</section>

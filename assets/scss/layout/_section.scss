@@ -1,3 +1,22 @@
 section {
 	padding: 60px 0;
+	overflow: hidden;
+}
+
+section.bg-transparent + section.bg-transparent,
+section.bg-greylight + section.bg-greylight,
+section.bg-blue + section.bg-blue {
+	padding-top: 0 !important;
+}
+
+@include media-breakpoint-up(md) {
+	section {
+		padding: 70px 0;
+	}
+}
+
+@include media-breakpoint-up(xl) {
+	section {
+		padding: 80px 0;
+	}
 }

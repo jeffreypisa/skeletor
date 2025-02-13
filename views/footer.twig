@@ -1,6 +1,63 @@
 <footer id="footer">
-	<div class="container">
-		{% include "components/menu.twig" with {'items': footermenu.get_items} %}
-		Copyright {{"now"|date('Y')}}
+	{% if post.footer_quote %}
+		<div class="quote bg-cover text-white text-center" style="background-image: url({{ options.footer_quote_achtergrond.url }})">
+			<div class="container">
+				{{ heading(options.footer_quote_titel, {
+					level: 'h2',
+					class: 'm-0'
+				}) }}
+			</div>
+		</div>
+	{% endif %}
+	{% if post.footer_calltoaction or fn('is_archive') %}
+		<div class="calltoaction bg-gradient text-white text-center">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
+						{{ heading(post.footer_calltoaction_titel ?: options.footer_calltoaction_titel, {
+							level: 'h3'
+						}) }}
+						{{ text(post.footer_calltoaction_tekst ?: options.footer_calltoaction_tekst) }}
+						<br>
+						{{ button(post.footer_calltoaction_link ?: options.footer_calltoaction_link, 'primary') }}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	<div class="footer bg-dark">
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-6 col-md-3 offset-md-2 offset-lg-3 mb-4 mb-md-0">
+					{{ heading(options.footer_navigatie_menu_titel, {
+						level: 'h5'
+					}) }}
+					{% include "components/menu.twig" with {'items': footermenu.get_items} %}
+				</div>
+				<div class="col-6 col-md-3 col-lg-2 mb-4 mb-md-0">
+					{{ heading(options.footer_navigatie_socialmedia_titel, {
+						level: 'h5'
+					}) }}
+					{{ social_media_links({
+						facebook: { url: 'https://facebook.com', suffix: 'f' },
+						instagram: { url: 'https://instagram.com' },
+						linkedin: { url: 'https://linkedin.com', suffix: 'in' },
+						x: { url: 'https://twitter.com' }
+					}, {
+						show_icons: true,
+						class: 'social-media-links'
+					}) }}
+				</div>
+				
+				<div class="col-md-4 order-md-first text-center text-md-start">
+					<img height="60" src="{{ theme.link }}/assets/images/nvr-logo-white.svg" alt="Nederlandse Vereniging voor de Ruimtevaart logo" class="mb-3">
+					{{ text(options.footer_navigatie_tekst) }}
+				</div>
+			</div>
+			<div class="subfooter text-center text-md-start">
+				<div class="text-blue">©{{"now"|date('Y')}} All rights reserved Nederlandse Vereniging voor Ruimtevaart. </div>
+				<div class="text-sm">Website door <a href="https://www.void-visual.com/" rel="nofollow">Void & Visual</a> en <a href="https://www.emonks.nl/" target="_blank" rel="nofollow">Emonks</a> </div>
+			</div>
+		</div>
 	</div>
 </footer>

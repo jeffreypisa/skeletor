@@ -1,0 +1,40 @@
+{# 
+Text Component
+
+Gebruik:
+{{ text(content, options) }}
+
+Parameters:
+- content (string, vereist): De tekst die weergegeven moet worden.
+- options (array, optioneel): Instellingen voor de tekst, met:
+  - class (string, optioneel): Extra CSS-klassen voor de tekst.
+  - tag (string, optioneel): HTML-tag (bijv. 'p', 'span', 'div'). Standaard: 'p'.
+  - style (string, optioneel): Inline stijlen voor extra aanpassingen.
+  - max_length (int, optioneel): Maximale lengte van de tekst (in tekens). Tekst wordt ingekort met '...' als deze langer is.
+  - inview_animation (string, optioneel): Voegt een animatie toe wanneer het element in beeld komt. Mogelijke waarden: 'fade-in', 'typewriter'.
+
+Voorbeelden:
+
+1. Standaard tekst zonder opties:
+   {{ text(item.tekst) }}
+
+2. Tekst met alle opties:
+   {{ text(item.tekst, {
+     class: 'text-muted mb-3',
+     tag: 'p',
+     style: 'font-size: 1.2rem; line-height: 1.5;',
+     max_length: 20,
+     inview_animation: 'typewriter'
+   }) }}
+
+#}
+
+<div{% if class %} class="{{ class }}"{% endif %}{% if style %} style="{{ style }}"{% endif %}>
+    {% if content|trim %}
+        {% if is_html %}
+            {{ content|raw }}
+        {% else %}
+            <{{ tag }}>{{ content }}</{{ tag }}>
+        {% endif %}
+    {% endif %}
+</div>

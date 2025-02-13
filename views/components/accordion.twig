@@ -1,0 +1,42 @@
+{# 
+Accordion Component
+
+Gebruik:
+{{ accordion(items, 'unique-accordion-id') }}
+
+Parameters:
+- items (vereist): Een array van accordion-items met:
+  - title (string, vereist): De titel van het accordion-item.
+  - text (string, vereist): De inhoud van het accordion-item.
+- unique-accordion-id (optioneel): Een unieke ID voor de accordion. 
+
+Voorbeeld:
+{{ accordion(item.accordion_items, 'example-accordion') }}
+#}
+
+<div class="accordion" id="{{ accordion_id }}">
+	{% for item in items %}
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="heading-{{ loop.index }}">
+				<button 
+					class="accordion-button {{ loop.first ? '' : 'collapsed' }}" 
+					type="button" 
+					data-bs-toggle="collapse" 
+					data-bs-target="#collapse-{{ loop.index }}" 
+					aria-expanded="{{ loop.first ? 'true' : 'false' }}" 
+					aria-controls="collapse-{{ loop.index }}">
+					{{ item.title | default('Accordion Item') }}
+				</button>
+			</h2>
+			<div 
+				id="collapse-{{ loop.index }}" 
+				class="accordion-collapse collapse {{ loop.first ? 'show' : '' }}" 
+				aria-labelledby="heading-{{ loop.index }}" 
+				data-bs-parent="#{{ accordion_id }}">
+				<div class="accordion-body">
+					{{ item.text | default('Geen inhoud beschikbaar') }}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>

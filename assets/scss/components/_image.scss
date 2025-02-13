@@ -1,0 +1,67 @@
+figure {
+	figcaption {
+		top: auto;
+		height: auto !important;
+		padding: 5px 12px;
+	}
+	&.ratio {
+		figcaption {
+			top: auto;
+			height: auto !important;
+		}
+	}
+	.position-absolute {
+		z-index: 1;
+	}
+}
+
+div.figcaption-below-left, div.figcaption-below-right {
+	transform: translateY(-1rem);
+}
+
+/* Geoptimaliseerde SCSS voor animaties */
+
+figure {
+	position: relative;
+	overflow: hidden;
+	transition: all 0.3s ease;
+
+	& img {
+		display: block;
+		width: 100%;
+		height: auto;
+		transition: transform 1.2s ease, opacity 1.2s ease;
+	}
+
+	&.animate-zoom-in img {
+		transform: scale(1.2);
+	}
+	&.in-view.animate-zoom-in img {
+		transform: scale(1);
+	}
+
+	&.animate-zoom-out img {
+		transform: scale(0.8);
+	}
+	&.in-view.animate-zoom-out img {
+		transform: scale(1);
+	}
+
+	&.animate-fade-in img {
+		opacity: 0;
+	}
+	&.in-view.animate-fade-in img {
+		opacity: 1;
+	}
+
+	&.animate-slide-in-zoom img {
+		transform: translate(-30%, 30%) scale(1.4);
+		opacity: 0;
+		transition: transform 1s ease, opacity 0.8s ease;
+	}
+	&.in-view.animate-slide-in-zoom img {
+		transform: translate(0, 0) scale(1);
+		opacity: 1;
+	}
+
+}

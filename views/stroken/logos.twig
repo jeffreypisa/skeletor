@@ -1,0 +1,25 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row justify-content-center text-center">
+			<div class="col-md-10 col-lg-9 col-xl-8">		
+				{{ heading(item.titel) }}
+				{{ text(item.tekst) }}
+			</div>
+		</div>
+		{% if item.logos %}	
+			<div class="row pt-4">
+				{% for item in item.logos %}
+					<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+						{{ image(item.logo, {
+						   figure_class: '',
+						   img_class: '',
+						   ratio: '16x9',
+						   object_fit: 'contain',
+						   lazyload: true
+						}) }}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</section>

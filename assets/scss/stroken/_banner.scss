@@ -1,8 +1,52 @@
+.loaded .strook-banner {
+	p, .btn {
+		opacity: 1;
+	}	
+}
+
 .strook-banner {
+	padding-top: 150px;
+	padding-bottom: 100px;
 	position: relative;
+	text-align: center;
+	min-height: 680px;
+	height: 100vh;
+	h1, p {
+		text-shadow: 0px 2px 8px rgba(41, 48, 101, 0.5);
+	}
+
 	*:last-child {
 		margin-bottom: 0;
 	}
+
+	&:after {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		width: 100%;
+		height: 70%;
+		left: 0;
+		bottom: 0;
+		background: linear-gradient(180deg, rgba(64, 186, 236, 0) 0%, #40BAEC 100%);
+	}
+
+	&:before {
+		content: '';
+		position: absolute;
+		z-index: 0;
+		width: 100%;
+		height: 100px;
+		top: 100%;
+		left: 0;
+		background: linear-gradient(0deg, rgba(64, 186, 236, 0) 0%, #40BAEC 99.42%);
+	}
+	
+	p, .btn {
+		opacity: 0;
+		transition: opacity .4s $ease;
+		transition-delay: 2s;
+	}
+	
 	.achtergrond {
 		position: absolute;
 		top: 0;
@@ -11,9 +55,54 @@
 		bottom: 0;
 		z-index: 0;
 		opacity: .7;
-	}	
+		z-index: 0;
+		background-size: cover;
+		background-position: center;
+	}
+	
+	&.video-loaded {
+		.video-container {
+			opacity: 1; // Zichtbaar zodra de video geladen is
+		}
+	}
+	
+	.video-container {
+		overflow: hidden;
+		opacity: 0; // Start onzichtbaar
+		transition: opacity 1s $ease;
+		
+		iframe {
+			box-sizing: border-box;
+			height: 56.25vw;
+			left: 50%;
+			min-height: 100%;
+			min-width: 100%;
+			transform: translate(-50%, -50%);
+			position: absolute;
+			top: 50%;
+			width: 177.77777778vh;
+		}
+	}
+
 	.content {
 		position: relative;
 		z-index: 1;
+	}
+
+	.btn.btn-round {
+		position: absolute;
+		bottom: 30px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+
+		&:hover, &:focus {
+			color: $blue;
+			box-shadow: 0px 0px 20px rgba(255,255,255,.5);
+
+			i {
+				transform: translateY(2px);
+			}
+		}
 	}
 }

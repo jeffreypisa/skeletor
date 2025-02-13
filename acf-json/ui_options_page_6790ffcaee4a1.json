@@ -1,0 +1,26 @@
+{
+    "key": "ui_options_page_6790ffcaee4a1",
+    "title": "Thema opties",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Thema opties",
+    "menu_slug": "thema-opties",
+    "parent_slug": "none",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "Thema opties",
+    "position": "",
+    "redirect": 0,
+    "description": "",
+    "menu_icon": {
+        "type": "dashicons",
+        "value": "dashicons-admin-generic"
+    },
+    "update_button": "Updaten",
+    "updated_message": "Opties bijgewerkt",
+    "capability": "edit_posts",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 0,
+    "modified": 1737556148
+}

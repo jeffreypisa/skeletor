@@ -1,27 +1,38 @@
-{% if not post.verberg_banner %}
-	<section class="strook-banner bg-dark text-white">
-		<div class="achtergrond bg-cover" style="background-image: url('{{ post.banner_afbeelding.url }}')"></div>
-		<div class="content">
+{% if is_front_page %}
+	<section class="strook-banner bg-dark text-white d-flex align-items-center">
+		{% if post.banner_weergave == 'video' and post.banner_vimeo_id %}
+			<div class="achtergrond video-container">
+				<iframe src="https://player.vimeo.com/video/{{ post.banner_vimeo_id }}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1"
+						frameborder="0"
+						allow="autoplay; fullscreen"
+						allowfullscreen>
+				</iframe>
+			</div>
+		{% else %}
+			<div class="achtergrond bg-cover" style="background-image: url('{{ post.banner_afbeelding.url }}')"></div>
+		{% endif %}
+
+		<button class="js-scrollnextsection btn btn-outline-light btn-round"> 
+			<i class="fal fa-arrow-down"></i>
+		</button>
+
+		<div class="content w-100">
 			<div class="container">
-				<div class="row">
-					<div class="col-md-8 col-lg-7 col-xl-6">
-						{% if post.banner_titel %}
-							<h2 class="{% if post.banner_titel_groter %}h1{% else %}mb-3{% endif %}">{{ post.banner_titel }}
-							</h2>
-						{% endif %}
-						{% if post.banner_tekst %}
-							<p class="lead">{{ post.banner_tekst }}</p>
-						{% endif %}
-						{% if post.link_actie or item.link_verdieping %}
-							<div class="btn-wrap">
-								{% if post.link_actie %}
-									<a href="{{ post.link_actie.url }}" target="{{ post.link_actie.target }}" class="btn btn-primary">{{ post.link_actie.title }}</a>
-								{% endif %}
-								{% if post.link_verdieping%}
-									<a href="{{ post.link_verdieping.url }}" target="{{ post.link_verdieping.target }}" class="btn btn-outline-primary">{{ post.link_verdieping.title }}</a>
-								{% endif %}
-							</div>
-						{% endif %}
+				<div class="row justify-content-center">
+					<div class="col-md-8 col-lg-7">
+						{{ heading(post.banner_titel, {
+							   level: 'h1',
+							   class: 'mb-3',
+							   inview_animation: 'typewriter'
+						   }) }}
+						{{ text(post.banner_tekst, {
+						   class: 'lead',
+						   inview_animation: 'fade-in'
+						}) }}
+						{{ button(post.banner_link, {
+						   style: 'primary',
+						   size: 'lg'
+						}) }}
 					</div>
 				</div>
 			</div>

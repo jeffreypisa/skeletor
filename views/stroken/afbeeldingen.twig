@@ -1,0 +1,20 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row">
+			{% if item.afbeeldingen %}
+				{% for item in item.afbeeldingen %}
+					<div class="col">
+						{{ image(item, {
+							figure_class: 'rounded',
+							img_class: 'rounded',
+							ratio: '4x3',
+							object_fit: 'cover',
+							lazyload: true,
+							inview_animation: 'animate-zoom-in'
+						}) }}
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</section>

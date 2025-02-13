@@ -1,0 +1,29 @@
+{# 
+Heading Component
+
+Gebruik:
+{{ heading(text, options) }}
+
+Parameters:
+- text (string, optioneel): De tekst van de heading. Geen tekst = geen output.
+- options (array, optioneel): Instellingen voor de heading, met:
+  - level (string, optioneel): HTML-niveau van de titel ('h1', 'h2', etc.). Standaard: 'h2'.
+  - class (string, optioneel): Extra CSS-klassen voor styling.
+  - inview_animation (string, optioneel): Voegt een animatie toe wanneer de heading in beeld komt. Mogelijke waarden: 'fade-in', 'typewriter'.
+
+Voorbeelden:
+1. Standaard heading:
+   {{ heading(item.title) }}
+
+2. Heading met extra opties:
+   {{ heading(item.title, {
+	   level: 'h2',
+	   class: 'mb-3',
+	   inview_animation: 'typewriter'
+   }) }}
+
+#}
+
+<{{ level }} class="{{ class }}" data-text="{{ text }}">
+	{{ text }}
+</{{ level }}>

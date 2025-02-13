@@ -1,0 +1,78 @@
+// Fluent Forms aanpassen
+.ff-el-group {
+	margin-bottom: $spacer;
+	font-size: 16px;
+
+	label {
+		@extend .form-label;
+		display: block;
+		margin-bottom: 0.5rem;
+		font-weight: 700;
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="url"],
+	input[type="tel"],
+	input[type="number"],
+	input[type="password"],
+	textarea,
+	select {
+		@extend .form-control;
+		// padding: $input-padding-y $input-padding-x;
+		// font-size: $input-font-size;
+		// border-radius: $input-border-radius;
+	}
+
+	select {
+		@extend .form-select;
+	}
+
+	input[type="checkbox"],
+	input[type="radio"] {
+		// @extend .form-check-input;
+		margin-right: 0.5rem;
+	}
+
+	.ff-el-input--checkbox,
+	.ff-el-input--radio {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+
+		label {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.ff-btn {
+	@extend .btn;
+	@extend .btn-primary;
+	// padding: $btn-padding-y $btn-padding-x;
+	// border-radius: $btn-border-radius;
+	// font-weight: $btn-font-weight;
+	// text-transform: none;
+
+	&:hover {
+		background-color: lighten($primary, 10%);
+		border-color: lighten($primary, 12%);
+	}
+}
+
+// Validatie en foutmeldingen
+.ff-el-is-invalid {
+	// @extend .is-invalid;
+
+	.ff-el-input,
+	.ff-el-textarea,
+	.ff-el-select {
+		// border-color: $form-feedback-invalid-color;
+	}
+}
+
+.ff-error-msg {
+	// @extend .invalid-feedback;
+	display: block;
+	margin-top: 0.25rem;
+}

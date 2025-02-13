@@ -7,7 +7,7 @@
       "uuidString" : "57A87351-E1AA-4909-8F6E-C2FBFD45AB84"
     }
   ],
-  "creatorBuild" : "34627",
+  "creatorBuild" : "34680",
   "files" : {
     "\/.nova\/Configuration.json" : {
       "ft" : 524288,
@@ -25,6 +25,46 @@
       "oAP" : "\/404.php",
       "oF" : 0
     },
+    "\/acf-json\/group_67929e1b3362e.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/group_67929e1b3362e-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
+    "\/acf-json\/group_679100bdbe2eb.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/group_679100bdbe2eb-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
+    "\/acf-json\/group_67471014d0c63.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/group_67471014d0c63-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
+    "\/acf-json\/group_6747125509552.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/group_6747125509552-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
+    "\/acf-json\/ui_options_page_6790ffcaee4a1.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/ui_options_page_6790ffcaee4a1-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
     "\/archive.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -32,6 +72,84 @@
       "oA" : 0,
       "oAP" : "\/archive.php",
       "oF" : 0
+    },
+    "\/assets\/favicon\/apple-touch-icon.png" : {
+      "ft" : 32768,
+      "iS" : 6533,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/apple-touch-icon.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 90,
+      "rq" : 75
+    },
+    "\/assets\/favicon\/favicon-96x96.png" : {
+      "ft" : 32768,
+      "iS" : 2956,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/favicon-96x96.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 90,
+      "rq" : 75
+    },
+    "\/assets\/favicon\/favicon.ico" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/favicon.ico",
+      "oF" : 0
+    },
+    "\/assets\/favicon\/favicon.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/assets\/favicon\/favicon.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/assets\/favicon\/site.webmanifest" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/site.webmanifest",
+      "oF" : 0
+    },
+    "\/assets\/favicon\/web-app-manifest-192x192.png" : {
+      "ft" : 32768,
+      "iS" : 7002,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/web-app-manifest-192x192.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 90,
+      "rq" : 75
+    },
+    "\/assets\/favicon\/web-app-manifest-512x512.png" : {
+      "ft" : 32768,
+      "iS" : 38682,
+      "oA" : 0,
+      "oAP" : "\/assets\/favicon\/web-app-manifest-512x512.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 90,
+      "rq" : 75
     },
     "\/assets\/fontawesome\/css\/all.css" : {
       "aP" : 1,
@@ -419,7 +537,7 @@
     },
     "\/assets\/fontawesome\/scss\/_animated.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -432,7 +550,7 @@
     },
     "\/assets\/fontawesome\/scss\/_bordered-pulled.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -445,7 +563,7 @@
     },
     "\/assets\/fontawesome\/scss\/_core.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -458,7 +576,7 @@
     },
     "\/assets\/fontawesome\/scss\/_duotone-icons.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -471,7 +589,7 @@
     },
     "\/assets\/fontawesome\/scss\/_fixed-width.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -484,7 +602,7 @@
     },
     "\/assets\/fontawesome\/scss\/_functions.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -497,7 +615,7 @@
     },
     "\/assets\/fontawesome\/scss\/_icons.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -510,7 +628,7 @@
     },
     "\/assets\/fontawesome\/scss\/_list.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -523,7 +641,7 @@
     },
     "\/assets\/fontawesome\/scss\/_mixins.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -536,7 +654,7 @@
     },
     "\/assets\/fontawesome\/scss\/_rotated-flipped.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -549,7 +667,7 @@
     },
     "\/assets\/fontawesome\/scss\/_screen-reader.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -562,7 +680,7 @@
     },
     "\/assets\/fontawesome\/scss\/_shims.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -575,7 +693,7 @@
     },
     "\/assets\/fontawesome\/scss\/_sizing.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -588,7 +706,7 @@
     },
     "\/assets\/fontawesome\/scss\/_stacked.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -601,7 +719,7 @@
     },
     "\/assets\/fontawesome\/scss\/_variables.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -614,7 +732,7 @@
     },
     "\/assets\/fontawesome\/scss\/brands.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -627,7 +745,7 @@
     },
     "\/assets\/fontawesome\/scss\/duotone.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -640,7 +758,7 @@
     },
     "\/assets\/fontawesome\/scss\/fontawesome.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -653,12 +771,12 @@
     },
     "\/assets\/fontawesome\/scss\/light.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
       "ma" : 0,
-      "oA" : 0,
+      "oA" : 1,
       "oAP" : "\/assets\/fontawesome\/scss\/light.css",
       "oF" : 0,
       "oS" : 1,
@@ -666,7 +784,7 @@
     },
     "\/assets\/fontawesome\/scss\/regular.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -679,7 +797,7 @@
     },
     "\/assets\/fontawesome\/scss\/sharp-light.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -692,7 +810,7 @@
     },
     "\/assets\/fontawesome\/scss\/sharp-regular.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -705,7 +823,7 @@
     },
     "\/assets\/fontawesome\/scss\/sharp-solid.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -718,7 +836,7 @@
     },
     "\/assets\/fontawesome\/scss\/sharp-thin.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -731,12 +849,12 @@
     },
     "\/assets\/fontawesome\/scss\/solid.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
       "ma" : 0,
-      "oA" : 1,
+      "oA" : 0,
       "oAP" : "\/assets\/fontawesome\/scss\/solid.css",
       "oF" : 0,
       "oS" : 1,
@@ -744,7 +862,7 @@
     },
     "\/assets\/fontawesome\/scss\/thin.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -757,7 +875,7 @@
     },
     "\/assets\/fontawesome\/scss\/v4-shims.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -768,11 +886,227 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/assets\/images\/logo.svg" : {
+    "\/assets\/fontawesome\/webfonts\/fa-brands-400.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-brands-400.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-brands-400.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-brands-400.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-duotone-900.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-duotone-900.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-duotone-900.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-duotone-900.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-light-300.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-light-300.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-light-300.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-light-300.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-regular-400.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-regular-400.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-regular-400.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-regular-400.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-light-300.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-light-300.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-light-300.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-light-300.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-regular-400.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-regular-400.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-regular-400.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-regular-400.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-solid-900.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-solid-900.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-solid-900.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-solid-900.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-thin-100.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-thin-100.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-sharp-thin-100.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-sharp-thin-100.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-solid-900.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-solid-900.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-solid-900.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-solid-900.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-thin-100.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-thin-100.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-thin-100.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-thin-100.woff2",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-v4compatibility.ttf" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-v4compatibility.ttf",
+      "oF" : 0
+    },
+    "\/assets\/fontawesome\/webfonts\/fa-v4compatibility.woff2" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/fontawesome\/webfonts\/fa-v4compatibility.woff2",
+      "oF" : 0
+    },
+    "\/assets\/images\/chevron-down-black.svg" : {
       "ft" : 2097152,
       "miP" : 0,
       "oA" : 2,
-      "oAP" : "\/assets\/images\/logo.svg",
+      "oAP" : "\/assets\/images\/chevron-down-black.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/assets\/images\/chevron-down-orange.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/assets\/images\/chevron-down-orange.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/assets\/images\/chevron-down-white.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/assets\/images\/chevron-down-white.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/assets\/images\/nvr-logo-white.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/assets\/images\/nvr-logo-white.svg",
+      "oF" : 0,
+      "opt" : 0,
+      "plM" : 52780316221407,
+      "prP" : 0
+    },
+    "\/assets\/images\/nvr-logo.svg" : {
+      "ft" : 2097152,
+      "miP" : 0,
+      "oA" : 2,
+      "oAP" : "\/assets\/images\/nvr-logo.svg",
       "oF" : 0,
       "opt" : 0,
       "plM" : 52780316221407,
@@ -789,35 +1123,46 @@
       "sC" : 3,
       "tS" : 1
     },
-    "\/assets\/js\/plugins\/lightgallery_init.js" : {
+    "\/assets\/js\/plugins\/lightgalleryInit.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/plugins\/lightgallery_init-min.js",
+      "oAP" : "\/assets\/js\/plugins\/lightgalleryInit-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
     },
-    "\/assets\/js\/plugins\/matchheight_init.js" : {
+    "\/assets\/js\/plugins\/matchheightInit.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/plugins\/matchheight_init-min.js",
+      "oAP" : "\/assets\/js\/plugins\/matchheightInit-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
     },
-    "\/assets\/js\/plugins\/swiper_init.js" : {
+    "\/assets\/js\/plugins\/swiperInit.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/plugins\/swiper_init-min.js",
+      "oAP" : "\/assets\/js\/plugins\/swiperInit-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
+    "\/assets\/js\/scripts\/cta.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 1,
+      "oAP" : "\/assets\/js\/scripts\/cta-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
@@ -844,24 +1189,57 @@
       "sC" : 3,
       "tS" : 0
     },
-    "\/assets\/js\/scripts\/mobilemenu.js" : {
+    "\/assets\/js\/scripts\/mobileMenu.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/scripts\/mobilemenu-min.js",
+      "oAP" : "\/assets\/js\/scripts\/mobileMenu-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
     },
-    "\/assets\/js\/scripts\/site_is_loaded.js" : {
+    "\/assets\/js\/scripts\/scrollAnimations.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/scripts\/site_is_loaded-min.js",
+      "oAP" : "\/assets\/js\/scripts\/scrollAnimations-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
+    "\/assets\/js\/scripts\/scrollToNextSection.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 1,
+      "oAP" : "\/assets\/js\/scripts\/scrollToNextSection-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
+    "\/assets\/js\/scripts\/siteIsLoaded.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 1,
+      "oAP" : "\/assets\/js\/scripts\/siteIsLoaded-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
+    "\/assets\/js\/scripts\/vimeo.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 1,
+      "oAP" : "\/assets\/js\/scripts\/vimeo-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
@@ -871,7 +1249,7 @@
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
-      "oA" : 0,
+      "oA" : 1,
       "oAP" : "\/assets\/js\/scripts\/wcag-min.js",
       "oF" : 0,
       "sC" : 3,
@@ -879,7 +1257,7 @@
     },
     "\/assets\/scss\/components\/_buttons.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -890,9 +1268,48 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/components\/_image.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/components\/_image.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/components\/_social-media-links.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/components\/_social-media-links.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/components\/_text.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/components\/_text.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/layout\/_footer.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -905,7 +1322,7 @@
     },
     "\/assets\/scss\/layout\/_header.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -918,7 +1335,7 @@
     },
     "\/assets\/scss\/layout\/_mobilemenu.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -931,7 +1348,7 @@
     },
     "\/assets\/scss\/layout\/_section.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -942,22 +1359,74 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/layout\/_tease.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/layout\/_tease.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/main.scss" : {
       "aP" : 0,
       "bl" : 0,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
-      "ma" : 0,
+      "ma" : 1,
       "oA" : 0,
       "oAP" : "\/dist\/main-min.css",
       "oF" : 2,
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/plugins\/_fluentforms.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/plugins\/_fluentforms.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/plugins\/_swiper.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/plugins\/_swiper.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/plugins\/_ultimatemember.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/plugins\/_ultimatemember.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/settings\/_body.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -970,7 +1439,7 @@
     },
     "\/assets\/scss\/settings\/_buttons.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -981,9 +1450,22 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/settings\/_card.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/settings\/_card.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/settings\/_colors.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -994,9 +1476,22 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/settings\/_dropdown.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/settings\/_dropdown.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/settings\/_effects.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1009,7 +1504,7 @@
     },
     "\/assets\/scss\/settings\/_grid.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1022,7 +1517,7 @@
     },
     "\/assets\/scss\/settings\/_helper.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1033,9 +1528,35 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/settings\/_links.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/settings\/_links.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/settings\/_options.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/settings\/_options.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/settings\/_type.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1048,7 +1569,7 @@
     },
     "\/assets\/scss\/stroken\/_banner.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1061,7 +1582,7 @@
     },
     "\/assets\/scss\/stroken\/_content.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
@@ -1072,180 +1593,97 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/assets\/webfonts\/fa-brands-400.ttf" : {
+    "\/assets\/scss\/stroken\/_testimonials.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/stroken\/_testimonials.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/webfonts\/DarkerGrotesque-Bold.woff" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-brands-400.ttf",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-Bold.woff",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-brands-400.woff2" : {
+    "\/assets\/webfonts\/DarkerGrotesque-Bold.woff2" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-brands-400.woff2",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-Bold.woff2",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-duotone-900.ttf" : {
+    "\/assets\/webfonts\/DarkerGrotesque-ExtraBold.woff" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-duotone-900.ttf",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-ExtraBold.woff",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-duotone-900.woff2" : {
+    "\/assets\/webfonts\/DarkerGrotesque-ExtraBold.woff2" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-duotone-900.woff2",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-ExtraBold.woff2",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-light-300.ttf" : {
+    "\/assets\/webfonts\/DarkerGrotesque-SemiBold.woff" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-light-300.ttf",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-SemiBold.woff",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-light-300.woff2" : {
+    "\/assets\/webfonts\/DarkerGrotesque-SemiBold.woff2" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-light-300.woff2",
+      "oAP" : "\/assets\/webfonts\/DarkerGrotesque-SemiBold.woff2",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-regular-400.ttf" : {
+    "\/assets\/webfonts\/WixMadeforText-Regular.woff" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-regular-400.ttf",
+      "oAP" : "\/assets\/webfonts\/WixMadeforText-Regular.woff",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-regular-400.woff2" : {
+    "\/assets\/webfonts\/WixMadeforText-Regular.woff2" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-regular-400.woff2",
+      "oAP" : "\/assets\/webfonts\/WixMadeforText-Regular.woff2",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-sharp-light-300.ttf" : {
+    "\/assets\/webfonts\/WixMadeforText-SemiBold.woff" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-light-300.ttf",
+      "oAP" : "\/assets\/webfonts\/WixMadeforText-SemiBold.woff",
       "oF" : 0
     },
-    "\/assets\/webfonts\/fa-sharp-light-300.woff2" : {
+    "\/assets\/webfonts\/WixMadeforText-SemiBold.woff2" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-light-300.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-regular-400.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-regular-400.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-regular-400.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-regular-400.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-solid-900.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-solid-900.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-solid-900.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-solid-900.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-thin-100.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-thin-100.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-sharp-thin-100.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-sharp-thin-100.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-solid-900.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-solid-900.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-solid-900.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-solid-900.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-thin-100.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-thin-100.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-thin-100.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-thin-100.woff2",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-v4compatibility.ttf" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-v4compatibility.ttf",
-      "oF" : 0
-    },
-    "\/assets\/webfonts\/fa-v4compatibility.woff2" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/webfonts\/fa-v4compatibility.woff2",
+      "oAP" : "\/assets\/webfonts\/WixMadeforText-SemiBold.woff2",
       "oF" : 0
     },
     "\/author.php" : {
@@ -1272,6 +1710,54 @@
       "oAP" : "\/composer.lock",
       "oF" : 0
     },
+    "\/dist\/main-min-blessed1-min.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min-blessed1-min-min.css",
+      "oF" : 0,
+      "pg" : 0
+    },
+    "\/dist\/main-min-blessed1.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min-blessed1-min.css",
+      "oF" : 0,
+      "pg" : 0
+    },
+    "\/dist\/main-min-blessed2-min.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min-blessed2-min-min.css",
+      "oF" : 0,
+      "pg" : 0
+    },
+    "\/dist\/main-min-blessed2.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min-blessed2-min.css",
+      "oF" : 0,
+      "pg" : 0
+    },
     "\/dist\/main-min.css" : {
       "aP" : 1,
       "bl" : 0,
@@ -1284,6 +1770,14 @@
       "oF" : 0,
       "pg" : 0
     },
+    "\/dist\/main-min.css.map" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min.css.map",
+      "oF" : 0
+    },
     "\/dist\/main-min.js" : {
       "bF" : 0,
       "ft" : 64,
@@ -1294,6 +1788,14 @@
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
+    },
+    "\/favicon.ico" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/favicon.ico",
+      "oF" : 0
     },
     "\/footer.php" : {
       "cB" : 0,
@@ -1381,6 +1883,14 @@
       "oAP" : "\/phpunit.xml",
       "oF" : 0
     },
+    "\/README.html" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/README.html",
+      "oF" : 0
+    },
     "\/README.md" : {
       "cB" : 0,
       "cS" : 0,
@@ -1445,12 +1955,60 @@
       "oAP" : "\/src\/ACFScripts.php",
       "oF" : 0
     },
-    "\/src\/Components.php" : {
+    "\/src\/components\/Accordion.php" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/src\/Components.php",
+      "oAP" : "\/src\/components\/Accordion.php",
+      "oF" : 0
+    },
+    "\/src\/components\/Button.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/Button.php",
+      "oF" : 0
+    },
+    "\/src\/components\/Heading.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/Heading.php",
+      "oF" : 0
+    },
+    "\/src\/components\/Image.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/Image.php",
+      "oF" : 0
+    },
+    "\/src\/components\/SocialMediaLinks.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/SocialMediaLinks.php",
+      "oF" : 0
+    },
+    "\/src\/components\/Swiper.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/Swiper.php",
+      "oF" : 0
+    },
+    "\/src\/components\/Text.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/components\/Text.php",
       "oF" : 0
     },
     "\/src\/Gutenberg.php" : {
@@ -1491,6 +2049,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/src\/StarterSite.php",
+      "oF" : 0
+    },
+    "\/src\/ThemeSpecific.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/ThemeSpecific.php",
       "oF" : 0
     },
     "\/src\/WPAdmin.php" : {
@@ -18126,12 +18692,36 @@
       "oAP" : "\/views\/comment.twig",
       "oF" : 0
     },
+    "\/views\/components\/accordion.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/accordion.twig",
+      "oF" : 0
+    },
     "\/views\/components\/button.twig" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/components\/button.twig",
+      "oF" : 0
+    },
+    "\/views\/components\/heading.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/heading.twig",
+      "oF" : 0
+    },
+    "\/views\/components\/image.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/image.twig",
       "oF" : 0
     },
     "\/views\/components\/menu.twig" : {
@@ -18148,6 +18738,30 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/components\/pagination.twig",
+      "oF" : 0
+    },
+    "\/views\/components\/social-media-links.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/social-media-links.twig",
+      "oF" : 0
+    },
+    "\/views\/components\/swiper.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/swiper.twig",
+      "oF" : 0
+    },
+    "\/views\/components\/text.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/components\/text.twig",
       "oF" : 0
     },
     "\/views\/footer.twig" : {
@@ -18214,14 +18828,6 @@
       "oAP" : "\/views\/sidebar.twig",
       "oF" : 0
     },
-    "\/views\/single-password.twig" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/views\/single-password.twig",
-      "oF" : 0
-    },
     "\/views\/single.twig" : {
       "cB" : 0,
       "ft" : 8192,
@@ -18236,6 +18842,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/stroken.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/afbeeldingen.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/afbeeldingen.twig",
       "oF" : 0
     },
     "\/views\/stroken\/banner.twig" : {
@@ -18254,12 +18868,36 @@
       "oAP" : "\/views\/stroken\/content.twig",
       "oF" : 0
     },
-    "\/views\/tease-post.twig" : {
+    "\/views\/stroken\/logos.twig" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/views\/tease-post.twig",
+      "oAP" : "\/views\/stroken\/logos.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/nieuws.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/nieuws.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/personen.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/personen.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/testimonials.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/testimonials.twig",
       "oF" : 0
     },
     "\/views\/tease.twig" : {
@@ -18281,7 +18919,7 @@
     "creationDate" : 753791969.04098701,
     "displayValue" : "skeletor",
     "displayValueWasSetByUser" : 0,
-    "iconImageName" : "brackets-ucla",
+    "iconImageName" : "\/assets\/favicon\/apple-touch-icon.png",
     "iconImageWasSetByUser" : 0
   },
   "projectSettings" : {
@@ -19727,7 +20365,7 @@
       "outputStyle" : 1,
       "purgeCSSStyle" : 0,
       "shouldRunAutoprefixer" : 0,
-      "shouldRunBless" : 0,
+      "shouldRunBless" : 1,
       "sourceMapStyle" : 0
     },
     "languageDefaultsSLIM" : {
@@ -19839,7 +20477,7 @@
     ],
     "rollupTreeshakingEnabled" : 1,
     "rollupTreeshakingModuleSideEffects" : 1,
-    "sassWarningStyle" : 1,
+    "sassWarningStyle" : 2,
     "skippedFoldersString" : "log, _logs, logs, _cache, cache, .idea, \/storage\/framework\/sessions, node_modules",
     "sourceFolderName" : "source",
     "susyVersion" : 3,

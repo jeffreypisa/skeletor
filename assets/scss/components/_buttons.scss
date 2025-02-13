@@ -1,0 +1,87 @@
+select.btn {
+	padding-right: 40px;
+	background-image: url(../assets/images/chevron-down-orange.svg);
+
+	&:hover,
+	&:focus,
+	&:active {
+		background-image: url(../assets/images/chevron-down-white.svg);
+	}
+}
+
+.btn {
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	width: auto;
+	&:has(i) span {
+		margin-right: 6px;
+	}
+}
+
+.btn.btn-lg {
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
+/* Icoon rechts uitlijnen als het als laatste staat */
+.btn i:last-child {
+	margin-left: auto;
+	/* Duwt het icoon naar de rechterkant */
+}
+
+/* Geen extra marge als het icoon als eerste staat */
+.btn i:first-child {
+	margin-left: 0;
+	margin-right: 6px;
+}
+
+.btn.btn-primary {
+	color: #fff;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: #fff;
+	}
+}
+
+.btn.btn-outline-primary {
+	background-color: $orangelight;
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: $orange;
+		color: #fff;
+	}
+}
+
+.btn.btn-outline-secondary {
+	background-color: $bluelight;
+	&:hover,
+	&:focus,
+	&:active {
+		background-color: $blue;
+		color: #fff;
+	}
+}
+
+.btn.btn-outline-light {
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: $dark;
+	}
+}
+
+.btn.js-scrollnextsection {
+	padding: 0;
+	width: 50px;
+	height: 50px;
+	border-width: 1px;
+	justify-content: center;
+	i:first-child {
+		margin: 0;
+	}
+}

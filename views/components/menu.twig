@@ -1,11 +1,18 @@
 <ul class="navbar-nav">
 	{% for item in items %}
-		<li class="nav-item {% if item.children|length > 0 %}dropdown{% endif %} {{ item.classes | join(' ') }}">
+		{% set linkstijl = 'nav-link' %}
+		{% if item.link_stijl == 'btn-primary' %}
+			{% set linkstijl = 'btn btn-primary text-white' %}
+		{% elseif item.link_stijl == 'btn-secondary' %}
+			{% set linkstijl = 'btn btn-secondary text-white' %}
+		{% endif %}
+
+		<li class="nav-item {% if item.children|length > 0 %}dropdown{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
 			<a 
-				class="nav-link {% if item.children|length > 0 %}dropdown-toggle{% endif %}" 
+				class="{{ linkstijl }} {% if item.children|length > 0 %}dropdown-toggle{% endif %}" 
 				href="{{ item.link }}" 
 				{% if item.target %}target="{{ item.target }}"{% endif %}
-				{% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false"{% endif %}
+				{% if item.children|length > 0 %}data-bs-toggle="dropdown"  aria-expanded="false"{% endif %}
 			>
 				{{ item.title }}
 			</a>
@@ -14,7 +21,7 @@
 				<ul class="dropdown-menu">
 					{% for child in item.children %}
 						<li class="dropdown-item {{ child.classes | join(' ') }}">
-							<a href="{{ child.link }}" target="{{ child.target }}">{{ child.title }}</a>
+							<a href="{{ child.link }}" {% if child.target %}target="{{ child.target }}"{% endif %}>{{ child.title }}</a>
 						</li>
 					{% endfor %}
 				</ul>

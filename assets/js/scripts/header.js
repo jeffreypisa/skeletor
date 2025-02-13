@@ -2,43 +2,35 @@ export function header() {
 	const header = document.querySelector('header');
 	let lastScrollTop = 0;
 	let isHeaderVisible = true;
-	let isSlidingIn = false;
 
 	window.addEventListener('scroll', () => {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-		// Als we helemaal naar boven scrollen, reset de header naar zichtbaar
+		// Als we helemaal bovenaan zijn, zorg dat de header zichtbaar is
 		if (scrollTop === 0) {
 			header.style.opacity = '1';
 			header.style.transform = 'translateY(0)';
 			isHeaderVisible = true;
-			isSlidingIn = false; // Reset sliding state
-			return; // Geen verdere logica nodig
+			return;
 		}
 
-		// Bij het naar beneden scrollen
-		if (scrollTop > 80 && scrollTop > lastScrollTop && isHeaderVisible) {
-			// Verberg de header direct
+		// Bij naar beneden scrollen
+		if (scrollTop > lastScrollTop && isHeaderVisible) {
+			// Verberg de header
 			header.style.opacity = '0';
 			header.style.transform = 'translateY(-100%)';
 			isHeaderVisible = false;
 		}
 
-		// Bij het naar boven scrollen
-		if (scrollTop < lastScrollTop - 10 && !isHeaderVisible) {
-			// Maak de header direct zichtbaar
+		// Bij naar boven scrollen
+		if (scrollTop < lastScrollTop && !isHeaderVisible) {
+			// Laat de header weer zien
 			header.style.opacity = '1';
-
-			// Trigger de slide-in animatie alleen de eerste keer
-			if (!isSlidingIn) {
-				header.style.transform = 'translateY(0)';
-				isSlidingIn = true;
-			}
-
+			header.style.transform = 'translateY(0)';
 			isHeaderVisible = true;
 		}
 
-		// Update de vorige scrollwaarde
+		// Update de laatste scrollpositie
 		lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 	});
 }

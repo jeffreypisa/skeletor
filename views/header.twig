@@ -1,10 +1,10 @@
-<header class="header d-flex align-items-center">
-	<div class="container-fluid container-lg">
-		<div class="row g-2">
+<header class="header">
+	<div class="bar d-flex align-items-center">
+		<div class="row w-100 g-2">
 			<div class="col d-flex align-items-center">
 				<a class="header-brand" href="{{ site.url }}" rel="home">
 					<span class="d-none">{{ site.name }}</span>
-					<img height="26" src="{{ theme.link }}/assets/images/logo.svg" alt="logo">
+					<img height="42" src="{{ theme.link }}/assets/images/nvr-logo.svg" alt="Nederlandse Vereniging voor de Ruimtevaart logo">
 				</a>
 			</div>
 			{% if headermenu %}
@@ -29,7 +29,7 @@
 	<!-- Mobile menu -->
 	<nav class="mobilemenu" id="mobilemenu">
 		<ul class="menu-items">
-			{% include "components/menu.twig" with {'items': headermenu.get_items} %}
+			{% include "components/menu.twig" with {'items': mobielmenu.get_items} %}
 		</ul>
 	</nav>
 {% endif %}

@@ -29,23 +29,16 @@ Theme by Emonks
 // ==========================================
 @import 'settings/colors';
 
-@import 'settings/helper';
 @import 'settings/body';
 @import 'settings/buttons';
-// @import 'settings/options';
-// @import 'settings/components';
+@import 'settings/card';
+@import 'settings/dropdown';
 @import 'settings/effects';
-// @import 'settings/form';
 @import 'settings/grid';
-// @import 'settings/links';
-// @import 'settings/nav';
-// @import 'settings/options';
+@import 'settings/helper';
+@import 'settings/links';
+@import 'settings/options';
 @import 'settings/type';
-
-// FontAwesome
-@import '../fontawesome/scss/fontawesome.scss';
-@import '../fontawesome/scss/brands.scss';
-@import '../fontawesome/scss/solid.scss';
 
 // ==========================================
 // 3. Bootstrap Components
@@ -53,7 +46,7 @@ Theme by Emonks
 @import "../node_modules/bootstrap/scss/type";
 @import "../node_modules/bootstrap/scss/images";
 // @import "../node_modules/bootstrap/scss/tables";
-// @import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/forms";
 @import "../node_modules/bootstrap/scss/buttons";
 @import "../node_modules/bootstrap/scss/transitions";
 @import "../node_modules/bootstrap/scss/dropdown";
@@ -63,7 +56,7 @@ Theme by Emonks
 @import "../node_modules/bootstrap/scss/card";
 // @import "../node_modules/bootstrap/scss/accordion";
 // @import "../node_modules/bootstrap/scss/breadcrumb";
-// @import "../node_modules/bootstrap/scss/pagination";
+@import "../node_modules/bootstrap/scss/pagination";
 // @import "../node_modules/bootstrap/scss/badge";
 // @import "../node_modules/bootstrap/scss/alert";
 // @import "../node_modules/bootstrap/scss/progress";
@@ -78,17 +71,43 @@ Theme by Emonks
 // @import "../node_modules/bootstrap/scss/offcanvas";
 
 // ==========================================
-// 4. Custom Components
+// 4. Plugin (init)
 // ==========================================
-@import 'components/buttons';
+
+// FontAwesome
+$fa-font-path: '../assets/fontawesome/webfonts';
+@import '../fontawesome/scss/brands.scss';
+@import '../fontawesome/scss/light.scss';
+@import '../fontawesome/scss/fontawesome.scss';
+
+// Swiper
+@import '../node_modules/swiper/swiper.scss';
 
 // ==========================================
-// 5. Layouts & Sections
+// 5. Custom Components
+// ==========================================
+@import 'components/buttons';
+@import 'components/image';
+@import 'components/social-media-links';
+
+// ==========================================
+// 6. Layouts
 // ==========================================
 @import 'layout/footer';
 @import 'layout/header';
 @import 'layout/mobilemenu';
 @import 'layout/section';
+@import 'layout/tease';
 
+// ==========================================
+// 7. Stroken
+// ==========================================
 @import 'stroken/banner';
 @import 'stroken/content';
+@import 'stroken/testimonials';
+
+// ==========================================
+// 8. Plugin (custom)
+// ==========================================
+@import 'plugins/fluentforms';
+@import 'plugins/swiper';

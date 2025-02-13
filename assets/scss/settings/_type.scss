@@ -3,18 +3,55 @@
 // Font, line-height, and color for body text, headings, and more.
 
 @font-face {
-	font-family: 'Montserrat';
-	src: url('../fonts/Montserrat-Regular.woff2') format('woff2'),
-		url('../fonts/Montserrat-Regular.woff') format('woff');
+	font-family: 'DarkerGrotesque';
+	src: url('../assets/webfonts/DarkerGrotesque-ExtraBold.woff2') format('woff2'),
+		url('../assets/webfonts/DarkerGrotesque-ExtraBold.woff') format('woff');
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'DarkerGrotesque';
+	src: url('../assets/webfonts/DarkerGrotesque-Bold.woff2') format('woff2'),
+		url('../assets/webfonts/DarkerGrotesque-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'DarkerGrotesque';
+	src: url('../assets/webfonts/DarkerGrotesque-SemiBold.woff2') format('woff2'),
+		url('../assets/webfonts/DarkerGrotesque-SemiBold.woff') format('woff');
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'WixMadeforText';
+	src: url('../assets/webfonts/WixMadeforText-Regular.woff2') format('woff2'),
+		url('../assets/webfonts/WixMadeforText-Regular.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
 }
 
+@font-face {
+	font-family: 'WixMadeforText';
+	src: url('../assets/webfonts/WixMadeforText-SemiBold.woff2') format('woff2'),
+		url('../assets/webfonts/WixMadeforText-SemiBold.woff') format('woff');
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+
 // scss-docs-start font-variables
 // stylelint-disable value-keyword-case
-$font-family-base: 'Montserrat';
-$font-family-alt: 'Montserrat';
+$font-family-base: 'WixMadeforText';
+$font-family-alt: 'DarkerGrotesque';
 
 // $font-size-root affects the value of `rem`, which is used for as well font sizes, paddings, and margins
 // $font-size-base affects the font size of the body text
@@ -39,7 +76,7 @@ $h6-font-size: 18px;
 
 // scss-docs-start headings-variables
 $headings-margin-bottom: 30px;
-$headings-font-family: null;
+$headings-font-family: $font-family-alt;
 $headings-font-style: null;
 $headings-font-weight: 700;
 $headings-line-height: 1.1;
@@ -68,18 +105,18 @@ $sub-sup-font-size: .75em;
 
 $text-muted: $gray-600;
 
-.altfont {
+.font-alt {
 	font-family: $font-family-alt;
 	font-weight: 400;
 }
 
-.text-lg {
-	font-size: 20px;
-}
 
 .text-sm {
-	font-size: 17px;
-	line-height: 31px;
+	font-size: $font-size-sm;
+}
+
+.text-lg {
+	font-size: $font-size-lg;
 }
 
 body {
@@ -88,7 +125,7 @@ body {
 	font-family: $font-family-base, sans-serif;
 	color: $dark;
 	font-size: 16px;
-	line-height: 33px;
+	line-height: 24px;
 }
 
 *+h1,
@@ -100,53 +137,45 @@ body {
 	margin-top: 60px;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+
+
+h1, h2, h3, 
+.h1, .h2, .h3 {
+	line-height: 1;
+	margin-bottom: 30px;
 	font-family: $font-family-alt;
-	font-weight: 900;	
-	line-height: 1.4;
 }
 
 h4, h5, h6,
 .h4, .h5, .h6 {
-	font-weight: 700;	
+	line-height: 1.2;
+	margin-bottom: 30px;
+	font-family: $font-family-base;
 }
 
 h1, .h1 {
-	font-size: 35px;
-	line-height: 1.1;
+	font-size: 44px;
+	font-weight: 800;
 }
 
 h2, .h2 {
-	font-size: 32px;
-	line-height: 1.2;
-}
-
-h1, h2,
-.h1, .h2 {
-	margin-bottom: 30px;
-}
-
-h3,
-.h3 {
-	margin-bottom: 20px;
-}
-
-h4, h5,
-.h4, .h5 {
-	margin-bottom: 10px;
-}
-
-.thema-title {
-	font-size: 16px;
+	font-size: 38px;
 	font-weight: 700;
-	text-transform: uppercase;
-	margin-bottom: 0px;
-	opacity: .6;
 }
 
-.text-white {
-	color: #fff;
+h3, .h3 {
+	font-size: 32px;
+	font-weight: 600;
+}
+
+h4, .h4 {
+	margin-bottom: 22px;
+	font-weight: 600;
+}
+
+h5, .h5 {
+	margin-bottom: 18px;
+	font-weight: 600;
 }
 
 .weight-400 {
@@ -154,16 +183,13 @@ h4, h5,
 }
 
 body .lead {
-	font-family: $font-family-alt;
-	font-size: 18px;
-	line-height: 1.8;
-	font-weight: 700;
-	opacity: 1;
-	margin-bottom: 20px;
+	font-size: 20px;
+	line-height: 1.4;
+	margin-bottom: 30px;
 }
 
 ol li::marker {
-	color: $red;
+	color: $primary;
 }
 
 
@@ -176,48 +202,25 @@ ol li::marker {
 
 @include media-breakpoint-up(md) {
 	body {
-		
-	}
-	h1 {
-		font-size: 48px;
-	}
-	h2 {
-		font-size: 34px;
-	}
-	h3 {
-		font-size: 26px;
-	}
-	h4 {
-		font-size: 21px;
-	}
-	h5 {
-		font-size: 20px;
-	}
-	.thema-title {
 		font-size: 19px;
-	}
-}
-
-@include media-breakpoint-up(xl) {
-	body {
-
+		line-height: 31px;
 	}
 	h1 {
-		font-size: 68px;
+		font-size: 60px;
 	}
 	h2 {
 		font-size: 50px;
 	}
 	h3 {
-		font-size: 32px;
+		font-size: 44px;
 	}
 	h4 {
-		font-size: 24px; 
+		font-size: 22px;
 	}
 	h5 {
-		font-size: 21px;
+		font-size: 20px;
 	}
-	.thema-title {
-		font-size: 21px;
+	body .lead {
+		font-size: 24px;
 	}
 }

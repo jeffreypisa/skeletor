@@ -1,5 +1,14 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	Sorry, we couldn't find what you're looking for.
+<section class="strook-404 {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-10 col-xl-8 text-center">
+				<h2 class="h1">404</h2>
+				<a class="btn btn-primary" href="/">Home</a>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}

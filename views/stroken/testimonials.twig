@@ -1,0 +1,23 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row justify-content-center text-center mb-4">
+			<div class="col-md-10 col-lg-9 col-xl-8">		
+				{{ heading(item.titel) }}
+			</div>
+		</div>
+		{{ swiper(item.testimonials, {
+			   slidesPerView: 1,
+			   spaceBetween: 20,
+			   arrows: false,
+			   dots: true,
+			   overflowHidden: true,
+			   class: '',
+			   arrowPrevIcon: 'fa-chevron-left',
+			   arrowNextIcon: 'fa-chevron-right',
+			   arrowIconStyle: 'light',
+			   breakpoints: {
+				   768: { slidesPerView: 2, spaceBetween: 50 }
+			   }
+		   }, 'tease-testimonial.twig') }}
+	</div>
+</section>

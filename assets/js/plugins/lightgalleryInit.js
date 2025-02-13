@@ -4,7 +4,7 @@ import lightGallery from 'lightgallery';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 
-export function lightgallery_init() {
+export function lightgalleryInit() {
 	const container = document.getElementById('gallery-container');
 	if (!container) return; // Veiligheidscontrole: Voorkomt fouten als de container niet bestaat.
 

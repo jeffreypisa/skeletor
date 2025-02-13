@@ -44,6 +44,10 @@ $gutters: $spacers;
 
 $container-padding-x: 60px;
 
+.container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
+  padding: 0 20px !important;
+}
+
 @include media-breakpoint-up(md) {
   .container, .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
     padding: 0 50px !important;

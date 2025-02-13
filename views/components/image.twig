@@ -1,0 +1,74 @@
+{# 
+Image Component
+
+Gebruik:
+{{ image(image_field, options) }}
+
+Parameters:
+- image_field (array, vereist): Data van de afbeelding, met:
+  - url (string, vereist): De URL van de afbeelding.
+  - alt (string, vereist): Alternatieve tekst voor de afbeelding.
+  - caption (string, optioneel): Automatisch opgehaald uit de metadata van de afbeelding.
+- options (array, optioneel): Instellingen voor de afbeelding, met:
+  - figure_class (string, optioneel): Extra CSS-klassen voor de <figure>.
+  - img_class (string, optioneel): Extra CSS-klassen voor de <img> (standaard: w-100).
+  - ratio (string, optioneel): Aspect ratio (bijv. '16x9', '4x3').
+  - object_fit (string, optioneel): Gedrag van de afbeelding ('cover', 'contain'). Standaard: 'cover'.
+  - lazyload (bool, optioneel): Of lazy loading moet worden ingeschakeld. Standaard: false.
+  - style (string, optioneel): Inline stijlen voor extra aanpassingen.
+  - show_caption (bool, optioneel): Bepaalt of het bijschrift wordt weergegeven. Standaard: false.
+  - caption_position (string, optioneel): Locatie van het bijschrift:
+	- 'below-left': Onder de afbeelding, links.
+	- 'below-right': Onder de afbeelding, rechts.
+	- 'on-left': Op de afbeelding, linksonder (standaard).
+	- 'on-right': Op de afbeelding, rechtsonder.
+  - inview_animation (string, optioneel): Animatie bij het in beeld komen van de afbeelding:
+	- 'animate-zoom-in'
+	- 'animate-zoom-out'
+	- 'animate-fade-in'
+	- 'animate-slide-in-zoom'
+
+Voorbeelden:
+
+1. Standaard afbeelding zonder parameters:
+   {{ image(item.afbeelding) }}
+
+2. Afbeelding met alle parameters:
+   {{ image(item.afbeelding, {
+	   figure_class: 'rounded shadow',
+	   img_class: 'rounded',
+	   ratio: '16x9',
+	   object_fit: 'contain',
+	   lazyload: true,
+	   style: 'max-width: 500px;',
+	   show_caption: true,
+	   caption_position: 'below-right',
+	   inview_animation: 'animate-zoom-in'
+   }) }}
+#}
+
+<figure class="position-relative {{ figure_class }} {{ ratio ? 'ratio ratio-' ~ ratio : '' }} {{ inview_animation }}" style="{% if style %}{{ style }}{% endif %}">
+	<img src="{{ url }}" 
+		 alt="{{ alt }}" 
+		 class="{{ img_class }}" 
+		 {% if lazyload %}loading="lazy"{% endif %} 
+		 style="width: 100%; height: 100%; object-fit: {{ object_fit }};">
+
+	{# Bijschriften voor on-left en on-right worden absoluut gepositioneerd #}
+	{% if show_caption and caption %}
+		{% if caption_position == 'on-left' %}
+			<figcaption class="on-left position-absolute start-0 bottom-0 text-sm text-white">{{ caption }}</figcaption>
+		{% elseif caption_position == 'on-right' %}
+			<figcaption class="on-right position-absolute end-0 bottom-0 text-sm text-end text-white">{{ caption }}</figcaption>
+		{% endif %}
+	{% endif %}
+</figure>
+
+{# Bijschriften voor below-left en below-right staan buiten de afbeelding #}
+{% if show_caption and caption %}
+	{% if caption_position == 'below-right' %}
+		<div class="figcaption-below-right text-end text-muted text-sm">{{ caption }}</div>
+	{% elseif caption_position == 'below-left' %}
+		<div class="figcaption-below-left text-start text-muted text-sm">{{ caption }}</div>
+	{% endif %}
+{% endif %}

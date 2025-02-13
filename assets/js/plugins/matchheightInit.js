@@ -1,6 +1,6 @@
 import MatchHeight from 'matchheight';
 
-export function matchheight_init() {
+export function matchheightInit() {
 	// Controleer of MatchHeight beschikbaar is
 	if (typeof MatchHeight !== 'function') {
 		console.error('MatchHeight library is not loaded.');

@@ -1,14 +1,31 @@
-<section id="{% if item.titel %}{{ item.titel|sanitize }}{% else %}strook_{{ sectionno }}{% endif %}" class="strook-content {{ item.achtergrond }}">
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
 	<div class="container">
-		{% if item.titel %}
-			<h2>{{ item.titel }}</h2>
-		{% endif %}
-		{% if item.tekst %}
-			<p>{{ item.tekst }}</p>
-		{% endif %}
-		
-		{% if item.link %}
-			{{ button(item.link) }}
-		{% endif %}
+		<div class="row">
+			<div class="col-md-5 d-none d-md-block">
+				{{ image(item.afbeelding, {
+					figure_class: 'rounded bg-greylight',
+					img_class: 'rounded',
+					ratio: '4x3',
+					object_fit: 'cover',
+					show_caption: false,
+					inview_animation: 'animate-zoom-in'
+				}) }}
+			</div>
+			<div class="col-md-6 offset-md-1 d-flex align-items-start text-center text-md-start">
+				<div class="content w-100 animate-slide-up">
+					{{ heading(item.titel, {
+						level: 'h2'
+					}) }}
+					{{ text(item.tekst, {
+					   class: 'mb-4'
+					}) }}
+
+					<div class="d-flex gap-3">
+						{{ button(item.link_primair) }}
+						{{ button(item.link_secundair, 'outline-primary') }}
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </section>

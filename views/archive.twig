@@ -6,12 +6,15 @@
 {% block content %}
 	<section>
 		<div class="container">
-			<h2>{{ title }}</h2>
+			<div class="text-center mb-5">
+				<h2>{{ title }}</h2>
+			</div>
+			
 			<div class="row">
-				{% for post in posts %}
-				<div class="col-md-6 col-xl-4">
-					{% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
-				</div>
+				{% for item in posts %}
+					<div class="col-md-6 col-xl-4">
+						{% include ['tease-'~item.post_type~'.twig', 'tease.twig'] %}
+					</div>
 				{% endfor %}
 			</div>
 		

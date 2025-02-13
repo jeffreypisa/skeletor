@@ -1,0 +1,27 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row mb-4">
+			<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2 text-center">
+				{{ heading(item.titel) }}
+				{{ text(item.tekst) }}
+			</div>
+		</div>
+		
+		{{ swiper(item.nieuws, {
+			slidesPerView: 1,
+			spaceBetween: 10,
+			loop: false,
+			arrows: false,
+			nextSlideVisible: true,
+			class: 'mb-5',
+			breakpoints: {
+				768: { slidesPerView: 2, spaceBetween: 20 },
+				1200: { slidesPerView: 3, spaceBetween: 20 },
+			}
+		}, 'tease.twig') }}
+
+		<div class="text-center">
+			{{ button(item.link, 'outline-primary') }}
+		</div>
+	</div>
+</section>

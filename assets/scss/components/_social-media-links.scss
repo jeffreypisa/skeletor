@@ -1,0 +1,15 @@
+.social-media-links {
+	list-style-type: none;	
+	padding: 0;
+	i {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		border-radius: 100px;
+		line-height: 20px;
+		background: #fff;
+		text-align: center;
+		color: $dark;
+		margin-right: 10px;
+	}
+}

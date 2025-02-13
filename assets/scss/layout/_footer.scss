@@ -1,4 +1,51 @@
 footer {
 	background: $greylight;
-	padding: 60px 0;
+	.quote {
+		position: relative;
+		padding: 60px 0 80px;
+		h2 {
+			font-weight: 900;
+		}
+		&:after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 70%;
+			background: linear-gradient(180deg, rgba($blue, 0) -9.09%, $blue 100%);
+			z-index: 0;
+		}
+		.container {
+			position: relative;
+			z-index: 1;
+		}
+	}
+	.calltoaction {
+		padding: 60px 0 80px;
+	}
+	.footer {
+		padding: 60px 0;
+		font-size: 14px;
+		line-height: 22px;
+		a {
+			color: $light;
+			text-decoration: none;
+			&:hover {
+				color: $orange;
+				i {
+					background: $orange
+				}
+			}
+		}
+		ul {
+			li {
+				margin-bottom: 10px;
+				a {
+					color: $light;
+					text-decoration: none;
+				}
+			}
+		}
+	}
 }

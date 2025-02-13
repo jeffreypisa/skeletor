@@ -1,4 +1,4 @@
-export function mobilemenu() {
+export function mobileMenu() {
 	const mobileMenuBtn = document.getElementById('mobilemenubtn');
 	const mobileMenu = document.getElementById('mobilemenu');
 

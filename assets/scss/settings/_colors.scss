@@ -1,35 +1,66 @@
-$enable-gradients: true;
+$enable-gradients: false;
 
+$white: #FFFFFF;
 $light: #FFFFFF;
-$greylight: #E9F6FE;
-$dark: #3F4751;
+$greylight: #EAF9FF;
+$dark: #293065;
 
-$red: #A11F42;
-$blue: #2FA3F2;
+$orange: #ED7409;
+$orangelight: #FFFAF3;
+$blue: #3FB4E7;
+$bluelight: #EAF9FF;
+
+$primary: $orange;
+$secondary: $blue;
 
 // Create your own map
 $custom-colors: (
 	"primary": $primary,
 	"secondary": $secondary,
-	"success": $success,
+	"success": $blue,
 	"info": $info,
 	"warning": $warning,
 	"danger": $danger,
+	
+	"white": $white,
 	"light": $light,
 	"greylight": $greylight,
 	"dark": $dark,
-	"red": $red,
-	"blue": $blue
+	
+	"orange": $orange,
+	"orangelight": $orangelight,
+	"blue": $blue,
+	"bluelight": $bluelight
 );
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio:   4.5 !default;
+
+// Customize the light and dark text colors for use in our color contrast function.
+$color-contrast-dark:      $dark !default;
+$color-contrast-light:     $white !default;
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (
+  ("<", "%3c"),
+  (">", "%3e"),
+  ("#", "%23"),
+  ("(", "%28"),
+  (")", "%29"),
+) !default;
+
 
 // Merge the maps
 $theme-colors: map-merge($theme-colors, $custom-colors);
+
+
 
 // Background colors
 @each $key, $val in $custom-colors {
 	.bg-#{$key} {
 		background-color: #{$val} !important;
-		color: color-contrast($val);
+		color: if(lightness($val) > 50, $dark, $light); // Bepaal wit of zwart op basis van helderheid
 	}
 }
 
@@ -46,6 +77,10 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // This gradient is also added to elements with `.bg-gradient`
 // scss-docs-start variable-gradient
 
-$gradient: linear-gradient(90deg, $primary 0%, lighten($primary, 20%) 100%);
+$gradient: linear-gradient(180deg, $blue 0%, lighten($dark, 0%) 100%);
+
+:root {
+  --bs-gradient: #{$gradient}; // Correct interpolation
+}
 
 // scss-docs-end variable-gradient

@@ -8,6 +8,7 @@
   "repository": {},
   "private": true,
   "dependencies": {
+    "@vimeo/player": "^2.25.1",
     "bootstrap": "^5.3.3",
     "lightgallery": "^2.8.1",
     "matchheight": "^1.1.2",

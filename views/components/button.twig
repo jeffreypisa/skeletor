@@ -1,3 +1,63 @@
-<a href="{{ url | default('#') }}" class="btn btn-{{ style | default('primary') }}">
-	{{ title | default('Lees meer') }}
+{# 
+Button Component
+
+Gebruik:
+{{ button(button_field, params) }}
+
+Parameters:
+- button_field (array, vereist): Data voor de knop, met:
+  - url (string, vereist): De URL van de knop.
+  - title (string, optioneel): De tekst op de knop. Standaard: 'Klik hier'.
+  - target (string, optioneel): Het target-attribuut (bijv. '_blank', '_self'). Standaard: '_self'.
+
+- params (optioneel): Kan zowel een **string** als een **array** zijn:
+  1. **String** (zoals 'primary') om snel de Bootstrap-stijl te definiëren.
+  2. **Array** voor meer geavanceerde opties:
+     - style (string, optioneel): Bootstrap-stijl ('primary', 'secondary', 'outline-primary', etc.). Standaard: 'primary'.
+     - size (string, optioneel): Bootstrap-grootte ('lg', 'sm', etc.). Standaard: geen grootte.
+     - icon (string, optioneel): Font Awesome-icoonnaam (bijv. 'arrow-right').
+     - icon_position (string, optioneel): Positie van het icoon ('before' of 'after'). Standaard: 'before'.
+     - icon_style (string, optioneel): Font Awesome-stijl ('light', 'solid', 'brands'). Standaard: 'light'.
+     - target (string, optioneel): Overschrijft de target van button_field indien opgegeven.
+
+Voorbeelden:
+1. **Eenvoudige knop (alleen stijl instellen):**
+   {{ button(item.link, 'primary') }}
+
+2. **Knop met een solid icoon ná de tekst:**
+   {{ button(item.link_primary, {
+       title: 'Lees meer',
+       style: 'outline-primary',
+       size: 'lg',
+       icon: 'arrow-right',
+       icon_position: 'after',
+       icon_style: 'solid',
+       target: '_blank'
+   }) }}
+
+3. **Eenvoudige knop zonder icoon:**
+   {{ button(item.link_uitloggen, {
+       title: 'Uitloggen',
+       style: 'danger'
+   }) }}
+
+4. **Minimale knop (alleen URL):**
+   {{ button(item.link) }}
+#}
+
+<a href="{{ url | default('#') }}" target="{{ target }}" class="{{ style_class }}">
+  {% set icon_prefix = {
+    'solid': 'fas',
+    'regular': 'far',
+    'light': 'fal',
+    'brands': 'fab'
+  }[icon_style] | default('fas') %}
+  
+  {% if icon and icon_position == 'before' %}
+    <i class="{{ icon_prefix }} fa-{{ icon }}"></i>
+  {% endif %}
+  <span>{{ title | default('Klik hier') }}</span>
+  {% if icon and icon_position == 'after' %}
+    <i class="{{ icon_prefix }} fa-{{ icon }}"></i>
+  {% endif %}
 </a>
