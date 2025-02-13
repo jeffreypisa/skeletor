@@ -1,0 +1,62 @@
+section.strook-cta {
+	position: relative;
+	z-index: 3;
+	padding: 0 !important;
+	.js-backgroundcolor-top,
+	.js-backgroundcolor-bottom {
+		height: 50%;
+		position: absolute;
+		left: 0;
+		right: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+	.js-backgroundcolor-top {
+		top: 0;
+	}
+	.js-backgroundcolor-bottom {
+		bottom: 0;
+	}
+	.container {
+		position: relative;
+		.bar {
+			display: block;
+			background: $blue;
+			color: #fff;
+			padding: 10px 15px;
+			border-radius: 6px;
+			text-decoration: none;
+			font-weight: 600;
+			transition: .2s $ease;
+			i {
+				display: inline-block;
+				background: $orange;
+				height: 20px;
+				width: 20px;
+				font-size: 12px;
+				border-radius: 100px;
+				color: #fff;
+				text-align: center;
+				line-height: 20px;
+				margin-right: 10px;
+			}
+			&:hover {
+				background: $orange;
+				transform: scale(1.03);
+			}
+		}
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	section.strook-cta {
+		padding: 0;
+		.container {
+			.bar {
+				min-height: 50px;
+				border-radius: 999px;
+				padding: 10px 30px;
+			}
+		}
+	}
+}

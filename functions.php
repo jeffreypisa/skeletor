@@ -13,13 +13,7 @@ require_once __DIR__ . '/src/StarterSite.php';
 // require_once __DIR__ . '/src/ThemeSpecific.php';
 require_once __DIR__ . '/src/WPAdmin.php';
 
-require_once __DIR__ . '/src/components/Accordion.php';
-require_once __DIR__ . '/src/components/Button.php';
-require_once __DIR__ . '/src/components/Heading.php';
-require_once __DIR__ . '/src/components/Image.php';
-require_once __DIR__ . '/src/components/SocialMediaLinks.php';
-require_once __DIR__ . '/src/components/Swiper.php';
-require_once __DIR__ . '/src/components/Text.php';
+require_once __DIR__ . '/components/Components.php';
 
 Timber\Timber::init();
 

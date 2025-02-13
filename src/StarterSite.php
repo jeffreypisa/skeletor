@@ -12,7 +12,13 @@ class StarterSite extends Site {
 		add_filter('timber/context', [$this, 'add_to_context']);
 		add_filter('timber/twig', [$this, 'add_to_twig']);
 		add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
-
+		
+		// Extra template-locaties toevoegen
+		Timber::$locations = [
+			get_template_directory() . '/views',
+			get_template_directory() . '/components/library', // Extra locatie voor componenten
+		];
+		
 		parent::__construct();
 	}
 

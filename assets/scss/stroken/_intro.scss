@@ -1,0 +1,14 @@
+.strook-intro {
+	h2 {
+		font-weight: 700;
+		font-size: 45px;
+	}
+}
+
+@include media-breakpoint-up(md) {
+	.strook-intro {
+		h2 {
+			font-size: 55px;
+		}
+	}
+}

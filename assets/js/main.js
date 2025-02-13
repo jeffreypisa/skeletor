@@ -17,7 +17,6 @@ import { siteIsLoaded } from './scripts/siteIsLoaded.js';
 import { vimeo } from './scripts/vimeo.js';
 import { wcag } from './scripts/wcag.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
 	// Initialiseer plugins en scripts in volgorde
 	header();
@@ -27,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Init plugins die afhankelijk zijn van DOM-content
 	lightgalleryInit();
-	swiperInit();
 	wcag();
 	cta();
 	scrollAnimations();
 	matchheightInit();
+	swiperInit()
 	
 	// Alles is geladen
 	vimeo();

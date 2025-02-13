@@ -1,0 +1,27 @@
+<a href="{{ fn('get_permalink', item.ID) }}" class="tease tease-testimonial" id="tease-{{ item.id }}">
+	<div class="row">
+		<div class="col-sm-auto">
+			{{ image(get_thumbnail(item.ID), {
+			figure_class: 'round',
+			img_class: 'round',
+			ratio: '1x1',
+			object_fit: 'cover',
+			lazyload: true,
+			style: 'width: 120px; height: 120px;'
+			}) }}
+		</div>
+		<div class="col-sm">
+			{{ heading(item.post_title, {
+				level: 'h3',
+				class: 'h4 mt-0 mb-2'
+			}) }}
+			{{ text(item.bedrijf, {
+				class: 'text-blue',
+				tag: 'div'
+			}) }}
+			{{ text(item.post_content, {
+				max_length: 200
+			}) }}
+		</div>
+	</div>
+</a>

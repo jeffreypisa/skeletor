@@ -86,9 +86,8 @@ $fa-font-path: '../assets/fontawesome/webfonts';
 // ==========================================
 // 5. Custom Components
 // ==========================================
+@import '../components/components';
 @import 'components/buttons';
-@import 'components/image';
-@import 'components/social-media-links';
 
 // ==========================================
 // 6. Layouts

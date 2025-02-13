@@ -30088,6 +30088,142 @@ readers do not read off random characters that represent icons */
   }
 }
 /* Slide styles end */
+figure figcaption {
+  top: auto;
+  height: auto !important;
+  padding: 5px 12px;
+}
+figure.ratio figcaption {
+  top: auto;
+  height: auto !important;
+}
+figure .position-absolute {
+  z-index: 1;
+}
+
+div.figcaption-below-left, div.figcaption-below-right {
+  transform: translateY(-1rem);
+}
+
+/* Geoptimaliseerde SCSS voor animaties */
+figure {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 1.2s ease, opacity 1.2s ease;
+}
+figure.animate-zoom-in img {
+  transform: scale(1.2);
+}
+figure.in-view.animate-zoom-in img {
+  transform: scale(1);
+}
+figure.animate-zoom-out img {
+  transform: scale(0.8);
+}
+figure.in-view.animate-zoom-out img {
+  transform: scale(1);
+}
+figure.animate-fade-in img {
+  opacity: 0;
+}
+figure.in-view.animate-fade-in img {
+  opacity: 1;
+}
+figure.animate-slide-in-zoom img {
+  transform: translate(-30%, 30%) scale(1.4);
+  opacity: 0;
+  transition: transform 1s ease, opacity 0.8s ease;
+}
+figure.in-view.animate-slide-in-zoom img {
+  transform: translate(0, 0) scale(1);
+  opacity: 1;
+}
+
+.social-media-links {
+  list-style-type: none;
+  padding: 0;
+}
+.social-media-links i {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  border-radius: 100px;
+  line-height: 20px;
+  background: #fff;
+  text-align: center;
+  color: #000;
+  margin-right: 10px;
+}
+
+.js-swiper {
+  position: relative;
+}
+.js-swiper .swiper-button-next,
+.js-swiper .swiper-button-prev {
+  transform: scale(0.9);
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+}
+.js-swiper .swiper-button-next:hover,
+.js-swiper .swiper-button-prev:hover {
+  background: #000;
+  color: #fff;
+}
+.js-swiper .swiper-button-next.disabled-swiper-button,
+.js-swiper .swiper-button-prev.disabled-swiper-button {
+  display: none;
+}
+.js-swiper .swiper-button-prev {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+}
+.js-swiper .swiper-button-next {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+}
+.js-swiper.has-pagination {
+  padding-bottom: 40px;
+}
+.js-swiper .swiper-pagination {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.js-swiper .swiper-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  opacity: 0.4;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.js-swiper .swiper-pagination .swiper-pagination-bullet:hover {
+  opacity: 0.7;
+}
+.js-swiper .swiper-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: #000;
+  transform: scale(1.2);
+}
+
 select.btn, select.ff-btn {
   padding-right: 40px;
   background-image: url(../assets/images/chevron-down-orange.svg);
@@ -30161,79 +30297,6 @@ select.btn:hover, select.ff-btn:hover, select.btn:focus, select.ff-btn:focus, se
   margin: 0;
 }
 
-figure figcaption {
-  top: auto;
-  height: auto !important;
-  padding: 5px 12px;
-}
-figure.ratio figcaption {
-  top: auto;
-  height: auto !important;
-}
-figure .position-absolute {
-  z-index: 1;
-}
-
-div.figcaption-below-left, div.figcaption-below-right {
-  transform: translateY(-1rem);
-}
-
-/* Geoptimaliseerde SCSS voor animaties */
-figure {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: transform 1.2s ease, opacity 1.2s ease;
-}
-figure.animate-zoom-in img {
-  transform: scale(1.2);
-}
-figure.in-view.animate-zoom-in img {
-  transform: scale(1);
-}
-figure.animate-zoom-out img {
-  transform: scale(0.8);
-}
-figure.in-view.animate-zoom-out img {
-  transform: scale(1);
-}
-figure.animate-fade-in img {
-  opacity: 0;
-}
-figure.in-view.animate-fade-in img {
-  opacity: 1;
-}
-figure.animate-slide-in-zoom img {
-  transform: translate(-30%, 30%) scale(1.4);
-  opacity: 0;
-  transition: transform 1s ease, opacity 0.8s ease;
-}
-figure.in-view.animate-slide-in-zoom img {
-  transform: translate(0, 0) scale(1);
-  opacity: 1;
-}
-
-.social-media-links {
-  list-style-type: none;
-  padding: 0;
-}
-.social-media-links i {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  border-radius: 100px;
-  line-height: 20px;
-  background: #fff;
-  text-align: center;
-  color: #293065;
-  margin-right: 10px;
-}
-
 footer {
   background: #EAF9FF;
 }
@@ -30284,20 +30347,22 @@ footer .footer ul li a {
   text-decoration: none;
 }
 
-body:not(.home):not(.um-page-login):not(.single-lidmaatschap):not(.um-page-password-reset) {
-  padding-top: 84px;
+body {
+  padding-top: 60px;
 }
 
 .header {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  width: calc(100% - 40px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #fff;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   transition: opacity 0.3s cubic-bezier(0.68, 0, 0.27, 1), transform 0.3s cubic-bezier(0.68, 0, 0.27, 1);
   opacity: 1;
   transform: translateY(0);
-  text-align: center;
 }
 .header.hidden {
   opacity: 0;
@@ -30306,16 +30371,6 @@ body:not(.home):not(.um-page-login):not(.single-lidmaatschap):not(.um-page-passw
 .header.visible {
   opacity: 1;
   transform: translateY(0);
-}
-.header .bar {
-  padding: 0 20px;
-  border-radius: 100px;
-  width: 100%;
-  height: 64px;
-  max-width: 1600px;
-  margin: 0 auto;
-  background-color: #FFFFFF;
-  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
 }
 .header .navbar-nav {
   gap: 20px;
@@ -30342,8 +30397,8 @@ body:not(.home):not(.um-page-login):not(.single-lidmaatschap):not(.um-page-passw
 /* Hamburger button styles */
 #mobilemenubtn {
   position: fixed;
-  top: 42px;
-  right: 42px;
+  top: 20px;
+  right: 20px;
   z-index: 1100;
   cursor: pointer;
   background: none;
@@ -30516,7 +30571,6 @@ section.bg-blue + section.bg-blue {
   position: relative;
   text-align: center;
   min-height: 680px;
-  height: 100vh;
 }
 .strook-banner h1, .strook-banner .h1, .strook-banner p {
   text-shadow: 0px 2px 8px rgba(41, 48, 101, 0.5);
@@ -30636,71 +30690,6 @@ section.bg-blue + section.bg-blue {
 .ff-error-msg {
   display: block;
   margin-top: 0.25rem;
-}
-
-.js-swiper {
-  position: relative;
-}
-.js-swiper .swiper-button-next,
-.js-swiper .swiper-button-prev {
-  transform: scale(0.9);
-  top: 50%;
-  transform: translateY(-50%);
-  border: 1px solid #293065;
-  border-radius: 100px;
-  height: 30px;
-  width: 30px;
-  line-height: 30px;
-  text-align: center;
-  font-size: 14px;
-  color: #293065;
-}
-.js-swiper .swiper-button-next:hover,
-.js-swiper .swiper-button-prev:hover {
-  background: #293065;
-  color: #FFFFFF;
-}
-.js-swiper .swiper-button-next.disabled-swiper-button,
-.js-swiper .swiper-button-prev.disabled-swiper-button {
-  display: none;
-}
-.js-swiper .swiper-button-prev {
-  position: absolute;
-  left: 0;
-  z-index: 10;
-}
-.js-swiper .swiper-button-next {
-  position: absolute;
-  right: 0;
-  z-index: 10;
-}
-.js-swiper.has-pagination {
-  padding-bottom: 40px;
-}
-.js-swiper .swiper-pagination {
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-.js-swiper .swiper-pagination .swiper-pagination-bullet {
-  width: 10px;
-  height: 10px;
-  background-color: #293065;
-  opacity: 0.4;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-.js-swiper .swiper-pagination .swiper-pagination-bullet:hover {
-  opacity: 0.7;
-}
-.js-swiper .swiper-pagination .swiper-pagination-bullet-active {
-  opacity: 1;
-  background-color: #293065;
-  transform: scale(1.2);
 }
 
 /*# sourceMappingURL=main-min.css.map */
