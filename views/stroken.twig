@@ -2,21 +2,12 @@
 
 {% for item in post.meta('stroken') %}
 	{% set sectionno = sectionno + 1 %}
-	
-	{% if item.acf_fc_layout == 'afbeeldingen' %}
-		{% include 'stroken/afbeeldingen.twig' %}
-	{% elseif item.acf_fc_layout == 'content' %}
-		{% include 'stroken/content.twig' %}
-	{% elseif item.acf_fc_layout == 'logos' %}
-		{% include 'stroken/logos.twig' %}
-	{% elseif item.acf_fc_layout == 'nieuws' %}
-		{% include 'stroken/nieuws.twig' %}
-	{% elseif item.acf_fc_layout == 'personen' %}
-		{% include 'stroken/personen.twig' %}
-	{% elseif item.acf_fc_layout == 'testimonials' %}
-		{% include 'stroken/testimonials.twig' %}
+
+	{% set template = 'stroken/' ~ item.acf_fc_layout ~ '.twig' %}
+
+	{% if template is not empty %}
+		{% include template ignore missing %}
 	{% else %}
-		{# Geen match gevonden #}
-		<p>Onbekende layout: {{ item.acf_fc_layout }}</p>
+		<h3>Onbekende layout: {{ item.acf_fc_layout }}</h3>
 	{% endif %}
 {% endfor %}

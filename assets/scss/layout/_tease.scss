@@ -50,39 +50,8 @@
 			opacity: .6
 		}
 	}
-	&.tease-nieuws {
-		line-height: 1.5;
-		i {
-			text-align: right;
-		}
-	}
-	&.tease-ereleden {
-		line-height: 1.5;
-	}
-	&.tease-archief {
-		i {
-			margin: 0;
-			font-size: 26px;
-		}
-	}
 }
 
 @include media-breakpoint-down(md) {
-	.bg-transparent {
-		.tease.tease-agenda {
-			background: $bluelight;
-			margin: 0;
-		}
-	}
-	.tease {
-		&.tease-agenda {
-			background: $white;
-			padding: 15px;
-			border-radius: 6px;
-			margin-bottom: 10px;
-			i {
-				display: none;
-			}
-		}
-	}
+	
 }

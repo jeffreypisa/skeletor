@@ -1,47 +1,46 @@
 $enable-gradients: false;
 
-$white: #FFFFFF;
 $light: #FFFFFF;
 $greylight: #EAF9FF;
-$dark: #293065;
+$dark: #1A1D2A; // Donkerblauw-grijs (past beter bij het UFO-logo)
 
+$purple: #5b1a7a;
 $orange: #ED7409;
-$orangelight: #FFFAF3;
-$blue: #3FB4E7;
-$bluelight: #EAF9FF;
+$blue: #3FB4E7; // UFO-blauw
 
-$primary: $orange;
-$secondary: $blue;
+$primary: $purple; // Blauwe tint van de UFO
+$secondary: #6c757d; // Zachte grijstint uit het logo
+$success: #2CA58D; // Zachte groentint, subtieler voor contrast
+$info: #17A2B8; // Info-kleur aangepast voor herkenbaarheid
+$warning: #FFC107; // Standaard waarschuwing
+$danger: #DC3545; // Standaard rood
 
-// Create your own map
+// Maak je eigen kleurenmap
 $custom-colors: (
 	"primary": $primary,
 	"secondary": $secondary,
-	"success": $blue,
+	"success": $success,
 	"info": $info,
 	"warning": $warning,
 	"danger": $danger,
 	
-	"white": $white,
 	"light": $light,
 	"greylight": $greylight,
 	"dark": $dark,
 	
+	"purple": $purple,
 	"orange": $orange,
-	"orangelight": $orangelight,
 	"blue": $blue,
-	"bluelight": $bluelight
 );
 
-// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
-// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
-$min-contrast-ratio:   4.5 !default;
+// Minimale contrastverhouding voor WCAG 2.0
+$min-contrast-ratio: 4.5 !default;
 
-// Customize the light and dark text colors for use in our color contrast function.
-$color-contrast-dark:      $dark !default;
-$color-contrast-light:     $white !default;
+// Aangepaste licht/donker kleuren voor toegankelijkheid
+$color-contrast-dark: $dark !default;
+$color-contrast-light: $white !default;
 
-// Characters which are escaped by the escape-svg function
+// Speciale karakters die moeten worden ge-escaped in SVG
 $escaped-characters: (
   ("<", "%3c"),
   (">", "%3e"),
@@ -50,37 +49,27 @@ $escaped-characters: (
   (")", "%29"),
 ) !default;
 
-
-// Merge the maps
+// Mergen van de aangepaste kleuren in de Bootstrap-kleurenmap
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
-
-
-// Background colors
+// Achtergrondkleuren
 @each $key, $val in $custom-colors {
 	.bg-#{$key} {
 		background-color: #{$val} !important;
-		color: if(lightness($val) > 50, $dark, $light); // Bepaal wit of zwart op basis van helderheid
+		color: if(lightness($val) > 50, $dark, $light);
 	}
 }
 
-// Text colors
+// Tekstkleuren
 @each $key, $val in $custom-colors {
 	.text-#{$key} {
 		color: #{$val} !important;
 	}
 }
 
-// Gradient
-//
-// The gradient which is added to components if `$enable-gradients` is `true`
-// This gradient is also added to elements with `.bg-gradient`
-// scss-docs-start variable-gradient
-
-$gradient: linear-gradient(180deg, $blue 0%, lighten($dark, 0%) 100%);
+// Gradient, aangepast aan de UFO-kleuren
+$gradient: linear-gradient(180deg, $blue 0%, $dark 100%);
 
 :root {
-  --bs-gradient: #{$gradient}; // Correct interpolation
+  --bs-gradient: #{$gradient}; // Correcte interpolatie
 }
-
-// scss-docs-end variable-gradient

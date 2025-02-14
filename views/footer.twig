@@ -1,15 +1,5 @@
 <footer id="footer">
-	{% if post.footer_quote %}
-		<div class="quote bg-cover text-white text-center" style="background-image: url({{ options.footer_quote_achtergrond.url }})">
-			<div class="container">
-				{{ heading(options.footer_quote_titel, {
-					level: 'h2',
-					class: 'm-0'
-				}) }}
-			</div>
-		</div>
-	{% endif %}
-	{% if post.footer_calltoaction or fn('is_archive') %}
+	{% if options.footer_calltoaction_titel or options.footer_calltoaction_tekst or options.footer_calltoaction_link %}
 		<div class="calltoaction bg-gradient text-white text-center">
 			<div class="container">
 				<div class="row">
@@ -19,7 +9,7 @@
 						}) }}
 						{{ text(post.footer_calltoaction_tekst ?: options.footer_calltoaction_tekst) }}
 						<br>
-						{{ button(post.footer_calltoaction_link ?: options.footer_calltoaction_link, 'primary') }}
+						{{ button(post.footer_calltoaction_link ?: options.footer_calltoaction_link, 'outline-light') }}
 					</div>
 				</div>
 			</div>
@@ -50,13 +40,13 @@
 				</div>
 				
 				<div class="col-md-4 order-md-first text-center text-md-start">
-					<img height="60" src="{{ theme.link }}/assets/images/nvr-logo-white.svg" alt="Nederlandse Vereniging voor de Ruimtevaart logo" class="mb-3">
+					<img height="60" src="{{ theme.link }}/assets/images/nvr-logo-white.svg" alt="{{ site.title }}" class="mb-3">
 					{{ text(options.footer_navigatie_tekst) }}
 				</div>
 			</div>
 			<div class="subfooter text-center text-md-start">
-				<div class="text-blue">©{{"now"|date('Y')}} All rights reserved Nederlandse Vereniging voor Ruimtevaart. </div>
-				<div class="text-sm">Website door <a href="https://www.void-visual.com/" rel="nofollow">Void & Visual</a> en <a href="https://www.emonks.nl/" target="_blank" rel="nofollow">Emonks</a> </div>
+				<div class="text-blue">©{{"now"|date('Y')}} All rights reserved {{ site.title}} </div>
+				<div class="text-sm">Website door <a href="https://www.emonks.nl/" target="_blank" rel="nofollow">Emonks</a> </div>
 			</div>
 		</div>
 	</div>

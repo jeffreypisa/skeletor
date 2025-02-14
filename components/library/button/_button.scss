@@ -1,0 +1,31 @@
+select.btn {
+	padding-right: 40px;
+	background-image: url(../assets/images/chevron-down-orange.svg);
+
+	&:hover,
+	&:focus,
+	&:active {
+		background-image: url(../assets/images/chevron-down-white.svg);
+	}
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	width: auto;
+	&:has(i) span {
+		margin-right: 6px;
+	}
+}
+
+/* Icoon rechts uitlijnen als het als laatste staat */
+.btn i:last-child {
+	margin-left: auto;
+	/* Duwt het icoon naar de rechterkant */
+}
+
+/* Geen extra marge als het icoon als eerste staat */
+.btn i:first-child {
+	margin-left: 0;
+	margin-right: 6px;
+}
