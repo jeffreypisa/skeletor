@@ -7,3 +7,11 @@ require_once __DIR__ . '/library/image/Image.php';
 require_once __DIR__ . '/library/socialmedialinks/SocialMediaLinks.php';
 require_once __DIR__ . '/library/swiper/Swiper.php';
 require_once __DIR__ . '/library/text/Text.php';
+
+new Components_Accordion();
+new Components_Button();
+new Components_Heading();
+new Components_Image();
+new Components_SocialMediaLinks();
+new Components_Swiper();
+new Components_Text();

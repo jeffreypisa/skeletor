@@ -22,19 +22,32 @@ class Components_Heading extends Site {
 		if (empty($text)) {
 			return null;
 		}
-
+	
+		global $polylang_strings;
+	
 		$defaults = [
 			'level' => 'h2',
 			'class' => '',
-			'inview_animation' => ''
+			'inview_animation' => '',
+			'translatable' => false,
 		];
 		$settings = array_merge($defaults, $options);
-
-		$valid_levels = ['h1', 'h2', 'h3', 'h4', 'h5'];
-		if (!in_array($settings['level'], $valid_levels)) {
-			$settings['level'] = 'h2';
+	
+		if (!empty($settings['translatable']) && function_exists('pll__')) {
+			// Maak een veilige sleutel voor Polylang
+			$key = strtolower(trim(strip_tags($text)));
+			$key = preg_replace('/[^a-z0-9]+/i', '_', $key); // Vervang niet-alfanumerieke tekens door _
+			$key = trim($key, '_'); // Verwijder extra underscores aan begin/einde
+	
+			if (!isset($polylang_strings[$key])) {
+				$polylang_strings[$key] = $text;
+				// Sla buffer tijdelijk op als optie in de database
+				update_option('polylang_temp_strings', $polylang_strings);
+			}
+	
+			$text = pll__($text);
 		}
-
+	
 		return Timber::compile('heading/heading.twig', [
 			'text' => $text,
 			'level' => $settings['level'],

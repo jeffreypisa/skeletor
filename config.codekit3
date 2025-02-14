@@ -1760,12 +1760,12 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/components\/components.php" : {
+    "\/components\/Components.php" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/components\/components.php",
+      "oAP" : "\/components\/Components.php",
       "oF" : 0
     },
     "\/components\/library\/accordion\/Accordion.php" : {
@@ -2206,62 +2206,6 @@
       "oAP" : "\/src\/ACFScripts.php",
       "oF" : 0
     },
-    "\/src\/components\/Accordion.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Accordion.php",
-      "oF" : 0
-    },
-    "\/src\/components\/Button.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Button.php",
-      "oF" : 0
-    },
-    "\/src\/components\/Heading.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Heading.php",
-      "oF" : 0
-    },
-    "\/src\/components\/Image.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Image.php",
-      "oF" : 0
-    },
-    "\/src\/components\/SocialMediaLinks.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/SocialMediaLinks.php",
-      "oF" : 0
-    },
-    "\/src\/components\/Swiper.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Swiper.php",
-      "oF" : 0
-    },
-    "\/src\/components\/Text.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/components\/Text.php",
-      "oF" : 0
-    },
     "\/src\/Gutenberg.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -2292,6 +2236,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/src\/Menu.php",
+      "oF" : 0
+    },
+    "\/src\/PolylangStrings.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/PolylangStrings.php",
       "oF" : 0
     },
     "\/src\/StarterSite.php" : {

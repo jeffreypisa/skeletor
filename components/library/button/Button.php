@@ -5,7 +5,7 @@ use Timber\Timber;
 use Twig\TwigFunction;
 
 /**
- * Class Components Button
+ * Class Components_Button
  */
 class Components_Button extends Site {
 	public function __construct() {
@@ -22,58 +22,60 @@ class Components_Button extends Site {
 		if (!$button_field || empty($button_field['url'])) {
 			return null;
 		}
-	
-		// Controleer of $params een string is (zoals 'primary')
+
+		global $polylang_strings;
+
+		// **Zorg ervoor dat een string (zoals 'primary') automatisch in een array wordt omgezet**
 		if (is_string($params)) {
 			$params = ['style' => $params];
 		}
-	
-		// Standaardwaarden
+
+		// **Standaardwaarden**
 		$defaults = [
 			'title' => $button_field['title'] ?? 'Klik hier',
+			'url' => $button_field['url'] ?? '#',
 			'style' => 'primary',
 			'size' => '',
 			'target' => $button_field['target'] ?? '_self',
 			'icon' => null,
 			'icon_position' => 'before',
 			'icon_style' => 'light',
-			'class' => '', // Nieuw toegevoegd voor extra CSS-klassen
+			'class' => '',
+			'translatable' => false,
 		];
-	
-		// Combineer de standaardwaarden met de opgegeven parameters
+
+		// **Combineer standaardwaarden met opgegeven parameters**
 		$button = array_merge($defaults, $params);
-	
-		// Bouw de volledige Bootstrap-klasse
+
+		// **Polylang vertaling toepassen op de titel en de URL indien nodig**
+		if (!empty($button['translatable']) && function_exists('pll__')) {
+			foreach (['title', 'url'] as $key) {
+				$clean_key = strtolower(trim(strip_tags($button[$key])));
+				$clean_key = preg_replace('/[^a-z0-9]+/i', '_', $clean_key);
+				$clean_key = trim($clean_key, '_');
+
+				if (!isset($polylang_strings[$clean_key])) {
+					$polylang_strings[$clean_key] = $button[$key];
+					update_option('polylang_temp_strings', $polylang_strings);
+				}
+
+				// **Haal de vertaalde string op**
+				$button[$key] = pll__($button[$key]);
+			}
+		}
+
+		// **Bouw de volledige Bootstrap-klasse**
 		$button['style_class'] = 'btn btn-' . $button['style'];
 		if (!empty($button['size'])) {
 			$button['style_class'] .= ' btn-' . $button['size'];
 		}
-	
-		// Voeg extra CSS-klassen toe als deze zijn opgegeven
+
+		// **Extra CSS-klassen toevoegen**
 		if (!empty($button['class'])) {
 			$button['style_class'] .= ' ' . $button['class'];
 		}
-	
-		// Voeg de URL toe
-		$button['url'] = $button_field['url'];
-	
-		// Render de knop
-		return Timber::compile('button/button.twig', $button);
-	}
 
-	private function get_button_data($button_field) {
-		if (!$button_field) {
-			return null;
-		}
-
-		return [
-			'url' => $button_field['url'] ?? '#',
-			'title' => $button_field['title'] ?? 'Klik hier',
-			'style_class' => $button_field['style_class'] ?? 'btn-primary',
-			'target' => $button_field['target'] ?? '_self',
-			'icon' => $button_field['icon'] ?? null,
-			'icon_position' => $button_field['icon_position'] ?? 'before',
-			'icon_style' => $button_field['icon_style'] ?? 'light', // Standaardstijl is 'light'
-		];
+		// **Render de knop via Timber**
+		return Timber::render('button/button.twig', $button);
 	}
 }

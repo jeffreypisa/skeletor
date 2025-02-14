@@ -11,38 +11,37 @@ Parameters:
   - target (string, optioneel): Het target-attribuut (bijv. '_blank', '_self'). Standaard: '_self'.
 
 - params (optioneel): Kan zowel een **string** als een **array** zijn:
-  1. **String** (zoals 'primary') om snel de Bootstrap-stijl te definiëren.
-  2. **Array** voor meer geavanceerde opties:
      - style (string, optioneel): Bootstrap-stijl ('primary', 'secondary', 'outline-primary', etc.). Standaard: 'primary'.
      - size (string, optioneel): Bootstrap-grootte ('lg', 'sm', etc.). Standaard: geen grootte.
      - icon (string, optioneel): Font Awesome-icoonnaam (bijv. 'arrow-right').
      - icon_position (string, optioneel): Positie van het icoon ('before' of 'after'). Standaard: 'before'.
      - icon_style (string, optioneel): Font Awesome-stijl ('light', 'solid', 'brands'). Standaard: 'light'.
      - target (string, optioneel): Overschrijft de target van button_field indien opgegeven.
+     - translatable (boolean, optioneel): Indien 'true', wordt de knoptekst vertaald via Polylang.
 
 Voorbeelden:
-1. **Eenvoudige knop (alleen stijl instellen):**
-   {{ button(item.link, 'primary') }}
+1. **Eenvoudige knop:**
+  {{ button(item.link) }}
 
-2. **Knop met een solid icoon ná de tekst:**
-   {{ button(item.link_primary, {
-       title: 'Lees meer',
-       style: 'outline-primary',
-       size: 'lg',
-       icon: 'arrow-right',
-       icon_position: 'after',
-       icon_style: 'solid',
-       target: '_blank'
-   }) }}
-
-3. **Eenvoudige knop zonder icoon:**
-   {{ button(item.link_uitloggen, {
-       title: 'Uitloggen',
-       style: 'danger'
-   }) }}
-
-4. **Minimale knop (alleen URL):**
-   {{ button(item.link) }}
+2. **Knop met opties:**
+  {{ button(item.link, {
+    style: 'outline-primary',
+    class: 'mb-4'
+  }) }}
+   
+2. **Knop met alle opties:**
+  {{ button(item.link, {
+      title: 'Meer informatie',
+      style: 'outline-primary',
+      size: 'lg',
+      icon: 'arrow-right',
+      icon_position: 'after',
+      icon_style: 'solid',
+      target: '_blank',      
+      class: 'extra-css-class',
+      translatable: true
+  }) }}
+   
 #}
 
 <a href="{{ url | default('#') }}" target="{{ target }}" class="{{ style_class }}">
@@ -56,7 +55,9 @@ Voorbeelden:
   {% if icon and icon_position == 'before' %}
     <i class="{{ icon_prefix }} fa-{{ icon }}"></i>
   {% endif %}
+
   <span>{{ title | default('Klik hier') }}</span>
+
   {% if icon and icon_position == 'after' %}
     <i class="{{ icon_prefix }} fa-{{ icon }}"></i>
   {% endif %}

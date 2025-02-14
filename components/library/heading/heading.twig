@@ -10,20 +10,22 @@ Parameters:
   - level (string, optioneel): HTML-niveau van de titel ('h1', 'h2', etc.). Standaard: 'h2'.
   - class (string, optioneel): Extra CSS-klassen voor styling.
   - inview_animation (string, optioneel): Voegt een animatie toe wanneer de heading in beeld komt. Mogelijke waarden: 'fade-in', 'typewriter'.
+  - translatable (boolean, optioneel): Indien 'true', wordt de tekst geregistreerd in Polylang's String Translation en kan deze vertaald worden. Standaard: 'false'.
 
 Voorbeelden:
 1. Standaard heading:
-   {{ heading(item.title) }}
+   {{ heading(item.titel) }}
 
 2. Heading met extra opties:
-   {{ heading(item.title, {
-	   level: 'h2',
-	   class: 'mb-3',
-	   inview_animation: 'typewriter'
+   {{ heading(item.titel, {
+       level: 'h2',
+       class: 'mb-3',
+       inview_animation: 'typewriter',
+       translatable: true
    }) }}
 
 #}
 
 <{{ level }} class="{{ class }}" data-text="{{ text }}">
-	{{ text }}
+    {{ text }}
 </{{ level }}>
