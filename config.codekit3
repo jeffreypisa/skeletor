@@ -73,6 +73,14 @@
       "oO" : 1,
       "oS" : 1
     },
+    "\/archive-product.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/archive-product.php",
+      "oF" : 0
+    },
     "\/archive.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -2190,6 +2198,14 @@
       "oAP" : "\/sidebar.php",
       "oF" : 0
     },
+    "\/single-product.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/single-product.php",
+      "oF" : 0
+    },
     "\/single.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -2204,6 +2220,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/src\/ACFScripts.php",
+      "oF" : 0
+    },
+    "\/src\/CustomWooCommerce.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/src\/CustomWooCommerce.php",
       "oF" : 0
     },
     "\/src\/Gutenberg.php" : {
@@ -18895,22 +18919,6 @@
       "oAP" : "\/views\/comment.twig",
       "oF" : 0
     },
-    "\/views\/components\/menu.twig" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/views\/components\/menu.twig",
-      "oF" : 0
-    },
-    "\/views\/components\/pagination.twig" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/views\/components\/pagination.twig",
-      "oF" : 0
-    },
     "\/views\/footer.twig" : {
       "cB" : 0,
       "ft" : 8192,
@@ -18957,6 +18965,38 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/page.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/menu.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/menu.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/pagination.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/pagination.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/tease-testimonial.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease-testimonial.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/tease.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease.twig",
       "oF" : 0
     },
     "\/views\/search.twig" : {
@@ -19047,20 +19087,28 @@
       "oAP" : "\/views\/stroken\/testimonials.twig",
       "oF" : 0
     },
-    "\/views\/tease-testimonial.twig" : {
+    "\/views\/woo\/archive.twig" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/views\/tease-testimonial.twig",
+      "oAP" : "\/views\/woo\/archive.twig",
       "oF" : 0
     },
-    "\/views\/tease.twig" : {
+    "\/views\/woo\/partials\/tease-product.twig" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
-      "oAP" : "\/views\/tease.twig",
+      "oAP" : "\/views\/woo\/partials\/tease-product.twig",
+      "oF" : 0
+    },
+    "\/views\/woo\/single-product.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/woo\/single-product.twig",
       "oF" : 0
     }
   },

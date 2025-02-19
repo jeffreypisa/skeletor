@@ -9,7 +9,7 @@
 			</div>
 			{% if headermenu %}
 				<div class="col-auto d-none d-lg-flex align-items-center">
-					{% include "components/menu.twig" with {'items': headermenu.get_items} %}
+					{% include "partials/menu.twig" with {'items': headermenu.get_items} %}
 				</div>
 			{% endif %}
 		</div>
@@ -29,7 +29,7 @@
 	<!-- Mobile menu -->
 	<nav class="mobilemenu" id="mobilemenu">
 		<ul class="menu-items">
-			{% include "components/menu.twig" with {'items': mobielmenu.get_items} %}
+			{% include "partials/menu.twig" with {'items': mobielmenu.get_items} %}
 		</ul>
 	</nav>
 {% endif %}

@@ -5,7 +5,6 @@ use Timber\Site;
 /**
  * Class WPAdmin
  */
- 
 class WPAdmin extends Site {
 
 	public function __construct() {
@@ -18,6 +17,7 @@ class WPAdmin extends Site {
 		add_action('init', [$this, 'remove_comment_support'], 100);
 		add_action('wp_before_admin_bar_render', [$this, 'admin_bar_render']);
 		add_action('admin_head', [$this, 'custom_admin_styles']);
+		add_action('init', [$this, 'disable_emojis']); // Emoji's uitschakelen
 	}
 
 	/**
@@ -70,5 +70,21 @@ class WPAdmin extends Site {
 				pointer-events: none;
 			}    
 		</style>';
+	}
+
+	/**
+	 * Schakel emoji-functionaliteit uit in WordPress.
+	 */
+	public function disable_emojis() {
+		// Verwijder emoji scripts en styles
+		remove_action('wp_head', 'print_emoji_detection_script', 7);
+		remove_action('wp_print_styles', 'print_emoji_styles');
+		remove_action('admin_print_scripts', 'print_emoji_detection_script');
+		remove_action('admin_print_styles', 'print_emoji_styles');
+
+		// Verwijder emoji filters
+		remove_filter('the_content_feed', 'wp_staticize_emoji');
+		remove_filter('comment_text_rss', 'wp_staticize_emoji');
+		remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
 	}
 }

@@ -13,12 +13,12 @@
 			<div class="row">
 				{% for item in posts %}
 					<div class="col-md-6 col-xl-4 mb-4">
-						{% include ['tease-'~item.post_type~'.twig', 'tease.twig'] %}
+						{% include ['partials/tease-'~item.post_type~'.twig', 'tease.twig'] %}
 					</div>
 				{% endfor %}
 			</div>
 		
-			{% include 'components/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+			{% include 'partials/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
 		</div>
 	</section>
 {% endblock %}
