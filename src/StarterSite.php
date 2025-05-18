@@ -30,7 +30,7 @@ class StarterSite extends Site {
 	 */
 	public function add_to_context($context) {
 		$context['site'] = $this;
-		
+			
 		// Voeg Polylang functies toe aan Twig (indien actief)
 		if (function_exists('pll__')) {
 			$context['pll__'] = function ($string) {

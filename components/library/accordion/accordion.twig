@@ -2,41 +2,89 @@
 Accordion Component
 
 Gebruik:
-{{ accordion(items, 'unique-accordion-id') }}
+{{ accordion(accordion_items, params) }}
 
 Parameters:
-- items (vereist): Een array van accordion-items met:
-  - title (string, vereist): De titel van het accordion-item.
-  - text (string, vereist): De inhoud van het accordion-item.
-- unique-accordion-id (optioneel): Een unieke ID voor de accordion. 
+- accordion_items (array, vereist): Lijst met accordion-items, elk met:
+  - titel (string, vereist): De titel van het item.
+  - tekst (string, vereist): De inhoud van het item.
 
-Voorbeeld:
-{{ accordion(item.accordion_items, 'example-accordion') }}
+- params (optioneel): Kan een **array** zijn met:
+  - id_prefix (string, optioneel): Prefix voor unieke ID. Standaard: 'accordion'.
+  - icon (string, optioneel): 'plus' of 'chevron'. Standaard: 'chevron'.
+  - icon_position (string, optioneel): 'before' of 'after'. Standaard: 'after'.
+  - heading_level (string, optioneel): HTML heading tag (h1, h2, h3, etc.). Standaard: 'h2'.
+  - heading_class (string, optioneel): Extra class voor de heading.
+  - icon_weight (string, optioneel): Font Awesome style ('solid', 'light', etc.). Standaard: 'solid'.
+  - first_item_open (boolean, optioneel): Zet eerste item open bij laden. Standaard: false.
+
+Voorbeelden:
+1. Eenvoudig:
+{{ accordion(item.accordion_items) }}
+
+2. Met opties:
+{{ accordion(item.accordion_items, {
+  id_prefix: 'accordion-' ~ sectionno,
+  icon: 'plus',
+  icon_position: 'before',
+  heading_level: 'h3',
+  heading_class: 'accordion-heading',
+  icon_weight: 'solid',
+  first_item_open: true
+}) }}
 #}
 
 <div class="accordion" id="{{ accordion_id }}">
-	{% for item in items %}
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="heading-{{ loop.index }}">
-				<button 
-					class="accordion-button {{ loop.first ? '' : 'collapsed' }}" 
-					type="button" 
-					data-bs-toggle="collapse" 
-					data-bs-target="#collapse-{{ loop.index }}" 
-					aria-expanded="{{ loop.first ? 'true' : 'false' }}" 
-					aria-controls="collapse-{{ loop.index }}">
-					{{ item.title | default('Accordion Item') }}
-				</button>
-			</h2>
-			<div 
-				id="collapse-{{ loop.index }}" 
-				class="accordion-collapse collapse {{ loop.first ? 'show' : '' }}" 
-				aria-labelledby="heading-{{ loop.index }}" 
-				data-bs-parent="#{{ accordion_id }}">
-				<div class="accordion-body">
-					{{ item.text | default('Geen inhoud beschikbaar') }}
-				</div>
-			</div>
+  {% for item in items %}
+	<div class="accordion-item">
+	  <{{ heading_level|default('h2') }} class="accordion-header {{ heading_class }}" id="heading-{{ accordion_id }}-{{ loop.index }}">
+		<button
+		  class="accordion-button {{ first_item_open and loop.first ? '' : 'collapsed' }}"
+		  type="button"
+		  data-bs-toggle="collapse"
+		  data-bs-target="#collapse-{{ accordion_id }}-{{ loop.index }}"
+		  aria-expanded="{{ first_item_open and loop.first ? 'true' : 'false' }}"
+		  aria-controls="collapse-{{ accordion_id }}-{{ loop.index }}"
+		>
+		  <div class="accordion-title">
+			{% if icon_position == 'before' %}
+			  <span class="col-auto">
+				{% if icon == 'chevron' %}
+				  <i class="fa-{{ icon_weight }} fa-chevron-down fa-icon"></i>
+				{% elseif icon == 'plus' %}
+				  <i class="fa-{{ icon_weight }} fa-plus fa-icon"></i>
+				  <i class="fa-{{ icon_weight }} fa-minus fa-icon"></i>
+				{% endif %}
+			  </span>
+			{% endif %}
+
+			<span class="col">
+			  {{ item.titel | default('Accordion Item') }}
+			</span>
+
+			{% if icon_position == 'after' %}
+			  <span class="col-auto">
+				{% if icon == 'chevron' %}
+				  <i class="fa-{{ icon_weight }} fa-chevron-down fa-icon"></i>
+				{% elseif icon == 'plus' %}
+				  <i class="fa-{{ icon_weight }} fa-plus fa-icon"></i>
+				  <i class="fa-{{ icon_weight }} fa-minus fa-icon"></i>
+				{% endif %}
+			  </span>
+			{% endif %}
+		  </div>
+		</button>
+	  </{{ heading_level|default('h2') }}>
+	  <div
+		id="collapse-{{ accordion_id }}-{{ loop.index }}"
+		class="accordion-collapse collapse {{ first_item_open and loop.first ? 'show' : '' }}"
+		aria-labelledby="heading-{{ accordion_id }}-{{ loop.index }}"
+		data-bs-parent="#{{ accordion_id }}"
+	  >
+		<div class="accordion-body">
+		  {{ item.tekst | default('No content available') }}
 		</div>
-	{% endfor %}
+	  </div>
+	</div>
+  {% endfor %}
 </div>

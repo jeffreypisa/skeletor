@@ -23,8 +23,6 @@ class Components_Button extends Site {
 			return null;
 		}
 
-		global $polylang_strings;
-
 		// **Zorg ervoor dat een string (zoals 'primary') automatisch in een array wordt omgezet**
 		if (is_string($params)) {
 			$params = ['style' => $params];
@@ -40,29 +38,11 @@ class Components_Button extends Site {
 			'icon' => null,
 			'icon_position' => 'before',
 			'icon_style' => 'light',
-			'class' => '',
-			'translatable' => false,
+			'class' => ''
 		];
 
 		// **Combineer standaardwaarden met opgegeven parameters**
 		$button = array_merge($defaults, $params);
-
-		// **Polylang vertaling toepassen op de titel en de URL indien nodig**
-		if (!empty($button['translatable']) && function_exists('pll__')) {
-			foreach (['title', 'url'] as $key) {
-				$clean_key = strtolower(trim(strip_tags($button[$key])));
-				$clean_key = preg_replace('/[^a-z0-9]+/i', '_', $clean_key);
-				$clean_key = trim($clean_key, '_');
-
-				if (!isset($polylang_strings[$clean_key])) {
-					$polylang_strings[$clean_key] = $button[$key];
-					update_option('polylang_temp_strings', $polylang_strings);
-				}
-
-				// **Haal de vertaalde string op**
-				$button[$key] = pll__($button[$key]);
-			}
-		}
 
 		// **Bouw de volledige Bootstrap-klasse**
 		$button['style_class'] = 'btn btn-' . $button['style'];

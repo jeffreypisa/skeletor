@@ -1,15 +1,15 @@
-{% if post.banner_tonen %}
-	<section class="strook-banner bg-dark text-white d-flex align-items-center">
-		{% if post.banner_weergave == 'video' and post.banner_vimeo_id %}
+{% if post.hero_tonen %}
+	<section class="strook-hero bg-dark text-white d-flex align-items-center">
+		{% if post.hero_weergave == 'video' and post.hero_vimeo_id %}
 			<div class="achtergrond video-container">
-				<iframe src="https://player.vimeo.com/video/{{ post.banner_vimeo_id }}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1"
+				<iframe src="https://player.vimeo.com/video/{{ post.hero_vimeo_id }}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1"
 						frameborder="0"
 						allow="autoplay; fullscreen"
 						allowfullscreen>
 				</iframe>
 			</div>
 		{% else %}
-			<div class="achtergrond bg-cover" style="background-image: url('{{ post.banner_afbeelding.url }}')"></div>
+			<div class="achtergrond bg-cover" style="background-image: url('{{ post.hero_afbeelding.url }}')"></div>
 		{% endif %}
 
 		<button class="js-scrollnextsection btn btn-outline-light btn-round"> 
@@ -20,16 +20,16 @@
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class="col-md-8 col-lg-7">
-						{{ heading(post.banner_titel, {
+						{{ heading(post.hero_titel, {
 							   level: 'h1',
 							   class: 'mb-3',
 							   inview_animation: 'typewriter'
 						   }) }}
-						{{ text(post.banner_tekst, {
+						{{ text(post.hero_tekst, {
 						   class: 'lead',
 						   inview_animation: 'fade-in'
 						}) }}
-						{{ button(post.banner_link, {
+						{{ button(post.hero_link, {
 						   style: 'primary',
 						   size: 'lg'
 						}) }}

@@ -37,3 +37,8 @@ new WPAdmin();
 if (function_exists('acf_add_local_field_group')) {
     new ACF();
 }
+
+add_action('init', function () {
+    $polylang_strings = get_option('polylang_registered_strings', []);
+    error_log("Polylang geregistreerde strings: " . print_r($polylang_strings, true));
+});

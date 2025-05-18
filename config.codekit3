@@ -7,7 +7,7 @@
       "uuidString" : "57A87351-E1AA-4909-8F6E-C2FBFD45AB84"
     }
   ],
-  "creatorBuild" : "34680",
+  "creatorBuild" : "34689",
   "files" : {
     "\/.nova\/Configuration.json" : {
       "ft" : 524288,
@@ -1108,6 +1108,19 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
+    "\/assets\/images\/f36827b7c273e3d74ed75895b2bfd9cd.png" : {
+      "ft" : 32768,
+      "iS" : 191565,
+      "oA" : 0,
+      "oAP" : "\/assets\/images\/f36827b7c273e3d74ed75895b2bfd9cd.png",
+      "oF" : 0,
+      "oIPL" : 0,
+      "opt" : 0,
+      "oT" : 1,
+      "ou" : "lpckwebp-none",
+      "q" : 90,
+      "rq" : 75
+    },
     "\/assets\/js\/main.js" : {
       "bF" : 4,
       "ft" : 64,
@@ -1260,6 +1273,19 @@
       "ma" : 0,
       "oA" : 1,
       "oAP" : "\/assets\/scss\/components\/_buttons.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
+    "\/assets\/scss\/layout\/_dropdownmenu.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/layout\/_dropdownmenu.css",
       "oF" : 0,
       "oS" : 1,
       "pg" : 0
@@ -1524,19 +1550,6 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/assets\/scss\/stroken\/_banner.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_banner.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
     "\/assets\/scss\/stroken\/_content.scss" : {
       "aP" : 0,
       "bl" : 1,
@@ -1563,7 +1576,7 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/assets\/scss\/stroken\/_intro.scss" : {
+    "\/assets\/scss\/stroken\/_hero.scss" : {
       "aP" : 0,
       "bl" : 1,
       "co" : 0,
@@ -1571,59 +1584,7 @@
       "ft" : 4,
       "ma" : 0,
       "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_intro.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_lidmaatschappen.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_lidmaatschappen.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_magazine-edities.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_magazine-edities.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_magazine-slider.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_magazine-slider.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_referenties.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_referenties.css",
+      "oAP" : "\/assets\/scss\/stroken\/_hero.css",
       "oF" : 0,
       "oS" : 1,
       "pg" : 0
@@ -1637,32 +1598,6 @@
       "ma" : 0,
       "oA" : 1,
       "oAP" : "\/assets\/scss\/stroken\/_testimonials.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_usps.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_usps.css",
-      "oF" : 0,
-      "oS" : 1,
-      "pg" : 0
-    },
-    "\/assets\/scss\/stroken\/_venster-met-achtergrond.scss" : {
-      "aP" : 0,
-      "bl" : 1,
-      "co" : 0,
-      "ec" : 1,
-      "ft" : 4,
-      "ma" : 0,
-      "oA" : 1,
-      "oAP" : "\/assets\/scss\/stroken\/_venster-met-achtergrond.css",
       "oF" : 0,
       "oS" : 1,
       "pg" : 0
@@ -1775,6 +1710,19 @@
       "oA" : 0,
       "oAP" : "\/components\/Components.php",
       "oF" : 0
+    },
+    "\/components\/library\/accordion\/_accordion.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/components\/library\/accordion\/_accordion.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
     },
     "\/components\/library\/accordion\/Accordion.php" : {
       "cB" : 0,
@@ -18967,6 +18915,22 @@
       "oAP" : "\/views\/page.twig",
       "oF" : 0
     },
+    "\/views\/partials\/menu-clean.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/menu-clean.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/menu-dropdown.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/menu-dropdown.twig",
+      "oF" : 0
+    },
     "\/views\/partials\/menu.twig" : {
       "cB" : 0,
       "ft" : 8192,
@@ -19039,20 +19003,20 @@
       "oAP" : "\/views\/stroken\/afbeeldingen.twig",
       "oF" : 0
     },
-    "\/views\/stroken\/banner.twig" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/views\/stroken\/banner.twig",
-      "oF" : 0
-    },
     "\/views\/stroken\/content.twig" : {
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/stroken\/content.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/hero.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/hero.twig",
       "oF" : 0
     },
     "\/views\/stroken\/logos.twig" : {
@@ -19085,6 +19049,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/stroken\/testimonials.twig",
+      "oF" : 0
+    },
+    "\/views\/stroken\/veelgestelde_vragen.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/stroken\/veelgestelde_vragen.twig",
       "oF" : 0
     },
     "\/views\/woo\/archive.twig" : {
@@ -19421,8 +19393,6 @@
     "buildFolderActive" : 0,
     "buildFolderName" : "build",
     "cleanBuild" : 1,
-    "cssoForceMediaMerge" : 0,
-    "cssoRestructure" : 1,
     "environmentVariableEntries" : [
       "NODE_ENV:::production"
     ],

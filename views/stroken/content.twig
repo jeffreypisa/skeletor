@@ -1,9 +1,10 @@
 <section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-5 d-none d-md-block">
+		<div class="row {% if not item.afbeelding %}justify-content-center{% endif %}">
+			{% if item.afbeelding %}
+			<div class="col-md-5 {{ item.afbeelding_positie == 'rechts' ? 'order-md-2 offset-md-1' : 'order-md-1' }} order-1">
 				{{ image(item.afbeelding, {
-					figure_class: 'rounded bg-greylight',
+					figure_class: 'rounded bg-greylight mb-4',
 					img_class: 'rounded',
 					ratio: '4x3',
 					object_fit: 'cover',
@@ -11,19 +12,17 @@
 					inview_animation: 'animate-zoom-in'
 				}) }}
 			</div>
-			<div class="col-md-6 offset-md-1 d-flex align-items-start text-center text-md-start">
+			{% endif %}
+			<div class="d-flex {% if item.afbeelding %}text-start text-md-start {{ item.afbeelding_positie == 'rechts' ? 'order-md-1' : 'order-md-2 offset-md-1' }} order-2 col-md-6{% else %}col-md-10 col-xxl-8{% endif %} align-items-start ">
 				<div class="content w-100 animate-slide-up">
-					{{ heading(item.titel, {
-						level: 'h2'
-					}) }}
-					{{ text(item.tekst, {
-					   class: 'mb-4'
-					}) }}
-
-					<div class="d-flex justify-content-center justify-content-md-start gap-3">
-						{{ button(item.link_primair) }}
-						{{ button(item.link_secundair, 'outline-primary') }}
-					</div>
+					{{ heading(item.titel, { level: 'h2' }) }}
+					{{ text(item.tekst, { class: 'mb-0' }) }}
+					{% if item.link_primair or item.link_secundair %}
+						<div class="d-flex justify-content-center justify-content-md-start gap-3 mt-4">
+							{{ button(item.link_primair) }}
+							{{ button(item.link_secundair, 'outline-dark') }}
+						</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>

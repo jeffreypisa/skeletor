@@ -1,36 +1,43 @@
 $enable-gradients: false;
 
 $light: #FFFFFF;
-$greylight: #EAF9FF;
-$dark: #1A1D2A; // Donkerblauw-grijs (past beter bij het UFO-logo)
+$greylight: #eef4f7;
+$grey: #6c757d;
+$dark: #1A1D2A;
 
-$purple: #5b1a7a;
-$orange: #ED7409;
-$blue: #3FB4E7; // UFO-blauw
+$purple: #9e38e7;
+$green: #2CA58D;
+$blue: #17A2B8; 
+$yellow: #FFC107;
+$red: #DC3545;
 
-$primary: $purple; // Blauwe tint van de UFO
-$secondary: #6c757d; // Zachte grijstint uit het logo
-$success: #2CA58D; // Zachte groentint, subtieler voor contrast
-$info: #17A2B8; // Info-kleur aangepast voor herkenbaarheid
-$warning: #FFC107; // Standaard waarschuwing
-$danger: #DC3545; // Standaard rood
+$primary: $purple; 
+$secondary: $grey; 
+$success: $green; 
+$info: $blue;
+$warning: $yellow; 
+$danger: $red; 
+
 
 // Maak je eigen kleurenmap
 $custom-colors: (
+	"light": $light,
+	"greylight": $greylight,
+	"grey": $grey,
+	"dark": $dark,
+	
+	"purple": $purple,
+	"green": $green,
+	"blue": $blue,
+	"yellow": $yellow,
+	"red": $red,
+	
 	"primary": $primary,
 	"secondary": $secondary,
 	"success": $success,
 	"info": $info,
 	"warning": $warning,
 	"danger": $danger,
-	
-	"light": $light,
-	"greylight": $greylight,
-	"dark": $dark,
-	
-	"purple": $purple,
-	"orange": $orange,
-	"blue": $blue,
 );
 
 // Minimale contrastverhouding voor WCAG 2.0
@@ -68,7 +75,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 }
 
 // Gradient, aangepast aan de UFO-kleuren
-$gradient: linear-gradient(180deg, $blue 0%, $dark 100%);
+$gradient: linear-gradient(180deg, $primary 0%, $dark 100%);
 
 :root {
   --bs-gradient: #{$gradient}; // Correcte interpolatie

@@ -1,15 +1,17 @@
 <footer id="footer">
 	{% if options.footer_calltoaction_titel or options.footer_calltoaction_tekst or options.footer_calltoaction_link %}
-		<div class="calltoaction bg-gradient text-white text-center">
+		<div class="calltoaction bg-primary text-white text-center">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
-						{{ heading(post.footer_calltoaction_titel ?: options.footer_calltoaction_titel, {
+						{{ heading(options.footer_calltoaction_titel, {
 							level: 'h3'
 						}) }}
 						{{ text(post.footer_calltoaction_tekst ?: options.footer_calltoaction_tekst) }}
+						{{ text(post.footer_calltoaction_tekst) }}
 						<br>
-						{{ button(post.footer_calltoaction_link ?: options.footer_calltoaction_link, 'outline-light') }}
+						{{ button(options.footer_calltoaction_link, 'outline-light') }}
+						{{ button(post.footer_calltoaction_link) }}
 					</div>
 				</div>
 			</div>
@@ -40,7 +42,7 @@
 				</div>
 				
 				<div class="col-md-4 order-md-first text-center text-md-start">
-					<img height="60" src="{{ theme.link }}/assets/images/nvr-logo-white.svg" alt="{{ site.title }}" class="mb-3">
+					<img height="60" src="{{ theme.link }}/assets/images/logo.png" alt="{{ site.title }}" class="mb-3">
 					{{ text(options.footer_navigatie_tekst) }}
 				</div>
 			</div>

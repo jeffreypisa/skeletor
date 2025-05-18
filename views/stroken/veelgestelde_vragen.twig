@@ -1,0 +1,22 @@
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container">
+		<div class="row justify-content-center text-center">
+			<div class="col-md-10 col-lg-9 col-xl-8">		
+				{{ heading(item.titel) }}
+				{{ text(item.tekst) }}
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md-10">	
+				{{ accordion(item.veelgestelde_vragen, {
+					id_prefix: 'accordion-' ~ sectionno,
+					icon: 'chevron',
+					icon_position: 'after',
+					heading_level: 'h3',
+					heading_class: 'h4 weight-700',
+					icon_weight: 'regular'
+				}) }}
+			</div>
+		</div>
+	</div>
+</section>

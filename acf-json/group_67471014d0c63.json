@@ -1,11 +1,11 @@
 {
     "key": "group_67471014d0c63",
-    "title": "Banner",
+    "title": "Hero",
     "fields": [
         {
             "key": "field_67ae136850fc3",
             "label": "Tonen",
-            "name": "banner_tonen",
+            "name": "hero_tonen",
             "aria-label": "",
             "type": "true_false",
             "instructions": "",
@@ -26,7 +26,7 @@
         {
             "key": "field_67a4bf47afdc6",
             "label": "Achtergrond",
-            "name": "banner_achtergrond",
+            "name": "hero_achtergrond",
             "aria-label": "",
             "type": "select",
             "instructions": "",
@@ -56,12 +56,14 @@
             "allow_in_bindings": 0,
             "ui": 0,
             "ajax": 0,
-            "placeholder": ""
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
         },
         {
             "key": "field_674711ae13853",
             "label": "Afbeelding",
-            "name": "banner_afbeelding",
+            "name": "hero_afbeelding",
             "aria-label": "",
             "type": "image",
             "instructions": "",
@@ -100,7 +102,7 @@
         {
             "key": "field_67a4bf7aafdc7",
             "label": "Vimeo ID",
-            "name": "banner_vimeo_id",
+            "name": "hero_vimeo_id",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -134,7 +136,7 @@
         {
             "key": "field_674711c213854",
             "label": "Titel",
-            "name": "banner_titel",
+            "name": "hero_titel",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -163,7 +165,7 @@
         {
             "key": "field_674711cf13855",
             "label": "Tekst",
-            "name": "banner_tekst",
+            "name": "hero_tekst",
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
@@ -192,7 +194,7 @@
         {
             "key": "field_674711ed13856",
             "label": "Link",
-            "name": "banner_link",
+            "name": "hero_link",
             "aria-label": "",
             "type": "link",
             "instructions": "",
@@ -235,5 +237,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1739461784
+    "modified": 1747557114
 }

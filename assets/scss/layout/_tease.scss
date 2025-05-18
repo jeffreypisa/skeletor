@@ -1,6 +1,10 @@
+.bg-transparent {
+	.tease .card {
+		background: $greylight;
+	}
+}
 .tease {
 	display: block;
-	color: $dark;
 	text-decoration: none;
 	font-size: 16px;
 	line-height: 1.25;
@@ -23,7 +27,6 @@
 	}
 	i {
 		margin-top: 10px;
-		color: $orange;
 		font-size: 32px;
 		transition: .2s $ease;
 	}
@@ -38,13 +41,14 @@
 	}
 	&[href]:hover {
 		h3 {
-			color: $orange;
+			color: $primary;
 		}
 		.card {
 			box-shadow: 0px 5px 25px rgba($dark, .15);
 		}
 		i {
 			transform: translateX(15px);
+			color: $primary;
 		}
 		img {
 			opacity: .6

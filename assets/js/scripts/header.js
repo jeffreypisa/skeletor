@@ -1,36 +1,45 @@
 export function header() {
-	const header = document.querySelector('header');
+	const header = document.querySelector('.header');
 	let lastScrollTop = 0;
-	let isHeaderVisible = true;
+	let lastDirection = 'up';
+	let ticking = false;
+	const scrollThreshold = 10; // Voorkomt knipperen bij kleine bewegingen
+	const scrolledThreshold = 50; // Vanaf wanneer de achtergrond wit wordt
 
-	window.addEventListener('scroll', () => {
+	function updateHeader() {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-		// Als we helemaal bovenaan zijn, zorg dat de header zichtbaar is
-		if (scrollTop === 0) {
-			header.style.opacity = '1';
-			header.style.transform = 'translateY(0)';
-			isHeaderVisible = true;
-			return;
+		// Voeg of verwijder de 'scrolled' class op basis van scrollhoogte
+		if (scrollTop > scrolledThreshold) {
+			header.classList.add('scrolled');
+		} else {
+			header.classList.remove('scrolled');
 		}
 
-		// Bij naar beneden scrollen
-		if (scrollTop > lastScrollTop && isHeaderVisible) {
-			// Verberg de header
-			header.style.opacity = '0';
-			header.style.transform = 'translateY(-100%)';
-			isHeaderVisible = false;
+		if (scrollTop > lastScrollTop + scrollThreshold) {
+			// Snel naar beneden scrollen → header verdwijnt
+			if (lastDirection !== 'down') {
+				header.classList.remove('visible');
+				header.classList.add('hidden');
+				lastDirection = 'down';
+			}
+		} else if (scrollTop < lastScrollTop - scrollThreshold) {
+			// Een beetje naar boven scrollen → header verschijnt
+			if (lastDirection !== 'up') {
+				header.classList.remove('hidden');
+				header.classList.add('visible');
+				lastDirection = 'up';
+			}
 		}
 
-		// Bij naar boven scrollen
-		if (scrollTop < lastScrollTop && !isHeaderVisible) {
-			// Laat de header weer zien
-			header.style.opacity = '1';
-			header.style.transform = 'translateY(0)';
-			isHeaderVisible = true;
-		}
+		lastScrollTop = scrollTop;
+		ticking = false;
+	}
 
-		// Update de laatste scrollpositie
-		lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+	window.addEventListener('scroll', () => {
+		if (!ticking) {
+			requestAnimationFrame(updateHeader);
+			ticking = true;
+		}
 	});
 }
