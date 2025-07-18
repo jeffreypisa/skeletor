@@ -8,6 +8,7 @@ import { swiperInit } from './plugins/swiperInit.js';
 
 // Scripts
 import { cta } from './scripts/cta.js';
+import { filter } from './scripts/filter.js';
 import { footer } from './scripts/footer.js';
 import { header } from './scripts/header.js';
 import { mobileMenu } from './scripts/mobileMenu.js';
@@ -28,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	lightgalleryInit();
 	wcag();
 	cta();
+	if (document.querySelector('[data-filter-form]')) {
+	  filter(); // initialiseer alleen als filter-formulier op pagina staat
+	}
 	scrollAnimations();
 	matchheightInit();
 	swiperInit()

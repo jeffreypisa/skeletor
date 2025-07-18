@@ -10,10 +10,6 @@ class Components_Filter extends Site {
 		parent::__construct();
 	}
 
-	public static function register() {
-		new self();
-	}
-
 	public function add_to_twig($twig) {
 		$twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
 		return $twig;
@@ -54,7 +50,6 @@ class Components_Filter extends Site {
 		foreach ($terms as $term) {
 			$options[$term->name] = $term->slug;
 		}
-
 		return $options;
 	}
 
@@ -122,14 +117,7 @@ class Components_Filter extends Site {
 			$value = $filter['value'] ?? null;
 			if (empty($value)) continue;
 
-			if (isset($filter['options']) && !empty($filter['options']) && !isset($filter['acf_field'])) {
-				$tax_query[] = [
-					'taxonomy' => $key,
-					'field'    => 'slug',
-					'terms'    => $value,
-				];
-			}
-			elseif ($filter['type'] === 'range' && is_array($value)) {
+			if ($filter['type'] === 'range' && is_array($value)) {
 				$meta_query[] = [
 					'key'     => $filter['acf_field'],
 					'type'    => 'NUMERIC',
@@ -139,8 +127,13 @@ class Components_Filter extends Site {
 						$value['max'] ?? PHP_INT_MAX,
 					],
 				];
-			}
-			else {
+			} elseif (isset($filter['options']) && !empty($filter['options']) && !isset($filter['acf_field'])) {
+				$tax_query[] = [
+					'taxonomy' => $key,
+					'field'    => 'slug',
+					'terms'    => $value,
+				];
+			} else {
 				$meta_query[] = [
 					'key'     => $filter['acf_field'],
 					'value'   => $value,

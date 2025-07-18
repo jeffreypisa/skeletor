@@ -1208,6 +1208,17 @@
       "sC" : 3,
       "tS" : 0
     },
+    "\/assets\/js\/scripts\/filter.js" : {
+      "bF" : 0,
+      "ft" : 64,
+      "ma" : 0,
+      "mi" : 1,
+      "oA" : 1,
+      "oAP" : "\/assets\/js\/scripts\/filter-min.js",
+      "oF" : 0,
+      "sC" : 3,
+      "tS" : 0
+    },
     "\/assets\/js\/scripts\/footer.js" : {
       "bF" : 0,
       "ft" : 64,
@@ -18977,6 +18988,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/page.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/list.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/list.twig",
       "oF" : 0
     },
     "\/views\/partials\/menu-clean.twig" : {

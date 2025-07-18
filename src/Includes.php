@@ -34,5 +34,6 @@ class Includes extends Site {
            filemtime(get_template_directory() . '/dist/main-min.js'),
            true
        );
+       
     }
 }

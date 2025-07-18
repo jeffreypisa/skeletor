@@ -1,0 +1,12 @@
+{% if posts|length %}
+	<div class="row">
+		{% for item in posts %}
+			<div class="col-md-4 mb-4">
+				{% include "partials/tease-filter.twig"  %}
+			</div>
+		{% endfor %}
+	</div>
+	<div data-max-pages="{{ max_pages|e('html_attr') }}" hidden></div>
+{% else %}
+	<p>Geen resultaten gevonden.</p>
+{% endif %}

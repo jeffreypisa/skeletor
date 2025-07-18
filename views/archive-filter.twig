@@ -4,37 +4,40 @@
 {% extends "index.twig" %}
 
 {% block content %}
-	<section class="bg-greylight">
-		<div class="container">
-			<div class="text-center mb-5">
-				<h2>{{ title }}</h2>
-			</div>
-			<form id="filter-form" data-post-type="{{ post_type }}">
-			  <div class="row">
+<section class="bg-greylight">
+	<div class="container">
+		<div class="text-center mb-5">
+			<h2>{{ title }}</h2>
+		</div>
+		<form data-filter-form data-post-type="{{ post_type }}">
+			<div class="row">
 				<div class="col-md-4">
-				{{ filter(filters.uren, {
-					label: 'Uren kiezen',
-					type: 'multiselect',
-					show_label: true,
-					limit: 3,
-					more_label: 'Bekijk alle opties'
-				  }) }}
-				  
-				{{ filter(filters.prijs) }}
-				{{ filter(filters.vakgebied) }}
-				  <button type="submit">Toon resultaten</button>
+					<h4> Filteren </h4>
+					{{ filter(filters.uren, {
+						label: 'Uren kiezen',
+						type: 'multiselect',
+						show_label: true,
+						limit: 3,
+						more_label: 'Bekijk alle opties'
+						}) }}
+					
+					{{ filter(filters.prijs) }}
+					{{ filter(filters.vakgebied) }}
 				</div>
 				<div class="col-md-8">
-				  <div id="filter-results">
-					{% for item in posts %}
-					  {% include 'partials/tease-filter.twig' with { item: item } %}
-					{% endfor %}
-				  </div>
+					<div id="filter-results">
+					{% include 'partials/list.twig' %}
+					</div>
+					{% if current_page < max_num_pages %}
+					  <div class="text-center mt-4">
+						<button type="button" class="btn btn-primary" data-load-more>
+						  Laad meer
+						</button>
+					  </div>
+					{% endif %}
 				</div>
-			  </div>
-			</form>
-		
-			{% include 'partials/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
-		</div>
-	</section>
+			</div>
+		</form>
+	</div>
+</section>
 {% endblock %}

@@ -1,35 +1,62 @@
 <?php
 
 class Components_FilterAjax {
-  public static function register() {
-	add_action('wp_ajax_ajax_filter', [self::class, 'handle']);
-	add_action('wp_ajax_nopriv_ajax_filter', [self::class, 'handle']);
-  }
-
-  public static function handle() {
-	$context = Timber::context();
-	$post_type = sanitize_key($_POST['post_type'] ?? 'post');
-
-	if (!function_exists('get_filters_context')) {
-	  require_once get_template_directory() . '/inc/Filter/get-filters-context.php';
+	public static function handle() {
+		$filters = $_POST;
+	
+		if (!is_array($filters)) {
+			echo '❌ Ongeldige filterdata ontvangen';
+			wp_die();
+		}
+	
+		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
+	
+		// Filter-definities ophalen op basis van opgegeven filters
+		$filter_definitions = [];
+		foreach ($filters as $key => $val) {
+			if (in_array($key, ['action', 'paged', 'post_type'])) continue;
+	
+			$filter_definitions[$key] = [
+				'acf_field' => $key,
+				'value'     => $filters[$key]
+			];
+		}
+	
+		$args = [
+			'post_type'      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => 12,
+			'paged'          => (int)($filters['paged'] ?? 1),
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		];
+	
+		$args = array_merge(
+			$args,
+			Components_Filter::build_query_from_filters($filter_definitions)
+		);
+	
+		$query = new WP_Query($args);
+		$posts = Timber::get_posts($query);
+	
+		$context = [
+			'items'      => $posts,
+			'posts'      => $posts,
+			'max_pages'  => $query->max_num_pages,
+		];
+		
+		$context['posts'] = $context['items']; // Zorgt dat de lijst werkt met list.twig
+	
+		// ✅ DEBUG
+		echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
+		echo '<strong>🔍 FILTER DEBUG:</strong><br>';
+		echo '<pre>' . print_r($filters, true) . '</pre>';
+		echo '<strong>🔍 WP_Query ARGS:</strong><br>';
+		echo '<pre>' . print_r($args, true) . '</pre>';
+		echo '<strong>🔍 Aantal resultaten:</strong> ' . count($posts) . '<br>';
+		echo '</div>';
+	
+		Timber::render('partials/list.twig', $context);
+		wp_die();
 	}
-
-	$context['filters'] = get_filters_context($_POST, $post_type);
-
-	$query_args = [
-	  'post_type'      => $post_type,
-	  'posts_per_page' => 12,
-	  'paged'          => intval($_POST['paged'] ?? 1),
-	];
-
-	$query_args = array_merge(
-	  $query_args,
-	  Components_Filter::build_query_from_filters($context['filters'])
-	);
-
-	$context['posts'] = Timber::get_posts($query_args);
-
-	Timber::render('partials/list.twig', $context);
-	wp_die();
-  }
 }

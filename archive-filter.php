@@ -45,7 +45,14 @@ $query_args = array_merge(
   Components_Filter::build_query_from_filters($context['filters'])
 );
 
-$context['posts'] = Timber::get_posts($query_args);
+
+$query = new WP_Query($query_args);
+$context['posts'] = Timber::get_posts($query);
+$context['current_page'] = get_query_var('paged') ?: 1;
+$context['max_num_pages'] = $query->max_num_pages;
+
 $context['title'] = post_type_archive_title('', false);
+
+$context['ajax_filters'] = $context['filters'];
 
 Timber::render('archive-filter.twig', $context);
