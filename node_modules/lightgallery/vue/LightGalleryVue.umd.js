@@ -7546,10 +7546,15 @@ var lightgallery_LightGallery = /*#__PURE__*/function () {
           var fL = subHtml.substring(0, 1);
 
           if (fL === '.' || fL === '#') {
-            if (this.settings.subHtmlSelectorRelative && !this.settings.dynamic) {
-              subHtml = $LG(this.items).eq(index).find(subHtml).first().html();
-            } else {
-              subHtml = $LG(subHtml).first().html();
+            try {
+              if (this.settings.subHtmlSelectorRelative && !this.settings.dynamic) {
+                subHtml = $LG(this.items).eq(index).find(subHtml).first().html();
+              } else {
+                subHtml = $LG(subHtml).first().html();
+              }
+            } catch (error) {
+              console.warn("Error processing subHtml selector \"".concat(subHtml, "\""));
+              subHtml = '';
             }
           }
         } else {

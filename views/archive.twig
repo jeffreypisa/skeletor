@@ -13,7 +13,7 @@
 			<div class="row">
 				{% for item in posts %}
 					<div class="col-md-6 col-xl-4 mb-4">
-						{% include ['partials/tease-'~item.post_type~'.twig', 'tease.twig'] %}
+						{% include ['partials/tease-'~item.post_type~'.twig', 'partials/tease.twig'] %}
 					</div>
 				{% endfor %}
 			</div>

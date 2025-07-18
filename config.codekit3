@@ -7,7 +7,7 @@
       "uuidString" : "57A87351-E1AA-4909-8F6E-C2FBFD45AB84"
     }
   ],
-  "creatorBuild" : "34689",
+  "creatorBuild" : "34704",
   "files" : {
     "\/.nova\/Configuration.json" : {
       "ft" : 524288,
@@ -24,6 +24,14 @@
       "oA" : 0,
       "oAP" : "\/404.php",
       "oF" : 0
+    },
+    "\/acf-json\/group_6878e5916e26d.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/group_6878e5916e26d-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
     },
     "\/acf-json\/group_67929e1b3362e.json" : {
       "ft" : 524288,
@@ -65,6 +73,22 @@
       "oO" : 1,
       "oS" : 1
     },
+    "\/acf-json\/post_type_6878e4fabe695.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/post_type_6878e4fabe695-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
+    "\/acf-json\/taxonomy_6878e55c6cc9d.json" : {
+      "ft" : 524288,
+      "oA" : 1,
+      "oAP" : "\/acf-json\/taxonomy_6878e55c6cc9d-min.json",
+      "oF" : 0,
+      "oO" : 1,
+      "oS" : 1
+    },
     "\/acf-json\/ui_options_page_6790ffcaee4a1.json" : {
       "ft" : 524288,
       "oA" : 1,
@@ -72,6 +96,14 @@
       "oF" : 0,
       "oO" : 1,
       "oS" : 1
+    },
+    "\/archive-filter.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/archive-filter.php",
+      "oF" : 0
     },
     "\/archive-product.php" : {
       "cB" : 0,
@@ -870,7 +902,7 @@
       "ec" : 1,
       "ft" : 4,
       "ma" : 0,
-      "oA" : 0,
+      "oA" : 1,
       "oAP" : "\/assets\/fontawesome\/scss\/solid.css",
       "oF" : 0,
       "oS" : 1,
@@ -1108,11 +1140,11 @@
       "plM" : 52780316221407,
       "prP" : 0
     },
-    "\/assets\/images\/f36827b7c273e3d74ed75895b2bfd9cd.png" : {
+    "\/assets\/images\/logo.png" : {
       "ft" : 32768,
       "iS" : 191565,
       "oA" : 0,
-      "oAP" : "\/assets\/images\/f36827b7c273e3d74ed75895b2bfd9cd.png",
+      "oAP" : "\/assets\/images\/logo.png",
       "oF" : 0,
       "oIPL" : 0,
       "opt" : 0,
@@ -1767,6 +1799,30 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/components\/library\/button\/button.twig",
+      "oF" : 0
+    },
+    "\/components\/library\/filter\/Filter.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/components\/library\/filter\/Filter.php",
+      "oF" : 0
+    },
+    "\/components\/library\/filter\/filter.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/components\/library\/filter\/filter.twig",
+      "oF" : 0
+    },
+    "\/components\/library\/filter\/FilterAjax.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/components\/library\/filter\/FilterAjax.php",
       "oF" : 0
     },
     "\/components\/library\/heading\/Heading.php" : {
@@ -18827,6 +18883,14 @@
       "oAP" : "\/views\/404.twig",
       "oF" : 0
     },
+    "\/views\/archive-filter.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/archive-filter.twig",
+      "oF" : 0
+    },
     "\/views\/archive.twig" : {
       "cB" : 0,
       "ft" : 8192,
@@ -18945,6 +19009,14 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/partials\/pagination.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/tease-filter.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease-filter.twig",
       "oF" : 0
     },
     "\/views\/partials\/tease-testimonial.twig" : {

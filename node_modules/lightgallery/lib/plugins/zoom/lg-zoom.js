@@ -125,7 +125,7 @@ var Zoom = /** @class */ (function () {
      * @param {String} scale - Zoom decrement/increment value
      */
     Zoom.prototype.zoomImage = function (scale, scaleDiff, reposition, resetToMax) {
-        if (Math.abs(scaleDiff) <= 0)
+        if (!this.containerRect || Math.abs(scaleDiff) <= 0)
             return;
         var offsetX = this.containerRect.width / 2 + this.containerRect.left;
         var offsetY = this.containerRect.height / 2 +

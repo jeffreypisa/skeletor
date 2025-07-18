@@ -1,0 +1,40 @@
+{# This file demonstrates using most of the index.twig template and modifying 
+   just a small part. See `search.twig` for an example of another approach #}
+
+{% extends "index.twig" %}
+
+{% block content %}
+	<section class="bg-greylight">
+		<div class="container">
+			<div class="text-center mb-5">
+				<h2>{{ title }}</h2>
+			</div>
+			<form id="filter-form" data-post-type="{{ post_type }}">
+			  <div class="row">
+				<div class="col-md-4">
+				{{ filter(filters.uren, {
+					label: 'Uren kiezen',
+					type: 'multiselect',
+					show_label: true,
+					limit: 3,
+					more_label: 'Bekijk alle opties'
+				  }) }}
+				  
+				{{ filter(filters.prijs) }}
+				{{ filter(filters.vakgebied) }}
+				  <button type="submit">Toon resultaten</button>
+				</div>
+				<div class="col-md-8">
+				  <div id="filter-results">
+					{% for item in posts %}
+					  {% include 'partials/tease-filter.twig' with { item: item } %}
+					{% endfor %}
+				  </div>
+				</div>
+			  </div>
+			</form>
+		
+			{% include 'partials/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,87 @@
+{#
+  Filter component
+  Gebruik:
+  {{ filter(filter.uren, {
+    label: 'Uren',
+    type: 'multiselect',
+    show_label: true,
+    limit: 5,
+    more_label: 'Bekijk alle opties'
+  }) }}
+  
+  Ondersteunde types: select, multiselect, range
+  Extra opties:
+    - show_label: true/false
+    - hide_empty: true/false (default true)
+    - limit: aantal zichtbare opties
+    - more_label: tekst voor uitklap-link ('Toon meer')
+#}
+
+{% set show_label = show_label ?? true %}
+{% set limit = limit ?? null %}
+{% set more_label = more_label ?? 'Toon meer' %}
+
+<div class="mb-4">
+  {% if show_label and label %}
+    <label for="filter-{{ name }}" class="form-label">{{ label }}</label>
+  {% endif %}
+
+  {% if type in ['select', 'multiselect'] %}
+    {% set visible = [] %}
+    {% set hidden = [] %}
+    {% for opt_label, opt_val in options %}
+      {% if opt_val != '__more__' %}
+        {% if loop.index0 < limit or not limit %}
+          {% set visible = visible | merge([{ label: opt_label, value: opt_val }]) %}
+        {% else %}
+          {% set hidden = hidden | merge([{ label: opt_label, value: opt_val }]) %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="form-check-group d-flex flex-column gap-1">
+      {% for opt in visible %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}[]" value="{{ opt.value }}" {{ opt.value in value ? 'checked' }}>
+          <label class="form-check-label" for="{{ name }}-{{ loop.index }}">{{ opt.label }}</label>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if hidden | length %}
+      <div class="mt-2" data-more-toggle>
+        <button type="button" class="btn btn-sm btn-outline-secondary">{{ more_label }}</button>
+        <div class="mt-2 d-flex flex-column gap-1" hidden>
+          {% for opt in hidden %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="{{ name }}-hidden-{{ loop.index }}" name="{{ name }}[]" value="{{ opt.value }}" {{ opt.value in value ? 'checked' }}>
+              <label class="form-check-label" for="{{ name }}-hidden-{{ loop.index }}">{{ opt.label }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% elseif type == 'range' %}
+    <div class="row g-2 align-items-end">
+      <div class="col">
+        <label for="min_{{ name }}" class="form-label">Min</label>
+        <input type="number" class="form-control" id="min_{{ name }}" name="min_{{ name }}" placeholder="Min" value="{{ value.min }}" min="{{ min }}">
+      </div>
+      <div class="col">
+        <label for="max_{{ name }}" class="form-label">Max</label>
+        <input type="number" class="form-control" id="max_{{ name }}" name="max_{{ name }}" placeholder="Max" value="{{ value.max }}" max="{{ max }}">
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('click', function(e) {
+    if (e.target.matches('[data-more-toggle] button')) {
+      const wrapper = e.target.closest('[data-more-toggle]');
+      wrapper.querySelector('div[hidden]').toggleAttribute('hidden');
+      e.target.remove();
+    }
+  });
+</script>
