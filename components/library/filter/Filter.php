@@ -112,40 +112,65 @@ class Components_Filter extends Site {
 	public static function build_query_from_filters($filters) {
 		$meta_query = [];
 		$tax_query  = [];
-
+	
 		foreach ($filters as $key => $filter) {
 			$value = $filter['value'] ?? null;
-			if (empty($value)) continue;
-
-			if ($filter['type'] === 'range' && is_array($value)) {
-				$meta_query[] = [
-					'key'     => $filter['acf_field'],
-					'type'    => 'NUMERIC',
-					'compare' => 'BETWEEN',
-					'value'   => [
-						$value['min'] ?? 0,
-						$value['max'] ?? PHP_INT_MAX,
-					],
-				];
-			} elseif (isset($filter['options']) && !empty($filter['options']) && !isset($filter['acf_field'])) {
+			$type = $filter['type'] ?? null;
+	
+			// 🟡 RANGE FILTER
+			if ($type === 'range' && is_array($value)) {
+				$min = isset($value['min']) && $value['min'] !== '' ? (float) $value['min'] : null;
+				$max = isset($value['max']) && $value['max'] !== '' ? (float) $value['max'] : null;
+			
+				if (!is_null($min) && !is_null($max)) {
+					$meta_query[] = [
+						'key'     => $filter['acf_field'],
+						'type'    => 'NUMERIC',
+						'compare' => 'BETWEEN',
+						'value'   => [$min, $max], // ✅ dit is de juiste array
+					];
+				} elseif (!is_null($min)) {
+					$meta_query[] = [
+						'key'     => $filter['acf_field'],
+						'type'    => 'NUMERIC',
+						'compare' => '>=',
+						'value'   => $min,
+					];
+				} elseif (!is_null($max)) {
+					$meta_query[] = [
+						'key'     => $filter['acf_field'],
+						'type'    => 'NUMERIC',
+						'compare' => '<=',
+						'value'   => $max,
+					];
+				}
+			}
+	
+			// 🟡 TAXONOMY FILTERS
+			elseif (isset($filter['options']) && !empty($filter['options']) && !isset($filter['acf_field'])) {
 				$tax_query[] = [
 					'taxonomy' => $key,
 					'field'    => 'slug',
-					'terms'    => $value,
-				];
-			} else {
-				$meta_query[] = [
-					'key'     => $filter['acf_field'],
-					'value'   => $value,
-					'compare' => is_array($value) ? 'IN' : '=',
+					'terms'    => is_array($value) ? $value : [$value],
 				];
 			}
+	
+			// 🟡 ANDERS: ACF FILTERS
+			elseif (isset($filter['acf_field'])) {
+				if (!empty($value)) {
+					$meta_query[] = [
+						'key'     => $filter['acf_field'],
+						'value'   => is_array($value) ? $value : [$value],
+						'compare' => 'IN',
+					];
+				}
+			}
 		}
-
+	
 		$args = [];
 		if (!empty($meta_query)) $args['meta_query'] = $meta_query;
 		if (!empty($tax_query))  $args['tax_query']  = $tax_query;
-
+	
 		return $args;
 	}
 }
