@@ -75,13 +75,17 @@ class Components_FilterAjax {
 			'order'          => 'DESC',
 			'meta_query'     => $meta_query,
 		];
-
+		
+		if (!empty($filters['s'])) {
+			$args['s'] = sanitize_text_field($filters['s']);
+		}
+		
 		if (!empty($tax_query)) {
 			$args['tax_query'] = $tax_query;
 		}
 
 		// 🔧 Filters doorgeven aan build_query_from_filters, excl. technische of al verwerkte keys
-		$exclude_keys = ['action', 'paged', 'post_type'];
+		$exclude_keys = ['action', 'paged', 'post_type', 's'];
 		$filter_definitions = [];
 
 		foreach ($filters as $key => $val) {
@@ -124,13 +128,13 @@ class Components_FilterAjax {
 		];
 
 		// ✅ DEBUG
-		echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
-		echo '<strong>🔍 FILTER DEBUG:</strong><br>';
-		echo '<pre>' . print_r($filters, true) . '</pre>';
-		echo '<strong>🔍 WP_Query ARGS:</strong><br>';
-		echo '<pre>' . print_r($args, true) . '</pre>';
-		echo '<strong>🔍 Aantal resultaten:</strong> ' . count($posts) . '<br>';
-		echo '</div>';
+		 echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
+		 echo '<strong>🔍 FILTER DEBUG:</strong><br>';
+		 echo '<pre>' . print_r($filters, true) . '</pre>';
+		 echo '<strong>🔍 WP_Query ARGS:</strong><br>';
+		 echo '<pre>' . print_r($args, true) . '</pre>';
+		 echo '<strong>🔍 Aantal resultaten:</strong> ' . count($posts) . '<br>';
+		 echo '</div>';
 
 		Timber::render('partials/list.twig', $context);
 		wp_die();

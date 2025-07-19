@@ -98,7 +98,25 @@ export function filter() {
 			fetchFilteredResults(false);
 		}, 300)
 	);
-
+	
+	// 🔁 Bij typen in zoekveld: debounce + fetch
+	const searchInput = filterForm.querySelector('input[name="s"]');
+	if (searchInput) {
+		searchInput.addEventListener(
+			'input',
+			debounce(() => {
+				currentPage = 1;
+				if (loadMoreBtn) loadMoreBtn.classList.remove('d-none');
+				fetchFilteredResults(false);
+			}, 400) // iets langere delay om te voorkomen dat elke letter een call doet
+		);
+		searchInput.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter') {
+				e.preventDefault(); // voorkomt page reload
+			}
+		});
+	}
+	
 	// 🔁 Load more knop
 	if (loadMoreBtn) {
 		loadMoreBtn.addEventListener('click', () => {

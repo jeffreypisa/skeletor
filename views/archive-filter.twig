@@ -13,6 +13,8 @@
 			<div class="row">
 				<div class="col-md-4">
 					<h4> Filteren </h4>
+					<input type="text" name="s" class="form-control" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+					<br>
 					{{ filter(filters.uren, {
 						label: 'Uren kiezen',
 						type: 'multiselect',
