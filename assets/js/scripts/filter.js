@@ -28,6 +28,10 @@ export function filter() {
 					if (!grouped[name]) grouped[name] = [];
 					grouped[name].push(el.value);
 				}
+			} else if (el.type === 'radio') {
+				if (el.checked) {
+					grouped[name] = el.value;
+				}
 			} else if (el.tagName === 'SELECT' && el.multiple) {
 				if (!grouped[name]) grouped[name] = [];
 				Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));

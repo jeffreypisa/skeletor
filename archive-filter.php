@@ -4,33 +4,28 @@ $context = Timber::context();
 $post_type = get_post_type();
 $context['post_type'] = $post_type; // nodig voor JS/ajax
 
-// 🧩 Filter: 'uren' – ACF select field, opties automatisch
+// 🧩 Filter: 'uren' – ACF radio
 $context['filters']['uren'] = [
-  'acf_field' => 'uren',
-  'label'     => 'Uren',
-  'type'      => 'select',
-  'value'     => $_GET['uren'] ?? null,
-  'options'   => Components_Filter::get_options_from_meta('uren'),
+  'name'   => 'uren',
+  'label'  => 'Uren',
+  'type'   => 'checkbox',
+  'source' => 'acf',
 ];
 
-// 🧩 Filter: 'prijs' – ACF range field, min/max automatisch
+// 🧩 Filter: 'prijs' – ACF range slider
 $context['filters']['prijs'] = [
-  'acf_field' => 'prijs',
-  'label'     => 'Prijs',
-  'type'      => 'range',
-  'value'     => [
-    'min' => $_GET['min_prijs'] ?? null,
-    'max' => $_GET['max_prijs'] ?? null,
-  ],
+  'name'   => 'prijs',
+  'label'  => 'Prijs',
+  'type'   => 'range',
+  'source' => 'acf',
 ];
 
-// 🧩 Filter: 'vakgebied' – Taxonomie
+// 🧩 Filter: 'vakgebied' – Taxonomy select
 $context['filters']['vakgebied'] = [
-  'acf_field' => 'vakgebied',
-  'label'     => 'Vakgebied',
-  'type'      => 'select',
-  'options'   => Components_Filter::get_options_from_taxonomy('vakgebied'),
-  'value'     => $_GET['vakgebied'] ?? null,
+  'name'   => 'vakgebied',
+  'label'  => 'Vakgebied',
+  'type'   => 'select',
+  'source' => 'taxonomy',
 ];
 
 // 🔎 Query build
@@ -44,7 +39,6 @@ $query_args = array_merge(
   $query_args,
   Components_Filter::build_query_from_filters($context['filters'])
 );
-
 
 $query = new WP_Query($query_args);
 $context['posts'] = Timber::get_posts($query);

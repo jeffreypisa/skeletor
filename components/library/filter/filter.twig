@@ -1,86 +1,87 @@
-{#
-  Filter component
-  Gebruik:
-  {{ filter(filter.uren, {
-    label: 'Uren',
-    type: 'multiselect',
-    show_label: true,
-    limit: 5,
-    more_label: 'Bekijk alle opties'
-  }) }}
-  
-  Ondersteunde types: select, multiselect, range
-  Extra opties:
-    - show_label: true/false
-    - hide_empty: true/false (default true)
-    - limit: aantal zichtbare opties
-    - more_label: tekst voor uitklap-link ('Toon meer')
-#}
+{% set name = name ?? data.acf_field ?? data.name ?? '' %}
+{% set acf_field = data.acf_field ?? name %}
+{% set value = value ?? data.value ?? '' %}
+{% set type = type ?? data.type ?? '' %}
+{% set label = label ?? data.label ?? '' %}
+{% set options = options ?? data.options ?? {} %}
+{% set placeholder = placeholder ?? data.placeholder ?? 'Maak een keuze' %}
 
-{% set show_label = show_label ?? true %}
-{% set limit = limit ?? null %}
-{% set more_label = more_label ?? 'Toon meer' %}
+{% if not name %}
+  <pre>❌ Ongeldige filterdata ontvangen
+  {{ dump(data) }}</pre>
+{% endif %}
 
 <div class="mb-4">
-  {% if show_label and label %}
-    <label for="filter-{{ name }}" class="form-label">{{ label }}</label>
+  {% if label %}
+    <label class="form-label">{{ label }}</label>
   {% endif %}
 
-  {% if type in ['select', 'multiselect'] %}
-    {% set visible = [] %}
-    {% set hidden = [] %}
-    {% for opt_label, opt_val in options %}
-      {% if opt_val != '__more__' %}
-        {% if loop.index0 < limit or not limit %}
-          {% set visible = visible | merge([{ label: opt_label, value: opt_val }]) %}
-        {% else %}
-          {% set hidden = hidden | merge([{ label: opt_label, value: opt_val }]) %}
-        {% endif %}
-      {% endif %}
+  {# Single Select #}
+  {% if type == 'select' %}
+    <select name="{{ name }}" class="form-select">
+      <option value="">{{ placeholder }}</option>
+      {% for key, val in options %}
+        <option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
+      {% endfor %}
+    </select>
+
+  {# Radio Buttons (single choice) #}
+  {% elseif type == 'radio' %}
+    {% for key, val in options %}
+      <div class="form-check">
+        <input class="form-check-input"
+               type="radio"
+               name="{{ name }}"
+               id="{{ name ~ '-' ~ loop.index }}"
+               value="{{ val }}"
+               {{ val == value ? 'checked' : '' }}>
+        <label class="form-check-label" for="{{ name ~ '-' ~ loop.index }}">
+          {{ key }}
+        </label>
+      </div>
     {% endfor %}
 
-    <div class="form-check-group d-flex flex-column gap-1">
-      {% for opt in visible %}
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="{{ name }}-{{ loop.index }}" name="{{ name }}[]" value="{{ opt.value }}" {{ opt.value in value ? 'checked' }}>
-          <label class="form-check-label" for="{{ name }}-{{ loop.index }}">{{ opt.label }}</label>
-        </div>
-      {% endfor %}
-    </div>
-
-    {% if hidden | length %}
-      <div class="mt-2" data-more-toggle>
-        <button type="button" class="btn btn-sm btn-outline-secondary">{{ more_label }}</button>
-        <div class="mt-2 d-flex flex-column gap-1" hidden>
-          {% for opt in hidden %}
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="{{ name }}-hidden-{{ loop.index }}" name="{{ name }}[]" value="{{ opt.value }}" {{ opt.value in value ? 'checked' }}>
-              <label class="form-check-label" for="{{ name }}-hidden-{{ loop.index }}">{{ opt.label }}</label>
-            </div>
-          {% endfor %}
-        </div>
+  {# Checkboxes (multi) #}
+  {% elseif type == 'checkbox' %}
+    {% set selected = value is iterable ? value : [value] %}
+    {% for key, val in options %}
+      <div class="form-check">
+        <input class="form-check-input"
+               type="checkbox"
+               name="{{ name }}[]"
+               id="{{ name }}_{{ loop.index }}"
+               value="{{ val }}"
+               {{ val in selected ? 'checked' : '' }}>
+        <label class="form-check-label" for="{{ name }}_{{ loop.index }}">{{ key }}</label>
       </div>
-    {% endif %}
+    {% endfor %}
 
+  {# Range Slider + Input #}
   {% elseif type == 'range' %}
+    <div class="range-wrapper">
+      <div class="d-flex gap-2 align-items-center mb-3">
+        <input type="number"
+               class="form-control"
+               name="min_{{ acf_field }}"
+               value="{{ value.min ?? options.min }}"
+               min="{{ options.min }}"
+               max="{{ options.max }}">
 
-     <div class="slider mb-2" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}"></div>
-     
-     <div class="d-flex gap-2 align-items-center">
-       <input type="number" class="form-control form-control-sm" name="min_{{ name }}" value="{{ value.min ?? options.min }}" placeholder="Min" style="max-width: 100px;">
-       <span>–</span>
-       <input type="number" class="form-control form-control-sm" name="max_{{ name }}" value="{{ value.max ?? options.max }}" placeholder="Max" style="max-width: 100px;">
-     </div>
+        <span class="text-muted">tot</span>
 
+        <input type="number"
+               class="form-control"
+               name="max_{{ acf_field }}"
+               value="{{ value.max ?? options.max }}"
+               min="{{ options.min }}"
+               max="{{ options.max }}">
+      </div>
+
+      <div class="range-slider"
+           data-slider
+           data-min="{{ options.min }}"
+           data-max="{{ options.max }}">
+      </div>
+    </div>
   {% endif %}
 </div>
-
-<script>
-  document.addEventListener('click', function(e) {
-    if (e.target.matches('[data-more-toggle] button')) {
-      const wrapper = e.target.closest('[data-more-toggle]');
-      wrapper.querySelector('div[hidden]').toggleAttribute('hidden');
-      e.target.remove();
-    }
-  });
-</script>
