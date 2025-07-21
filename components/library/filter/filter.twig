@@ -63,16 +63,15 @@
     {% endif %}
 
   {% elseif type == 'range' %}
-    <div class="row g-2 align-items-end">
-      <div class="col">
-        <label for="min_{{ name }}" class="form-label">Min</label>
-        <input type="number" class="form-control" id="min_{{ name }}" name="min_{{ name }}" placeholder="Min" value="{{ value.min }}" min="{{ min }}">
-      </div>
-      <div class="col">
-        <label for="max_{{ name }}" class="form-label">Max</label>
-        <input type="number" class="form-control" id="max_{{ name }}" name="max_{{ name }}" placeholder="Max" value="{{ value.max }}" max="{{ max }}">
-      </div>
-    </div>
+
+     <div class="slider mb-2" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}"></div>
+     
+     <div class="d-flex gap-2 align-items-center">
+       <input type="number" class="form-control form-control-sm" name="min_{{ name }}" value="{{ value.min ?? options.min }}" placeholder="Min" style="max-width: 100px;">
+       <span>–</span>
+       <input type="number" class="form-control form-control-sm" name="max_{{ name }}" value="{{ value.max ?? options.max }}" placeholder="Max" style="max-width: 100px;">
+     </div>
+
   {% endif %}
 </div>
 

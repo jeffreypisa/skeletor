@@ -1424,6 +1424,19 @@
       "oS" : 1,
       "pg" : 0
     },
+    "\/assets\/scss\/plugins\/_nouislider.scss" : {
+      "aP" : 0,
+      "bl" : 1,
+      "co" : 0,
+      "ec" : 1,
+      "ft" : 4,
+      "ma" : 0,
+      "oA" : 1,
+      "oAP" : "\/assets\/scss\/plugins\/_nouislider.css",
+      "oF" : 0,
+      "oS" : 1,
+      "pg" : 0
+    },
     "\/assets\/scss\/plugins\/_swiper.scss" : {
       "aP" : 0,
       "bl" : 1,
@@ -19488,7 +19501,7 @@
       "NODE_ENV:::production"
     ],
     "esLintConfigFileHandlingType" : 0,
-    "esLintECMAVersion" : 7,
+    "esLintECMAVersion" : 16,
     "esLintEnvironmentsMask" : 1,
     "esLintRules" : {
       "accessor-pairs" : {

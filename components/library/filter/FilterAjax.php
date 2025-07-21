@@ -128,13 +128,13 @@ class Components_FilterAjax {
 		];
 
 		// ✅ DEBUG
-		 echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
-		 echo '<strong>🔍 FILTER DEBUG:</strong><br>';
-		 echo '<pre>' . print_r($filters, true) . '</pre>';
-		 echo '<strong>🔍 WP_Query ARGS:</strong><br>';
-		 echo '<pre>' . print_r($args, true) . '</pre>';
-		 echo '<strong>🔍 Aantal resultaten:</strong> ' . count($posts) . '<br>';
-		 echo '</div>';
+		// echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
+		// echo '<strong>🔍 FILTER DEBUG:</strong><br>';
+		// echo '<pre>' . print_r($filters, true) . '</pre>';
+		// echo '<strong>🔍 WP_Query ARGS:</strong><br>';
+		// echo '<pre>' . print_r($args, true) . '</pre>';
+		// echo '<strong>🔍 Aantal resultaten:</strong> ' . count($posts) . '<br>';
+		// echo '</div>';
 
 		Timber::render('partials/list.twig', $context);
 		wp_die();

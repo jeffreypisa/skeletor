@@ -1,27 +1,18 @@
 {
-  "license" : "UNLICENSED",
-  "description" : "CodeKit created this starter package.json file. You should customize it appropriately. (If you intend to publish this project on npm, add an entry in the 'repository' field and remove the 'private' attribute, below.)",
-  "scripts" : {
-
+  "license": "UNLICENSED",
+  "description": "CodeKit created this starter package.json file. You should customize it appropriately. (If you intend to publish this project on npm, add an entry in the 'repository' field and remove the 'private' attribute, below.)",
+  "scripts": {},
+  "author": "",
+  "version": "1.0.0",
+  "repository": {},
+  "name": "codekit-project",
+  "dependencies": {
+    "@vimeo/player": "^2.25.1",
+    "bootstrap": "^5.3.3",
+    "lightgallery": "^2.9.0-beta.1",
+    "matchheight": "^1.1.2",
+    "nouislider": "^15.8.1",
+    "swiper": "^11.1.15"
   },
-  "author" : "",
-  "version" : "1.0.0",
-  "repository" : {
-
-  },
-  "devDependencies" : {
-
-  },
-  "name" : "codekit-project",
-  "dependencies" : {
-    "matchheight" : "^1.1.2",
-    "swiper" : "^11.1.15",
-    "lightgallery" : "^2.9.0-beta.1",
-    "@vimeo\/player" : "^2.25.1",
-    "bootstrap" : "^5.3.3"
-  },
-  "private" : true,
-  "optionalDependencies" : {
-
-  }
+  "private": true
 }

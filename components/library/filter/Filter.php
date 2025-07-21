@@ -21,18 +21,28 @@ class Components_Filter extends Site {
 		}
 
 		$acf_field = $data['acf_field'];
-		$value = $_GET[$acf_field] ?? ($_GET[$acf_field . '[]'] ?? null);
+		$name = $data['name'] ?? $acf_field;
+		$type = $data['type'] ?? 'select';
 
-		$data['name']  = $acf_field;
-		$data['value'] = $data['value'] ?? $value;
+		$data['name'] = $name;
 
-		// Automatisch min/max instellen bij range
-		if ($data['type'] === 'range' && (!isset($data['min']) || !isset($data['max']))) {
-			$data = array_merge($data, self::get_auto_min_max($acf_field));
+		// ⛏ Verwerk waarde vanuit $_GET
+		if ($type === 'range') {
+			$data['value'] = [
+				'min' => $_GET['min_' . $acf_field] ?? null,
+				'max' => $_GET['max_' . $acf_field] ?? null,
+			];
+		} else {
+			$data['value'] = $_GET[$acf_field] ?? ($_GET[$acf_field . '[]'] ?? null);
 		}
 
-		// Automatisch opties instellen bij select/multiselect
-		if (in_array($data['type'], ['select', 'multiselect']) && empty($data['options'])) {
+		// 🧮 Automatische range min/max ophalen als niet opgegeven
+		if ($type === 'range' && (!isset($data['options']['min']) || !isset($data['options']['max']))) {
+			$data['options'] = self::get_auto_min_max($acf_field);
+		}
+
+		// 🧾 Opties ophalen voor select/multiselect indien leeg
+		if (in_array($type, ['select', 'multiselect']) && empty($data['options'])) {
 			$data['options'] = self::get_options_from_meta($acf_field);
 		}
 
@@ -112,11 +122,11 @@ class Components_Filter extends Site {
 	public static function build_query_from_filters($filters) {
 		$meta_query = [];
 		$tax_query  = [];
-	
+
 		foreach ($filters as $key => $filter) {
 			$value = $filter['value'] ?? null;
 			$type = $filter['type'] ?? null;
-	
+
 			// 🟡 RANGE FILTER
 			if ($type === 'range' && is_array($value)) {
 				$min = isset($value['min']) && $value['min'] !== '' ? (float) $value['min'] : null;
@@ -127,7 +137,7 @@ class Components_Filter extends Site {
 						'key'     => $filter['acf_field'],
 						'type'    => 'NUMERIC',
 						'compare' => 'BETWEEN',
-						'value'   => [$min, $max], // ✅ dit is de juiste array
+						'value'   => [$min, $max],
 					];
 				} elseif (!is_null($min)) {
 					$meta_query[] = [
@@ -145,7 +155,7 @@ class Components_Filter extends Site {
 					];
 				}
 			}
-	
+
 			// 🟡 TAXONOMY FILTERS
 			elseif (isset($filter['options']) && !empty($filter['options']) && !isset($filter['acf_field'])) {
 				$tax_query[] = [
@@ -154,8 +164,8 @@ class Components_Filter extends Site {
 					'terms'    => is_array($value) ? $value : [$value],
 				];
 			}
-	
-			// 🟡 ANDERS: ACF FILTERS
+
+			// 🟡 ACF FILTERS
 			elseif (isset($filter['acf_field'])) {
 				if (!empty($value)) {
 					$meta_query[] = [
@@ -166,11 +176,11 @@ class Components_Filter extends Site {
 				}
 			}
 		}
-	
+
 		$args = [];
 		if (!empty($meta_query)) $args['meta_query'] = $meta_query;
 		if (!empty($tax_query))  $args['tax_query']  = $tax_query;
-	
+
 		return $args;
 	}
 }

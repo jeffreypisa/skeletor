@@ -6,15 +6,25 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-		<div class="text-center mb-5">
+		<div class="mb-5">
 			<h2>{{ title }}</h2>
 		</div>
 		<form data-filter-form data-post-type="{{ post_type }}">
 			<div class="row">
 				<div class="col-md-4">
-					<h4> Filteren </h4>
-					<input type="text" name="s" class="form-control" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
-					<br>
+					<div class="row mb-4">
+						<div class="col">
+							<h4 class="m-0"> Filteren </h4>
+						</div>
+						<div class="col-auto">
+							<button type="reset" class="btn btn-sm btn-outline-secondary" data-filter-reset>
+								Wis filters
+							</button>
+						</div>
+					</div>
+					
+					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+
 					{{ filter(filters.uren, {
 						label: 'Uren kiezen',
 						type: 'multiselect',
@@ -27,8 +37,13 @@
 					{{ filter(filters.vakgebied) }}
 				</div>
 				<div class="col-md-8">
+					<div id="filter-loading" class="text-center my-4 d-none">
+					  <div class="spinner-border text-secondary" role="status" aria-hidden="true">
+						  laden
+					  </div>
+					</div>
 					<div id="filter-results">
-					{% include 'partials/list.twig' %}
+						{% include 'partials/list.twig' %}
 					</div>
 					{% if current_page < max_num_pages %}
 					  <div class="text-center mt-4">
