@@ -22,7 +22,7 @@
 							</button>
 						</div>
 					</div>
-					
+
 					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 
 					{{ filter(filters.uren, {
@@ -32,19 +32,22 @@
 						limit: 3,
 						more_label: 'Bekijk alle opties'
 						}) }}
-					
+
 					{{ filter(filters.prijs) }}
 					{{ filter(filters.vakgebied) }}
 				</div>
 				<div class="col-md-8">
-					<div id="filter-loading" class="text-center my-4 d-none">
-					  <div class="spinner-border text-secondary" role="status" aria-hidden="true">
-						  laden
+				  <div class="position-relative">
+					<div id="filter-loader" data-filter-loader class="filter-overlay d-none">
+					  <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+					</div>
+					
+					<div id="filter-results">
+					  <div class="row">
+						{% include 'partials/list.twig' %}
 					  </div>
 					</div>
-					<div id="filter-results">
-						{% include 'partials/list.twig' %}
-					</div>
+					
 					{% if current_page < max_num_pages %}
 					  <div class="text-center mt-4">
 						<button type="button" class="btn btn-primary" data-load-more>
@@ -52,6 +55,7 @@
 						</button>
 					  </div>
 					{% endif %}
+				  </div>
 				</div>
 			</div>
 		</form>

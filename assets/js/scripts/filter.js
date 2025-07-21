@@ -4,7 +4,6 @@ export function filter() {
 	const filterForm = document.querySelector('[data-filter-form]');
 	const resultContainer = document.querySelector('#filter-results');
 	const loadMoreBtn = document.querySelector('[data-load-more]');
-	const loader = document.querySelector('[data-filter-loader]');
 
 	if (!filterForm || !resultContainer) return;
 
@@ -22,7 +21,6 @@ export function filter() {
 
 		form.querySelectorAll('input, select, textarea').forEach((el) => {
 			if (!el.name || el.disabled) return;
-
 			const name = el.name.replace(/\[\]$/, '');
 
 			if (el.type === 'checkbox') {
@@ -32,9 +30,7 @@ export function filter() {
 				}
 			} else if (el.tagName === 'SELECT' && el.multiple) {
 				if (!grouped[name]) grouped[name] = [];
-				Array.from(el.selectedOptions).forEach((opt) => {
-					grouped[name].push(opt.value);
-				});
+				Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));
 			} else {
 				grouped[name] = el.value;
 			}
@@ -61,9 +57,21 @@ export function filter() {
 	let currentPage = 1;
 	let maxPages = null;
 
-	const toggleLoader = (visible) => {
-		if (!loader) return;
-		loader.classList.toggle('d-none', !visible);
+	const toggleLoader = (show) => {
+		const results = document.querySelector('#filter-results');
+		if (!results) return;
+	
+		results.classList.toggle('loading', show);
+	};
+
+	const animateItems = () => {
+		const items = resultContainer.querySelectorAll('.fade-in-item');
+		items.forEach((item, index) => {
+			item.classList.remove('visible'); // reset animatie
+			setTimeout(() => {
+				item.classList.add('visible');
+			}, 40 * index);
+		});
 	};
 
 	const initSliders = () => {
@@ -131,12 +139,11 @@ export function filter() {
 					resultContainer.insertAdjacentHTML('beforeend', html);
 				} else {
 					resultContainer.innerHTML = html;
+					animateItems(); // animatie alleen bij init
 				}
 
-				// Herinitialiseer sliders na AJAX-load
 				initSliders();
 
-				// 🔧 maxPages ophalen vanuit nieuwe HTML
 				const el = document.createElement('div');
 				el.innerHTML = html;
 				const maxPagesEl = el.querySelector('[data-max-pages]');
