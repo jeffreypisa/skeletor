@@ -9,7 +9,7 @@ $context['filters']['uren'] = [
   'name'   => 'uren',
   'label'  => 'Uren',
   'type'   => 'checkbox',
-  'source' => 'acf',
+  'source' => 'acf'
 ];
 
 // 🧩 Filter: 'prijs' – ACF range slider

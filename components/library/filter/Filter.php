@@ -1,5 +1,26 @@
 <?php
 
+/**
+ * 🧩 Filter Component – Filter.php
+ *
+ * Hiermee definieer je de datasets (filters) die in Twig worden gerenderd met {{ filter(filterdata) }}.
+ *
+ * ➤ Definitie van een filter in PHP (voorbeeld):
+ *
+ * $context['filters']['uren'] = [
+ *   'name'       => 'uren',                   // input name, ook gebruikt in GET
+ *   'label'      => 'Uren',                   // veldlabel
+ *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range'
+ *   'source'     => 'acf',                    // 'acf' of 'taxonomy'
+ *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
+ *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
+ *
+ *   // Alleen data-logica in PHP (géén presentatie):
+ *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'
+ *   'hide_empty_options' => true,       // verberg opties zonder resultaten
+ * ];
+ */
+ 
 use Timber\Site;
 use Timber\Timber;
 use Twig\TwigFunction;
@@ -15,7 +36,7 @@ class Components_Filter extends Site {
 		return $twig;
 	}
 
-	public function render_filter($data) {
+	public function render_filter($data, $args = []) {
 		if (!is_array($data)) {
 			return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
 		}
@@ -58,7 +79,7 @@ class Components_Filter extends Site {
 			}
 		}
 
-		return Timber::compile('filter.twig', $data);
+		return Timber::compile('filter.twig', array_merge($data, $args));
 	}
 
 	public static function get_options_from_taxonomy($taxonomy, $orderby = 'name') {
@@ -75,6 +96,14 @@ class Components_Filter extends Site {
 		return $options;
 	}
 
+	/**
+	 * Haalt unieke waarden op uit de meta van gepubliceerde posts voor een gegeven ACF-veld.
+	 *
+	 * @param string $meta_key De naam van het ACF-veld in de meta.
+	 * @param string $post_type Het post type (optioneel, default: huidige query).
+	 * @return array Unieke opties als [label => value], gesorteerd op label.
+	 */
+	 
 	public static function get_options_from_meta($meta_key, $post_type = null) {
 		global $wpdb;
 
@@ -105,6 +134,16 @@ class Components_Filter extends Site {
 		return $options;
 	}
 
+	/**
+	 * Bepaalt automatisch het minimum en maximum numerieke waarde voor een ACF-veld.
+	 *
+	 * Wordt gebruikt bij range filters om het bereik te bepalen op basis van bestaande postwaarden.
+	 *
+	 * @param string $meta_key De naam van het ACF-veld.
+	 * @param string $post_type Het post type (optioneel, default: huidige query).
+	 * @return array ['min' => int|float, 'max' => int|float]
+	 */
+	 
 	public static function get_auto_min_max($meta_key, $post_type = null) {
 		global $wpdb;
 

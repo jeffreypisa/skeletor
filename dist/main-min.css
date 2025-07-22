@@ -30775,8 +30775,32 @@ select.btn:hover, select.ff-btn:hover, select.btn:focus, select.ff-btn:focus, se
   transition: opacity 0.3s ease;
 }
 
+.noUi-horizontal {
+  height: 6px;
+}
+
+.noUi-target {
+  background: rgba(0, 0, 0, 0.2);
+  border: 0;
+  box-shadow: none;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 18px;
+  height: 18px;
+  right: -10px;
+  top: -6px;
+  border-radius: 100px;
+  background: #9e38e7;
+  border: 0;
+  box-shadow: none;
+}
+.noUi-horizontal .noUi-handle:before, .noUi-horizontal .noUi-handle:after {
+  display: none;
+}
+
 .noUi-connect {
-  background: #6c757d;
+  background: #9e38e7;
 }
 
 figure figcaption {

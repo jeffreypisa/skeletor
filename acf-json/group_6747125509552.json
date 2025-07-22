@@ -998,6 +998,13 @@
                 "operator": "==",
                 "value": "page"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "filter"
+            }
         ]
     ],
     "menu_order": 0,
@@ -1011,5 +1018,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1747559301
+    "modified": 1753193637
 }

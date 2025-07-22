@@ -26,13 +26,15 @@
 					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 					
 					{{ filter(filters.uren, {
-						label: 'Uren kiezen',
-						type: 'multiselect',
-						show_label: true,
-						limit: 3,
-						more_label: 'Bekijk alle opties'
-						}) }}
-
+					  limit_options: 5,
+					  option_list_expand_label: 'Meer opties',
+					  option_list_collapse_label: 'Minder opties',
+					  placeholder: 'Maak een keuze',
+					  layout: 'horizontal',
+					  show_field_label: true,
+					  show_option_counts: true
+					}) }}
+						
 					{{ filter(filters.prijs) }}
 					{{ filter(filters.vakgebied) }}
 				</div>

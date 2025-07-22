@@ -24,14 +24,17 @@
 				</div>
 			</div>
 		</section>
-		<section class="bg-greylight">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-md-11 col-lg-10 col-xl-9">
-						{{ post.content }}
+		{% if post.content %}
+			<section class="bg-greylight">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-md-11 col-lg-10 col-xl-9">
+							{{ post.content }}
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		{% endif %}
+		{% include 'stroken.twig' %}
 	</article>
 {% endblock %}

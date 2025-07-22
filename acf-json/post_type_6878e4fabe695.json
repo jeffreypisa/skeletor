@@ -1,6 +1,6 @@
 {
     "key": "post_type_6878e4fabe695",
-    "title": "Filters",
+    "title": "Vacatures",
     "menu_order": 0,
     "active": true,
     "post_type": "filter",
@@ -8,10 +8,10 @@
     "import_source": "",
     "import_date": "",
     "labels": {
-        "name": "Filters",
-        "singular_name": "Filter",
-        "menu_name": "Filter",
-        "all_items": "Alle Filter",
+        "name": "Vacatures",
+        "singular_name": "vacature",
+        "menu_name": "Vacatures",
+        "all_items": "Alle Vacatures",
         "edit_item": "filter bewerken",
         "view_item": "filter bekijken",
         "view_items": "Filter bekijken",
@@ -72,7 +72,7 @@
     ],
     "taxonomies": "",
     "has_archive": true,
-    "has_archive_slug": "",
+    "has_archive_slug": "vacatures",
     "rewrite": {
         "permalink_rewrite": "post_type_key",
         "with_front": "1",
@@ -85,5 +85,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "",
-    "modified": 1752753545
+    "modified": 1753193611
 }
