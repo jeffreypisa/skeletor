@@ -40,17 +40,17 @@ class Components_Filter extends Site {
 		if (!is_array($data)) {
 			return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
 		}
-
+	
 		$name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
 		$type   = $data['type'] ?? 'select';
 		$source = $data['source'] ?? 'acf';
-
+	
 		if (!$name || !in_array($source, ['acf', 'taxonomy'])) {
 			return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
 		}
-
+	
 		$data['name'] = $name;
-
+	
 		// ⛏ Verwerk waarde vanuit $_GET
 		if ($type === 'range') {
 			$data['value'] = [
@@ -64,12 +64,12 @@ class Components_Filter extends Site {
 				$data['value'] = $_GET[$name] ?? null;
 			}
 		}
-
+	
 		// 🧮 Automatische range min/max ophalen als niet opgegeven
 		if ($type === 'range' && (!isset($data['options']['min']) || !isset($data['options']['max']))) {
 			$data['options'] = self::get_auto_min_max($name);
 		}
-
+	
 		// 🧾 Opties ophalen indien leeg
 		if (!isset($data['options']) || empty($data['options'])) {
 			if ($source === 'acf') {
@@ -78,7 +78,12 @@ class Components_Filter extends Site {
 				$data['options'] = self::get_options_from_taxonomy($name);
 			}
 		}
-
+	
+		// 🧮 Tellingen ophalen als gewenst
+		if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
+			$args['option_counts'] = self::get_option_counts(['self' => $data], 'self');
+		}
+	
 		return Timber::compile('filter.twig', array_merge($data, $args));
 	}
 
@@ -232,5 +237,50 @@ class Components_Filter extends Site {
 		if (!empty($tax_query))  $args['tax_query']  = $tax_query;
 
 		return $args;
+	}
+	
+	/**
+	 * Berekent per optie hoeveel posts eraan voldoen met de huidige filters actief (behalve zichzelf).
+	 *
+	 * @param array $filters Alle filters (inclusief de actieve waardes)
+	 * @param string $filter_key De filter waarvoor je wil tellen
+	 * @return array ['optiewaarde' => count]
+	 */
+	public static function get_option_counts($filters, $filter_key) {
+		$filter = $filters[$filter_key] ?? null;
+		if (!$filter || empty($filter['options'])) return [];
+	
+		$counts = [];
+		$options = $filter['options'];
+		$type    = $filter['type'] ?? 'select';
+		$source  = $filter['source'] ?? 'acf';
+		$name    = $filter['name'] ?? $filter_key;
+	
+		// Verwijder dit filter zelf tijdelijk uit de actieve filters
+		$other_filters = $filters;
+		unset($other_filters[$filter_key]);
+		$args = self::build_query_from_filters($other_filters);
+	
+		foreach ($options as $label => $val) {
+			// Voeg deze specifieke optie tijdelijk toe
+			$test_filters = $other_filters;
+			$test_filters[$filter_key] = [
+				'type'   => $type,
+				'source' => $source,
+				'name'   => $name,
+				'value'  => $val,
+			];
+	
+			$count_args = self::build_query_from_filters($test_filters);
+			$count_args['post_type'] = get_post_type() ?: 'post';
+			$count_args['posts_per_page'] = 1;
+			$count_args['fields'] = 'ids';
+	
+			$query = new WP_Query($count_args);
+			$counts[$val] = $query->found_posts;
+			wp_reset_postdata();
+		}
+	
+		return $counts;
 	}
 }

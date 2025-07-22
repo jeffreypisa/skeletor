@@ -30,7 +30,7 @@ Beschikbare presentatie-opties:
 {% set type = type ?? data.type ?? '' %}
 {% set label = label ?? data.label ?? '' %}
 {% set options = options ?? data.options ?? {} %}
-{% set placeholder = placeholder ?? 'Maak een keuze' %}
+{% set placeholder = placeholder ?? data.placeholder ?? 'Maak een keuze' %}
 {% set show_field_label = show_field_label ?? true %}
 {% set show_option_counts = show_option_counts ?? false %}
 {% set limit_options = limit_options ?? 0 %}
@@ -47,7 +47,7 @@ Beschikbare presentatie-opties:
     <label class="form-label">{{ label }}</label>
   {% endif %}
 
-  {# Select dropdown #}
+  {# Single Select #}
   {% if type == 'select' %}
     <select name="{{ name }}" class="form-select">
       <option value="">{{ placeholder }}</option>
@@ -56,35 +56,37 @@ Beschikbare presentatie-opties:
       {% endfor %}
     </select>
 
-  {# Checkbox or radio buttons #}
+  {# Radio of Checkbox #}
   {% elseif type == 'checkbox' or type == 'radio' %}
-      {% set selected = value is iterable ? value : [value] %}
-      {% set input_type = type %}
-      {% set option_wrapper_attrs = [] %}
-      {% set limited = limit_options > 0 %} {# ✅ FIX toegevoegd #}
-      {% if limit_options %}
-        {% set option_wrapper_attrs = option_wrapper_attrs|merge([
-          'data-limit-options="' ~ limit_options ~ '"',
-          'data-expand-label="' ~ option_list_expand_label ~ '"',
-          'data-collapse-label="' ~ option_list_collapse_label ~ '"'
-        ]) %}
-      {% endif %}
-<div class="form-check-group" {{ option_wrapper_attrs|join(' ')|raw }}>{% for key, val in options %}
-          <div class="form-check">
-            <input class="form-check-input" type="{{ input_type }}" name="{{ name }}{{ input_type == 'checkbox' ? '[]' : '' }}" id="{{ name }}-{{ loop.index }}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
-            <label class="form-check-label" for="{{ name }}-{{ loop.index }}">
-              {{ key }}{% if show_option_counts and counts[val] is defined %} ({{ counts[val] }}){% endif %}
-            </label>
-          </div>
-        {% endfor %}
-        {% if limited %}
-          <button type="button" class="btn btn-link filter-toggle-btn d-none"></button>
-        {% endif %}
-      </div>
+    {% set selected = value is iterable ? value : [value] %}
+    <div
+      class="filter-options-wrapper"
+      data-limit-options="{{ limit_options }}"
+      data-expand-label="{{ option_list_expand_label }}"
+      data-collapse-label="{{ option_list_collapse_label }}"
+    >
+      {% for key, val in options %}
+        <div class="form-check">
+          <label class="form-check-label">
+            <input
+              class="form-check-input"
+              type="{{ type }}"
+              name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}"
+              value="{{ val }}"
+              {% if val in selected %}checked{% endif %}
+            >
+            {{ key }}
+            {% if show_option_counts and option_counts[val] is defined %}
+              ({{ option_counts[val] }})
+            {% endif %}
+          </label>
+        </div>
+      {% endfor %}
 
+      <button type="button" class="btn btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
+    </div>
 
-
-  {# Range inputs with slider #}
+  {# Range Slider #}
   {% elseif type == 'range' %}
     <div class="range-wrapper">
       <div class="d-flex gap-2 align-items-center mb-3">
@@ -94,7 +96,9 @@ Beschikbare presentatie-opties:
                value="{{ value.min ?? options.min }}"
                min="{{ options.min }}"
                max="{{ options.max }}">
+
         <span class="text-muted">tot</span>
+
         <input type="number"
                class="form-control"
                name="max_{{ acf_field }}"
