@@ -10,26 +10,28 @@
 			<h2>{{ title }}</h2>
 		</div>
 		<form data-filter-form data-post-type="{{ post_type }}">
-			<div class="row">
+			<div class="row mb-4">
 				<div class="col-md-4">
 					Home / Vacatures
 				</div>
 				<div class="col-md-8">
 					<div class="row">
 						<div class="col-sm">
-							xx resultaten gevonden
+							{% if total is defined %}
+								<p id="result-count" data-result-count>{{ total }} resultaten gevonden</p>
+							{% endif %}
 						</div>
 						<div class="col-sm-auto">
 							<div class="mb-3">
 								{{ sort_select(filters.sort, {
 									layout: 'horizontal',
-								   options: {
-									 'relevance': 'Relevantie',
-									 'date_desc': 'Nieuwste eerst',
-									 'date_asc': 'Oudste eerst',
-									 'title_asc': 'Titel A-Z',
-									 'title_desc': 'Titel Z-A'
-								   }
+									options: {
+										'relevance': 'Relevantie',
+										'date_desc': 'Nieuwste eerst',
+										'date_asc': 'Oudste eerst',
+										'title_asc': 'Titel A-Z',
+										'title_desc': 'Titel Z-A'
+									}
 								 }) }}
 							</div>
 						</div>
@@ -52,13 +54,13 @@
 					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 					
 					{{ filter(filters.uren, {
-					  limit_options: 5,
-					  option_list_expand_label: 'Meer opties',
-					  option_list_collapse_label: 'Minder opties',
-					  placeholder: 'Maak een keuze',
-					  layout: 'horizontal',
-					  show_field_label: true,
-					  show_option_counts: true
+						limit_options: 5,
+						option_list_expand_label: 'Meer opties',
+						option_list_collapse_label: 'Minder opties',
+						layout: 'horizontal',
+						show_field_label: true,
+						label: 'Alle uren',
+						show_option_counts: true
 					}) }}
 						
 					{{ filter(filters.prijs) }}

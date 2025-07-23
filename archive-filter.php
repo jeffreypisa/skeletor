@@ -41,7 +41,11 @@ $query_args = array_merge(
 );
 
 $query = new WP_Query($query_args);
+
+$context['total'] = $query->found_posts;
+
 $context['posts'] = Timber::get_posts($query);
+
 $context['current_page'] = get_query_var('paged') ?: 1;
 $context['max_num_pages'] = $query->max_num_pages;
 

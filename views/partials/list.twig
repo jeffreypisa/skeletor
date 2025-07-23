@@ -1,8 +1,3 @@
-{% if total %}
-	<p class="text-muted mb-3">
-		{{ total }} resultaat{{ total == 1 ? '' : 'en' }} gevonden
-	</p>
-{% endif %}
 {% if posts|length %}
 	<div class="row">
 		{% for item in posts %}
@@ -15,3 +10,4 @@
 {% else %}
 	<p>Geen resultaten gevonden.</p>
 {% endif %}
+<div id="result-count" style="display: none;">{{ total }} resultaten gevonden</div>

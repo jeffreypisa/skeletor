@@ -160,9 +160,9 @@ export function filter() {
 	const fetchFilteredResults = (append = false) => {
 		const data = serializeForm(filterForm);
 		data.append('paged', currentPage);
-
+	
 		toggleLoader(true);
-
+	
 		fetch(ajaxUrl, {
 			method: 'POST',
 			body: data
@@ -170,24 +170,32 @@ export function filter() {
 			.then(res => res.text())
 			.then(html => {
 				toggleLoader(false);
-
+	
 				if (append) {
 					resultContainer.insertAdjacentHTML('beforeend', html);
 				} else {
 					resultContainer.innerHTML = html;
-					animateItems(); // animatie alleen bij init
+					animateItems();
 				}
-
+	
 				initSliders();
 				initOptionToggles();
-
+	
 				const el = document.createElement('div');
 				el.innerHTML = html;
+	
+				// ⛳️ Aantal pagina's bepalen voor "Laad meer"
 				const maxPagesEl = el.querySelector('[data-max-pages]');
 				maxPages = maxPagesEl ? parseInt(maxPagesEl.dataset.maxPages || 1, 10) : 1;
-
 				if (loadMoreBtn) {
 					loadMoreBtn.classList.toggle('d-none', currentPage >= maxPages);
+				}
+	
+				// ✅ Externe result count bijwerken zonder te crashen
+				const ajaxResultCount = el.querySelector('#result-count');
+				const externalResultCount = document.querySelector('[data-result-count]');
+				if (ajaxResultCount && externalResultCount) {
+					externalResultCount.innerHTML = ajaxResultCount.innerHTML;
 				}
 			});
 	};

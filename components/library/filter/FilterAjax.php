@@ -156,6 +156,7 @@ class Components_FilterAjax {
 			'posts'     => $posts,
 			'max_pages' => $query->max_num_pages,
 			'filters'   => $filters,
+			'total'     => $query->found_posts, // <== voeg dit hier toe
 		];
 
 		// ✅ DEBUG
