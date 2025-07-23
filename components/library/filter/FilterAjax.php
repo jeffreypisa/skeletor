@@ -65,14 +65,41 @@ class Components_FilterAjax {
 			}
 		}
 
+		// 🔀 Sorteeropties bepalen
+		$sort = sanitize_text_field($filters['sort'] ?? '');
+		$orderby = 'date';
+		$order   = 'DESC';
+		
+		switch ($sort) {
+			case 'date_asc':
+				$orderby = 'date';
+				$order   = 'ASC';
+				break;
+			case 'date_desc':
+				$orderby = 'date';
+				$order   = 'DESC';
+				break;
+			case 'title_asc':
+				$orderby = 'title';
+				$order   = 'ASC';
+				break;
+			case 'title_desc':
+				$orderby = 'title';
+				$order   = 'DESC';
+				break;
+			default:
+				// default is al 'date' DESC
+				break;
+		}
+		
 		// 🔍 WP_Query args
 		$args = [
 			'post_type'      => $post_type,
 			'post_status'    => 'publish',
 			'posts_per_page' => 12,
 			'paged'          => $paged,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
+			'orderby'        => $orderby,
+			'order'          => $order,
 			'meta_query'     => $meta_query,
 		];
 		
@@ -85,7 +112,7 @@ class Components_FilterAjax {
 		}
 
 		// 🔧 Filters doorgeven aan build_query_from_filters, excl. technische of al verwerkte keys
-		$exclude_keys = ['action', 'paged', 'post_type', 's'];
+		$exclude_keys = ['action', 'paged', 'post_type', 's', 'sort'];
 		$filter_definitions = [];
 
 		foreach ($filters as $key => $val) {
@@ -119,12 +146,16 @@ class Components_FilterAjax {
 		}
 
 		$query = new WP_Query($args);
+		
+		$context['total'] = $query->found_posts;
+		
 		$posts = Timber::get_posts($query);
-
+		
 		$context = [
 			'items'     => $posts,
 			'posts'     => $posts,
 			'max_pages' => $query->max_num_pages,
+			'filters'   => $filters,
 		];
 
 		// ✅ DEBUG
