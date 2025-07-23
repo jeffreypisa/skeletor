@@ -21,14 +21,16 @@
 						</div>
 						<div class="col-sm-auto">
 							<div class="mb-3">
-								<label for="sort" class="form-label">Sorteer op:</label>
-								<select name="sort" id="sort" class="form-select">
-									<option value="" {{ filters.sort is not defined or filters.sort == '' ? 'selected' }}>Relevantie</option>
-									<option value="date_desc" {{ filters.sort == 'date_desc' ? 'selected' }}>Nieuwste eerst</option>
-									<option value="date_asc" {{ filters.sort == 'date_asc' ? 'selected' }}>Oudste eerst</option>
-									<option value="title_asc" {{ filters.sort == 'title_asc' ? 'selected' }}>Titel A-Z</option>
-									<option value="title_desc" {{ filters.sort == 'title_desc' ? 'selected' }}>Titel Z-A</option>
-								</select>
+								{{ sort_select(filters.sort, {
+									layout: 'horizontal',
+								   options: {
+									 'relevance': 'Relevantie',
+									 'date_desc': 'Nieuwste eerst',
+									 'date_asc': 'Oudste eerst',
+									 'title_asc': 'Titel A-Z',
+									 'title_desc': 'Titel Z-A'
+								   }
+								 }) }}
 							</div>
 						</div>
 					</div>

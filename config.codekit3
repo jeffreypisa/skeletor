@@ -1875,6 +1875,14 @@
       "oAP" : "\/components\/library\/filter\/FilterAjax.php",
       "oF" : 0
     },
+    "\/components\/library\/filter\/sortselect.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/components\/library\/filter\/sortselect.twig",
+      "oF" : 0
+    },
     "\/components\/library\/heading\/Heading.php" : {
       "cB" : 0,
       "ft" : 8192,

@@ -33,6 +33,7 @@ class Components_Filter extends Site {
 
 	public function add_to_twig($twig) {
 		$twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
+		$twig->addFunction(new TwigFunction('sort_select', [$this, 'render_sort_select'], ['is_safe' => ['html']]));
 		return $twig;
 	}
 
@@ -85,6 +86,19 @@ class Components_Filter extends Site {
 		}
 	
 		return Timber::compile('filter.twig', array_merge($data, $args));
+	}
+	
+	public function render_sort_select($value = '', $args = []) {
+		$defaults = [
+			'id'    => 'sort',
+			'name'  => 'sort',
+			'label' => 'Sorteer op:',
+			'value' => $value,
+		];
+	
+		$data = array_merge($defaults, $args);
+	
+		return Timber::compile('sortselect.twig', $data);
 	}
 
 	public static function get_options_from_taxonomy($taxonomy, $orderby = 'name') {
