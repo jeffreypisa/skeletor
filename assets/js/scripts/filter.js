@@ -223,18 +223,32 @@ export function filter() {
 		resetBtn.addEventListener('click', () => {
 			currentPage = 1;
 			if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
-
-			setTimeout(() => {
-				document.quoptions.erySelectorAll('[data-slider]').forEach(sliderEl => {
-					const min = parseFloat(sliderEl.dataset.min);
-					const max = parseFloat(sliderEl.dataset.max);
-					if (sliderEl.noUiSlider) {
-						sliderEl.noUiSlider.set([min, max]);
-					}
-				});
-				if (searchInput) searchInput.value = '';
-				fetchFilteredResults(false);
-			}, 50);
+		
+			// Reset het formulier naar de standaardwaarden
+			filterForm.reset();
+		
+			// Reset sliders visueel én de bijbehorende inputvelden
+			document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+				const min = parseFloat(sliderEl.dataset.min);
+				const max = parseFloat(sliderEl.dataset.max);
+		
+				const parent = sliderEl.closest('.range-wrapper') || sliderEl.parentElement;
+				const inputMin = parent.querySelector(`input[name^="min_"]`);
+				const inputMax = parent.querySelector(`input[name^="max_"]`);
+		
+				if (inputMin) inputMin.value = min;
+				if (inputMax) inputMax.value = max;
+		
+				if (sliderEl.noUiSlider) {
+					sliderEl.noUiSlider.set([min, max]);
+				}
+			});
+		
+			// Reset zoekveld expliciet (om debounce goed te triggeren)
+			if (searchInput) searchInput.value = '';
+		
+			// Resultaten verversen
+			fetchFilteredResults(false);
 		});
 	}
 
