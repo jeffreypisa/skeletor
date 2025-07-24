@@ -1,5 +1,5 @@
-<a href="{{ fn('get_permalink', item.ID) }}" class="tease" id="tease-{{ item.id }}">
-	<div class="card p-4 border-0 bg-orangelight">
+<a href="{{ fn('get_permalink', item.ID) }}" class="tease d-flex h-100" id="tease-{{ item.id }}">
+	<div class="card p-4 border-0 bg-orangelight flex-fill">
 		{{ image(get_thumbnail(item.ID), {
 			figure_class: 'rounded bg-orange',
 			img_class: 'rounded',
@@ -20,11 +20,11 @@
 			{{ text(item.post_excerpt|strip_html, {
 				class: 'd-none d-xl-block'
 			}) }}
-			Uren: {{ item.uren }}
-			Prijs: {{ item.prijs }}
-			{% set vakgebied = item.get_terms('vakgebied')|first %}
-			{% if vakgebied %}
-			 	 Vakgebied: {{ vakgebied }}
+			<div class="btn btn-sm btn-outline-dark"> {{ item.uren }} uur </div>
+			<div class="btn btn-sm btn-outline-dark"> €{{ item.prijs }} </div>
+			{% set vakgebieden = item.terms('vakgebied') %}
+			{% if vakgebieden %}
+			  <div class="btn btn-sm btn-outline-dark"> {{ vakgebieden|map(t => t.name)|join(', ') }}</div>
 			{% endif %}
 		</div>
 		<i class="fal fa-arrow-right text-right"></i>

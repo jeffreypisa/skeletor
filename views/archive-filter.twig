@@ -6,23 +6,20 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-		<div class="mb-5">
-			<h2>{{ title }}</h2>
-		</div>
 		<form data-filter-form data-post-type="{{ post_type }}">
-			<div class="row mb-4">
-				<div class="col-md-4">
+			<div class="row mb-5">
+				<div class="col-md-4 d-flex align-items-center">
 					Home / Vacatures
 				</div>
-				<div class="col-md-8">
-					<div class="row">
-						<div class="col-sm">
-							{% if total is defined %}
-								<p id="result-count" data-result-count>{{ total }} resultaten gevonden</p>
-							{% endif %}
-						</div>
-						<div class="col-sm-auto">
-							<div class="mb-3">
+				<div class="col-md-8 d-flex align-items-center">
+					<div class="w-100">
+						<div class="row">
+							<div class="col-sm d-flex align-items-center">
+								{% if total is defined %}
+									<p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+								{% endif %}
+							</div>
+							<div class="col-sm-auto d-flex align-items-center">
 								{{ sort_select(filters.sort, {
 									layout: 'horizontal',
 									options: {
@@ -32,7 +29,7 @@
 										'title_asc': 'Titel A-Z',
 										'title_desc': 'Titel Z-A'
 									}
-								 }) }}
+								}) }}
 							</div>
 						</div>
 					</div>
@@ -42,10 +39,10 @@
 				<div class="col-md-4">
 					<div class="row mb-4">
 						<div class="col">
-							<h4 class="m-0"> Filteren </h4>
+							<h4 class="m-0"> {{ title }} </h4>
 						</div>
 						<div class="col-auto">
-							<button type="reset" class="btn btn-sm btn-outline-secondary" data-filter-reset>
+							<button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
 								Reset filters
 							</button>
 						</div>
@@ -57,14 +54,18 @@
 						limit_options: 5,
 						option_list_expand_label: 'Meer opties',
 						option_list_collapse_label: 'Minder opties',
-						layout: 'horizontal',
+						layout: 'vertical',
 						show_field_label: true,
 						label: 'Alle uren',
 						show_option_counts: true
 					}) }}
 						
 					{{ filter(filters.prijs) }}
-					{{ filter(filters.vakgebied) }}
+					
+					{{ filter(filters.vakgebied, {
+						label: 'Vakgebied',
+						show_option_counts: true
+					}) }}
 				</div>
 				<div class="col-md-8">
 				  <div class="position-relative">
@@ -73,14 +74,14 @@
 					</div>
 					
 					<div id="filter-results">
-					  <div class="row">
+
 						{% include 'partials/list.twig' %}
-					  </div>
+
 					</div>
 					
 					{% if current_page < max_num_pages %}
 					  <div class="text-center mt-4">
-						<button type="button" class="btn btn-primary" data-load-more>
+						<button type="button" class="btn btn-outline-dark" data-load-more>
 						  Laad meer
 						</button>
 					  </div>

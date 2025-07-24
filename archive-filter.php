@@ -24,7 +24,7 @@ $context['filters']['prijs'] = [
 $context['filters']['vakgebied'] = [
   'name'   => 'vakgebied',
   'label'  => 'Vakgebied',
-  'type'   => 'select',
+  'type'   => 'checkbox',
   'source' => 'taxonomy',
 ];
 
