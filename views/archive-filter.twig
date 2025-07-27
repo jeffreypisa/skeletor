@@ -64,7 +64,10 @@
 					
 					{{ filter(filters.vakgebied, {
 						label: 'Vakgebied',
-						show_option_counts: true
+						show_field_label: true,
+						  layout: 'horizontal',                 
+						  button_class: 'btn-outline-dark',  
+						  all_label: 'Alle'
 					}) }}
 				</div>
 				<div class="col-md-8">

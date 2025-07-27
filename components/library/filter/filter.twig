@@ -38,80 +38,86 @@ Beschikbare presentatie-opties:
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 
 {% if not name %}
-  <pre>❌ Ongeldige filterdata ontvangen
+<pre>❌ Ongeldige filterdata ontvangen
   {{ dump(data) }}</pre>
 {% endif %}
 
 <div class="mb-4">
-  {% if label and show_field_label %}
-    <label class="form-label">{{ label }}</label>
-  {% endif %}
+	{% if label and show_field_label %}
+	<label class="form-label">{{ label }}</label>
+	{% endif %}
 
-  {# Single Select #}
-  {% if type == 'select' %}
-    <select name="{{ name }}" class="form-select">
-      <option value="">{{ placeholder }}</option>
-      {% for key, val in options %}
-        <option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
-      {% endfor %}
-    </select>
+	{# Single Select #}
+	{% if type == 'select' %}
+	<select name="{{ name }}" class="form-select">
+		<option value="">{{ placeholder }}</option>
+		{% for key, val in options %}
+		<option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
+		{% endfor %}
+	</select>
 
-  {# Radio of Checkbox #}
-  {% elseif type == 'checkbox' or type == 'radio' %}
-    {% set selected = value is iterable ? value : [value] %}
-    <div
-      class="filter-options-wrapper"
-      data-limit-options="{{ limit_options }}"
-      data-expand-label="{{ option_list_expand_label }}"
-      data-collapse-label="{{ option_list_collapse_label }}"
-    >
-      {% for key, val in options %}
-        <div class="form-check">
-          <label class="form-check-label">
-            <input
-              class="form-check-input"
-              type="{{ type }}"
-              name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}"
-              value="{{ val }}"
-              {% if val in selected %}checked{% endif %}
-            >
-            {{ key }}
+	{# Radio of Checkbox #}
+	{% elseif type == 'checkbox' or type == 'radio' %}
+	{% set selected = value is iterable ? value : [value] %}
+	<div class="filter-options-wrapper" data-limit-options="{{ limit_options }}" data-expand-label="{{ option_list_expand_label }}" data-collapse-label="{{ option_list_collapse_label }}">
+		{% for key, val in options %}
+		<div class="form-check">
+			<label class="form-check-label">
+				<input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
+				{{ key }}
             {% if show_option_counts and option_counts[val] is defined %}
               ({{ option_counts[val] }})
             {% endif %}
-          </label>
-        </div>
-      {% endfor %}
+			</label>
+		</div>
+		{% endfor %}
 
-      <button type="button" class="btn btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
-    </div>
+		<button type="button" class="btn btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
+	</div>
 
-  {# Range Slider #}
-  {% elseif type == 'range' %}
-    <div class="range-wrapper">
-      <div class="d-flex gap-2 align-items-center mb-3">
-        <input type="number"
-               class="form-control"
-               name="min_{{ acf_field }}"
-               value="{{ value.min ?? options.min }}"
-               min="{{ options.min }}"
-               max="{{ options.max }}">
+	{# Buttons #}
+	{% elseif type == 'buttons' %}
+	{% set layout = layout ?? 'horizontal' %}
+	{% set button_class = button_class ?? 'btn-outline-primary' %}
+	{% set all_label = all_label ?? 'Alles' %}
+	{% set show_all_button = show_all_button ?? true %}
+	
+	<div class="filter-buttons {{ layout == 'vertical'
+	? 'd-grid gap-2'
+	: 'd-flex flex-wrap gap-2' }}" role="group">
+	  {% if show_all_button %}
+		<button type="button"
+		  class="btn {{ button_class }}{{ active_value == '' ? ' active' }}"
+		  data-filter-button
+		  data-value="">
+		  {{ all_label }}
+		</button>
+	  {% endif %}
+	  {% for key, label in options %}
+		<button type="button"
+		  class="btn {{ button_class }}{{ active_value == key ? ' active' }}"
+		  data-filter-button
+		  data-value="{{ key }}">
+		  {{ label }}
+		</button>
+	  {% endfor %}
+	</div>
+	<input type="hidden" name="{{ name }}" value="{{ active_value }}">
 
-        <span class="text-muted">tot</span>
 
-        <input type="number"
-               class="form-control"
-               name="max_{{ acf_field }}"
-               value="{{ value.max ?? options.max }}"
-               min="{{ options.min }}"
-               max="{{ options.max }}">
-      </div>
+	{# Range Slider #}
+	{% elseif type == 'range' %}
+	<div class="range-wrapper">
+		<div class="d-flex gap-2 align-items-center mb-3">
+			<input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
 
-      <div class="range-slider"
-           data-slider
-           data-min="{{ options.min }}"
-           data-max="{{ options.max }}">
-      </div>
-    </div>
-  {% endif %}
+			<span class="text-muted">tot</span>
+
+			<input type="number" class="form-control" name="max_{{ acf_field }}" value="{{ value.max ?? options.max }}" min="{{ options.min }}" max="{{ options.max }}">
+		</div>
+
+		<div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
+		</div>
+	</div>
+	{% endif %}
 </div>

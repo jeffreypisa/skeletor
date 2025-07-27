@@ -109,7 +109,47 @@ export function filter() {
 			});
 		});
 	};
-
+	
+	const initFilterButtons = () => {
+		document.querySelectorAll('.filter-buttons').forEach(group => {
+			const hiddenInput = group.nextElementSibling;
+			if (!hiddenInput || hiddenInput.type !== 'hidden') return;
+	
+			const buttons = group.querySelectorAll('[data-filter-button]');
+	
+			// Verwijder alle active eerst
+			buttons.forEach(btn => btn.classList.remove('active'));
+	
+			// Lees huidige waarde uit input
+			let currentValue = hiddenInput.value || '';
+	
+			// Zoek knop met die waarde
+			let activeBtn = Array.from(buttons).find(btn => btn.dataset.value === currentValue);
+	
+			// Als niks gevonden, neem de 'alle'-knop (lege value)
+			if (!activeBtn) {
+				activeBtn = Array.from(buttons).find(btn => btn.dataset.value === '');
+				if (activeBtn) {
+					hiddenInput.value = ''; // reset de waarde expliciet
+				}
+			}
+	
+			if (activeBtn) {
+				activeBtn.classList.add('active');
+			}
+	
+			// Event listeners
+			buttons.forEach(btn => {
+				btn.addEventListener('click', () => {
+					buttons.forEach(b => b.classList.remove('active'));
+					btn.classList.add('active');
+					hiddenInput.value = btn.dataset.value;
+					filterForm.dispatchEvent(new Event('change', { bubbles: true }));
+				});
+			});
+		});
+	};
+	
 	const initSliders = () => {
 		document.querySelectorAll('[data-slider]').forEach(sliderEl => {
 			if (sliderEl.classList.contains('noUi-target')) return;
@@ -180,6 +220,7 @@ export function filter() {
 	
 				initSliders();
 				initOptionToggles();
+				initFilterButtons();
 	
 				const el = document.createElement('div');
 				el.innerHTML = html;
@@ -232,8 +273,18 @@ export function filter() {
 			currentPage = 1;
 			if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
 		
-			// Reset het formulier naar de standaardwaarden
 			filterForm.reset();
+			
+			// Reset expliciet de hidden inputs van button-filters
+			document.querySelectorAll('.filter-buttons').forEach(group => {
+				const hiddenInput = group.nextElementSibling;
+				if (hiddenInput && hiddenInput.type === 'hidden') {
+					hiddenInput.value = ''; // leegmaken = 'Alles'
+				}
+			});
+			
+			// Init opnieuw zodat juiste knop actief is
+			initFilterButtons();
 		
 			// Reset sliders visueel én de bijbehorende inputvelden
 			document.querySelectorAll('[data-slider]').forEach(sliderEl => {
@@ -262,4 +313,5 @@ export function filter() {
 
 	initSliders();
 	initOptionToggles();
+	initFilterButtons();
 }
