@@ -1,40 +1,76 @@
 <?php
 /**
- * The template for displaying Archive pages.
+ * Template voor het tonen van archiefpagina's.
  *
- * Used to display archive-type pages if nothing more specific matches a query.
- * For example, puts together date-based pages if no date.php file exists.
+ * Wordt gebruikt wanneer er geen specifiekere template (zoals date.php) bestaat.
+ * Dit bestand bouwt de context op voor Timber en voegt filters toe die worden
+ * gebruikt in combinatie met AJAX filtering.
  *
- * Learn more: http://codex.wordpress.org/Template_Hierarchy
- *
- * Methods for TimberHelper can be found in the /lib sub-directory
- *
- * @package  WordPress
- * @subpackage  Timber
- * @since   Timber 0.2
+ * @package    WordPress
+ * @subpackage Timber
+ * @since      Timber 0.2
  */
 
-$templates = array( 'archive.twig', 'index.twig' );
+$context = Timber::context(); // Basiscontext vanuit Timber, bevat globale data (site, user, etc.)
 
-$context = Timber::context();
+$post_type = get_post_type(); 
+$context['post_type'] = $post_type; // Nodig voor AJAX (JS moet weten welk post_type gefilterd wordt)
+$context['filters'] = [];
 
-$context['title'] = 'Archive';
-if ( is_day() ) {
-	$context['title'] = 'Archive: ' . get_the_date( 'D M Y' );
-} elseif ( is_month() ) {
-	$context['title'] = 'Archive: ' . get_the_date( 'M Y' );
-} elseif ( is_year() ) {
-	$context['title'] = 'Archive: ' . get_the_date( 'Y' );
-} elseif ( is_tag() ) {
-	$context['title'] = single_tag_title( '', false );
-} elseif ( is_category() ) {
-	$context['title'] = single_cat_title( '', false );
-	array_unshift( $templates, 'archive-' . get_query_var( 'cat' ) . '.twig' );
-} elseif ( is_post_type_archive() ) {
-	$context['title'] = post_type_archive_title( '', false );
-	array_unshift( $templates, 'archive-' . get_post_type() . '.twig' );
-}
+/**
+ * 🧩 Filters
+ *
+ * Hiermee definieer je de datasets (filters) die in Twig worden gerenderd met {{ filter(filterdata) }}.
+ *
+ * ➤ Definitie van een filter in PHP (voorbeeld):
+ *
+ * $context['filters']['uren'] = [
+ *   'name'       => 'uren',                   // input name, ook gebruikt in GET
+ *   'label'      => 'Uren',                   // veldlabel
+ *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range'
+ *   'source'     => 'acf',                    // 'acf' of 'taxonomy'
+ *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
+ *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
+ *
+ *   // Alleen data-logica in PHP (géén presentatie):
+ *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'
+ *   'hide_empty_options' => true,       // verberg opties zonder resultaten
+ * ];
+ */
+  
+/**
+ * 🔎 Query bouwen
+ * We beginnen met een standaard WP_Query voor het huidige post_type.
+ */
+$query_args = [
+  'post_type'      => $post_type,
+  'posts_per_page' => 12,                     // Resultaten per pagina
+  'paged'          => get_query_var('paged') ?: 1, // Huidige paginanummer (voor paginatie)
+];
 
-$context['posts'] = Timber::get_posts();
+/**
+ * Voeg filter-voorwaarden toe aan de query
+ * Components_Filter::build_query_from_filters() converteert de gedefinieerde filters
+ * naar geldige WP_Query arguments (zoals meta_query, tax_query, etc.)
+ */
+$query_args = array_merge(
+  $query_args,
+  Components_Filter::build_query_from_filters($context['filters'])
+);
 
-Timber::render( $templates, $context );
+$query = new WP_Query($query_args); // Voer de query uit
+
+// Zet queryresultaten in de context voor Timber/Twig
+$context['total']         = $query->found_posts;         // Totaal aantal gevonden posts
+$context['posts']         = Timber::get_posts($query);   // Lijst met Timber\Post objecten
+$context['current_page']  = get_query_var('paged') ?: 1; // Huidige paginanummer
+$context['max_num_pages'] = $query->max_num_pages;       // Aantal pagina's voor paginatie
+
+// Titel van de archiefpagina (bv. post type naam)
+$context['title'] = post_type_archive_title('', false);
+
+// Zet de filters ook apart in de context voor AJAX
+$context['ajax_filters'] = $context['filters'];
+
+// Render de Twig-template voor de archiefpagina
+Timber::render('archive.twig', $context);

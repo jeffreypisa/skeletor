@@ -9,14 +9,14 @@
 		<form data-filter-form data-post-type="{{ post_type }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
-					Home / Vacatures
+					<a href="{{ site.link }}">Home </a> <span> / </span> {{ post_type|capitalize }}
 				</div>
 				<div class="col-md-8 d-flex align-items-center">
 					<div class="w-100">
 						<div class="row">
 							<div class="col-sm d-flex align-items-center">
 								{% if total is defined %}
-									<p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+								<p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
 								{% endif %}
 							</div>
 							<div class="col-sm-auto d-flex align-items-center">
@@ -49,7 +49,7 @@
 					</div>
 
 					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
-					
+
 					{{ filter(filters.uren, {
 						limit_options: 5,
 						option_list_expand_label: 'Meer opties',
@@ -59,9 +59,9 @@
 						label: 'Alle uren',
 						show_option_counts: true
 					}) }}
-						
+
 					{{ filter(filters.prijs) }}
-					
+
 					{{ filter(filters.vakgebied, {
 						label: 'Vakgebied',
 						show_field_label: true,
@@ -71,25 +71,25 @@
 					}) }}
 				</div>
 				<div class="col-md-8">
-				  <div class="position-relative">
-					<div id="filter-loader" data-filter-loader class="filter-overlay d-none">
-					  <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
-					</div>
-					
-					<div id="filter-results">
+					<div class="position-relative">
+						<div id="filter-loader" data-filter-loader class="filter-overlay d-none">
+							<div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+						</div>
 
-						{% include 'partials/list.twig' %}
+						<div id="filter-results">
 
+							{% include 'partials/list.twig' %}
+
+						</div>
+
+						{% if current_page < max_num_pages %}
+						<div class="text-center mt-4">
+							<button type="button" class="btn btn-outline-dark" data-load-more>
+								Laad meer
+							</button>
+						</div>
+						{% endif %}
 					</div>
-					
-					{% if current_page < max_num_pages %}
-					  <div class="text-center mt-4">
-						<button type="button" class="btn btn-outline-dark" data-load-more>
-						  Laad meer
-						</button>
-					  </div>
-					{% endif %}
-				  </div>
 				</div>
 			</div>
 		</form>

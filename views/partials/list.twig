@@ -1,8 +1,12 @@
 {% if posts|length %}
 	<div class="row">
 		{% for item in posts %}
-			<div class="col-lg-6 col-xxl-4 mb-4 fade-in-item visible">
-				{% include "partials/tease-filter.twig"  %}
+			<div class="col-md-6 col-xxl-4 mb-4 fade-in-item visible">
+				{# Probeer eerst tease-[post_type].twig, anders tease.twig #}
+				{% include [
+					'partials/tease-' ~ item.post_type ~ '.twig',
+					'partials/tease.twig'
+				] with { item: item } %}
 			</div>
 		{% endfor %}
 	</div>
@@ -10,4 +14,5 @@
 {% else %}
 	<p>Geen resultaten gevonden.</p>
 {% endif %}
+
 <div id="result-count" style="display: none;">{{ total }} resultaten gevonden</div>

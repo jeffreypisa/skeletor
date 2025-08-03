@@ -2,7 +2,8 @@
 
 $context = Timber::context();
 $post_type = get_post_type();
-$context['post_type'] = $post_type; // nodig voor JS/ajax
+$context['post_type'] = $post_type;
+$context['filters'] = $context['filters'] ?? [];
 
 // 🧩 Filter: 'uren' – ACF radio
 $context['filters']['uren'] = [
