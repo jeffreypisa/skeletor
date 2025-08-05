@@ -37,6 +37,30 @@ $context['filters'] = [];
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
  * ];
  */
+ 
+ // 🧩 Filter: 'uren' – ACF radio
+ $context['filters']['uren'] = [
+   'name'   => 'uren',
+   'label'  => 'Uren',
+   'type'   => 'checkbox',
+   'source' => 'acf'
+ ];
+ 
+ // 🧩 Filter: 'prijs' – ACF range slider
+ $context['filters']['prijs'] = [
+   'name'   => 'prijs',
+   'label'  => 'Prijs',
+   'type'   => 'range',
+   'source' => 'acf',
+ ];
+ 
+ // 🧩 Filter: 'vakgebied' – Taxonomy select
+ $context['filters']['vakgebied'] = [
+   'name'   => 'vakgebied',
+   'label'  => 'Vakgebied',
+   'type'   => 'buttons',
+   'source' => 'taxonomy',
+ ];
   
 /**
  * 🔎 Query bouwen
@@ -73,4 +97,7 @@ $context['title'] = post_type_archive_title('', false);
 $context['ajax_filters'] = $context['filters'];
 
 // Render de Twig-template voor de archiefpagina
-Timber::render('archive.twig', $context);
+Timber::render([
+    'archive-' . $post_type . '.twig', // Specifiek voor post type (bv. archive-filter.twig)
+    'archive.twig',                    // Fallback als bovenstaande niet bestaat
+], $context);

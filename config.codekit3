@@ -113,14 +113,6 @@
       "oO" : 1,
       "oS" : 1
     },
-    "\/archive-filter.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/archive-filter.php",
-      "oF" : 0
-    },
     "\/archive-product.php" : {
       "cB" : 0,
       "ft" : 8192,
@@ -18973,14 +18965,6 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/archive-filter.twig",
-      "oF" : 0
-    },
-    "\/views\/archive-nieuws.twig" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/views\/archive-nieuws.twig",
       "oF" : 0
     },
     "\/views\/archive.twig" : {
