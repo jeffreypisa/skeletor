@@ -10391,6 +10391,33 @@ textarea.form-control-lg {
   --bs-pagination-border-radius: var(--bs-border-radius-sm);
 }
 
+.badge {
+  --bs-badge-padding-x: 0.65em;
+  --bs-badge-padding-y: 0.35em;
+  --bs-badge-font-size: 0.75em;
+  --bs-badge-font-weight: 700;
+  --bs-badge-color: #fff;
+  --bs-badge-border-radius: var(--bs-border-radius);
+  display: inline-block;
+  padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+  line-height: 1;
+  color: var(--bs-badge-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: var(--bs-badge-border-radius);
+}
+.badge:empty {
+  display: none;
+}
+
+.btn .badge, .ff-btn .badge {
+  position: relative;
+  top: -1px;
+}
+
 /*!
  * Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Commercial License)

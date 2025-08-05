@@ -21,12 +21,12 @@
 				class: 'd-none d-xl-block'
 			}) }}
 			<div class="d-flex flex-wrap gap-1">
-			<div class="btn btn-sm btn-outline-dark"> {{ item.uren }} uur </div>
-			<div class="btn btn-sm btn-outline-dark"> €{{ item.prijs }} </div>
-			{% set vakgebieden = item.terms('vakgebied') %}
-			{% if vakgebieden %}
-			  <div class="btn btn-sm btn-outline-dark"> {{ vakgebieden|map(t => t.name)|join(', ') }}</div>
-			{% endif %}
+				<span class="badge text-bg-dark"> {{ item.uren }} uur </span>
+				<span class="badge text-bg-dark"> €{{ item.prijs }} </span>
+				{% set vakgebieden = item.terms('vakgebied') %}
+				{% if vakgebieden %}
+				<span class="badge text-bg-dark"> {{ vakgebieden|map(t => t.name)|join(', ') }}</span>
+				{% endif %}
 			</div>
 		</div>
 		<i class="fal fa-arrow-right text-right"></i>
