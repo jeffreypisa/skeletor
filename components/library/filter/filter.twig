@@ -36,6 +36,8 @@ Beschikbare presentatie-opties:
 {% set limit_options = limit_options ?? 0 %}
 {% set option_list_expand_label = option_list_expand_label ?? 'Toon meer' %}
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
+{% set prefix = prefix ?? data.prefix ?? '' %}
+{% set suffix = suffix ?? data.suffix ?? '' %}
 
 {% if not name %}
 <pre>❌ Ongeldige filterdata ontvangen
@@ -107,17 +109,25 @@ Beschikbare presentatie-opties:
 
 	{# Range Slider #}
 	{% elseif type == 'range' %}
-	<div class="range-wrapper">
-		<div class="d-flex gap-2 align-items-center mb-3">
-			<input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
+       <div class="range-wrapper">
+               <div class="d-flex gap-2 align-items-center mb-3">
+                       <div class="input-group flex-fill">
+                               {% if prefix %}<span class="input-group-text">{{ prefix }}</span>{% endif %}
+                               <input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
+                               {% if suffix %}<span class="input-group-text">{{ suffix }}</span>{% endif %}
+                       </div>
 
-			<span class="text-muted">tot</span>
+                       <span class="text-muted">tot</span>
 
-			<input type="number" class="form-control" name="max_{{ acf_field }}" value="{{ value.max ?? options.max }}" min="{{ options.min }}" max="{{ options.max }}">
-		</div>
+                       <div class="input-group flex-fill">
+                               {% if prefix %}<span class="input-group-text">{{ prefix }}</span>{% endif %}
+                               <input type="number" class="form-control" name="max_{{ acf_field }}" value="{{ value.max ?? options.max }}" min="{{ options.min }}" max="{{ options.max }}">
+                               {% if suffix %}<span class="input-group-text">{{ suffix }}</span>{% endif %}
+                       </div>
+               </div>
 
-		<div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
-		</div>
-	</div>
-	{% endif %}
+               <div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
+               </div>
+       </div>
+       {% endif %}
 </div>
