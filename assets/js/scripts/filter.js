@@ -1,4 +1,5 @@
 import noUiSlider from 'nouislider';
+import { swiperInit } from '../plugins/swiperInit.js';
 
 export function filter() {
 	const filterForm = document.querySelector('[data-filter-form]');
@@ -222,9 +223,10 @@ export function filter() {
 					animateItems();
 				}
 	
-				initSliders();
-				initOptionToggles();
-				initFilterButtons();
+                                initSliders();
+                                initOptionToggles();
+                                initFilterButtons();
+                                swiperInit();
 	
 				const el = document.createElement('div');
 				el.innerHTML = html;
