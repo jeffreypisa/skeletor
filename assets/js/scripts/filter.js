@@ -1,11 +1,18 @@
 import noUiSlider from 'nouislider';
 
 export function filter() {
-	const filterForm = document.querySelector('[data-filter-form]');
-	const resultContainer = document.querySelector('#filter-results');
-	const loadMoreBtn = document.querySelector('[data-load-more]');
+        const filterForm = document.querySelector('[data-filter-form]');
+        const resultContainer = document.querySelector('#filter-results');
+        const loadMoreBtn = document.querySelector('[data-load-more]');
 
-	if (!filterForm || !resultContainer) return;
+        if (!filterForm || !resultContainer) return;
+
+        let filterDefs = {};
+        try {
+                filterDefs = JSON.parse(filterForm.dataset.filterDefs || '{}');
+        } catch (e) {
+                filterDefs = {};
+        }
 
 	const debounce = (fn, delay) => {
 		let timeout;
@@ -49,10 +56,11 @@ export function filter() {
 			}
 		}
 
-		data.append('action', 'ajax_filter');
-		data.append('post_type', form.dataset.postType || 'post');
-		return data;
-	};
+                data.append('action', 'ajax_filter');
+                data.append('post_type', form.dataset.postType || 'post');
+                data.append('filter_defs', JSON.stringify(filterDefs));
+                return data;
+        };
 
 	const ajaxUrl = (typeof window.ajaxurl !== 'undefined' && window.ajaxurl.url)
 		? window.ajaxurl.url

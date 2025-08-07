@@ -2,15 +2,20 @@
 
 class Components_FilterAjax {
 	public static function handle() {
-		$filters = $_POST;
-	
-		if (!is_array($filters)) {
-			echo '❌ Ongeldige filterdata ontvangen';
-			wp_die();
-		}
-	
-		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
-		$paged     = (int)($filters['paged'] ?? 1);
+                $filters = $_POST;
+                $filter_defs = json_decode(stripslashes($_POST['filter_defs'] ?? ''), true);
+
+                if (!is_array($filters)) {
+                        echo '❌ Ongeldige filterdata ontvangen';
+                        wp_die();
+                }
+
+                if (!is_array($filter_defs)) {
+                        $filter_defs = [];
+                }
+
+                $post_type = sanitize_text_field($filters['post_type'] ?? 'post');
+                $paged     = (int)($filters['paged'] ?? 1);
 	
 		// 🔍 Meta filters
 		$meta_query = [];
@@ -111,25 +116,8 @@ class Components_FilterAjax {
 			$args['tax_query'] = $tax_query;
 		}
 
-		// 🔧 Filters doorgeven aan build_query_from_filters, excl. technische of al verwerkte keys
-		$exclude_keys = ['action', 'paged', 'post_type', 's', 'sort'];
-		$filter_definitions = [];
-
-		foreach ($filters as $key => $val) {
-			if (in_array($key, $exclude_keys, true)) continue;
-
-			if (taxonomy_exists($key)) continue;
-
-			if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_')) continue;
-
-			$filter_definitions[$key] = [
-				'acf_field' => $key,
-				'value'     => $filters[$key]
-			];
-		}
-
-		// 🧠 Combineer custom filter-output met bestaande query args
-		$custom_args = Components_Filter::build_query_from_filters($filter_definitions);
+                // 🧠 Combineer custom filter-output met bestaande query args
+                $custom_args = Components_Filter::build_query_from_filters($filter_defs);
 
 		if (!empty($custom_args['meta_query'])) {
 			$args['meta_query'] = array_merge($args['meta_query'] ?? [], $custom_args['meta_query']);
@@ -160,33 +148,8 @@ class Components_FilterAjax {
                 ];
 
                 // 🧮 Option counts for checkbox filters
-                $filter_defs_for_counts = [
-                        'uren' => [
-                                'name'    => 'uren',
-                                'type'    => 'checkbox',
-                                'source'  => 'acf',
-                                'options' => Components_Filter::get_options_from_meta('uren'),
-                                'value'   => $filters['uren'] ?? null,
-                        ],
-                        'prijs' => [
-                                'name'   => 'prijs',
-                                'type'   => 'range',
-                                'source' => 'acf',
-                                'value'  => [
-                                        'min' => $filters['min_prijs'] ?? null,
-                                        'max' => $filters['max_prijs'] ?? null,
-                                ],
-                        ],
-                        'vakgebied' => [
-                                'name'   => 'vakgebied',
-                                'type'   => 'buttons',
-                                'source' => 'taxonomy',
-                                'value'  => $filters['vakgebied'] ?? null,
-                        ],
-                ];
-
                 $context['option_counts'] = [
-                        'uren' => Components_Filter::get_option_counts($filter_defs_for_counts, 'uren'),
+                        'uren' => Components_Filter::get_option_counts($filter_defs, 'uren'),
                 ];
 
 		// ✅ DEBUG

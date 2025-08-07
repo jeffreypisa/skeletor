@@ -6,7 +6,7 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-		<form data-filter-form data-post-type="{{ post_type }}">
+                <form data-filter-form data-post-type="{{ post_type }}" data-filter-defs="{{ ajax_filters|json_encode }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
 					<a href="{{ site.link }}">Home </a> / {{ post_type|capitalize }}
