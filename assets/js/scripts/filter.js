@@ -78,37 +78,41 @@ export function filter() {
 		});
 	};
 	
-	const initOptionToggles = () => {
-		requestAnimationFrame(() => {
-			document.querySelectorAll('[data-limit-options]').forEach(wrapper => {
-				const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
-				const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
-				const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
-	
-				const options = wrapper.querySelectorAll('.form-check');
-				const toggleBtn = wrapper.querySelector('.filter-toggle-btn');
-	
-				if (!toggleBtn || limit <= 0 || options.length <= limit) return;
-	
-				// Init: verberg opties boven limit
-				options.forEach((opt, index) => {
-					opt.style.display = (index < limit) ? '' : 'none';
-				});
-	
-				let expanded = false;
-	
-				toggleBtn.textContent = expandLabel;
-				toggleBtn.classList.remove('d-none');
-				toggleBtn.addEventListener('click', () => {
-					expanded = !expanded;
-					options.forEach((opt, index) => {
-						opt.style.display = (expanded || index < limit) ? '' : 'none';
-					});
-					toggleBtn.textContent = expanded ? collapseLabel : expandLabel;
-				});
-			});
-		});
-	};
+        const initOptionToggles = () => {
+                requestAnimationFrame(() => {
+                        document.querySelectorAll('[data-limit-options]').forEach(wrapper => {
+                                const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
+                                const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
+                                const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
+
+                                const options = wrapper.querySelectorAll('.form-check');
+                                const toggleBtn = wrapper.querySelector('.filter-toggle-btn');
+
+                                if (!toggleBtn || limit <= 0 || options.length <= limit) return;
+
+                                const setState = (isExpanded) => {
+                                        wrapper.dataset.expanded = isExpanded ? 'true' : 'false';
+                                        options.forEach((opt, index) => {
+                                                opt.style.display = (isExpanded || index < limit) ? '' : 'none';
+                                        });
+                                        toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
+                                };
+
+                                const expanded = wrapper.dataset.expanded === 'true';
+                                setState(expanded);
+
+                                toggleBtn.classList.remove('d-none');
+
+                                if (!toggleBtn.dataset.initialized) {
+                                        toggleBtn.addEventListener('click', () => {
+                                                const isExpanded = wrapper.dataset.expanded === 'true';
+                                                setState(!isExpanded);
+                                        });
+                                        toggleBtn.dataset.initialized = 'true';
+                                }
+                        });
+                });
+        };
 	
 	const initFilterButtons = () => {
 		document.querySelectorAll('.filter-buttons').forEach(group => {
