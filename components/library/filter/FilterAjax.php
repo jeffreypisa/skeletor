@@ -2,8 +2,8 @@
 
 class Components_FilterAjax {
 	public static function handle() {
-                $filters = $_POST;
-                $filter_defs = json_decode(stripslashes($_POST['filter_defs'] ?? ''), true);
+               $filters = $_POST;
+               $filter_defs = json_decode(wp_unslash($_POST['filter_defs'] ?? ''), true);
 
                 if (!is_array($filters)) {
                         echo '❌ Ongeldige filterdata ontvangen';
@@ -108,9 +108,9 @@ class Components_FilterAjax {
 			'meta_query'     => $meta_query,
 		];
 		
-		if (!empty($filters['s'])) {
-			$args['s'] = sanitize_text_field($filters['s']);
-		}
+               if (!empty($filters['s'])) {
+                       $args['s'] = sanitize_text_field(wp_unslash($filters['s']));
+               }
 		
 		if (!empty($tax_query)) {
 			$args['tax_query'] = $tax_query;
@@ -149,7 +149,7 @@ class Components_FilterAjax {
 
                // 🧮 Option counts for checkbox filters
                $context['option_counts'] = [];
-               $search = sanitize_text_field($filters['s'] ?? '');
+               $search = sanitize_text_field(wp_unslash($filters['s'] ?? ''));
                foreach ($filter_defs as $key => $def) {
                        $context['option_counts'][$key] = Components_Filter::get_option_counts(
                                $filter_defs,
