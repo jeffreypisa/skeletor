@@ -151,13 +151,43 @@ class Components_FilterAjax {
 		
 		$posts = Timber::get_posts($query);
 		
-		$context = [
-			'items'     => $posts,
-			'posts'     => $posts,
-			'max_pages' => $query->max_num_pages,
-			'filters'   => $filters,
-			'total'     => $query->found_posts, // <== voeg dit hier toe
-		];
+                $context = [
+                        'items'     => $posts,
+                        'posts'     => $posts,
+                        'max_pages' => $query->max_num_pages,
+                        'filters'   => $filters,
+                        'total'     => $query->found_posts, // <== voeg dit hier toe
+                ];
+
+                // 🧮 Option counts for checkbox filters
+                $filter_defs_for_counts = [
+                        'uren' => [
+                                'name'    => 'uren',
+                                'type'    => 'checkbox',
+                                'source'  => 'acf',
+                                'options' => Components_Filter::get_options_from_meta('uren'),
+                                'value'   => $filters['uren'] ?? null,
+                        ],
+                        'prijs' => [
+                                'name'   => 'prijs',
+                                'type'   => 'range',
+                                'source' => 'acf',
+                                'value'  => [
+                                        'min' => $filters['min_prijs'] ?? null,
+                                        'max' => $filters['max_prijs'] ?? null,
+                                ],
+                        ],
+                        'vakgebied' => [
+                                'name'   => 'vakgebied',
+                                'type'   => 'buttons',
+                                'source' => 'taxonomy',
+                                'value'  => $filters['vakgebied'] ?? null,
+                        ],
+                ];
+
+                $context['option_counts'] = [
+                        'uren' => Components_Filter::get_option_counts($filter_defs_for_counts, 'uren'),
+                ];
 
 		// ✅ DEBUG
 		// echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';

@@ -233,11 +233,30 @@ export function filter() {
 				}
 	
 				// ✅ Externe result count bijwerken zonder te crashen
-				const ajaxResultCount = el.querySelector('#result-count');
-				const externalResultCount = document.querySelector('[data-result-count]');
-				if (ajaxResultCount && externalResultCount) {
-					externalResultCount.innerHTML = ajaxResultCount.innerHTML;
-				}
+                                const ajaxResultCount = el.querySelector('#result-count');
+                                const externalResultCount = document.querySelector('[data-result-count]');
+                                if (ajaxResultCount && externalResultCount) {
+                                        externalResultCount.innerHTML = ajaxResultCount.innerHTML;
+                                }
+
+                                // 🔢 Update option counts for filters
+                                const optionCountsEl = el.querySelector('[data-option-counts]');
+                                if (optionCountsEl) {
+                                        let counts = {};
+                                        try {
+                                                counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
+                                        } catch (e) {
+                                                counts = {};
+                                        }
+                                        Object.entries(counts).forEach(([filterName, values]) => {
+                                                Object.entries(values).forEach(([val, count]) => {
+                                                        const target = document.querySelector(`[data-option-count="${filterName}:${val}"]`);
+                                                        if (target) {
+                                                                target.textContent = count;
+                                                        }
+                                                });
+                                        });
+                                }
 			});
 	};
 

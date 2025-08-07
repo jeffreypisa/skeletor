@@ -64,9 +64,9 @@ Beschikbare presentatie-opties:
 		<div class="form-check">
 			<label class="form-check-label">
 				<input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
-				{{ key }}
+                                {{ key }}
             {% if show_option_counts and option_counts[val] is defined %}
-              ({{ option_counts[val] }})
+              (<span class="filter-option-count" data-option-count="{{ name }}:{{ val }}">{{ option_counts[val] }}</span>)
             {% endif %}
 			</label>
 		</div>

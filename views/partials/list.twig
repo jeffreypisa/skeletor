@@ -16,3 +16,6 @@
 {% endif %}
 
 <div id="result-count" style="display: none;">{{ total }} resultaten gevonden</div>
+{% if option_counts is defined %}
+<div data-option-counts="{{ option_counts|json_encode }}" hidden></div>
+{% endif %}
