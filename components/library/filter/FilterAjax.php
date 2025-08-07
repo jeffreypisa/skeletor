@@ -148,9 +148,10 @@ class Components_FilterAjax {
                 ];
 
                 // 🧮 Option counts for checkbox filters
-                $context['option_counts'] = [
-                        'uren' => Components_Filter::get_option_counts($filter_defs, 'uren'),
-                ];
+                $context['option_counts'] = [];
+                foreach ($filter_defs as $key => $def) {
+                        $context['option_counts'][$key] = Components_Filter::get_option_counts($filter_defs, $key);
+                }
 
 		// ✅ DEBUG
 		// echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';

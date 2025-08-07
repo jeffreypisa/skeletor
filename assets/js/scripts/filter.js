@@ -22,39 +22,53 @@ export function filter() {
 		};
 	};
 
-	const serializeForm = (form) => {
-		const data = new FormData();
-		const grouped = {};
+        const serializeForm = (form) => {
+                const data = new FormData();
+                const grouped = {};
 
-		form.querySelectorAll('input, select, textarea').forEach((el) => {
-			if (!el.name || el.disabled) return;
-			const name = el.name.replace(/\[\]$/, '');
+                form.querySelectorAll('input, select, textarea').forEach((el) => {
+                        if (!el.name || el.disabled) return;
+                        const name = el.name.replace(/\[\]$/, '');
 
-			if (el.type === 'checkbox') {
-				if (el.checked) {
-					if (!grouped[name]) grouped[name] = [];
-					grouped[name].push(el.value);
-				}
-			} else if (el.type === 'radio') {
-				if (el.checked) {
-					grouped[name] = el.value;
-				}
-			} else if (el.tagName === 'SELECT' && el.multiple) {
-				if (!grouped[name]) grouped[name] = [];
-				Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));
-			} else {
-				grouped[name] = el.value;
-			}
-		});
+                        if (el.type === 'checkbox') {
+                                if (el.checked) {
+                                        if (!grouped[name]) grouped[name] = [];
+                                        grouped[name].push(el.value);
+                                }
+                        } else if (el.type === 'radio') {
+                                if (el.checked) {
+                                        grouped[name] = el.value;
+                                }
+                        } else if (el.tagName === 'SELECT' && el.multiple) {
+                                if (!grouped[name]) grouped[name] = [];
+                                Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));
+                        } else {
+                                grouped[name] = el.value;
+                        }
+                });
 
-		for (const key in grouped) {
-			const value = grouped[key];
-			if (Array.isArray(value)) {
-				value.forEach(v => data.append(`${key}[]`, v));
-			} else {
-				data.append(key, value);
-			}
-		}
+                // Update filter definitions with current values
+                Object.keys(filterDefs).forEach((key) => {
+                        const def = filterDefs[key] || {};
+                        const name = def.name || key;
+                        if (def.type === 'range') {
+                                def.value = {
+                                        min: grouped[`min_${name}`] || '',
+                                        max: grouped[`max_${name}`] || ''
+                                };
+                        } else {
+                                def.value = grouped[name] !== undefined ? grouped[name] : null;
+                        }
+                });
+
+                for (const key in grouped) {
+                        const value = grouped[key];
+                        if (Array.isArray(value)) {
+                                value.forEach(v => data.append(`${key}[]`, v));
+                        } else {
+                                data.append(key, value);
+                        }
+                }
 
                 data.append('action', 'ajax_filter');
                 data.append('post_type', form.dataset.postType || 'post');
