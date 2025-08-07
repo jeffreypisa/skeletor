@@ -38,28 +38,13 @@ $context['filters'] = [];
  * ];
  */
  
- // 🧩 Filter: 'uren' – ACF radio
- $context['filters']['uren'] = [
-   'name'   => 'uren',
-   'label'  => 'Uren',
-   'type'   => 'checkbox',
-   'source' => 'acf'
- ];
- 
- // 🧩 Filter: 'prijs' – ACF range slider
- $context['filters']['prijs'] = [
-   'name'   => 'prijs',
-   'label'  => 'Prijs',
-   'type'   => 'range',
-   'source' => 'acf',
- ];
- 
- // 🧩 Filter: 'vakgebied' – Taxonomy select
- $context['filters']['vakgebied'] = [
-   'name'   => 'vakgebied',
-   'label'  => 'Vakgebied',
-   'type'   => 'buttons',
+ // 🧩 Filter: 'provincies'
+ $context['filters']['provincies'] = [
+   'name'   => 'provincies',
+   'label'  => 'Provincies',
+   'type'   => 'select',
    'source' => 'taxonomy',
+   'hide_empty_options' => true
  ];
   
 /**

@@ -1,0 +1,44 @@
+<a href="{{ fn('get_permalink', item.ID) }}" class="tease" id="tease-{{ item.id }}">
+	<div class="card p-4 border-0 bg-orangelight">
+		{{ image(get_thumbnail(item.ID), {
+			figure_class: 'rounded bg-orange',
+			img_class: 'rounded',
+			ratio: '16x9',
+			object_fit: 'cover',
+			lazyload: true,
+			show_caption: false,
+			caption_position: 'on-right'
+		}) }}
+		<div data-mh>
+			{{ heading(item.post_title, {
+				level: 'h3',
+				class: 'h4 mt-0 mb-0'
+			}) }}
+			{{ text(item.post_date|date('d F Y'), {
+				max_length: 100
+			}) }}
+			{{ text(item.post_excerpt|strip_html, {
+				class: 'd-none d-xl-block'
+			}) }}
+			{{ swiper(item.afbeeldingen, {
+				   slidesPerView: 1,
+				   spaceBetween: 20,
+				   arrows: true,
+				   dots: false,
+				   loop: false,
+				   overflowHidden: false,
+				   nextSlideVisible: true,
+				   class: '',
+				   arrowPrevIcon: 'fa-chevron-left',
+				   arrowNextIcon: 'fa-chevron-right',
+				   arrowIconStyle: 'light',
+				   breakpoints: {
+					   768: { slidesPerView: 2, spaceBetween: 10 }
+				   }
+			   }, 'partials/tease-image.twig') }}
+			
+		</div>
+		<i class="fal fa-arrow-right text-right"></i>
+	</div>
+</a>
+

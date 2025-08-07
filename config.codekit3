@@ -25,18 +25,10 @@
       "oAP" : "\/404.php",
       "oF" : 0
     },
-    "\/acf-json\/group_688e274c1fa44.json" : {
+    "\/acf-json\/group_6894af439f320.json" : {
       "ft" : 524288,
       "oA" : 1,
-      "oAP" : "\/acf-json\/group_688e274c1fa44-min.json",
-      "oF" : 0,
-      "oO" : 1,
-      "oS" : 1
-    },
-    "\/acf-json\/group_6878e5916e26d.json" : {
-      "ft" : 524288,
-      "oA" : 1,
-      "oAP" : "\/acf-json\/group_6878e5916e26d-min.json",
+      "oAP" : "\/acf-json\/group_6894af439f320-min.json",
       "oF" : 0,
       "oO" : 1,
       "oS" : 1
@@ -73,34 +65,18 @@
       "oO" : 1,
       "oS" : 1
     },
-    "\/acf-json\/post_type_67ae4117d2a32.json" : {
+    "\/acf-json\/post_type_6894ae34ce338.json" : {
       "ft" : 524288,
       "oA" : 1,
-      "oAP" : "\/acf-json\/post_type_67ae4117d2a32-min.json",
+      "oAP" : "\/acf-json\/post_type_6894ae34ce338-min.json",
       "oF" : 0,
       "oO" : 1,
       "oS" : 1
     },
-    "\/acf-json\/post_type_6878e4fabe695.json" : {
+    "\/acf-json\/taxonomy_6894ae788b893.json" : {
       "ft" : 524288,
       "oA" : 1,
-      "oAP" : "\/acf-json\/post_type_6878e4fabe695-min.json",
-      "oF" : 0,
-      "oO" : 1,
-      "oS" : 1
-    },
-    "\/acf-json\/taxonomy_688e27693a6d5.json" : {
-      "ft" : 524288,
-      "oA" : 1,
-      "oAP" : "\/acf-json\/taxonomy_688e27693a6d5-min.json",
-      "oF" : 0,
-      "oO" : 1,
-      "oS" : 1
-    },
-    "\/acf-json\/taxonomy_6878e55c6cc9d.json" : {
-      "ft" : 524288,
-      "oA" : 1,
-      "oAP" : "\/acf-json\/taxonomy_6878e55c6cc9d-min.json",
+      "oAP" : "\/acf-json\/taxonomy_6894ae788b893-min.json",
       "oF" : 0,
       "oO" : 1,
       "oS" : 1
@@ -18967,6 +18943,14 @@
       "oAP" : "\/views\/archive-filter.twig",
       "oF" : 0
     },
+    "\/views\/archive-locaties.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/archive-locaties.twig",
+      "oF" : 0
+    },
     "\/views\/archive.twig" : {
       "cB" : 0,
       "ft" : 8192,
@@ -19101,6 +19085,22 @@
       "hM" : 0,
       "oA" : 0,
       "oAP" : "\/views\/partials\/tease-filter.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/tease-image.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease-image.twig",
+      "oF" : 0
+    },
+    "\/views\/partials\/tease-locaties.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease-locaties.twig",
       "oF" : 0
     },
     "\/views\/partials\/tease-testimonial.twig" : {

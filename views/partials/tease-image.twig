@@ -1,0 +1,9 @@
+<figure class="gallery-item">
+  <img src="{{ item.url }}" 
+	   alt="{{ item.alt|default('') }}"
+	   width="{{ item.width }}"
+	   height="{{ item.height }}">
+  {% if item.caption %}
+	<figcaption>{{ item.caption }}</figcaption>
+  {% endif %}
+</figure>

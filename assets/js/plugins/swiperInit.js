@@ -5,7 +5,7 @@ export function swiperInit() {
 	const swiperContainers = document.querySelectorAll('.js-swiper');
 
 	if (!swiperContainers.length) {
-		console.warn('Geen Swiper-containers gevonden. Initisatie overgeslagen.');
+
 		return;
 	}
 
