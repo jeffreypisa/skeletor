@@ -147,11 +147,19 @@ class Components_FilterAjax {
                         'total'     => $query->found_posts, // <== voeg dit hier toe
                 ];
 
-                // 🧮 Option counts for checkbox filters
-                $context['option_counts'] = [];
-                foreach ($filter_defs as $key => $def) {
-                        $context['option_counts'][$key] = Components_Filter::get_option_counts($filter_defs, $key);
-                }
+               // 🧮 Option counts for checkbox filters
+               $context['option_counts'] = [];
+               $search = sanitize_text_field($filters['s'] ?? '');
+               foreach ($filter_defs as $key => $def) {
+                       $context['option_counts'][$key] = Components_Filter::get_option_counts(
+                               $filter_defs,
+                               $key,
+                               [
+                                       's'         => $search,
+                                       'post_type' => $post_type,
+                               ]
+                       );
+               }
 
 		// ✅ DEBUG
 		// echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
