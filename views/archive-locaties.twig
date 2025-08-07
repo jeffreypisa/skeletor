@@ -51,7 +51,16 @@
 					<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 
 
-					{{ filter(filters.provincies) }}
+
+					{{ filter(filters.provincies, {
+						limit_options: 1,
+						option_list_expand_label: 'Meer opties',
+						option_list_collapse_label: 'Minder opties',
+						layout: 'vertical',
+						show_field_label: true,
+						label: 'Alle uren',
+						show_option_counts: true
+					}) }}
 				</div>
 				<div class="col-md-8">
 					<div class="position-relative">

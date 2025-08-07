@@ -1394,14 +1394,14 @@
     },
     "\/assets\/scss\/main.scss" : {
       "aP" : 0,
-      "bl" : 0,
+      "bl" : 1,
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
-      "ma" : 1,
+      "ma" : 0,
       "oA" : 0,
-      "oAP" : "\/dist\/main-min.css",
-      "oF" : 2,
+      "oAP" : "\/assets\/scss\/main.css",
+      "oF" : 0,
       "oS" : 1,
       "pg" : 0
     },

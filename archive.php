@@ -42,7 +42,7 @@ $context['filters'] = [];
  $context['filters']['provincies'] = [
    'name'   => 'provincies',
    'label'  => 'Provincies',
-   'type'   => 'select',
+   'type'   => 'checkbox',
    'source' => 'taxonomy',
    'hide_empty_options' => true
  ];
