@@ -76,7 +76,11 @@ class Components_Filter extends Site {
 			if ($source === 'acf') {
 				$data['options'] = self::get_options_from_meta($name);
 			} elseif ($source === 'taxonomy') {
-				$data['options'] = self::get_options_from_taxonomy($name);
+				$data['options'] = self::get_options_from_taxonomy(
+					$name,
+					'name',
+					$data['hide_empty_options'] ?? false
+				);
 			}
 		}
 	
@@ -101,13 +105,17 @@ class Components_Filter extends Site {
 		return Timber::compile('sortselect.twig', $data);
 	}
 
-	public static function get_options_from_taxonomy($taxonomy, $orderby = 'name') {
+	public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false) {
 		$terms = get_terms([
 			'taxonomy'   => $taxonomy,
-			'hide_empty' => false,
+			'hide_empty' => filter_var(
+				$hide_empty,
+				FILTER_VALIDATE_BOOLEAN,
+				FILTER_NULL_ON_FAILURE
+			) ?? false,
 			'orderby'    => $orderby,
 		]);
-
+	
 		$options = [];
 		foreach ($terms as $term) {
 			$options[$term->name] = $term->slug;
