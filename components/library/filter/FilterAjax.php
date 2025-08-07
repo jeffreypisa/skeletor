@@ -9,8 +9,9 @@ class Components_FilterAjax {
 			wp_die();
 		}
 	
-		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
-		$paged     = (int)($filters['paged'] ?? 1);
+                $post_type      = sanitize_text_field($filters['post_type'] ?? 'post');
+                $paged          = (int)($filters['paged'] ?? 1);
+                $posts_per_page = max(1, (int)($filters['posts_per_page'] ?? 12));
 	
 		// 🔍 Meta filters
 		$meta_query = [];
@@ -93,15 +94,15 @@ class Components_FilterAjax {
 		}
 		
 		// 🔍 WP_Query args
-		$args = [
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => 12,
-			'paged'          => $paged,
-			'orderby'        => $orderby,
-			'order'          => $order,
-			'meta_query'     => $meta_query,
-		];
+                $args = [
+                        'post_type'      => $post_type,
+                        'post_status'    => 'publish',
+                        'posts_per_page' => $posts_per_page,
+                        'paged'          => $paged,
+                        'orderby'        => $orderby,
+                        'order'          => $order,
+                        'meta_query'     => $meta_query,
+                ];
 		
 		if (!empty($filters['s'])) {
 			$args['s'] = sanitize_text_field($filters['s']);
