@@ -50,8 +50,28 @@ Definieer filters in PHP en render ze in Twig:
 }) }}
 {{ sort_select(filters.sort) }}
 ```
-- Ondersteunt `select`, `checkbox`, `radio`, `buttons` en `range`.
+- Ondersteunt `select`, `checkbox`, `radio`, `buttons`, `range`, `date` en `date_range`.
 - `sort_select` voegt een standaard sorteermenu toe.
+
+Voor een datumfilter kan gefilterd worden op publicatiedatum (`source: 'post_date'`) of op een ACF-datumveld (`source: 'acf'`).
+
+```php
+// Enkel datumveld (ACF)
+$context['filters']['event_date'] = [
+  'name'   => 'event_date',
+  'label'  => 'Datum',
+  'type'   => 'date',
+  'source' => 'acf',
+];
+
+// Van/tot op publicatiedatum
+$context['filters']['published'] = [
+  'name'   => 'post_date',
+  'label'  => 'Periode',
+  'type'   => 'date_range',
+  'source' => 'post_date',
+];
+```
 
 ### Heading
 ```twig

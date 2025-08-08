@@ -1,4 +1,6 @@
 import noUiSlider from 'nouislider';
+import flatpickr from 'flatpickr';
+import rangePlugin from 'flatpickr/dist/plugins/rangePlugin.js';
 import { swiperInit } from '../plugins/swiperInit.js';
 
 export function filter() {
@@ -115,10 +117,10 @@ export function filter() {
                 });
         };
 	
-	const initFilterButtons = () => {
-		document.querySelectorAll('.filter-buttons').forEach(group => {
-			const hiddenInput = group.nextElementSibling;
-			if (!hiddenInput || hiddenInput.type !== 'hidden') return;
+        const initFilterButtons = () => {
+                document.querySelectorAll('.filter-buttons').forEach(group => {
+                        const hiddenInput = group.nextElementSibling;
+                        if (!hiddenInput || hiddenInput.type !== 'hidden') return;
 	
 			const buttons = group.querySelectorAll('[data-filter-button]');
 	
@@ -152,12 +154,35 @@ export function filter() {
 					filterForm.dispatchEvent(new Event('change', { bubbles: true }));
 				});
 			});
-		});
-	};
-	
-	const initSliders = () => {
-		document.querySelectorAll('[data-slider]').forEach(sliderEl => {
-			if (sliderEl.classList.contains('noUi-target')) return;
+                });
+        };
+
+        // Flatpickr initialiseren op datumvelden
+        // Gebruik data-date-picker voor een enkel veld of
+        // data-date-range-start="key" en data-date-range-end="key" voor een van/tot range
+        const initDatePickers = () => {
+                document.querySelectorAll('[data-date-picker]').forEach(el => {
+                        if (el._flatpickr) return;
+                        flatpickr(el, { dateFormat: 'Y-m-d' });
+                });
+
+                document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+                        if (startEl._flatpickr) return;
+                        const key = startEl.dataset.dateRangeStart;
+                        const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
+                        flatpickr(startEl, {
+                                dateFormat: 'Y-m-d',
+                                plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+                        });
+                        if (endEl && !endEl._flatpickr) {
+                                flatpickr(endEl, { dateFormat: 'Y-m-d' });
+                        }
+                });
+        };
+
+        const initSliders = () => {
+                document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+                        if (sliderEl.classList.contains('noUi-target')) return;
 
 			const min = parseFloat(sliderEl.dataset.min);
 			const max = parseFloat(sliderEl.dataset.max);
@@ -224,6 +249,7 @@ export function filter() {
 				}
 	
                                 initSliders();
+                                initDatePickers();
                                 initOptionToggles();
                                 initFilterButtons();
                                 swiperInit();
@@ -298,10 +324,10 @@ export function filter() {
 			currentPage = 1;
 			if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
 		
-			filterForm.reset();
-			
-			// Reset expliciet de hidden inputs van button-filters
-			document.querySelectorAll('.filter-buttons').forEach(group => {
+                        filterForm.reset();
+
+                        // Reset expliciet de hidden inputs van button-filters
+                        document.querySelectorAll('.filter-buttons').forEach(group => {
 				const hiddenInput = group.nextElementSibling;
 				if (hiddenInput && hiddenInput.type === 'hidden') {
 					hiddenInput.value = ''; // leegmaken = 'Alles'
@@ -312,7 +338,7 @@ export function filter() {
 			initFilterButtons();
 		
 			// Reset sliders visueel én de bijbehorende inputvelden
-			document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+                        document.querySelectorAll('[data-slider]').forEach(sliderEl => {
 				const min = parseFloat(sliderEl.dataset.min);
 				const max = parseFloat(sliderEl.dataset.max);
 		
@@ -326,17 +352,25 @@ export function filter() {
 				if (sliderEl.noUiSlider) {
 					sliderEl.noUiSlider.set([min, max]);
 				}
-			});
-		
-			// Reset zoekveld expliciet (om debounce goed te triggeren)
-			if (searchInput) searchInput.value = '';
+                        });
+
+                        // Reset date pickers
+                        filterForm.querySelectorAll('[data-date-picker], [data-date-range-start], [data-date-range-end]').forEach(el => {
+                                if (el._flatpickr) {
+                                        el._flatpickr.clear();
+                                }
+                        });
+
+                        // Reset zoekveld expliciet (om debounce goed te triggeren)
+                        if (searchInput) searchInput.value = '';
 		
 			// Resultaten verversen
 			fetchFilteredResults(false);
 		});
 	}
 
-	initSliders();
-	initOptionToggles();
-	initFilterButtons();
+        initSliders();
+        initDatePickers();
+        initOptionToggles();
+        initFilterButtons();
 }

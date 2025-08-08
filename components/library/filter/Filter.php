@@ -10,14 +10,24 @@
  * $context['filters']['uren'] = [
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
- *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range'
- *   'source'     => 'acf',                    // 'acf' of 'taxonomy'
+ *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range', 'date', 'date_range'
+ *   'source'     => 'acf',                    // 'acf', 'taxonomy' of 'post_date'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *
  *   // Alleen data-logica in PHP (géén presentatie):
  *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
+ * ];
+ *
+ * // Datumfilter (publicatiedatum of ACF-datumveld)
+ * $context['filters']['datum'] = [
+ *   'name'   => 'event_date',           // ACF-veldnaam of 'post_date'
+ *   'label'  => 'Datum',
+ *   'type'   => 'date_range',           // 'date' voor enkel veld
+ *   'source' => 'acf',                 // of 'post_date'
+ *   // Waarden worden automatisch uit $_GET['event_date'] of
+ *   // $_GET['from_event_date']/$_GET['to_event_date'] gelezen
  * ];
  */
  
@@ -44,25 +54,30 @@ class Components_Filter extends Site {
 	
 		$name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
 		$type   = $data['type'] ?? 'select';
-		$source = $data['source'] ?? 'acf';
-	
-		if (!$name || !in_array($source, ['acf', 'taxonomy'])) {
-			return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
-		}
+                $source = $data['source'] ?? 'acf';
+
+                if (!$name || !in_array($source, ['acf', 'taxonomy', 'post_date'])) {
+                        return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
+                }
 	
 		$data['name'] = $name;
 	
 		// ⛏ Verwerk waarde vanuit $_GET
-		if ($type === 'range') {
-			$data['value'] = [
-				'min' => $_GET['min_' . $name] ?? null,
-				'max' => $_GET['max_' . $name] ?? null,
-			];
-		} else {
-			if (in_array($type, ['checkbox', 'multiselect'])) {
-				$data['value'] = $_GET[$name] ?? ($_GET[$name . '[]'] ?? null);
-			} else {
-				$data['value'] = $_GET[$name] ?? null;
+                if ($type === 'range') {
+                        $data['value'] = [
+                                'min' => $_GET['min_' . $name] ?? null,
+                                'max' => $_GET['max_' . $name] ?? null,
+                        ];
+                } elseif ($type === 'date_range') {
+                        $data['value'] = [
+                                'from' => $_GET['from_' . $name] ?? null,
+                                'to'   => $_GET['to_' . $name] ?? null,
+                        ];
+                } else {
+                        if (in_array($type, ['checkbox', 'multiselect'])) {
+                                $data['value'] = $_GET[$name] ?? ($_GET[$name . '[]'] ?? null);
+                        } else {
+                                $data['value'] = $_GET[$name] ?? null;
 			}
 		}
 	
@@ -197,8 +212,9 @@ class Components_Filter extends Site {
 	}
 
 	public static function build_query_from_filters($filters) {
-		$meta_query = [];
-		$tax_query  = [];
+                $meta_query = [];
+                $tax_query  = [];
+                $date_query = [];
 
 		foreach ($filters as $key => $filter) {
 			$value  = $filter['value'] ?? null;
@@ -206,10 +222,10 @@ class Components_Filter extends Site {
 			$source = $filter['source'] ?? 'acf';
 			$name   = $filter['name'] ?? $key;
 
-			// 🟡 RANGE
-			if ($type === 'range' && is_array($value)) {
-				$min = isset($value['min']) && $value['min'] !== '' ? (float) $value['min'] : null;
-				$max = isset($value['max']) && $value['max'] !== '' ? (float) $value['max'] : null;
+                        // 🟡 RANGE
+                        if ($type === 'range' && is_array($value)) {
+                                $min = isset($value['min']) && $value['min'] !== '' ? (float) $value['min'] : null;
+                                $max = isset($value['max']) && $value['max'] !== '' ? (float) $value['max'] : null;
 
 				if (!is_null($min) && !is_null($max)) {
 					$meta_query[] = [
@@ -235,31 +251,86 @@ class Components_Filter extends Site {
 				}
 			}
 
-			// 🟡 TAXONOMY
-			elseif ($source === 'taxonomy' && !empty($value)) {
-				$tax_query[] = [
-					'taxonomy' => $name,
-					'field'    => 'slug',
-					'terms'    => is_array($value) ? $value : [$value],
-				];
-			}
+                        // 🟡 Date range
+                        elseif ($type === 'date_range' && is_array($value)) {
+                                $from = $value['from'] ?? null;
+                                $to   = $value['to'] ?? null;
 
-			// 🟡 ACF (meta)
-			elseif ($source === 'acf' && !empty($value)) {
-				$meta_query[] = [
-					'key'     => $name,
-					'value'   => is_array($value) ? $value : [$value],
-					'compare' => 'IN',
-				];
-			}
-		}
+                                if ($source === 'post_date') {
+                                        $dq = ['inclusive' => true];
+                                        if ($from) $dq['after'] = $from;
+                                        if ($to)   $dq['before'] = $to;
+                                        if ($from || $to) $date_query[] = $dq;
+                                } else {
+                                        if ($from && $to) {
+                                                $meta_query[] = [
+                                                        'key'     => $name,
+                                                        'type'    => 'DATE',
+                                                        'compare' => 'BETWEEN',
+                                                        'value'   => [$from, $to],
+                                                ];
+                                        } elseif ($from) {
+                                                $meta_query[] = [
+                                                        'key'     => $name,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '>=',
+                                                        'value'   => $from,
+                                                ];
+                                        } elseif ($to) {
+                                                $meta_query[] = [
+                                                        'key'     => $name,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '<=',
+                                                        'value'   => $to,
+                                                ];
+                                        }
+                                }
+                        }
 
-		$args = [];
-		if (!empty($meta_query)) $args['meta_query'] = $meta_query;
-		if (!empty($tax_query))  $args['tax_query']  = $tax_query;
+                        // 🟡 TAXONOMY
+                        elseif ($source === 'taxonomy' && !empty($value)) {
+                                $tax_query[] = [
+                                        'taxonomy' => $name,
+                                        'field'    => 'slug',
+                                        'terms'    => is_array($value) ? $value : [$value],
+                                ];
+                        }
 
-		return $args;
-	}
+                        // 🟡 Date (single)
+                        elseif ($type === 'date' && !empty($value)) {
+                                if ($source === 'post_date') {
+                                        $date_query[] = [
+                                                'inclusive' => true,
+                                                'after'  => $value,
+                                                'before' => $value,
+                                        ];
+                                } else {
+                                        $meta_query[] = [
+                                                'key'     => $name,
+                                                'value'   => $value,
+                                                'compare' => '=',
+                                                'type'    => 'DATE',
+                                        ];
+                                }
+                        }
+
+                        // 🟡 ACF (meta)
+                        elseif ($source === 'acf' && !empty($value)) {
+                                $meta_query[] = [
+                                        'key'     => $name,
+                                        'value'   => is_array($value) ? $value : [$value],
+                                        'compare' => 'IN',
+                                ];
+                        }
+                }
+
+                $args = [];
+                if (!empty($meta_query)) $args['meta_query'] = $meta_query;
+                if (!empty($tax_query))  $args['tax_query']  = $tax_query;
+                if (!empty($date_query)) $args['date_query'] = $date_query;
+
+                return $args;
+        }
 	
 	/**
 	 * Berekent per optie hoeveel posts eraan voldoen met de huidige filters actief (behalve zichzelf).

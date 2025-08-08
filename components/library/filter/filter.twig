@@ -14,6 +14,11 @@ Voorbeeld:
   show_option_counts: true
 }) }}
 
+{# Datumfilter op publicatiedatum (range) #}
+{{ filter(filters.datum) }}
+
+Types: 'select', 'checkbox', 'radio', 'buttons', 'range', 'date' en 'date_range'.
+
 Beschikbare presentatie-opties:
 - limit_options: int – aantal direct zichtbare opties vóór "Toon meer"
 - option_list_expand_label: string – tekst voor uitklappen
@@ -102,14 +107,25 @@ Beschikbare presentatie-opties:
 		</button>
 	  {% endfor %}
 	</div>
-	<input type="hidden" name="{{ name }}" value="{{ active_value }}">
+        <input type="hidden" name="{{ name }}" value="{{ active_value }}">
 
+        {# Single Date Field #}
+        {% elseif type == 'date' %}
+        <input type="text" class="form-control" name="{{ name }}" value="{{ value }}" data-date-picker>
 
-	{# Range Slider #}
-	{% elseif type == 'range' %}
-	<div class="range-wrapper">
-		<div class="d-flex gap-2 align-items-center mb-3">
-			<input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
+        {# Date Range #}
+        {% elseif type == 'date_range' %}
+        <div class="d-flex gap-2 align-items-center mb-3">
+                <input type="text" class="form-control" name="from_{{ acf_field }}" value="{{ value.from ?? '' }}" data-date-range-start="{{ acf_field }}">
+                <span class="text-muted">tot</span>
+                <input type="text" class="form-control" name="to_{{ acf_field }}" value="{{ value.to ?? '' }}" data-date-range-end="{{ acf_field }}">
+        </div>
+
+        {# Range Slider #}
+        {% elseif type == 'range' %}
+        <div class="range-wrapper">
+                <div class="d-flex gap-2 align-items-center mb-3">
+                        <input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
 
 			<span class="text-muted">tot</span>
 
