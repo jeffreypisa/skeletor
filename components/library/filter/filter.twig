@@ -29,13 +29,13 @@ Beschikbare presentatie-opties:
 - show_option_counts: true/false – toon aantal resultaten per optie
 #}
 
-{% set name = name ?? data.acf_field ?? data.name ?? '' %}
-{% set acf_field = data.acf_field ?? name %}
-{% set value = value ?? data.value ?? '' %}
-{% set type = type ?? data.type ?? '' %}
-{% set label = label ?? data.label ?? '' %}
-{% set options = options ?? data.options ?? {} %}
-{% set placeholder = placeholder ?? data.placeholder ?? 'Maak een keuze' %}
+{% set name = name ?? acf_field ?? '' %}
+{% set acf_field = acf_field ?? name %}
+{% set value = value ?? '' %}
+{% set type = type ?? '' %}
+{% set label = label ?? '' %}
+{% set options = options ?? {} %}
+{% set placeholder = placeholder ?? 'Maak een keuze' %}
 {% set show_field_label = show_field_label ?? true %}
 {% set show_option_counts = show_option_counts ?? false %}
 {% set limit_options = limit_options ?? 0 %}
@@ -43,8 +43,7 @@ Beschikbare presentatie-opties:
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 
 {% if not name %}
-<pre>❌ Ongeldige filterdata ontvangen
-  {{ dump(data) }}</pre>
+<pre>❌ Ongeldige filterdata ontvangen</pre>
 {% endif %}
 
 <div class="mb-4">

@@ -1,5 +1,5 @@
 import noUiSlider from 'nouislider';
-import flatpickr from 'flatpickr';
+import flatpickr from 'flatpickr/dist/flatpickr.js';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin.js';
 import { swiperInit } from '../plugins/swiperInit.js';
 
