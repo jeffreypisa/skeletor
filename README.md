@@ -39,37 +39,26 @@ De componenten in `components/` worden automatisch geladen en zijn beschikbaar a
 }) }}
 ```
 - Werkt met een ACF link‑veld.
-<<<<<<< HEAD
-- Opties: `style`, `size`, `icon`, `icon_position`, `icon_style`, `target`, `class`.
-=======
 - Opties: `title`, `url`, `style`, `size`, `target`, `icon`, `icon_position`, `icon_style`, `class`.
->>>>>>> create-readme.md-for-theme
 
 ### Filter
 Definieer filters in PHP en render ze in Twig:
 ```twig
 {{ filter(filters.uren, {
   limit_options: 3,
-<<<<<<< HEAD
-=======
   option_list_expand_label: 'Meer opties',
   option_list_collapse_label: 'Minder opties',
   placeholder: 'Maak een keuze',
   layout: 'horizontal',
   show_field_label: true,
->>>>>>> create-readme.md-for-theme
   show_option_counts: true
 }) }}
 {{ sort_select(filters.sort) }}
 ```
 - Ondersteunt `select`, `checkbox`, `radio`, `buttons` en `range`.
-<<<<<<< HEAD
-- `sort_select` voegt een standaard sorteermenu toe.
-=======
 - Data-opties per filter: `name`, `label`, `type`, `source`, `options`, `value`, `sort_options`, `hide_empty_options`.
 - Presentatie-opties: `limit_options`, `option_list_expand_label`, `option_list_collapse_label`, `placeholder`, `layout`, `show_field_label`, `show_option_counts`.
 - `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
->>>>>>> create-readme.md-for-theme
 
 ### Heading
 ```twig
@@ -79,10 +68,7 @@ Definieer filters in PHP en render ze in Twig:
   inview_animation: 'typewriter'
 }) }}
 ```
-<<<<<<< HEAD
-=======
 - Opties: `level`, `class`, `inview_animation`.
->>>>>>> create-readme.md-for-theme
 
 ### Image
 ```twig
@@ -93,10 +79,7 @@ Definieer filters in PHP en render ze in Twig:
   caption_position: 'below-right'
 }) }}
 ```
-<<<<<<< HEAD
-=======
 - Opties: `ratio`, `figure_class`, `img_class`, `object_fit`, `lazyload`, `style`, `show_caption`, `caption_position`, `inview_animation`, `overlay_direction`.
->>>>>>> create-readme.md-for-theme
 
 ### Social media links
 ```twig
@@ -106,10 +89,7 @@ Definieer filters in PHP en render ze in Twig:
 }) }}
 ```
 - Opties: `show_icons`, `class`.
-<<<<<<< HEAD
-=======
 - Elke link vereist `url` en optionele `suffix` voor een alternatieve iconvariant.
->>>>>>> create-readme.md-for-theme
 
 ### Swiper
 ```twig
@@ -120,12 +100,8 @@ Definieer filters in PHP en render ze in Twig:
   dots: false
 }, 'tease.twig') }}
 ```
-<<<<<<< HEAD
-- Opties o.a. `direction`, `loop`, `slidesPerView`, `spaceBetween`, `autoplay`, `arrows`, `dots`, `breakpoints`.
-=======
 - Opties: `direction`, `loop`, `slidesPerView`, `spaceBetween`, `loopAdditionalSlides`, `centeredSlides`, `speed`, `autoplay`, `arrows`, `dots`, `arrowPrevIcon`, `arrowNextIcon`, `arrowIconStyle`, `class`, `swiper_id`, `navigation.nextEl`, `navigation.prevEl`, `navigation.disabledClass`.
 - Extra [Swiper.js](https://swiperjs.com/swiper-api) instellingen zoals `breakpoints` kunnen worden meegegeven in de `settings` array.
->>>>>>> create-readme.md-for-theme
 
 ### Text
 ```twig
