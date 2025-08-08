@@ -9,6 +9,7 @@
   "dependencies": {
     "@vimeo/player": "^2.25.1",
     "bootstrap": "^5.3.3",
+    "flatpickr": "^4.6.13",
     "lightgallery": "^2.9.0-beta.1",
     "matchheight": "^1.1.2",
     "nouislider": "^15.8.1",
