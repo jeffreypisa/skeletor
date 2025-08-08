@@ -1,39 +1,124 @@
-# The Timber Starter Theme
+# Skeletor
 
-[![Build Status](https://travis-ci.com/timber/starter-theme.svg?branch=master)](https://travis-ci.com/github/timber/starter-theme)
-[![Packagist Version](https://img.shields.io/packagist/v/upstatement/timber-starter-theme?include_prereleases)](https://packagist.org/packages/upstatement/timber-starter-theme)
+Skeletor is een WordPress-thema gebaseerd op [Timber](https://timber.github.io/) en de Twig templating engine. Het thema biedt een component-gebaseerde structuur waarmee je snel maatwerk websites kunt opzetten.
 
-The "_s" for Timber: a dead-simple theme that you can build from. The primary purpose of this theme is to provide a file structure rather than a framework for markup or styles. Configure your SASS files, scripts, and task runners however you would like!
+## Installatie
 
-## Installing the theme
+1. Plaats de map `skeletor` in `wp-content/themes` of installeer het thema via Composer.
+2. Voer vanuit de themamap `composer install` uit om de PHP-afhankelijkheden te installeren.
+3. Activeer het thema in het WordPress-dashboard onder **Weergave → Thema's**.
 
-Follow the guide on [how to Install Timber using the Starter Theme](https://timber.github.io/docs/v2/installation/installation/#use-the-starter-theme).
+## Structuur
 
-Then,
+- `assets/` – bronbestanden voor JavaScript en SCSS.
+- `components/` – herbruikbare PHP/Twig/SCSS componenten.
+- `static/` – gecompileerde frontend-bestanden.
+- `views/` – Twig-sjablonen voor de WordPress template hierarchy.
 
-1. Rename the theme folder to something that makes sense for your website. You could keep the name `timber-starter-theme` but the point of a starter theme is to make it your own!
-2. Activate the theme in the WordPress Dashboard under **Appearance → Themes**.
-3. Do your thing! And read [the docs](https://timber.github.io/docs/).
+## Custom componenten
+De componenten in `components/` worden automatisch geladen en zijn beschikbaar als Twig-functies. Hieronder een overzicht van de beschikbare componenten met voorbeeldgebruik.
 
-## The `StarterSite` class
+### Accordion
+```twig
+{{ accordion(item.accordion_items, {
+  id_prefix: 'acc',
+  icon: 'plus',
+  first_item_open: true
+}) }}
+```
+- Items: array met `titel` en `tekst`.
+- Opties: `id_prefix`, `icon`, `icon_position`, `heading_level`, `heading_class`, `icon_weight`, `first_item_open`.
 
-In **functions.php**, we call `new StarterSite();`. The `StarterSite` class sits in the **src** folder. You can update this class to add functionality to your theme. This approach is just one example for how you could do it.
+### Button
+```twig
+{{ button(item.link, {
+  style: 'outline-primary',
+  size: 'lg',
+  icon: 'arrow-right',
+  icon_position: 'after'
+}) }}
+```
+- Werkt met een ACF link‑veld.
+- Opties: `title`, `url`, `style`, `size`, `target`, `icon`, `icon_position`, `icon_style`, `class`.
 
-The **src** folder would be the right place to put your classes that [extend Timber’s functionality](https://timber.github.io/docs/v2/guides/extending-timber/).
+### Filter
+Definieer filters in PHP en render ze in Twig:
+```twig
+{{ filter(filters.uren, {
+  limit_options: 3,
+  option_list_expand_label: 'Meer opties',
+  option_list_collapse_label: 'Minder opties',
+  placeholder: 'Maak een keuze',
+  layout: 'horizontal',
+  show_field_label: true,
+  show_option_counts: true
+}) }}
+{{ sort_select(filters.sort) }}
+```
+- Ondersteunt `select`, `checkbox`, `radio`, `buttons` en `range`.
+- Data-opties per filter: `name`, `label`, `type`, `source`, `options`, `value`, `sort_options`, `hide_empty_options`.
+- Presentatie-opties: `limit_options`, `option_list_expand_label`, `option_list_collapse_label`, `placeholder`, `layout`, `show_field_label`, `show_option_counts`.
+- `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
 
-Small tip: You can make use of Composer’s [autoloading functionality](https://getcomposer.org/doc/04-schema.md#psr-4) to automatically load your PHP classes when they are requested instead of requiring one by one in **functions.php**.
+### Heading
+```twig
+{{ heading(item.titel, {
+  level: 'h2',
+  class: 'mb-3',
+  inview_animation: 'typewriter'
+}) }}
+```
+- Opties: `level`, `class`, `inview_animation`.
 
-## What else is there?
+### Image
+```twig
+{{ image(item.afbeelding, {
+  ratio: '16x9',
+  figure_class: 'rounded shadow',
+  show_caption: true,
+  caption_position: 'below-right'
+}) }}
+```
+- Opties: `ratio`, `figure_class`, `img_class`, `object_fit`, `lazyload`, `style`, `show_caption`, `caption_position`, `inview_animation`, `overlay_direction`.
 
-- `static/` is where you can keep your static front-end scripts, styles, or images. In other words, your Sass files, JS files, fonts, and SVGs would live here.
-- `views/` contains all of your Twig templates. These pretty much correspond 1 to 1 with the PHP files that respond to the WordPress template hierarchy. At the end of each PHP template, you’ll notice a `Timber::render()` function whose first parameter is the Twig file where that data (or `$context`) will be used. Just an FYI.
-- `tests/` ... basically don’t worry about (or remove) this unless you know what it is and want to.
+### Social media links
+```twig
+{{ social_media_links({
+  facebook: { url: 'https://facebook.com', suffix: 'f' },
+  instagram: { url: 'https://instagram.com' }
+}) }}
+```
+- Opties: `show_icons`, `class`.
+- Elke link vereist `url` en optionele `suffix` voor een alternatieve iconvariant.
 
-## Other Resources
+### Swiper
+```twig
+{{ swiper(posts, {
+  slidesPerView: 3,
+  spaceBetween: 10,
+  arrows: true,
+  dots: false
+}, 'tease.twig') }}
+```
+- Opties: `direction`, `loop`, `slidesPerView`, `spaceBetween`, `loopAdditionalSlides`, `centeredSlides`, `speed`, `autoplay`, `arrows`, `dots`, `arrowPrevIcon`, `arrowNextIcon`, `arrowIconStyle`, `class`, `swiper_id`, `navigation.nextEl`, `navigation.prevEl`, `navigation.disabledClass`.
+- Extra [Swiper.js](https://swiperjs.com/swiper-api) instellingen zoals `breakpoints` kunnen worden meegegeven in de `settings` array.
 
-* [This branch](https://github.com/laras126/timber-starter-theme/tree/tackle-box) of the starter theme has some more example code with ACF and a slightly different set up.
-* [Twig for Timber Cheatsheet](http://notlaura.com/the-twig-for-timber-cheatsheet/)
-* [Timber and Twig Reignited My Love for WordPress](https://css-tricks.com/timber-and-twig-reignited-my-love-for-wordpress/) on CSS-Tricks
-* [A real live Timber theme](https://github.com/laras126/yuling-theme).
-* [Timber Video Tutorials](http://timber.github.io/timber/#video-tutorials) and [an incomplete set of screencasts](https://www.youtube.com/playlist?list=PLuIlodXmVQ6pkqWyR6mtQ5gQZ6BrnuFx-) for building a Timber theme from scratch.
-# skeletor
+### Text
+```twig
+{{ text(item.tekst, {
+  tag: 'p',
+  class: 'lead',
+  max_length: 120
+}) }}
+```
+- Opties: `class`, `tag`, `style`, `max_length`, `inview_animation`.
+
+## Tests
+Draai de tests met:
+
+```bash
+composer test
+```
+
+## Licentie
+Dit project valt onder de MIT-licentie. Zie het bestand `LICENSE` voor de volledige tekst.
