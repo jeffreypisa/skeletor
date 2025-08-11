@@ -43,8 +43,8 @@ Beschikbare presentatie-opties:
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 
 {% if not name %}
-<pre>❌ Ongeldige filterdata ontvangen</pre>
-{% endif %}
+  <pre>❌ Ongeldige filterdata ontvangen</pre>
+{% else %}
 
 <div class="mb-4">
 	{% if label and show_field_label %}
@@ -133,6 +133,7 @@ Beschikbare presentatie-opties:
 
 		<div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
 		</div>
-	</div>
-	{% endif %}
+        </div>
+{% endif %}
 </div>
+{% endif %}

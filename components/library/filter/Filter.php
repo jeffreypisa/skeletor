@@ -49,11 +49,15 @@ class Components_Filter extends Site {
 
        public function render_filter($data, $args = []) {
                if (!is_array($data)) {
-                       $ctx = Timber::context();
-                       if (is_string($data) && isset($ctx['filters'][$data])) {
-                               $data = $ctx['filters'][$data];
+                       if (is_object($data)) {
+                               $data = (array) $data;
                        } else {
-                               return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
+                               $ctx = Timber::context();
+                               if (is_string($data) && isset($ctx['filters'][$data])) {
+                                       $data = $ctx['filters'][$data];
+                               } else {
+                                       return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
+                               }
                        }
                }
 	
