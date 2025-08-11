@@ -47,10 +47,15 @@ class Components_Filter extends Site {
 		return $twig;
 	}
 
-	public function render_filter($data, $args = []) {
-		if (!is_array($data)) {
-			return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
-		}
+       public function render_filter($data, $args = []) {
+               if (!is_array($data)) {
+                       $ctx = Timber::context();
+                       if (is_string($data) && isset($ctx['filters'][$data])) {
+                               $data = $ctx['filters'][$data];
+                       } else {
+                               return "<pre>❌ Ongeldige filterdata ontvangen\n" . print_r($data, true) . "</pre>";
+                       }
+               }
 	
 		$name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
 		$type   = $data['type'] ?? 'select';

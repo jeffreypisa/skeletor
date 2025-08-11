@@ -172,7 +172,7 @@ export function filter() {
                         const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
                         flatpickr(startEl, {
                                 dateFormat: 'Y-m-d',
-                                plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+                                plugins: endEl ? [new rangePlugin({ input: endEl })] : []
                         });
                         if (endEl && !endEl._flatpickr) {
                                 flatpickr(endEl, { dateFormat: 'Y-m-d' });
@@ -277,7 +277,7 @@ export function filter() {
                                         let counts = {};
                                         try {
                                                 counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
-                                        } catch (e) {
+                                        } catch {
                                                 counts = {};
                                         }
                                         Object.entries(counts).forEach(([filterName, values]) => {
