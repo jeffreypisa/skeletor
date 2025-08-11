@@ -38,14 +38,22 @@ $context['filters'] = [];
  * ];
  */
  
- // 🧩 Filter: 'provincies'
- $context['filters']['provincies'] = [
-   'name'   => 'provincies',
-   'label'  => 'Provincies',
-   'type'   => 'checkbox',
-   'source' => 'taxonomy',
-   'hide_empty_options' => true
- ];
+// 🧩 Filter: 'provincies'
+$context['filters']['provincies'] = [
+  'name'   => 'provincies',
+  'label'  => 'Provincies',
+  'type'   => 'checkbox',
+  'source' => 'taxonomy',
+  'hide_empty_options' => true
+];
+
+// 🧩 Filter: publicatiedatum (van–tot)
+$context['filters']['published'] = [
+  'name'   => 'post_date',
+  'label'  => 'Periode',
+  'type'   => 'date_range',
+  'source' => 'post_date',
+];
   
 /**
  * 🔎 Query bouwen

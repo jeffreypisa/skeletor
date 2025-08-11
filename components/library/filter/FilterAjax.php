@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * AJAX handler voor het filtercomponent.
+ *
+ * Ondersteunt het doorgeven van:
+ * - numerieke ranges via `min_{veld}` / `max_{veld}`
+ * - datumvelden via `veld` (enkel) of `from_{veld}` / `to_{veld}` voor ranges
+ * - publicatiedatum filteren met de special key `post_date`
+ */
 class Components_FilterAjax {
 	public static function handle() {
 		$filters = $_POST;
@@ -12,43 +20,82 @@ class Components_FilterAjax {
 		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
 		$paged     = (int)($filters['paged'] ?? 1);
 	
-		// 🔍 Meta filters
-		$meta_query = [];
+                // 🔍 Meta filters
+                $meta_query = [];
+                $date_query = [];
 
-		// ➕ Dynamische range filters (min_xxx / max_xxx)
-		foreach ($_POST as $key => $value) {
-			if (strpos($key, 'min_') === 0) {
-				$base = substr($key, 4);
-				$min = $_POST['min_' . $base] ?? '';
-				$max = $_POST['max_' . $base] ?? '';
+                // ➕ Dynamische range filters (min_xxx / max_xxx)
+                foreach ($_POST as $key => $value) {
+                        if (strpos($key, 'min_') === 0) {
+                                $base = substr($key, 4);
+                                $min = $_POST['min_' . $base] ?? '';
+                                $max = $_POST['max_' . $base] ?? '';
 
-				$min_filled = $min !== '';
-				$max_filled = $max !== '';
+                                $min_filled = $min !== '';
+                                $max_filled = $max !== '';
 
-				if ($min_filled && $max_filled) {
-					$meta_query[] = [
-						'key'     => $base,
-						'value'   => [floatval($min), floatval($max)],
-						'type'    => 'NUMERIC',
-						'compare' => 'BETWEEN',
-					];
-				} elseif ($min_filled) {
-					$meta_query[] = [
-						'key'     => $base,
-						'value'   => floatval($min),
-						'type'    => 'NUMERIC',
-						'compare' => '>=',
-					];
-				} elseif ($max_filled) {
-					$meta_query[] = [
-						'key'     => $base,
-						'value'   => floatval($max),
-						'type'    => 'NUMERIC',
-						'compare' => '<=',
-					];
-				}
-			}
-		}
+                                if ($min_filled && $max_filled) {
+                                        $meta_query[] = [
+                                                'key'     => $base,
+                                                'value'   => [floatval($min), floatval($max)],
+                                                'type'    => 'NUMERIC',
+                                                'compare' => 'BETWEEN',
+                                        ];
+                                } elseif ($min_filled) {
+                                        $meta_query[] = [
+                                                'key'     => $base,
+                                                'value'   => floatval($min),
+                                                'type'    => 'NUMERIC',
+                                                'compare' => '>=',
+                                        ];
+                                } elseif ($max_filled) {
+                                        $meta_query[] = [
+                                                'key'     => $base,
+                                                'value'   => floatval($max),
+                                                'type'    => 'NUMERIC',
+                                                'compare' => '<=',
+                                        ];
+                                }
+                        }
+                        if (strpos($key, 'from_') === 0) {
+                                $base = substr($key, 5);
+                                $from = $_POST['from_' . $base] ?? '';
+                                $to   = $_POST['to_' . $base] ?? '';
+
+                                $from_filled = $from !== '';
+                                $to_filled   = $to !== '';
+
+                                if ($base === 'post_date') {
+                                        $dq = ['inclusive' => true];
+                                        if ($from_filled) $dq['after'] = $from;
+                                        if ($to_filled)   $dq['before'] = $to;
+                                        if ($from_filled || $to_filled) $date_query[] = $dq;
+                                } else {
+                                        if ($from_filled && $to_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => [$from, $to],
+                                                        'type'    => 'DATE',
+                                                        'compare' => 'BETWEEN',
+                                                ];
+                                        } elseif ($from_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => $from,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '>=',
+                                                ];
+                                        } elseif ($to_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => $to,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '<=',
+                                                ];
+                                        }
+                                }
+                        }
+                }
 
 		// 🔍 Taxonomy filters
 		$tax_query = [];
@@ -93,15 +140,18 @@ class Components_FilterAjax {
 		}
 		
 		// 🔍 WP_Query args
-		$args = [
-			'post_type'      => $post_type,
-			'post_status'    => 'publish',
-			'posts_per_page' => 12,
-			'paged'          => $paged,
-			'orderby'        => $orderby,
-			'order'          => $order,
-			'meta_query'     => $meta_query,
-		];
+                $args = [
+                        'post_type'      => $post_type,
+                        'post_status'    => 'publish',
+                        'posts_per_page' => 12,
+                        'paged'          => $paged,
+                        'orderby'        => $orderby,
+                        'order'          => $order,
+                        'meta_query'     => $meta_query,
+                ];
+                if (!empty($date_query)) {
+                        $args['date_query'] = $date_query;
+                }
 		
 		if (!empty($filters['s'])) {
 			$args['s'] = sanitize_text_field($filters['s']);
@@ -120,7 +170,7 @@ class Components_FilterAjax {
 
 			if (taxonomy_exists($key)) continue;
 
-			if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_')) continue;
+                        if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_') || str_starts_with($key, 'from_') || str_starts_with($key, 'to_')) continue;
 
 			$filter_definitions[$key] = [
 				'acf_field' => $key,
