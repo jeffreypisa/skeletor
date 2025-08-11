@@ -14,6 +14,11 @@ Voorbeeld:
   show_option_counts: true
 }) }}
 
+Types: 'select', 'checkbox', 'radio', 'buttons', 'range', 'date' en 'date_range'.
+
+Datumfilters vullen automatisch de oudste en nieuwste beschikbare datum in wanneer
+er geen waarde is opgegeven.
+
 Beschikbare presentatie-opties:
 - limit_options: int – aantal direct zichtbare opties vóór "Toon meer"
 - option_list_expand_label: string – tekst voor uitklappen
@@ -24,13 +29,13 @@ Beschikbare presentatie-opties:
 - show_option_counts: true/false – toon aantal resultaten per optie
 #}
 
-{% set name = name ?? data.acf_field ?? data.name ?? '' %}
-{% set acf_field = data.acf_field ?? name %}
-{% set value = value ?? data.value ?? '' %}
-{% set type = type ?? data.type ?? '' %}
-{% set label = label ?? data.label ?? '' %}
-{% set options = options ?? data.options ?? {} %}
-{% set placeholder = placeholder ?? data.placeholder ?? 'Maak een keuze' %}
+{% set name = name ?? acf_field ?? '' %}
+{% set acf_field = acf_field ?? name %}
+{% set value = value ?? '' %}
+{% set type = type ?? '' %}
+{% set label = label ?? '' %}
+{% set options = options ?? {} %}
+{% set placeholder = placeholder ?? 'Maak een keuze' %}
 {% set show_field_label = show_field_label ?? true %}
 {% set show_option_counts = show_option_counts ?? false %}
 {% set limit_options = limit_options ?? 0 %}
@@ -38,9 +43,8 @@ Beschikbare presentatie-opties:
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 
 {% if not name %}
-<pre>❌ Ongeldige filterdata ontvangen
-  {{ dump(data) }}</pre>
-{% endif %}
+  <pre>❌ Ongeldige filterdata ontvangen</pre>
+{% else %}
 
 <div class="mb-4">
 	{% if label and show_field_label %}
@@ -102,14 +106,25 @@ Beschikbare presentatie-opties:
 		</button>
 	  {% endfor %}
 	</div>
-	<input type="hidden" name="{{ name }}" value="{{ active_value }}">
+        <input type="hidden" name="{{ name }}" value="{{ active_value }}">
 
+        {# Single Date Field #}
+        {% elseif type == 'date' %}
+        <input type="text" class="form-control" name="{{ name }}" value="{{ value }}" data-date-picker>
 
-	{# Range Slider #}
-	{% elseif type == 'range' %}
-	<div class="range-wrapper">
-		<div class="d-flex gap-2 align-items-center mb-3">
-			<input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
+        {# Date Range #}
+        {% elseif type == 'date_range' %}
+        <div class="d-flex gap-2 align-items-center mb-3">
+                <input type="text" class="form-control" name="from_{{ acf_field }}" value="{{ value.from ?? '' }}" data-date-range-start="{{ acf_field }}">
+                <span class="text-muted">tot</span>
+                <input type="text" class="form-control" name="to_{{ acf_field }}" value="{{ value.to ?? '' }}" data-date-range-end="{{ acf_field }}">
+        </div>
+
+        {# Range Slider #}
+        {% elseif type == 'range' %}
+        <div class="range-wrapper">
+                <div class="d-flex gap-2 align-items-center mb-3">
+                        <input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
 
 			<span class="text-muted">tot</span>
 
@@ -118,6 +133,7 @@ Beschikbare presentatie-opties:
 
 		<div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
 		</div>
-	</div>
-	{% endif %}
+        </div>
+{% endif %}
 </div>
+{% endif %}

@@ -55,10 +55,37 @@ Definieer filters in PHP en render ze in Twig:
 }) }}
 {{ sort_select(filters.sort) }}
 ```
+<<<<<<< HEAD
 - Ondersteunt `select`, `checkbox`, `radio`, `buttons` en `range`.
 - Data-opties per filter: `name`, `label`, `type`, `source`, `options`, `value`, `sort_options`, `hide_empty_options`.
 - Presentatie-opties: `limit_options`, `option_list_expand_label`, `option_list_collapse_label`, `placeholder`, `layout`, `show_field_label`, `show_option_counts`.
 - `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
+=======
+- Ondersteunt `select`, `checkbox`, `radio`, `buttons`, `range`, `date` en `date_range`.
+- `sort_select` voegt een standaard sorteermenu toe.
+>>>>>>> add-date-filter-component
+
+Voor een datumfilter kan gefilterd worden op publicatiedatum (`source: 'post_date'`) of op een ACF-datumveld (`source: 'acf'`).
+
+```php
+// Enkel datumveld (ACF)
+$context['filters']['event_date'] = [
+  'name'   => 'event_date',
+  'label'  => 'Datum',
+  'type'   => 'date',
+  'source' => 'acf',
+];
+
+// Van/tot op publicatiedatum
+$context['filters']['published'] = [
+  'name'   => 'post_date',
+  'label'  => 'Periode',
+  'type'   => 'date_range',
+  'source' => 'post_date',
+];
+```
+
+Datumvelden zonder opgegeven waardes worden automatisch ingevuld met de oudste en nieuwste beschikbare datum.
 
 ### Heading
 ```twig
