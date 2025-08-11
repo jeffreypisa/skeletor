@@ -71,7 +71,9 @@ class Components_Filter extends Site {
                         return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
                 }
 	
-		$data['name'] = $name;
+               $data['name'] = $name;
+
+               $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
 	
 		// ⛏ Verwerk waarde vanuit $_GET
                 if ($type === 'range') {

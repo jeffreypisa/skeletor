@@ -41,6 +41,7 @@ Beschikbare presentatie-opties:
 {% set limit_options = limit_options ?? 0 %}
 {% set option_list_expand_label = option_list_expand_label ?? 'Toon meer' %}
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
+{% set date_format = date_format ?? 'd-m-Y' %}
 
 {% if not name %}
   <pre>❌ Ongeldige filterdata ontvangen</pre>
@@ -110,14 +111,14 @@ Beschikbare presentatie-opties:
 
         {# Single Date Field #}
         {% elseif type == 'date' %}
-        <input type="text" class="form-control" name="{{ name }}" value="{{ value }}" data-date-picker>
+        <input type="text" class="form-control" name="{{ name }}" value="{{ value }}" data-date-picker data-date-format="{{ date_format }}">
 
         {# Date Range #}
         {% elseif type == 'date_range' %}
         <div class="d-flex gap-2 align-items-center mb-3">
-                <input type="text" class="form-control" name="from_{{ acf_field }}" value="{{ value.from ?? '' }}" data-date-range-start="{{ acf_field }}">
+                <input type="text" class="form-control" name="from_{{ acf_field }}" value="{{ value.from ?? '' }}" data-date-range-start="{{ acf_field }}" data-date-format="{{ date_format }}">
                 <span class="text-muted">tot</span>
-                <input type="text" class="form-control" name="to_{{ acf_field }}" value="{{ value.to ?? '' }}" data-date-range-end="{{ acf_field }}">
+                <input type="text" class="form-control" name="to_{{ acf_field }}" value="{{ value.to ?? '' }}" data-date-range-end="{{ acf_field }}" data-date-format="{{ date_format }}">
         </div>
 
         {# Range Slider #}

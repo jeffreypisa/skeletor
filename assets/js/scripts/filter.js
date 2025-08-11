@@ -161,23 +161,27 @@ export function filter() {
         // Gebruik data-date-picker voor een enkel veld of
         // data-date-range-start="key" en data-date-range-end="key" voor een van/tot range
         const initDatePickers = () => {
-                document.querySelectorAll('[data-date-picker]').forEach(el => {
-                        if (el._flatpickr) return;
-                        flatpickr(el, { dateFormat: 'Y-m-d' });
-                });
+               document.querySelectorAll('[data-date-picker]').forEach(el => {
+                       if (el._flatpickr) return;
+                       const format = el.dataset.dateFormat || 'd-m-Y';
+                       flatpickr(el, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+               });
 
-                document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
-                        if (startEl._flatpickr) return;
-                        const key = startEl.dataset.dateRangeStart;
-                        const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
-                        flatpickr(startEl, {
-                                dateFormat: 'Y-m-d',
-                                plugins: endEl ? [new rangePlugin({ input: endEl })] : []
-                        });
-                        if (endEl && !endEl._flatpickr) {
-                                flatpickr(endEl, { dateFormat: 'Y-m-d' });
-                        }
-                });
+               document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+                       if (startEl._flatpickr) return;
+                       const key = startEl.dataset.dateRangeStart;
+                       const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
+                       const format = startEl.dataset.dateFormat || 'd-m-Y';
+                       flatpickr(startEl, {
+                               altInput: true,
+                               dateFormat: 'Y-m-d',
+                               altFormat: format,
+                               plugins: endEl ? [new rangePlugin({ input: endEl })] : []
+                       });
+                       if (endEl && !endEl._flatpickr) {
+                               flatpickr(endEl, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+                       }
+               });
         };
 
         const initSliders = () => {
