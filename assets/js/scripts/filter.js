@@ -164,7 +164,12 @@ export function filter() {
                document.querySelectorAll('[data-date-picker]').forEach(el => {
                        if (el._flatpickr) return;
                        const format = el.dataset.dateFormat || 'd-m-Y';
-                       flatpickr(el, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+                       flatpickr(el, {
+                               altInput: true,
+                               dateFormat: 'Y-m-d',
+                               altFormat: format,
+                               onChange: () => el.dispatchEvent(new Event('change', { bubbles: true }))
+                       });
                });
 
                document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
@@ -176,10 +181,16 @@ export function filter() {
                                altInput: true,
                                dateFormat: 'Y-m-d',
                                altFormat: format,
-                               plugins: endEl ? [new rangePlugin({ input: endEl })] : []
+                               plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+                               onChange: () => startEl.dispatchEvent(new Event('change', { bubbles: true }))
                        });
                        if (endEl && !endEl._flatpickr) {
-                               flatpickr(endEl, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+                               flatpickr(endEl, {
+                                       altInput: true,
+                                       dateFormat: 'Y-m-d',
+                                       altFormat: format,
+                                       onChange: () => endEl.dispatchEvent(new Event('change', { bubbles: true }))
+                               });
                        }
                });
         };
@@ -359,7 +370,18 @@ export function filter() {
                         });
 
                         // Reset date pickers naar oorspronkelijke waardes
-                        filterForm.querySelectorAll('[data-date-picker], [data-date-range-start], [data-date-range-end]').forEach(el => {
+                        filterForm.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+                                const key = startEl.dataset.dateRangeStart;
+                                const endEl = filterForm.querySelector(`[data-date-range-end="${key}"]`);
+                                if (startEl._flatpickr) {
+                                        const dates = [];
+                                        if (startEl.value) dates.push(startEl.value);
+                                        if (endEl && endEl.value) dates.push(endEl.value);
+                                        startEl._flatpickr.setDate(dates, false);
+                                }
+                        });
+                        filterForm.querySelectorAll('[data-date-picker]').forEach(el => {
+                                if (el.dataset.dateRangeStart || el.dataset.dateRangeEnd) return;
                                 if (el._flatpickr) {
                                         el._flatpickr.setDate(el.value || null, false);
                                 }
