@@ -19,3 +19,6 @@
 {% if option_counts is defined %}
 <div data-option-counts="{{ option_counts|json_encode }}" hidden></div>
 {% endif %}
+{% if date_bounds is defined %}
+<div data-date-bounds="{{ date_bounds|json_encode }}" hidden></div>
+{% endif %}

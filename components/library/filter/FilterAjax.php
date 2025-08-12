@@ -17,8 +17,19 @@ class Components_FilterAjax {
 			wp_die();
 		}
 	
-		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
-		$paged     = (int)($filters['paged'] ?? 1);
+                $post_type = sanitize_text_field($filters['post_type'] ?? 'post');
+                $paged     = (int)($filters['paged'] ?? 1);
+
+                // 📅 Verzamel datumvelden voor latere bounds-berekening
+                $date_fields = [];
+                foreach ($filters as $key => $val) {
+                        if (strpos($key, 'from_') === 0) {
+                                $date_fields[] = substr($key, 5);
+                        } elseif ($key === 'post_date') {
+                                $date_fields[] = 'post_date';
+                        }
+                }
+                $date_fields = array_unique($date_fields);
 	
                 // 🔍 Meta filters
                 $meta_query = [];
@@ -208,6 +219,33 @@ class Components_FilterAjax {
                         'filters'   => $filters,
                         'total'     => $query->found_posts, // <== voeg dit hier toe
                 ];
+
+                // 📅 Datum-bounds per veld bepalen
+                if (!empty($date_fields)) {
+                        $bounds = [];
+                        foreach ($date_fields as $field) {
+                                $dates = [];
+                                foreach ($posts as $p) {
+                                        if ($field === 'post_date') {
+                                                $dates[] = $p->post_date;
+                                        } else {
+                                                $val = get_post_meta($p->ID, $field, true);
+                                                if ($val) $dates[] = $val;
+                                        }
+                                }
+                                $dates = array_filter($dates);
+                                if (!empty($dates)) {
+                                        sort($dates);
+                                        $bounds[$field] = [
+                                                'min' => date('Y-m-d', strtotime($dates[0])),
+                                                'max' => date('Y-m-d', strtotime(end($dates))),
+                                        ];
+                                }
+                        }
+                        if (!empty($bounds)) {
+                                $context['date_bounds'] = $bounds;
+                        }
+                }
 
                 // 🧮 Option counts for checkbox filters
                 $filter_defs_for_counts = [

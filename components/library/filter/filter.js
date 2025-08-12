@@ -165,7 +165,14 @@ export function filter() {
                document.querySelectorAll('[data-date-picker]').forEach(el => {
                        if (el._flatpickr) return;
                        const format = el.dataset.dateFormat || 'd-m-Y';
-                       flatpickr(el, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+                       flatpickr(el, {
+                               altInput: true,
+                               dateFormat: 'Y-m-d',
+                               altFormat: format,
+                               onChange: () => {
+                                       el.dispatchEvent(new Event('change', { bubbles: true }));
+                               }
+                       });
                });
 
                document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
@@ -177,13 +184,68 @@ export function filter() {
                                altInput: true,
                                dateFormat: 'Y-m-d',
                                altFormat: format,
-                               plugins: endEl ? [new rangePlugin({ input: endEl })] : []
+                               plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+                               onChange: () => {
+                                       startEl.dispatchEvent(new Event('change', { bubbles: true }));
+                               }
                        });
                        if (endEl && !endEl._flatpickr) {
-                               flatpickr(endEl, { altInput: true, dateFormat: 'Y-m-d', altFormat: format });
+                               flatpickr(endEl, {
+                                       altInput: true,
+                                       dateFormat: 'Y-m-d',
+                                       altFormat: format,
+                                       onChange: () => {
+                                               endEl.dispatchEvent(new Event('change', { bubbles: true }));
+                                       }
+                               });
                        }
                });
-        };
+       };
+
+       const updateDateBounds = (bounds) => {
+               Object.entries(bounds).forEach(([field, range]) => {
+                       const { min, max } = range;
+                       const startEl = document.querySelector(`[data-date-range-start="${field}"]`);
+                       const endEl = document.querySelector(`[data-date-range-end="${field}"]`);
+
+                       if (startEl && endEl) {
+                               if (startEl._flatpickr) {
+                                       startEl._flatpickr.set('minDate', min);
+                                       startEl._flatpickr.set('maxDate', max);
+                               }
+                               if (endEl._flatpickr) {
+                                       endEl._flatpickr.set('minDate', min);
+                                       endEl._flatpickr.set('maxDate', max);
+                               }
+
+                               let fromVal = startEl.value || min;
+                               let toVal = endEl.value || max;
+                               if (fromVal < min) fromVal = min;
+                               if (toVal > max) toVal = max;
+
+                               startEl.value = fromVal;
+                               endEl.value = toVal;
+                               startEl.defaultValue = fromVal;
+                               endEl.defaultValue = toVal;
+                               if (startEl._flatpickr) startEl._flatpickr.setDate(fromVal, false);
+                               if (endEl._flatpickr) endEl._flatpickr.setDate(toVal, false);
+                       } else {
+                               const singleEl = document.querySelector(`[data-date-picker][name="${field}"]`);
+                               if (singleEl) {
+                                       if (singleEl._flatpickr) {
+                                               singleEl._flatpickr.set('minDate', min);
+                                               singleEl._flatpickr.set('maxDate', max);
+                                       }
+                                       let val = singleEl.value || min;
+                                       if (val < min) val = min;
+                                       if (val > max) val = max;
+                                       singleEl.value = val;
+                                       singleEl.defaultValue = val;
+                                       if (singleEl._flatpickr) singleEl._flatpickr.setDate(val, false);
+                               }
+                       }
+               });
+       };
 
         const initSliders = () => {
                 document.querySelectorAll('[data-slider]').forEach(sliderEl => {
@@ -294,8 +356,20 @@ export function filter() {
                                                 });
                                         });
                                 }
-			});
-	};
+
+                                // 📅 Update date bounds
+                                const dateBoundsEl = el.querySelector('[data-date-bounds]');
+                                if (dateBoundsEl) {
+                                        let bounds = {};
+                                        try {
+                                                bounds = JSON.parse(dateBoundsEl.dataset.dateBounds || '{}');
+                                        } catch {
+                                                bounds = {};
+                                        }
+                                        updateDateBounds(bounds);
+                                }
+                        });
+        };
 
 	filterForm.addEventListener('change', debounce(() => {
 		currentPage = 1;
@@ -361,8 +435,10 @@ export function filter() {
 
                         // Reset date pickers naar oorspronkelijke waardes
                         filterForm.querySelectorAll('[data-date-picker], [data-date-range-start], [data-date-range-end]').forEach(el => {
+                                const defaultVal = el.defaultValue || '';
+                                el.value = defaultVal;
                                 if (el._flatpickr) {
-                                        el._flatpickr.setDate(el.value || null, false);
+                                        el._flatpickr.setDate(defaultVal || null, false);
                                 }
                         });
 
