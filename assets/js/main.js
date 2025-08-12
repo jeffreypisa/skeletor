@@ -4,11 +4,15 @@ window.bootstrap = bootstrap;
 // Init plugins
 import { lightgalleryInit } from './plugins/lightgalleryInit.js';
 import { matchheightInit } from './plugins/matchheightInit.js';
-import { swiperInit } from './plugins/swiperInit.js';
 
-// Scripts
+// Component scripts
+// Deze imports wijzen direct naar de componenten-map zodat alle componentcode
+// gecentraliseerd blijft. Vervang de map later eenvoudig zonder overige assets aan te passen.
+import { swiperInit } from '../../components/library/swiper/swiperInit.js';
+import { filter } from '../../components/library/filter/filter.js';
+
+// Theme scripts
 import { cta } from './scripts/cta.js';
-import { filter } from './scripts/filter.js';
 import { footer } from './scripts/footer.js';
 import { header } from './scripts/header.js';
 import { mobileMenu } from './scripts/mobileMenu.js';

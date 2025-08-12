@@ -1180,13 +1180,13 @@
       "sC" : 3,
       "tS" : 0
     },
-    "\/assets\/js\/plugins\/swiperInit.js" : {
+    "\/components\/library\/swiper\/swiperInit.js" : {
       "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
       "oA" : 1,
-      "oAP" : "\/assets\/js\/plugins\/swiperInit-min.js",
+      "oAP" : "\/components\/library\/swiper\/swiperInit-min.js",
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
