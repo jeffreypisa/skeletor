@@ -43,14 +43,16 @@ export function filter() {
 			}
 		});
 
-		for (const key in grouped) {
-			const value = grouped[key];
-			if (Array.isArray(value)) {
-				value.forEach(v => data.append(`${key}[]`, v));
-			} else {
-				data.append(key, value);
-			}
-		}
+                for (const key in grouped) {
+                        const value = grouped[key];
+                        if (Array.isArray(value)) {
+                                value
+                                        .filter(v => v !== '' && v != null)
+                                        .forEach(v => data.append(`${key}[]`, v));
+                        } else if (value !== '' && value != null) {
+                                data.append(key, value);
+                        }
+                }
 
 		data.append('action', 'ajax_filter');
 		data.append('post_type', form.dataset.postType || 'post');
@@ -145,15 +147,17 @@ export function filter() {
 				activeBtn.classList.add('active');
 			}
 	
-			// Event listeners
-			buttons.forEach(btn => {
-				btn.addEventListener('click', () => {
-					buttons.forEach(b => b.classList.remove('active'));
-					btn.classList.add('active');
-					hiddenInput.value = btn.dataset.value;
-					filterForm.dispatchEvent(new Event('change', { bubbles: true }));
-				});
-			});
+                        // Event listeners
+                        buttons.forEach(btn => {
+                                if (btn.dataset.initialized) return;
+                                btn.addEventListener('click', () => {
+                                        buttons.forEach(b => b.classList.remove('active'));
+                                        btn.classList.add('active');
+                                        hiddenInput.value = btn.dataset.value;
+                                        filterForm.dispatchEvent(new Event('change', { bubbles: true }));
+                                });
+                                btn.dataset.initialized = 'true';
+                        });
                 });
         };
 
