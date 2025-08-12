@@ -47,6 +47,13 @@ $context['filters']['provincies'] = [
   'hide_empty_options' => true
 ];
 
+$context['filters']['rating'] = [
+  'name'   => 'rating',
+  'label'  => 'Rating',
+  'type'   => 'range',
+  'source' => 'acf'
+];
+
 // 🧩 Filter: publicatiedatum (van–tot)
 $context['filters']['published'] = [
   'name'   => 'post_date',

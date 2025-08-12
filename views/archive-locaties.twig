@@ -51,7 +51,9 @@
                                         <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 
                                         {{ filter(filters.published) }}
-
+										
+										{{ filter(filters.rating) }}
+										
                                         {{ filter(filters.provincies, {
                                                 limit_options: 1,
                                                 option_list_expand_label: 'Meer opties',
