@@ -107,7 +107,7 @@
     },
     "\/assets\/favicon\/apple-touch-icon.png" : {
       "ft" : 32768,
-      "iS" : 52441,
+      "iS" : 41658,
       "oA" : 0,
       "oAP" : "\/assets\/favicon\/apple-touch-icon.png",
       "oF" : 0,
@@ -120,7 +120,7 @@
     },
     "\/assets\/favicon\/favicon-96x96.png" : {
       "ft" : 32768,
-      "iS" : 19410,
+      "iS" : 14024,
       "oA" : 0,
       "oAP" : "\/assets\/favicon\/favicon-96x96.png",
       "oF" : 0,
@@ -159,7 +159,7 @@
     },
     "\/assets\/favicon\/web-app-manifest-192x192.png" : {
       "ft" : 32768,
-      "iS" : 60996,
+      "iS" : 46516,
       "oA" : 0,
       "oAP" : "\/assets\/favicon\/web-app-manifest-192x192.png",
       "oF" : 0,
@@ -172,7 +172,7 @@
     },
     "\/assets\/favicon\/web-app-manifest-512x512.png" : {
       "ft" : 32768,
-      "iS" : 229186,
+      "iS" : 231188,
       "oA" : 0,
       "oAP" : "\/assets\/favicon\/web-app-manifest-512x512.png",
       "oF" : 0,
@@ -1148,7 +1148,7 @@
       "rq" : 75
     },
     "\/assets\/js\/main.js" : {
-      "bF" : 4,
+      "bF" : 0,
       "ft" : 64,
       "ma" : 0,
       "mi" : 1,
@@ -1156,7 +1156,7 @@
       "oAP" : "\/dist\/main-min.js",
       "oF" : 2,
       "sC" : 3,
-      "tS" : 1
+      "tS" : 0
     },
     "\/assets\/js\/plugins\/lightgalleryInit.js" : {
       "bF" : 0,
@@ -1392,18 +1392,6 @@
       "oS" : 1,
       "pg" : 0
     },
-    "\/assets\/scss\/main.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/assets\/scss\/main-min.css",
-      "oF" : 0,
-      "pg" : 0
-    },
     "\/assets\/scss\/main.scss" : {
       "aP" : 0,
       "bl" : 0,
@@ -1412,8 +1400,8 @@
       "ft" : 4,
       "ma" : 0,
       "oA" : 0,
-      "oAP" : "\/assets\/scss\/main.css",
-      "oF" : 0,
+      "oAP" : "\/dist\/main-min.css",
+      "oF" : 2,
       "oS" : 1,
       "pg" : 0
     },
@@ -2049,54 +2037,6 @@
       "oA" : 0,
       "oAP" : "\/composer.lock",
       "oF" : 0
-    },
-    "\/dist\/main-min-blessed1-min.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/dist\/main-min-blessed1-min-min.css",
-      "oF" : 0,
-      "pg" : 0
-    },
-    "\/dist\/main-min-blessed1.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/dist\/main-min-blessed1-min.css",
-      "oF" : 0,
-      "pg" : 0
-    },
-    "\/dist\/main-min-blessed2-min.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/dist\/main-min-blessed2-min-min.css",
-      "oF" : 0,
-      "pg" : 0
-    },
-    "\/dist\/main-min-blessed2.css" : {
-      "aP" : 1,
-      "bl" : 0,
-      "ci" : 0,
-      "co" : 0,
-      "ft" : 16,
-      "ma" : 0,
-      "oA" : 0,
-      "oAP" : "\/dist\/main-min-blessed2-min.css",
-      "oF" : 0,
-      "pg" : 0
     },
     "\/dist\/main-min.css" : {
       "aP" : 1,
