@@ -16,6 +16,8 @@ require_once __DIR__ . '/src/ThemeSpecific.php';
 require_once __DIR__ . '/src/WPAdmin.php';
 
 
+// Registreer en laad alle componenten vanuit de componenten-map.
+// Hierdoor kan de gehele map later eenvoudig worden vervangen.
 require_once __DIR__ . '/components/Components.php';
 
 Timber\Timber::init();

@@ -1,4 +1,4 @@
-// Updated JavaScript for Swiper Component
+// Component script: Swiper initialisatie
 import Swiper from 'swiper/bundle';
 
 export function swiperInit() {
