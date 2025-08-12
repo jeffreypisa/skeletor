@@ -1148,15 +1148,15 @@
       "rq" : 75
     },
     "\/assets\/js\/main.js" : {
-      "bF" : 0,
+      "bF" : 4,
       "ft" : 64,
-      "ma" : 0,
+      "ma" : 1,
       "mi" : 1,
       "oA" : 0,
       "oAP" : "\/dist\/main-min.js",
       "oF" : 2,
       "sC" : 3,
-      "tS" : 0
+      "tS" : 1
     },
     "\/assets\/js\/plugins\/lightgalleryInit.js" : {
       "bF" : 0,
@@ -1398,7 +1398,7 @@
       "co" : 0,
       "ec" : 1,
       "ft" : 4,
-      "ma" : 0,
+      "ma" : 1,
       "oA" : 0,
       "oAP" : "\/dist\/main-min.css",
       "oF" : 2,
@@ -2068,6 +2068,14 @@
       "oF" : 0,
       "sC" : 3,
       "tS" : 0
+    },
+    "\/dist\/main-min.js.map" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/dist\/main-min.js.map",
+      "oF" : 0
     },
     "\/favicon.ico" : {
       "cB" : 0,
