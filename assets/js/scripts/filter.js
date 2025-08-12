@@ -359,9 +359,24 @@ export function filter() {
                         });
 
                         // Reset date pickers naar oorspronkelijke waardes
-                        filterForm.querySelectorAll('[data-date-picker], [data-date-range-start], [data-date-range-end]').forEach(el => {
+                        filterForm.querySelectorAll('[data-date-picker]').forEach(el => {
                                 if (el._flatpickr) {
                                         el._flatpickr.setDate(el.value || null, false);
+                                }
+                        });
+
+                        filterForm.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+                                const key = startEl.dataset.dateRangeStart;
+                                const endEl = filterForm.querySelector(`[data-date-range-end="${key}"]`);
+                                const startVal = startEl.value || null;
+                                const endVal = endEl ? endEl.value || null : null;
+
+                                if (startEl._flatpickr) {
+                                        startEl._flatpickr.setDate([startVal, endVal], false);
+                                }
+
+                                if (endEl && endEl._flatpickr) {
+                                        endEl._flatpickr.setDate(endVal || null, false);
                                 }
                         });
 
