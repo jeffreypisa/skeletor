@@ -165,9 +165,7 @@ export function filter() {
                        if (el._flatpickr) return;
                        const format = el.dataset.dateFormat || 'd-m-Y';
                        flatpickr(el, {
-                               altInput: true,
-                               dateFormat: 'Y-m-d',
-                               altFormat: format,
+                               dateFormat: format,
                                onChange: () => el.dispatchEvent(new Event('change', { bubbles: true }))
                        });
                });
@@ -178,28 +176,8 @@ export function filter() {
                        const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
                        const format = startEl.dataset.dateFormat || 'd-m-Y';
                        flatpickr(startEl, {
-                               altInput: true,
-                               dateFormat: 'Y-m-d',
-                               altFormat: format,
+                               dateFormat: format,
                                plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
-                               onReady: (selectedDates, _dateStr, instance) => {
-                                       if (selectedDates[0]) {
-                                               startEl.value = instance.formatDate(selectedDates[0], 'Y-m-d');
-                                       }
-                                       if (endEl && selectedDates[1]) {
-                                               endEl.value = instance.formatDate(selectedDates[1], 'Y-m-d');
-                                       }
-                               },
-                               onValueUpdate: (selectedDates, _dateStr, instance) => {
-                                       startEl.value = selectedDates[0]
-                                               ? instance.formatDate(selectedDates[0], 'Y-m-d')
-                                               : '';
-                                       if (endEl) {
-                                               endEl.value = selectedDates[1]
-                                                       ? instance.formatDate(selectedDates[1], 'Y-m-d')
-                                                       : '';
-                                       }
-                               },
                                onChange: () => {
                                        startEl.dispatchEvent(new Event('change', { bubbles: true }));
                                        if (endEl) endEl.dispatchEvent(new Event('change', { bubbles: true }));

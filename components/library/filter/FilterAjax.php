@@ -9,13 +9,27 @@
  * - publicatiedatum filteren met de special key `post_date`
  */
 class Components_FilterAjax {
-       private static function normalize_date($date) {
-               if (empty($date)) return '';
-               $d = \DateTime::createFromFormat('Y-m-d', $date);
+       private static function parse_date($date) {
+               if (empty($date)) return null;
+               $d = \DateTime::createFromFormat('d-m-Y', $date);
                if (!$d) {
-                       $d = \DateTime::createFromFormat('d-m-Y', $date);
+                       $d = \DateTime::createFromFormat('Y-m-d', $date);
                }
+               return $d ?: null;
+       }
+
+       private static function normalize_date($date) {
+               $d = self::parse_date($date);
                return $d ? $d->format('Y-m-d') : '';
+       }
+
+       private static function date_parts($date) {
+               $d = self::parse_date($date);
+               return $d ? [
+                       'year'  => (int) $d->format('Y'),
+                       'month' => (int) $d->format('m'),
+                       'day'   => (int) $d->format('d'),
+               ] : [];
        }
         public static function handle() {
                 $filters = $_POST;
@@ -65,44 +79,50 @@ class Components_FilterAjax {
                                         ];
                                 }
                         }
-                        if (strpos($key, 'from_') === 0) {
+                       if (strpos($key, 'from_') === 0) {
                                $base = substr($key, 5);
-                               $from = self::normalize_date($_POST['from_' . $base] ?? '');
-                               $to   = self::normalize_date($_POST['to_' . $base] ?? '');
+                               $fromRaw = $_POST['from_' . $base] ?? '';
+                               $toRaw   = $_POST['to_' . $base] ?? '';
+                               $from = self::normalize_date($fromRaw);
+                               $to   = self::normalize_date($toRaw);
+                               $fromParts = self::date_parts($fromRaw);
+                               $toParts   = self::date_parts($toRaw);
 
-                                $from_filled = $from !== '';
-                                $to_filled   = $to !== '';
+                               $from_filled = $from !== '';
+                               $to_filled   = $to !== '';
 
-                                if ($base === 'post_date') {
-                                        $dq = ['inclusive' => true];
-                                        if ($from_filled) $dq['after'] = $from;
-                                        if ($to_filled)   $dq['before'] = $to;
-                                        if ($from_filled || $to_filled) $date_query[] = $dq;
-                                } else {
-                                        if ($from_filled && $to_filled) {
-                                                $meta_query[] = [
-                                                        'key'     => $base,
-                                                        'value'   => [$from, $to],
-                                                        'type'    => 'DATE',
-                                                        'compare' => 'BETWEEN',
-                                                ];
-                                        } elseif ($from_filled) {
-                                                $meta_query[] = [
-                                                        'key'     => $base,
-                                                        'value'   => $from,
-                                                        'type'    => 'DATE',
-                                                        'compare' => '>=',
-                                                ];
-                                        } elseif ($to_filled) {
-                                                $meta_query[] = [
-                                                        'key'     => $base,
-                                                        'value'   => $to,
-                                                        'type'    => 'DATE',
-                                                        'compare' => '<=',
-                                                ];
-                                        }
-                                }
-                        }
+                               if ($base === 'post_date') {
+                                       if ($from_filled || $to_filled) {
+                                               $dq = ['inclusive' => true, 'column' => 'post_date'];
+                                               if ($from_filled) $dq['after'] = $fromParts;
+                                               if ($to_filled)   $dq['before'] = $toParts;
+                                               $date_query[] = $dq;
+                                       }
+                               } else {
+                                       if ($from_filled && $to_filled) {
+                                               $meta_query[] = [
+                                                       'key'     => $base,
+                                                       'value'   => [$from, $to],
+                                                       'type'    => 'DATE',
+                                                       'compare' => 'BETWEEN',
+                                               ];
+                                       } elseif ($from_filled) {
+                                               $meta_query[] = [
+                                                       'key'     => $base,
+                                                       'value'   => $from,
+                                                       'type'    => 'DATE',
+                                                       'compare' => '>=',
+                                               ];
+                                       } elseif ($to_filled) {
+                                               $meta_query[] = [
+                                                       'key'     => $base,
+                                                       'value'   => $to,
+                                                       'type'    => 'DATE',
+                                                       'compare' => '<=',
+                                               ];
+                                       }
+                               }
+                       }
                 }
 
 		// 🔍 Taxonomy filters

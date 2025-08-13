@@ -74,18 +74,23 @@ class Components_Filter extends Site {
                $data['name'] = $name;
 
                $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
-	
-		// ⛏ Verwerk waarde vanuit $_GET
+
+                // ⛏ Verwerk waarde vanuit $_GET
                 if ($type === 'range') {
                         $data['value'] = [
                                 'min' => $_GET['min_' . $name] ?? null,
                                 'max' => $_GET['max_' . $name] ?? null,
                         ];
                } elseif ($type === 'date_range') {
+                       $from_dt = self::parse_date($_GET['from_' . $name] ?? '');
+                       $to_dt   = self::parse_date($_GET['to_' . $name] ?? '');
                        $data['value'] = [
-                               'from' => $_GET['from_' . $name] ?? null,
-                               'to'   => $_GET['to_' . $name] ?? null,
+                               'from' => $from_dt ? $from_dt->format('d-m-Y') : '',
+                               'to'   => $to_dt ? $to_dt->format('d-m-Y') : '',
                        ];
+               } elseif ($type === 'date') {
+                       $dt = self::parse_date($_GET[$name] ?? '');
+                       $data['value'] = $dt ? $dt->format('d-m-Y') : '';
                } else {
                        if (in_array($type, ['checkbox', 'multiselect'])) {
                                $data['value'] = $_GET[$name] ?? ($_GET[$name . '[]'] ?? null);
@@ -215,8 +220,8 @@ class Components_Filter extends Site {
 	 * @return array ['min' => int|float, 'max' => int|float]
 	 */
 	 
-        public static function get_auto_min_max($meta_key, $post_type = null) {
-                global $wpdb;
+       public static function get_auto_min_max($meta_key, $post_type = null) {
+               global $wpdb;
 
 		if (!$post_type) {
 			$post_type = get_post_type() ?: get_query_var('post_type') ?: 'post';
@@ -234,11 +239,34 @@ class Components_Filter extends Site {
 			$post_type
 		));
 
-                return [
-                        'min' => $row->min ?? 0,
-                        'max' => $row->max ?? 100,
-                ];
-        }
+               return [
+                       'min' => $row->min ?? 0,
+                       'max' => $row->max ?? 100,
+               ];
+       }
+
+       private static function parse_date($date) {
+               if (empty($date)) return null;
+               $d = \DateTime::createFromFormat('d-m-Y', $date);
+               if (!$d) {
+                       $d = \DateTime::createFromFormat('Y-m-d', $date);
+               }
+               return $d ?: null;
+       }
+
+       private static function normalize_date($date) {
+               $d = self::parse_date($date);
+               return $d ? $d->format('Y-m-d') : '';
+       }
+
+       private static function date_parts($date) {
+               $d = self::parse_date($date);
+               return $d ? [
+                       'year'  => (int) $d->format('Y'),
+                       'month' => (int) $d->format('m'),
+                       'day'   => (int) $d->format('d'),
+               ] : [];
+       }
 
        /**
         * Bepaalt automatisch de oudste en nieuwste datum voor een veld of publicatiedatum.
@@ -246,7 +274,7 @@ class Components_Filter extends Site {
         * @param string $field      Meta key of special value 'post_date'.
         * @param string $source     'acf' of 'post_date'.
         * @param string $post_type  Optioneel post type (default huidige query).
-        * @return array ['min' => 'Y-m-d', 'max' => 'Y-m-d']
+        * @return array ['min' => 'd-m-Y', 'max' => 'd-m-Y']
         */
        public static function get_auto_date_bounds($field, $source = 'acf', $post_type = null) {
                global $wpdb;
@@ -277,8 +305,8 @@ class Components_Filter extends Site {
                }
 
                return [
-                       'min' => $row->min ? date('Y-m-d', strtotime($row->min)) : '',
-                       'max' => $row->max ? date('Y-m-d', strtotime($row->max)) : '',
+                       'min' => $row->min ? date('d-m-Y', strtotime($row->min)) : '',
+                       'max' => $row->max ? date('d-m-Y', strtotime($row->max)) : '',
                ];
        }
 
@@ -324,14 +352,20 @@ class Components_Filter extends Site {
 
                         // 🟡 Date range
                         elseif ($type === 'date_range' && is_array($value)) {
-                                $from = $value['from'] ?? null;
-                                $to   = $value['to'] ?? null;
+                                $fromRaw = $value['from'] ?? '';
+                                $toRaw   = $value['to'] ?? '';
+                                $from = self::normalize_date($fromRaw);
+                                $to   = self::normalize_date($toRaw);
+                                $fromParts = self::date_parts($fromRaw);
+                                $toParts   = self::date_parts($toRaw);
 
                                 if ($source === 'post_date') {
-                                        $dq = ['inclusive' => true];
-                                        if ($from) $dq['after'] = $from;
-                                        if ($to)   $dq['before'] = $to;
-                                        if ($from || $to) $date_query[] = $dq;
+                                        if ($from || $to) {
+                                                $dq = ['inclusive' => true, 'column' => 'post_date'];
+                                                if ($from) $dq['after'] = $fromParts;
+                                                if ($to)   $dq['before'] = $toParts;
+                                                $date_query[] = $dq;
+                                        }
                                 } else {
                                         if ($from && $to) {
                                                 $meta_query[] = [
@@ -369,19 +403,26 @@ class Components_Filter extends Site {
 
                         // 🟡 Date (single)
                         elseif ($type === 'date' && !empty($value)) {
+                                $valNorm  = self::normalize_date($value);
+                                $valParts = self::date_parts($value);
                                 if ($source === 'post_date') {
-                                        $date_query[] = [
-                                                'inclusive' => true,
-                                                'after'  => $value,
-                                                'before' => $value,
-                                        ];
+                                        if ($valNorm) {
+                                                $date_query[] = [
+                                                        'inclusive' => true,
+                                                        'after'  => $valParts,
+                                                        'before' => $valParts,
+                                                        'column' => 'post_date',
+                                                ];
+                                        }
                                 } else {
-                                        $meta_query[] = [
-                                                'key'     => $name,
-                                                'value'   => $value,
-                                                'compare' => '=',
-                                                'type'    => 'DATE',
-                                        ];
+                                        if ($valNorm) {
+                                                $meta_query[] = [
+                                                        'key'     => $name,
+                                                        'value'   => $valNorm,
+                                                        'compare' => '=',
+                                                        'type'    => 'DATE',
+                                                ];
+                                        }
                                 }
                         }
 
