@@ -278,25 +278,30 @@ export function filter() {
                                 }
 
                                 // 🔢 Update option counts for filters
-                                const optionCountsEl = el.querySelector('[data-option-counts]');
-                                if (optionCountsEl) {
-                                        let counts = {};
-                                        try {
-                                                counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
-                                        } catch {
-                                                counts = {};
-                                        }
-                                        Object.entries(counts).forEach(([filterName, values]) => {
-                                                Object.entries(values).forEach(([val, count]) => {
-                                                        const target = document.querySelector(`[data-option-count="${filterName}:${val}"]`);
-                                                        if (target) {
-                                                                target.textContent = count;
-                                                        }
-                                                });
-                                        });
-                                }
-			});
-	};
+                               const optionCountsEl = el.querySelector('[data-option-counts]');
+                               if (optionCountsEl) {
+                                       let counts = {};
+                                       try {
+                                               counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
+                                       } catch {
+                                               counts = {};
+                                       }
+                                       const targets = {};
+                                       document.querySelectorAll('[data-option-count]').forEach((el) => {
+                                               targets[el.dataset.optionCount] = el;
+                                       });
+
+                                       Object.entries(counts).forEach(([filterName, values]) => {
+                                               Object.entries(values).forEach(([val, count]) => {
+                                                       const key = `${filterName}:${val}`;
+                                                       if (targets[key]) {
+                                                               targets[key].textContent = count;
+                                                       }
+                                               });
+                                       });
+                               }
+                       });
+       };
 
 	filterForm.addEventListener('change', debounce(() => {
 		currentPage = 1;
