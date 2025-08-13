@@ -182,13 +182,31 @@ export function filter() {
                                dateFormat: 'Y-m-d',
                                altFormat: format,
                                plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+                               onReady: (selectedDates, _dateStr, instance) => {
+                                       if (selectedDates[0]) {
+                                               startEl.value = instance.formatDate(selectedDates[0], 'Y-m-d');
+                                       }
+                                       if (endEl && selectedDates[1]) {
+                                               endEl.value = instance.formatDate(selectedDates[1], 'Y-m-d');
+                                       }
+                               },
+                               onValueUpdate: (selectedDates, _dateStr, instance) => {
+                                       startEl.value = selectedDates[0]
+                                               ? instance.formatDate(selectedDates[0], 'Y-m-d')
+                                               : '';
+                                       if (endEl) {
+                                               endEl.value = selectedDates[1]
+                                                       ? instance.formatDate(selectedDates[1], 'Y-m-d')
+                                                       : '';
+                                       }
+                               },
                                onChange: () => {
                                        startEl.dispatchEvent(new Event('change', { bubbles: true }));
                                        if (endEl) endEl.dispatchEvent(new Event('change', { bubbles: true }));
                                }
                        });
                });
-        };
+       };
 
         const initSliders = () => {
                 document.querySelectorAll('[data-slider]').forEach(sliderEl => {

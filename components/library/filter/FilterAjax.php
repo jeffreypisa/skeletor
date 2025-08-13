@@ -9,8 +9,16 @@
  * - publicatiedatum filteren met de special key `post_date`
  */
 class Components_FilterAjax {
-	public static function handle() {
-		$filters = $_POST;
+       private static function normalize_date($date) {
+               if (empty($date)) return '';
+               $d = \DateTime::createFromFormat('Y-m-d', $date);
+               if (!$d) {
+                       $d = \DateTime::createFromFormat('d-m-Y', $date);
+               }
+               return $d ? $d->format('Y-m-d') : '';
+       }
+        public static function handle() {
+                $filters = $_POST;
 	
 		if (!is_array($filters)) {
 			echo '❌ Ongeldige filterdata ontvangen';
@@ -58,9 +66,9 @@ class Components_FilterAjax {
                                 }
                         }
                         if (strpos($key, 'from_') === 0) {
-                                $base = substr($key, 5);
-                                $from = $_POST['from_' . $base] ?? '';
-                                $to   = $_POST['to_' . $base] ?? '';
+                               $base = substr($key, 5);
+                               $from = self::normalize_date($_POST['from_' . $base] ?? '');
+                               $to   = self::normalize_date($_POST['to_' . $base] ?? '');
 
                                 $from_filled = $from !== '';
                                 $to_filled   = $to !== '';
