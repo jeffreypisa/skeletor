@@ -288,7 +288,9 @@ export function filter() {
                                        }
                                        const targets = {};
                                        document.querySelectorAll('[data-option-count]').forEach((el) => {
-                                               targets[el.dataset.optionCount] = el;
+                                               const key = el.dataset.optionCount;
+                                               targets[key] = el;
+                                               el.textContent = '0';
                                        });
 
                                        Object.entries(counts).forEach(([filterName, values]) => {
