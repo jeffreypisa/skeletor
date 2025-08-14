@@ -7,11 +7,12 @@ use Timber\Site;
  * Class StarterSite
  */
 class StarterSite extends Site {
-	public function __construct() {
-		add_action('after_setup_theme', [$this, 'theme_supports']);
-		add_filter('timber/context', [$this, 'add_to_context']);
-		add_filter('timber/twig', [$this, 'add_to_twig']);
-		add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
+        public function __construct() {
+                add_action('after_setup_theme', [$this, 'theme_supports']);
+                add_filter('timber/context', [$this, 'add_to_context']);
+                add_filter('timber/twig', [$this, 'add_to_twig']);
+                add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
+                add_filter('body_class', [$this, 'add_body_class']);
 		
 		// Extra template-locaties toevoegen
 		Timber::$locations = [
@@ -38,10 +39,14 @@ class StarterSite extends Site {
 			};
 		}
 
-		// Haal menu's op
-		$context['headermenu'] = \Timber\Timber::get_menu('headermenu');
-		$context['footermenu'] = \Timber\Timber::get_menu('footermenu');
-		$context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
+                $show_topbar = apply_filters('skeletor_show_topbar', true);
+                $context['show_topbar'] = $show_topbar;
+
+                // Haal menu's op
+                $context['headermenu'] = \Timber\Timber::get_menu('headermenu');
+                $context['servicemenu'] = \Timber\Timber::get_menu('servicemenu');
+                $context['footermenu'] = \Timber\Timber::get_menu('footermenu');
+                $context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
 		
 		// Voeg optiespagina velden toe
 		$context['options'] = get_fields('options');
@@ -58,11 +63,18 @@ class StarterSite extends Site {
 			return null;
 		};
 
-		// Voeg een extra waarde toe voor front-page controle
-		$context['is_front_page'] = is_front_page();
+                // Voeg een extra waarde toe voor front-page controle
+                $context['is_front_page'] = is_front_page();
 
-		return $context;
-	}
+                return $context;
+        }
+
+        public function add_body_class($classes) {
+                if (apply_filters('skeletor_show_topbar', true)) {
+                        $classes[] = 'has-topbar';
+                }
+                return $classes;
+        }
 
 	/**
 	 * Schakel thema-ondersteuning in
