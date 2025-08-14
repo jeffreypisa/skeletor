@@ -64,12 +64,12 @@ export function filter() {
 	let currentPage = 1;
 	let maxPages = null;
 
-	const toggleLoader = (show) => {
-		const results = document.querySelector('#filter-results');
-		if (!results) return;
-
-		results.classList.toggle('loading', show);
-	};
+        const toggleLoader = (show) => {
+                const results = document.querySelector('#filter-results');
+                const loader = document.querySelector('[data-filter-loader]');
+                if (loader) loader.classList.toggle('d-none', !show);
+                if (results) results.classList.toggle('loading', show);
+        };
 
 	const animateItems = () => {
 		const items = resultContainer.querySelectorAll('.fade-in-item');
