@@ -1,5 +1,5 @@
 {% if show_topbar %}
-<div class="topbar">
+<div class="topbar d-none d-lg-flex align-items-center">
         <div class="container">
                 <div class="row w-100 g-2">
                         <div class="col small d-flex align-items-center">
@@ -7,7 +7,7 @@
                         </div>
                         {% if servicemenu %}
                                 <div class="col-auto d-flex align-items-center">
-                                        {% include "partials/menu.twig" with {'items': servicemenu.get_items} %}
+                                        {% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
                                 </div>
                         {% endif %}
                 </div>
@@ -21,7 +21,7 @@
                         <div class="col d-flex align-items-center">
                                 <a class="header-brand" href="{{ site.url }}" rel="home">
                                         <span class="d-none">{{ site.name }}</span>
-                                        <img height="42" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.title }}">
+                                        <img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.title }}">
                                 </a>
                         </div>
                         {% if headermenu %}
