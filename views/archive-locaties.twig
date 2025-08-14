@@ -16,7 +16,7 @@
 						<div class="row">
 							<div class="col-sm d-flex align-items-center">
 								{% if total is defined %}
-								<p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+									<p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
 								{% endif %}
 							</div>
 							<div class="col-sm-auto d-flex align-items-center">
@@ -36,40 +36,40 @@
 				</div>
 			</div>
 			<div class="row">
-                                <div class="col-md-4">
-                                        <button class="btn btn-outline-dark w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
-                                                <i class="fa-solid fa-filter me-2"></i> Filter resultaten
-                                        </button>
+                <div class="col-md-4">
+                        <button class="btn btn-outline-dark w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
+                                <i class="fa-solid fa-filter me-2"></i> Filter resultaten
+                        </button>
 
-                                        <div class="collapse d-md-block" id="filtersCollapse">
-                                                <div class="row mb-4">
-                                                        <div class="col">
-                                                                <h4 class="m-0"> {{ title }} </h4>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                                <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
-                                                                        Reset filters
-                                                                </button>
-                                                        </div>
-                                                </div>
-
-                                                <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
-
-                                                {{ filter(filters.published) }}
-
-                                                {{ filter(filters.rating) }}
-
-                                                {{ filter(filters.provincies, {
-                                                        limit_options: 3,
-                                                        option_list_expand_label: 'Meer opties',
-                                                        option_list_collapse_label: 'Minder opties',
-                                                        layout: 'vertical',
-                                                        show_field_label: true,
-                                                        label: 'Alle uren',
-                                                        show_option_counts: true
-                                                }) }}
+                        <div class="collapse d-md-block" id="filtersCollapse">
+                                <div class="row mb-4">
+                                        <div class="col">
+                                                <h4 class="m-0"> {{ title }} </h4>
+                                        </div>
+                                        <div class="col-auto">
+                                                <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
+                                                        Reset filters
+                                                </button>
                                         </div>
                                 </div>
+
+                                <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+
+                                {{ filter(filters.published) }}
+
+                                {{ filter(filters.rating) }}
+
+                                {{ filter(filters.provincies, {
+                                        limit_options: 3,
+                                        option_list_expand_label: 'Meer opties',
+                                        option_list_collapse_label: 'Minder opties',
+                                        layout: 'vertical',
+                                        show_field_label: true,
+                                        label: 'Alle uren',
+                                        show_option_counts: true
+                                }) }}
+                        </div>
+                </div>
 				<div class="col-md-8">
 					<div class="position-relative">
 						<div id="filter-loader" data-filter-loader class="filter-overlay d-none">

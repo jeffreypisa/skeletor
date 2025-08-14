@@ -8,11 +8,11 @@ use Timber\Site;
  */
 class StarterSite extends Site {
         public function __construct() {
-                add_action('after_setup_theme', [$this, 'theme_supports']);
-                add_filter('timber/context', [$this, 'add_to_context']);
-                add_filter('timber/twig', [$this, 'add_to_twig']);
-                add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
-                add_filter('body_class', [$this, 'add_body_class']);
+            add_action('after_setup_theme', [$this, 'theme_supports']);
+            add_filter('timber/context', [$this, 'add_to_context']);
+            add_filter('timber/twig', [$this, 'add_to_twig']);
+            add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
+            add_filter('body_class', [$this, 'add_body_class']);
 		
 		// Extra template-locaties toevoegen
 		Timber::$locations = [
