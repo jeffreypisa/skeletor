@@ -264,9 +264,19 @@ class Components_FilterAjax {
                         ],
                 ];
 
-                $context['option_counts'] = [
-                        'uren' => Components_Filter::get_option_counts($filter_defs_for_counts, 'uren'),
-                ];
+               $global_count_args = ['post_type' => $post_type];
+               if (!empty($filters['s'])) {
+                       $global_count_args['s'] = sanitize_text_field($filters['s']);
+               }
+
+               $context['option_counts'] = [];
+               foreach ($filter_defs_for_counts as $fname => $def) {
+                       $context['option_counts'][$fname] = Components_Filter::get_option_counts(
+                               $filter_defs_for_counts,
+                               $fname,
+                               $global_count_args
+                       );
+               }
 
 		// ✅ DEBUG
 		// echo '<div style="background:#f8f8f8;padding:1rem;margin-bottom:1rem;border:1px solid #ccc">';
