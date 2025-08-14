@@ -39,9 +39,10 @@ class StarterSite extends Site {
 		}
 
 		// Haal menu's op
-		$context['headermenu'] = \Timber\Timber::get_menu('headermenu');
-		$context['footermenu'] = \Timber\Timber::get_menu('footermenu');
-		$context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
+                $context['headermenu'] = \Timber\Timber::get_menu('headermenu');
+                $context['servicemenu'] = \Timber\Timber::get_menu('servicemenu');
+                $context['footermenu'] = \Timber\Timber::get_menu('footermenu');
+                $context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
 		
 		// Voeg optiespagina velden toe
 		$context['options'] = get_fields('options');
