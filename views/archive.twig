@@ -6,7 +6,8 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-		<form data-filter-form data-post-type="{{ post_type }}">
+               <form data-filter-form data-post-type="{{ post_type }}">
+                       <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
 					<a href="{{ site.link }}">Home </a> / {{ post_type|capitalize }}

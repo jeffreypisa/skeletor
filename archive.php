@@ -13,9 +13,13 @@
 
 $context = Timber::context(); // Basiscontext vanuit Timber, bevat globale data (site, user, etc.)
 
-$post_type = get_post_type(); 
+$post_type = get_post_type();
 $context['post_type'] = $post_type; // Nodig voor AJAX (JS moet weten welk post_type gefilterd wordt)
 $context['filters'] = [];
+
+// 🔢 Aantal resultaten per pagina instelbaar
+$posts_per_page = 12;
+$context['posts_per_page'] = $posts_per_page;
 
 /**
  * 🧩 Filters
@@ -68,7 +72,7 @@ $context['filters']['published'] = [
  */
 $query_args = [
   'post_type'      => $post_type,
-  'posts_per_page' => 12,                     // Resultaten per pagina
+  'posts_per_page' => $posts_per_page,        // Resultaten per pagina
   'paged'          => get_query_var('paged') ?: 1, // Huidige paginanummer (voor paginatie)
 ];
 

@@ -39,8 +39,9 @@ class Components_FilterAjax {
 			wp_die();
 		}
 	
-		$post_type = sanitize_text_field($filters['post_type'] ?? 'post');
-		$paged     = (int)($filters['paged'] ?? 1);
+               $post_type      = sanitize_text_field($filters['post_type'] ?? 'post');
+               $paged          = (int)($filters['paged'] ?? 1);
+               $posts_per_page = isset($filters['posts_per_page']) ? (int) $filters['posts_per_page'] : 12;
 	
                 // 🔍 Meta filters
                 $meta_query = [];
@@ -168,15 +169,15 @@ class Components_FilterAjax {
 		}
 		
 		// 🔍 WP_Query args
-                $args = [
-                        'post_type'      => $post_type,
-                        'post_status'    => 'publish',
-                        'posts_per_page' => 12,
-                        'paged'          => $paged,
-                        'orderby'        => $orderby,
-                        'order'          => $order,
-                        'meta_query'     => $meta_query,
-                ];
+               $args = [
+                       'post_type'      => $post_type,
+                       'post_status'    => 'publish',
+                       'posts_per_page' => $posts_per_page,
+                       'paged'          => $paged,
+                       'orderby'        => $orderby,
+                       'order'          => $order,
+                       'meta_query'     => $meta_query,
+               ];
                 if (!empty($date_query)) {
                         $args['date_query'] = $date_query;
                 }
@@ -190,7 +191,7 @@ class Components_FilterAjax {
 		}
 
 		// 🔧 Filters doorgeven aan build_query_from_filters, excl. technische of al verwerkte keys
-		$exclude_keys = ['action', 'paged', 'post_type', 's', 'sort'];
+               $exclude_keys = ['action', 'paged', 'post_type', 's', 'sort', 'posts_per_page'];
 		$filter_definitions = [];
 
 		foreach ($filters as $key => $val) {
