@@ -238,31 +238,43 @@ class Components_FilterAjax {
                         'total'     => $query->found_posts, // <== voeg dit hier toe
                 ];
 
-                // 🧮 Option counts for checkbox filters
-                $filter_defs_for_counts = [
-                        'uren' => [
-                                'name'    => 'uren',
-                                'type'    => 'checkbox',
-                                'source'  => 'acf',
-                                'options' => Components_Filter::get_options_from_meta('uren'),
-                                'value'   => $filters['uren'] ?? null,
-                        ],
-                        'prijs' => [
-                                'name'   => 'prijs',
-                                'type'   => 'range',
-                                'source' => 'acf',
-                                'value'  => [
-                                        'min' => $filters['min_prijs'] ?? null,
-                                        'max' => $filters['max_prijs'] ?? null,
-                                ],
-                        ],
-                        'vakgebied' => [
-                                'name'   => 'vakgebied',
-                                'type'   => 'buttons',
-                                'source' => 'taxonomy',
-                                'value'  => $filters['vakgebied'] ?? null,
-                        ],
-                ];
+               // 🧮 Dynamically calculate option counts for all defined filters
+               $filter_defs_for_counts = Timber::context()['ajax_filters'] ?? [];
+
+               foreach ($filter_defs_for_counts as $fname => &$def) {
+                       $ftype = $def['type'] ?? 'select';
+                       $fsrc  = $def['source'] ?? 'acf';
+                       $key   = $def['name'] ?? $fname;
+
+                       if ($ftype === 'range') {
+                               $def['value'] = [
+                                       'min' => $filters['min_' . $key] ?? null,
+                                       'max' => $filters['max_' . $key] ?? null,
+                               ];
+                       } elseif ($ftype === 'date_range') {
+                               $def['value'] = [
+                                       'from' => $filters['from_' . $key] ?? '',
+                                       'to'   => $filters['to_' . $key] ?? '',
+                               ];
+                       } elseif ($ftype === 'date') {
+                               $def['value'] = $filters[$key] ?? '';
+                       } else {
+                               if (in_array($ftype, ['checkbox', 'multiselect'])) {
+                                       $def['value'] = $filters[$key] ?? ($filters[$key . '[]'] ?? null);
+                               } else {
+                                       $def['value'] = $filters[$key] ?? null;
+                               }
+                       }
+
+                       if (empty($def['options'])) {
+                               if ($fsrc === 'acf') {
+                                       $def['options'] = Components_Filter::get_options_from_meta($key);
+                               } elseif ($fsrc === 'taxonomy') {
+                                       $def['options'] = Components_Filter::get_options_from_taxonomy($key);
+                               }
+                       }
+               }
+               unset($def);
 
                $global_count_args = ['post_type' => $post_type];
                if (!empty($filters['s'])) {

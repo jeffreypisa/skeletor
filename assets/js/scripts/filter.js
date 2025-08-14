@@ -278,25 +278,22 @@ export function filter() {
 				}
 
 				// 🔢 Update option counts for filters
-				const optionCountsEl = el.querySelector('[data-option-counts]');
-				if (optionCountsEl) {
-					let counts = {};
-					try {
-						counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
-					} catch {
-						counts = {};
-					}
-					Object.entries(counts).forEach(([filterName, values]) => {
-						Object.entries(values).forEach(([val, count]) => {
-							const target = document.querySelector(`[data-option-count="${filterName}:${val}"]`);
-							if (target) {
-								target.textContent = count;
-							}
-						});
-					});
-				}
-			});
-	};
+                                const optionCountsEl = el.querySelector('[data-option-counts]');
+                                if (optionCountsEl) {
+                                        let counts = {};
+                                        try {
+                                                counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
+                                        } catch {
+                                                counts = {};
+                                        }
+                                        document.querySelectorAll('[data-option-count]').forEach(target => {
+                                                const [filterName, val] = target.dataset.optionCount.split(':');
+                                                const count = counts?.[filterName]?.[val] ?? 0;
+                                                target.textContent = count;
+                                        });
+                                }
+                        });
+        };
 
 	filterForm.addEventListener('change', debounce(() => {
 		currentPage = 1;
