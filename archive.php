@@ -99,6 +99,7 @@ $context['title'] = post_type_archive_title('', false);
 
 // Zet de filters ook apart in de context voor AJAX
 $context['ajax_filters'] = $context['filters'];
+set_transient('components_ajax_filters_' . $post_type, $context['filters'], DAY_IN_SECONDS);
 
 // Render de Twig-template voor de archiefpagina
 Timber::render([

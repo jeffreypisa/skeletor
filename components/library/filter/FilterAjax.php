@@ -239,7 +239,10 @@ class Components_FilterAjax {
                 ];
 
                // 🧮 Dynamically calculate option counts for all defined filters
-               $filter_defs_for_counts = Timber::context()['ajax_filters'] ?? [];
+               $filter_defs_for_counts = get_transient('components_ajax_filters_' . $post_type);
+               if (!is_array($filter_defs_for_counts) || empty($filter_defs_for_counts)) {
+                       $filter_defs_for_counts = Timber::context()['ajax_filters'] ?? [];
+               }
 
                foreach ($filter_defs_for_counts as $fname => &$def) {
                        $ftype = $def['type'] ?? 'select';

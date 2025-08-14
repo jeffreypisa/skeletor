@@ -286,11 +286,13 @@ export function filter() {
                                         } catch {
                                                 counts = {};
                                         }
-                                        document.querySelectorAll('[data-option-count]').forEach(target => {
-                                                const [filterName, val] = target.dataset.optionCount.split(':');
-                                                const count = counts?.[filterName]?.[val] ?? 0;
-                                                target.textContent = count;
-                                        });
+                                        if (Object.keys(counts).length) {
+                                                document.querySelectorAll('[data-option-count]').forEach(target => {
+                                                        const [filterName, val] = target.dataset.optionCount.split(':');
+                                                        const count = counts?.[filterName]?.[val] ?? 0;
+                                                        target.textContent = count;
+                                                });
+                                        }
                                 }
                         });
         };
