@@ -4,65 +4,51 @@ $topbar-height: 30px;
 $topbar-height-lg: 40px;
 
 .topbar {
-       position: fixed;
-       top: 0;
-       left: 0;
-       width: 100%;
        height: $topbar-height;
        background: $light;
-       z-index: 1100;
        font-size: .875rem;
 }
 
 body {
-        padding-top: $header-height;
+       &.header-transparent {
+               .header {
+                       background: transparent;
+               }
+       }
 
-        &.header-transparent {
-                padding-top: 0;
+       &:not(.header-transparent) {
+               .header {
+                       .navbar-nav {
+                               li {
+                                       a {
+                                               color: $dark;
+                                               text-decoration: none;
 
-                .header {
-                        background: transparent;
-                }
+                                               &:hover {
+                                                       color: $primary;
+                                               }
+                                       }
 
-                main > section:first-child > *:first-child {
-                        padding-top: $header-height;
-                }
-        }
+                                       &.current-menu-parent>a:not(.btn),
+                                       &.current-menu-item>a:not(.btn),
+                                       &.current_page_item>a:not(.btn) {
+                                               color: $primary;
+                                       }
+                               }
+                       }
+               }
+       }
 
-        &:not(.header-transparent) {
-                .header {
-                        .navbar-nav {
-                                li {
-                                        a {
-                                                color: $dark;
-                                                text-decoration: none;
-
-                                                &:hover {
-                                                        color: $primary;
-                                                }
-                                        }
-
-                                        &.current-menu-parent>a:not(.btn),
-                                        &.current-menu-item>a:not(.btn),
-                                        &.current_page_item>a:not(.btn) {
-                                                color: $primary;
-                                        }
-                                }
-                        }
-                }
-        }
-
-        .header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: $header-height;
-                background: $light;
-                z-index: 1000;
-                transition: opacity 0.3s $ease, transform 0.3s $ease, background 0.3s $ease;
-                opacity: 1;
-                transform: translateY(0);
+       .header {
+               position: sticky;
+               top: 0;
+               width: 100%;
+               height: $header-height;
+               background: $light;
+               z-index: 1000;
+               transition: opacity 0.3s $ease, transform 0.3s $ease, background 0.3s $ease;
+               opacity: 1;
+               transform: translateY(0);
 
                 .navbar-nav {
                         gap: 20px;
@@ -129,25 +115,6 @@ body {
                 }
         }
 
-        &.has-topbar {
-                padding-top: $topbar-height + $header-height;
-
-                &.header-transparent {
-                        padding-top: $topbar-height;
-
-                        main > section:first-child > *:first-child {
-                                padding-top: $topbar-height + $header-height;
-                        }
-                }
-
-                .header {
-                        top: $topbar-height;
-
-                        &.hidden {
-                                transform: translateY(calc(-100% - #{$topbar-height}));
-                        }
-                }
-        }
 }
 
 @include media-breakpoint-up(lg) {
@@ -156,45 +123,14 @@ body {
        }
 
        body {
-               padding-top: $header-height-lg;
+               .header {
+                       height: $header-height-lg;
 
-                &.header-transparent {
-                        padding-top: 0;
-
-                        main > section:first-child > *:first-child {
-                                padding-top: $header-height-lg;
-                        }
-                }
-
-                .header {
-                        height: $header-height-lg;
-
-                        .header-brand {
-                                img {
-                                        height: 30px;
-                                }
-                        }
-                }
-
-                &.has-topbar {
-                        padding-top: $topbar-height-lg + $header-height-lg;
-
-                        &.header-transparent {
-                                padding-top: $topbar-height-lg;
-
-                                main > section:first-child > *:first-child {
-                                        padding-top: $topbar-height-lg + $header-height-lg;
-                                }
-                        }
-
-                       .header {
-                               top: $topbar-height-lg;
-                               height: $header-height-lg;
-
-                                &.hidden {
-                                        transform: translateY(calc(-100% - #{$topbar-height-lg}));
-                                }
-                        }
-                }
-        }
+                       .header-brand {
+                               img {
+                                       height: 30px;
+                               }
+                       }
+               }
+       }
 }
