@@ -11,13 +11,18 @@ Voorbeeld:
   placeholder: 'Maak een keuze',
   layout: 'horizontal',
   show_field_label: true,
-  show_option_counts: true
+  show_option_counts: true,
+  button_class: 'btn-outline-primary',
+  all_label: 'Alles',
+  show_all_button: true,
+  date_format: 'd-m-Y'
 }) }}
 
 Types: 'select', 'checkbox', 'radio', 'buttons', 'range', 'date' en 'date_range'.
 
-Datumfilters vullen automatisch de oudste en nieuwste beschikbare datum in wanneer
-er geen waarde is opgegeven.
+Datumfilters vullen automatisch de oudste en nieuwste beschikbare datum in wanneer er geen waarde is opgegeven.
+
+Beschikbare data-opties: `name`, `label`, `type`, `source`, `options`, `value`, `sort_options`, `hide_empty_options`.
 
 Beschikbare presentatie-opties:
 - limit_options: int – aantal direct zichtbare opties vóór "Toon meer"
@@ -27,6 +32,10 @@ Beschikbare presentatie-opties:
 - layout: 'vertical' (default) of 'horizontal'
 - show_field_label: true/false (default: true)
 - show_option_counts: true/false – toon aantal resultaten per optie
+- date_format: string – formaat voor datumvelden
+- button_class: string – knopstijl (alleen voor type 'buttons')
+- all_label: string – label voor 'alles'-knop (alleen voor type 'buttons')
+- show_all_button: true/false – toon 'alles'-knop (alleen voor type 'buttons')
 #}
 
 {% set name = name ?? acf_field ?? '' %}

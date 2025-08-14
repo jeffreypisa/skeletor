@@ -10,10 +10,11 @@
  * $context['filters']['uren'] = [
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
- *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range', 'date', 'date_range'
+ *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'buttons', 'range', 'date', 'date_range'
  *   'source'     => 'acf',                    // 'acf', 'taxonomy' of 'post_date'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
+ *   'date_format'=> 'd-m-Y',                 // formaat voor datumvelden (optioneel)
  *
  *   // Alleen data-logica in PHP (géén presentatie):
  *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'

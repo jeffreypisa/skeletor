@@ -5,17 +5,29 @@ Gebruik dit component om een gestandaardiseerde sorteer-select dropdown te tonen
 
 Voorbeeld:
   {{ sort_select(filters.sort, {
-	options: {
-	  'relevance': 'Relevantie',
-	  'date_desc': 'Nieuwste eerst',
-	  'date_asc': 'Oudste eerst',
-	  'title_asc': 'Titel A-Z',
-	  'title_desc': 'Titel Z-A'
-	},
-	show_label: true,
-	label: 'Sorteer op:',
-	layout: 'vertical'  // of 'horizontal'
+        id: 'sort',
+        name: 'sort',
+        value: 'relevance',
+        options: {
+          'relevance': 'Relevantie',
+          'date_desc': 'Nieuwste eerst',
+          'date_asc': 'Oudste eerst',
+          'title_asc': 'Titel A-Z',
+          'title_desc': 'Titel Z-A'
+        },
+        show_label: true,
+        label: 'Sorteer op:',
+        layout: 'vertical'  // of 'horizontal'
   }) }}
+#
+Opties:
+- id: string – `id` attribuut (default 'sort')
+- name: string – inputnaam (default 'sort')
+- label: string – veldlabel (default 'Sorteer op:')
+- value: string – huidige waarde (default 'relevance')
+- options: key => label array
+- show_label: true/false (default: true)
+- layout: 'vertical' (default) of 'horizontal'
 #}
 
 {% set id = id|default('sort') %}
