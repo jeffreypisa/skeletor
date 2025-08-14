@@ -134,10 +134,39 @@ class Components_Filter extends Site {
 			}
 		}
 	
-		// 🧮 Tellingen ophalen als gewenst
-		if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
-			$args['option_counts'] = self::get_option_counts(['self' => $data], 'self');
-		}
+               // 🧮 Tellingen ophalen als gewenst
+               if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
+                       $ctx_filters = Timber::context()['filters'] ?? [];
+
+                       foreach ($ctx_filters as $key => &$filter) {
+                               $fname = $filter['name'] ?? $filter['taxonomy'] ?? $filter['acf_field'] ?? $key;
+                               $ftype = $filter['type'] ?? 'select';
+
+                               if ($ftype === 'range') {
+                                       $filter['value'] = [
+                                               'min' => $_GET['min_' . $fname] ?? null,
+                                               'max' => $_GET['max_' . $fname] ?? null,
+                                       ];
+                               } elseif ($ftype === 'date_range') {
+                                       $from = $_GET['from_' . $fname] ?? '';
+                                       $to   = $_GET['to_' . $fname] ?? '';
+                                       $filter['value'] = [
+                                               'from' => $from,
+                                               'to'   => $to,
+                                       ];
+                               } elseif ($ftype === 'date') {
+                                       $filter['value'] = $_GET[$fname] ?? '';
+                               } else {
+                                       if (in_array($ftype, ['checkbox', 'multiselect'])) {
+                                               $filter['value'] = $_GET[$fname] ?? ($_GET[$fname . '[]'] ?? null);
+                                       } else {
+                                               $filter['value'] = $_GET[$fname] ?? null;
+                                       }
+                               }
+                       }
+                       $ctx_filters[$data['name']] = $data;
+                       $args['option_counts'] = self::get_option_counts($ctx_filters, $data['name']);
+               }
 	
 		return Timber::compile('filter.twig', array_merge($data, $args));
 	}
