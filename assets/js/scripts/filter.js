@@ -57,9 +57,9 @@ export function filter() {
 		return data;
 	};
 
-	const ajaxUrl = (typeof window.ajaxurl !== 'undefined' && window.ajaxurl.url)
-		? window.ajaxurl.url
-		: '/wp-admin/admin-ajax.php';
+	const ajaxUrl = (typeof window.ajaxurl !== 'undefined' && window.ajaxurl.url) ?
+		window.ajaxurl.url :
+		'/wp-admin/admin-ajax.php';
 
 	let currentPage = 1;
 	let maxPages = null;
@@ -67,7 +67,7 @@ export function filter() {
 	const toggleLoader = (show) => {
 		const results = document.querySelector('#filter-results');
 		if (!results) return;
-	
+
 		results.classList.toggle('loading', show);
 	};
 
@@ -80,59 +80,59 @@ export function filter() {
 			}, 40 * index);
 		});
 	};
-	
-        const initOptionToggles = () => {
-                requestAnimationFrame(() => {
-                        document.querySelectorAll('[data-limit-options]').forEach(wrapper => {
-                                const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
-                                const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
-                                const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
 
-                                const options = wrapper.querySelectorAll('.form-check');
-                                const toggleBtn = wrapper.querySelector('.filter-toggle-btn');
+	const initOptionToggles = () => {
+		requestAnimationFrame(() => {
+			document.querySelectorAll('[data-limit-options]').forEach(wrapper => {
+				const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
+				const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
+				const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
 
-                                if (!toggleBtn || limit <= 0 || options.length <= limit) return;
+				const options = wrapper.querySelectorAll('.form-check');
+				const toggleBtn = wrapper.querySelector('.filter-toggle-btn');
 
-                                const setState = (isExpanded) => {
-                                        wrapper.dataset.expanded = isExpanded ? 'true' : 'false';
-                                        options.forEach((opt, index) => {
-                                                opt.style.display = (isExpanded || index < limit) ? '' : 'none';
-                                        });
-                                        toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
-                                };
+				if (!toggleBtn || limit <= 0 || options.length <= limit) return;
 
-                                const expanded = wrapper.dataset.expanded === 'true';
-                                setState(expanded);
+				const setState = (isExpanded) => {
+					wrapper.dataset.expanded = isExpanded ? 'true' : 'false';
+					options.forEach((opt, index) => {
+						opt.style.display = (isExpanded || index < limit) ? '' : 'none';
+					});
+					toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
+				};
 
-                                toggleBtn.classList.remove('d-none');
+				const expanded = wrapper.dataset.expanded === 'true';
+				setState(expanded);
 
-                                if (!toggleBtn.dataset.initialized) {
-                                        toggleBtn.addEventListener('click', () => {
-                                                const isExpanded = wrapper.dataset.expanded === 'true';
-                                                setState(!isExpanded);
-                                        });
-                                        toggleBtn.dataset.initialized = 'true';
-                                }
-                        });
-                });
-        };
-	
-        const initFilterButtons = () => {
-                document.querySelectorAll('.filter-buttons').forEach(group => {
-                        const hiddenInput = group.nextElementSibling;
-                        if (!hiddenInput || hiddenInput.type !== 'hidden') return;
-	
+				toggleBtn.classList.remove('d-none');
+
+				if (!toggleBtn.dataset.initialized) {
+					toggleBtn.addEventListener('click', () => {
+						const isExpanded = wrapper.dataset.expanded === 'true';
+						setState(!isExpanded);
+					});
+					toggleBtn.dataset.initialized = 'true';
+				}
+			});
+		});
+	};
+
+	const initFilterButtons = () => {
+		document.querySelectorAll('.filter-buttons').forEach(group => {
+			const hiddenInput = group.nextElementSibling;
+			if (!hiddenInput || hiddenInput.type !== 'hidden') return;
+
 			const buttons = group.querySelectorAll('[data-filter-button]');
-	
+
 			// Verwijder alle active eerst
 			buttons.forEach(btn => btn.classList.remove('active'));
-	
+
 			// Lees huidige waarde uit input
 			let currentValue = hiddenInput.value || '';
-	
+
 			// Zoek knop met die waarde
 			let activeBtn = Array.from(buttons).find(btn => btn.dataset.value === currentValue);
-	
+
 			// Als niks gevonden, neem de 'alle'-knop (lege value)
 			if (!activeBtn) {
 				activeBtn = Array.from(buttons).find(btn => btn.dataset.value === '');
@@ -140,11 +140,11 @@ export function filter() {
 					hiddenInput.value = ''; // reset de waarde expliciet
 				}
 			}
-	
+
 			if (activeBtn) {
 				activeBtn.classList.add('active');
 			}
-	
+
 			// Event listeners
 			buttons.forEach(btn => {
 				btn.addEventListener('click', () => {
@@ -154,41 +154,41 @@ export function filter() {
 					filterForm.dispatchEvent(new Event('change', { bubbles: true }));
 				});
 			});
-                });
-        };
+		});
+	};
 
-        // Flatpickr initialiseren op datumvelden
-        // Gebruik data-date-picker voor een enkel veld of
-        // data-date-range-start="key" en data-date-range-end="key" voor een van/tot range
-        const initDatePickers = () => {
-               document.querySelectorAll('[data-date-picker]').forEach(el => {
-                       if (el._flatpickr) return;
-                       const format = el.dataset.dateFormat || 'd-m-Y';
-                       flatpickr(el, {
-                               dateFormat: format,
-                               onChange: () => el.dispatchEvent(new Event('change', { bubbles: true }))
-                       });
-               });
+	// Flatpickr initialiseren op datumvelden
+	// Gebruik data-date-picker voor een enkel veld of
+	// data-date-range-start="key" en data-date-range-end="key" voor een van/tot range
+	const initDatePickers = () => {
+		document.querySelectorAll('[data-date-picker]').forEach(el => {
+			if (el._flatpickr) return;
+			const format = el.dataset.dateFormat || 'd-m-Y';
+			flatpickr(el, {
+				dateFormat: format,
+				onChange: () => el.dispatchEvent(new Event('change', { bubbles: true }))
+			});
+		});
 
-               document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
-                       if (startEl._flatpickr) return;
-                       const key = startEl.dataset.dateRangeStart;
-                       const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
-                       const format = startEl.dataset.dateFormat || 'd-m-Y';
-                       flatpickr(startEl, {
-                               dateFormat: format,
-                               plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
-                               onChange: () => {
-                                       startEl.dispatchEvent(new Event('change', { bubbles: true }));
-                                       if (endEl) endEl.dispatchEvent(new Event('change', { bubbles: true }));
-                               }
-                       });
-               });
-       };
+		document.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+			if (startEl._flatpickr) return;
+			const key = startEl.dataset.dateRangeStart;
+			const endEl = document.querySelector(`[data-date-range-end="${key}"]`);
+			const format = startEl.dataset.dateFormat || 'd-m-Y';
+			flatpickr(startEl, {
+				dateFormat: format,
+				plugins: endEl ? [new rangePlugin({ input: endEl })] : [],
+				onChange: () => {
+					startEl.dispatchEvent(new Event('change', { bubbles: true }));
+					if (endEl) endEl.dispatchEvent(new Event('change', { bubbles: true }));
+				}
+			});
+		});
+	};
 
-        const initSliders = () => {
-                document.querySelectorAll('[data-slider]').forEach(sliderEl => {
-                        if (sliderEl.classList.contains('noUi-target')) return;
+	const initSliders = () => {
+		document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+			if (sliderEl.classList.contains('noUi-target')) return;
 
 			const min = parseFloat(sliderEl.dataset.min);
 			const max = parseFloat(sliderEl.dataset.max);
@@ -236,65 +236,65 @@ export function filter() {
 	const fetchFilteredResults = (append = false) => {
 		const data = serializeForm(filterForm);
 		data.append('paged', currentPage);
-	
+
 		toggleLoader(true);
-	
+
 		fetch(ajaxUrl, {
-			method: 'POST',
-			body: data
-		})
+				method: 'POST',
+				body: data
+			})
 			.then(res => res.text())
 			.then(html => {
 				toggleLoader(false);
-	
+
 				if (append) {
 					resultContainer.insertAdjacentHTML('beforeend', html);
 				} else {
 					resultContainer.innerHTML = html;
 					animateItems();
 				}
-	
-                                initSliders();
-                                initDatePickers();
-                                initOptionToggles();
-                                initFilterButtons();
-                                swiperInit();
-	
+
+				initSliders();
+				initDatePickers();
+				initOptionToggles();
+				initFilterButtons();
+				swiperInit();
+
 				const el = document.createElement('div');
 				el.innerHTML = html;
-	
+
 				// ⛳️ Aantal pagina's bepalen voor "Laad meer"
 				const maxPagesEl = el.querySelector('[data-max-pages]');
 				maxPages = maxPagesEl ? parseInt(maxPagesEl.dataset.maxPages || 1, 10) : 1;
 				if (loadMoreBtn) {
 					loadMoreBtn.classList.toggle('d-none', currentPage >= maxPages);
 				}
-	
-				// ✅ Externe result count bijwerken zonder te crashen
-                                const ajaxResultCount = el.querySelector('#result-count');
-                                const externalResultCount = document.querySelector('[data-result-count]');
-                                if (ajaxResultCount && externalResultCount) {
-                                        externalResultCount.innerHTML = ajaxResultCount.innerHTML;
-                                }
 
-                                // 🔢 Update option counts for filters
-                                const optionCountsEl = el.querySelector('[data-option-counts]');
-                                if (optionCountsEl) {
-                                        let counts = {};
-                                        try {
-                                                counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
-                                        } catch {
-                                                counts = {};
-                                        }
-                                        Object.entries(counts).forEach(([filterName, values]) => {
-                                                Object.entries(values).forEach(([val, count]) => {
-                                                        const target = document.querySelector(`[data-option-count="${filterName}:${val}"]`);
-                                                        if (target) {
-                                                                target.textContent = count;
-                                                        }
-                                                });
-                                        });
-                                }
+				// ✅ Externe result count bijwerken zonder te crashen
+				const ajaxResultCount = el.querySelector('#result-count');
+				const externalResultCount = document.querySelector('[data-result-count]');
+				if (ajaxResultCount && externalResultCount) {
+					externalResultCount.innerHTML = ajaxResultCount.innerHTML;
+				}
+
+				// 🔢 Update option counts for filters
+				const optionCountsEl = el.querySelector('[data-option-counts]');
+				if (optionCountsEl) {
+					let counts = {};
+					try {
+						counts = JSON.parse(optionCountsEl.dataset.optionCounts || '{}');
+					} catch {
+						counts = {};
+					}
+					Object.entries(counts).forEach(([filterName, values]) => {
+						Object.entries(values).forEach(([val, count]) => {
+							const target = document.querySelector(`[data-option-count="${filterName}:${val}"]`);
+							if (target) {
+								target.textContent = count;
+							}
+						});
+					});
+				}
 			});
 	};
 
@@ -329,69 +329,69 @@ export function filter() {
 		resetBtn.addEventListener('click', () => {
 			currentPage = 1;
 			if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
-		
-                        filterForm.reset();
 
-                        // Reset expliciet de hidden inputs van button-filters
-                        document.querySelectorAll('.filter-buttons').forEach(group => {
+			filterForm.reset();
+
+			// Reset expliciet de hidden inputs van button-filters
+			document.querySelectorAll('.filter-buttons').forEach(group => {
 				const hiddenInput = group.nextElementSibling;
 				if (hiddenInput && hiddenInput.type === 'hidden') {
 					hiddenInput.value = ''; // leegmaken = 'Alles'
 				}
 			});
-			
+
 			// Init opnieuw zodat juiste knop actief is
 			initFilterButtons();
-		
+
 			// Reset sliders visueel én de bijbehorende inputvelden
-                        document.querySelectorAll('[data-slider]').forEach(sliderEl => {
+			document.querySelectorAll('[data-slider]').forEach(sliderEl => {
 				const min = parseFloat(sliderEl.dataset.min);
 				const max = parseFloat(sliderEl.dataset.max);
-		
+
 				const parent = sliderEl.closest('.range-wrapper') || sliderEl.parentElement;
 				const inputMin = parent.querySelector(`input[name^="min_"]`);
 				const inputMax = parent.querySelector(`input[name^="max_"]`);
-		
+
 				if (inputMin) inputMin.value = min;
 				if (inputMax) inputMax.value = max;
-		
+
 				if (sliderEl.noUiSlider) {
 					sliderEl.noUiSlider.set([min, max]);
 				}
-                        });
+			});
 
-                        // Reset date pickers naar oorspronkelijke waardes
-                        filterForm.querySelectorAll('[data-date-range-start]').forEach(startEl => {
-                                const key = startEl.dataset.dateRangeStart;
-                                const endEl = filterForm.querySelector(`[data-date-range-end="${key}"]`);
-                                if (startEl._flatpickr) {
-                                        const dates = [];
-                                        if (startEl.value) dates.push(startEl.value);
-                                        if (endEl && endEl.value) dates.push(endEl.value);
-                                        if (dates.length) {
-                                                startEl._flatpickr.setDate(dates, false);
-                                        } else {
-                                                startEl._flatpickr.clear();
-                                        }
-                                }
-                        });
-                        filterForm.querySelectorAll('[data-date-picker]').forEach(el => {
-                                if (el.dataset.dateRangeStart || el.dataset.dateRangeEnd) return;
-                                if (el._flatpickr) {
-                                        el._flatpickr.setDate(el.value || null, false);
-                                }
-                        });
+			// Reset date pickers naar oorspronkelijke waardes
+			filterForm.querySelectorAll('[data-date-range-start]').forEach(startEl => {
+				const key = startEl.dataset.dateRangeStart;
+				const endEl = filterForm.querySelector(`[data-date-range-end="${key}"]`);
+				if (startEl._flatpickr) {
+					const dates = [];
+					if (startEl.value) dates.push(startEl.value);
+					if (endEl && endEl.value) dates.push(endEl.value);
+					if (dates.length) {
+						startEl._flatpickr.setDate(dates, false);
+					} else {
+						startEl._flatpickr.clear();
+					}
+				}
+			});
+			filterForm.querySelectorAll('[data-date-picker]').forEach(el => {
+				if (el.dataset.dateRangeStart || el.dataset.dateRangeEnd) return;
+				if (el._flatpickr) {
+					el._flatpickr.setDate(el.value || null, false);
+				}
+			});
 
-                        // Reset zoekveld expliciet (om debounce goed te triggeren)
-                        if (searchInput) searchInput.value = '';
-		
+			// Reset zoekveld expliciet (om debounce goed te triggeren)
+			if (searchInput) searchInput.value = '';
+
 			// Resultaten verversen
 			fetchFilteredResults(false);
 		});
 	}
 
-        initSliders();
-        initDatePickers();
-        initOptionToggles();
-        initFilterButtons();
+	initSliders();
+	initDatePickers();
+	initOptionToggles();
+	initFilterButtons();
 }
