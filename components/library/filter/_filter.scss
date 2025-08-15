@@ -74,5 +74,24 @@
 }
 
 .noUi-connect {
-	background: $primary;
+    background: $primary;
+}
+
+// Align option counts to the right in checkbox and radio filters
+.filter-options-wrapper {
+    .form-check-label {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .filter-option-label {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+
+    .filter-option-count {
+        text-align: right;
+    }
 }
