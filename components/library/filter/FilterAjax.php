@@ -194,19 +194,22 @@ class Components_FilterAjax {
                $exclude_keys = ['action', 'paged', 'post_type', 's', 'sort', 'posts_per_page'];
 		$filter_definitions = [];
 
-		foreach ($filters as $key => $val) {
-			if (in_array($key, $exclude_keys, true)) continue;
+foreach ($filters as $key => $val) {
+if (in_array($key, $exclude_keys, true)) continue;
 
-			if (taxonomy_exists($key)) continue;
+if (taxonomy_exists($key)) continue;
 
-                        if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_') || str_starts_with($key, 'from_') || str_starts_with($key, 'to_')) continue;
+if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_') || str_starts_with($key, 'from_') || str_starts_with($key, 'to_')) continue;
 
-                        $filter_definitions[$key] = [
-                                'name'   => $key,
-                                'source' => 'meta',
-                                'value'  => $filters[$key]
-                        ];
-		}
+$value = $filters[$key];
+if ($value === '' || $value === null || (is_array($value) && $value === [])) continue;
+
+$filter_definitions[$key] = [
+'name'   => $key,
+'source' => 'meta',
+'value'  => $value,
+];
+}
 
 		// 🧠 Combineer custom filter-output met bestaande query args
 		$custom_args = Components_Filter::build_query_from_filters($filter_definitions);
