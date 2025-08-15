@@ -1,15 +1,15 @@
 {% if posts|length %}
-	<div class="row">
-		{% for item in posts %}
-			<div class="col-12 fade-in-item visible">
-				{# Probeer eerst tease-[post_type].twig, anders tease.twig #}
-				{% include [
-					'partials/tease-' ~ item.post_type ~ '.twig',
-					'partials/tease.twig'
-				] with { item: item } %}
-			</div>
-		{% endfor %}
-	</div>
+        <div class="row">
+                {% for item in posts %}
+                        <div class="{{ item.post_type == 'product' ? 'col-sm-6 col-lg-4 col-xxl-3' : 'col-12' }} fade-in-item visible">
+                                {# Probeer eerst tease-[post_type].twig, anders tease.twig #}
+                                {% include [
+                                        'partials/tease-' ~ item.post_type ~ '.twig',
+                                        'partials/tease.twig'
+                                ] with { item: item } %}
+                        </div>
+                {% endfor %}
+        </div>
 	<div data-max-pages="{{ max_pages|e('html_attr') }}" hidden></div>
 {% else %}
 	<p>Geen resultaten gevonden.</p>

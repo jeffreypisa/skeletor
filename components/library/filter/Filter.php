@@ -11,7 +11,7 @@
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
  *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'buttons', 'range', 'date', 'date_range'
- *   'source'     => 'acf',                    // 'acf', 'taxonomy' of 'post_date'
+ *   'source'     => 'acf',                    // 'acf', 'meta', 'taxonomy' of 'post_date'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *   'date_format'=> 'd-m-Y',                 // formaat voor datumvelden (optioneel)
@@ -26,7 +26,7 @@
  *   'name'   => 'event_date',           // ACF-veldnaam of 'post_date'
  *   'label'  => 'Datum',
  *   'type'   => 'date_range',           // 'date' voor enkel veld
- *   'source' => 'acf',                 // of 'post_date'
+*   'source' => 'acf',                 // or 'meta' or 'post_date'
  *   // Waarden worden automatisch uit $_GET['event_date'] of
  *   // $_GET['from_event_date']/$_GET['to_event_date'] gelezen.
  *   // Wanneer geen waardes worden meegegeven vult het component
@@ -68,7 +68,7 @@ class Components_Filter extends Site {
 		$type   = $data['type'] ?? 'select';
                 $source = $data['source'] ?? 'acf';
 
-                if (!$name || !in_array($source, ['acf', 'taxonomy', 'post_date'])) {
+                if (!$name || !in_array($source, ['acf', 'meta', 'taxonomy', 'post_date'])) {
                         return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
                 }
 	
@@ -122,17 +122,17 @@ class Components_Filter extends Site {
 		}
 	
 		// 🧾 Opties ophalen indien leeg
-		if (!isset($data['options']) || empty($data['options'])) {
-			if ($source === 'acf') {
-				$data['options'] = self::get_options_from_meta($name);
-			} elseif ($source === 'taxonomy') {
-				$data['options'] = self::get_options_from_taxonomy(
-					$name,
-					'name',
-					$data['hide_empty_options'] ?? false
-				);
-			}
-		}
+                if (!isset($data['options']) || empty($data['options'])) {
+                        if ($source === 'acf' || $source === 'meta') {
+                                $data['options'] = self::get_options_from_meta($name);
+                        } elseif ($source === 'taxonomy') {
+                                $data['options'] = self::get_options_from_taxonomy(
+                                        $name,
+                                        'name',
+                                        $data['hide_empty_options'] ?? false
+                                );
+                        }
+                }
 	
                // 🧮 Tellingen ophalen als gewenst
                if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
@@ -307,8 +307,8 @@ class Components_Filter extends Site {
        /**
         * Bepaalt automatisch de oudste en nieuwste datum voor een veld of publicatiedatum.
         *
-        * @param string $field      Meta key of special value 'post_date'.
-        * @param string $source     'acf' of 'post_date'.
+        * @param string $field      Meta key or special value 'post_date'.
+        * @param string $source     'acf', 'meta' or 'post_date'.
         * @param string $post_type  Optioneel post type (default huidige query).
         * @return array ['min' => 'd-m-Y', 'max' => 'd-m-Y']
         */
@@ -463,7 +463,7 @@ class Components_Filter extends Site {
                         }
 
                         // 🟡 ACF (meta)
-                        elseif ($source === 'acf' && !empty($value)) {
+                        elseif (($source === 'acf' || $source === 'meta') && !empty($value)) {
                                 $meta_query[] = [
                                         'key'     => $name,
                                         'value'   => is_array($value) ? $value : [$value],

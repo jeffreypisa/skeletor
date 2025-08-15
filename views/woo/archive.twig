@@ -1,25 +1,69 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-	<section>
-		<div class="container">
-			{% do action('woocommerce_before_main_content') %}
-		
-			<div class="before-shop-loop">
-				{% do action('woocommerce_before_shop_loop') %}
-			</div>
-		
-			<div class="row w-100">
-				{% for post in products %}
-					<div class="col-sm-6 col-lg-4 col-xxl-3">
-						{% include ["woo/partials/tease-product.twig"] %}
-					</div>
-				{% endfor %}
-			</div>
-		
-			{% do action('woocommerce_after_shop_loop') %}
-			{% do action('woocommerce_after_main_content') %}
-		</div>
-	</section>
+<section>
+    <div class="container">
+        {% do action('woocommerce_before_main_content') %}
 
-{% endblock  %}
+        <form data-filter-form data-post-type="product">
+            <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h4 class="m-0">{{ title }}</h4>
+                        </div>
+                        <div class="col-auto">
+                            <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
+                                Reset filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <input type="search" name="s" class="form-control" placeholder="Zoek producten" value="{{ search_query }}">
+                    </div>
+
+                    {{ filter(filters.price) }}
+                    {{ filter(filters.stock) }}
+                    {{ filter(filters.stock_status, {
+                        label: 'Beschikbaarheid',
+                        show_field_label: true
+                    }) }}
+                </div>
+                <div class="col-md-9">
+                    <div class="before-shop-loop">
+                        {% do action('woocommerce_before_shop_loop') %}
+                    </div>
+
+                    <div class="position-relative">
+                        <div id="filter-loader" data-filter-loader class="filter-overlay d-none">
+                            <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+                        </div>
+
+                        <div id="filter-results">
+                            {% set posts = products %}
+                            {% set max_pages = max_num_pages %}
+                            {% include 'partials/list.twig' %}
+                        </div>
+
+                        {% if current_page < max_num_pages %}
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-outline-dark" data-load-more>
+                                Laad meer
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="after-shop-loop">
+                        {% do action('woocommerce_after_shop_loop') %}
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {% do action('woocommerce_after_main_content') %}
+    </div>
+</section>
+{% endblock %}

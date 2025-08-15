@@ -64,12 +64,16 @@ class CustomWooCommerce extends Site {
 		// ✅ Forceer de juiste WooCommerce product afbeelding
 		$thumbnail = get_the_post_thumbnail_url($post->ID, 'woocommerce_single') ?: wc_placeholder_img_src();
 
-		// ✅ Return Timber product data
-		return [
-			'product' => $product,
-			'thumbnail' => $thumbnail,
-		];
-	}
+                // ✅ Return Timber product data
+                return [
+                        'product'        => $product,
+                        'thumbnail'      => $thumbnail,
+                        'price_html'     => $product->get_price_html(),
+                        'stock_quantity' => $product->get_stock_quantity(),
+                        'stock_status'   => $product->get_stock_status(),
+                        'is_in_stock'    => $product->is_in_stock(),
+                ];
+        }
 
 	/**
 	 * Registreer WooCommerce-functies in Timber, zodat ze in Twig beschikbaar zijn.
