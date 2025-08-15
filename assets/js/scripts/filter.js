@@ -4,11 +4,13 @@ import rangePlugin from 'flatpickr/dist/plugins/rangePlugin.js';
 import { swiperInit } from '../plugins/swiperInit.js';
 
 export function filter() {
-	const filterForm = document.querySelector('[data-filter-form]');
-	const resultContainer = document.querySelector('#filter-results');
-	const loadMoreBtn = document.querySelector('[data-load-more]');
+        const filterForm = document.querySelector('[data-filter-form]');
+        const resultContainer = document.querySelector('#filter-results');
+        const loadMoreBtn = document.querySelector('[data-load-more]');
 
-	if (!filterForm || !resultContainer) return;
+        if (!filterForm || !resultContainer) return;
+
+        const wcOrderSelect = filterForm.querySelector('.woocommerce-ordering select[name="orderby"]');
 
 	const debounce = (fn, delay) => {
 		let timeout;
@@ -303,18 +305,30 @@ export function filter() {
 		fetchFilteredResults(false);
 	}, 300));
 
-	const searchInput = filterForm.querySelector('input[name="s"]');
-	if (searchInput) {
-		searchInput.addEventListener('input', debounce(() => {
-			currentPage = 1;
-			if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
-			fetchFilteredResults(false);
-		}, 400));
+        const searchInput = filterForm.querySelector('input[name="s"]');
+        if (searchInput) {
+                searchInput.addEventListener('input', debounce(() => {
+                        currentPage = 1;
+                        if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
+                        fetchFilteredResults(false);
+                }, 400));
 
-		searchInput.addEventListener('keydown', (e) => {
-			if (e.key === 'Enter') e.preventDefault();
-		});
-	}
+                searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') e.preventDefault();
+                });
+        }
+
+        if (wcOrderSelect) {
+                const orderForm = wcOrderSelect.form;
+                if (orderForm) {
+                        orderForm.addEventListener('submit', (e) => e.preventDefault());
+                }
+                wcOrderSelect.addEventListener('change', () => {
+                        currentPage = 1;
+                        if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
+                        fetchFilteredResults(false);
+                });
+        }
 
 	if (loadMoreBtn) {
 		loadMoreBtn.addEventListener('click', () => {
@@ -381,13 +395,17 @@ export function filter() {
 				}
 			});
 
-			// Reset zoekveld expliciet (om debounce goed te triggeren)
-			if (searchInput) searchInput.value = '';
+                        // Reset zoekveld expliciet (om debounce goed te triggeren)
+                        if (searchInput) searchInput.value = '';
 
-			// Resultaten verversen
-			fetchFilteredResults(false);
-		});
-	}
+                        if (wcOrderSelect) {
+                                wcOrderSelect.selectedIndex = 0;
+                        }
+
+                        // Resultaten verversen
+                        fetchFilteredResults(false);
+                });
+        }
 
 	initSliders();
 	initDatePickers();
