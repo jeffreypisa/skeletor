@@ -42,20 +42,29 @@ class Components_FilterAjax {
                $post_type      = sanitize_text_field($filters['post_type'] ?? 'post');
                $paged          = (int)($filters['paged'] ?? 1);
                $posts_per_page = isset($filters['posts_per_page']) ? (int) $filters['posts_per_page'] : 12;
-	
+
                 // 🔍 Meta filters
-                $meta_query = [];
-                $date_query = [];
+                $meta_query      = [];
+                $date_query      = [];
+                $range_defaults  = [];
+                $date_defaults   = [];
 
                 // ➕ Dynamische range filters (min_xxx / max_xxx)
                 foreach ($_POST as $key => $value) {
                         if (strpos($key, 'min_') === 0) {
                                 $base = substr($key, 4);
-                                $min = $_POST['min_' . $base] ?? '';
-                                $max = $_POST['max_' . $base] ?? '';
+                                $min  = $_POST['min_' . $base] ?? '';
+                                $max  = $_POST['max_' . $base] ?? '';
 
-                                $min_filled = $min !== '';
-                                $max_filled = $max !== '';
+                                if (!isset($range_defaults[$base])) {
+                                        $range_defaults[$base] = Components_Filter::get_auto_min_max($base, $post_type);
+                                }
+                                $defaults = $range_defaults[$base];
+                                $def_min  = (float) ($defaults['min'] ?? 0);
+                                $def_max  = (float) ($defaults['max'] ?? 0);
+
+                                $min_filled = $min !== '' && floatval($min) > $def_min;
+                                $max_filled = $max !== '' && floatval($max) < $def_max;
 
                                 if ($min_filled && $max_filled) {
                                         $meta_query[] = [
@@ -80,50 +89,63 @@ class Components_FilterAjax {
                                         ];
                                 }
                         }
-                       if (strpos($key, 'from_') === 0) {
-                               $base = substr($key, 5);
-                               $fromRaw = $_POST['from_' . $base] ?? '';
-                               $toRaw   = $_POST['to_' . $base] ?? '';
-                               $from = self::normalize_date($fromRaw);
-                               $to   = self::normalize_date($toRaw);
-                               $fromParts = self::date_parts($fromRaw);
-                               $toParts   = self::date_parts($toRaw);
 
-                               $from_filled = $from !== '';
-                               $to_filled   = $to !== '';
+                        if (strpos($key, 'from_') === 0) {
+                                $base    = substr($key, 5);
+                                $fromRaw = $_POST['from_' . $base] ?? '';
+                                $toRaw   = $_POST['to_' . $base] ?? '';
 
-                               if ($base === 'post_date') {
-                                       if ($from_filled || $to_filled) {
-                                               $dq = ['inclusive' => true, 'column' => 'post_date'];
-                                               if ($from_filled) $dq['after'] = $fromParts;
-                                               if ($to_filled)   $dq['before'] = $toParts;
-                                               $date_query[] = $dq;
-                                       }
-                               } else {
-                                       if ($from_filled && $to_filled) {
-                                               $meta_query[] = [
-                                                       'key'     => $base,
-                                                       'value'   => [$from, $to],
-                                                       'type'    => 'DATE',
-                                                       'compare' => 'BETWEEN',
-                                               ];
-                                       } elseif ($from_filled) {
-                                               $meta_query[] = [
-                                                       'key'     => $base,
-                                                       'value'   => $from,
-                                                       'type'    => 'DATE',
-                                                       'compare' => '>=',
-                                               ];
-                                       } elseif ($to_filled) {
-                                               $meta_query[] = [
-                                                       'key'     => $base,
-                                                       'value'   => $to,
-                                                       'type'    => 'DATE',
-                                                       'compare' => '<=',
-                                               ];
-                                       }
-                               }
-                       }
+                                if (!isset($date_defaults[$base])) {
+                                        $date_defaults[$base] = Components_Filter::get_auto_date_bounds(
+                                                $base,
+                                                $base === 'post_date' ? 'post_date' : 'meta',
+                                                $post_type
+                                        );
+                                }
+                                $defaults     = $date_defaults[$base];
+                                $def_from_raw = $defaults['min'] ?? '';
+                                $def_to_raw   = $defaults['max'] ?? '';
+
+                                $from      = self::normalize_date($fromRaw);
+                                $to        = self::normalize_date($toRaw);
+                                $fromParts = self::date_parts($fromRaw);
+                                $toParts   = self::date_parts($toRaw);
+
+                                $from_filled = $from !== '' && $fromRaw !== $def_from_raw;
+                                $to_filled   = $to !== '' && $toRaw !== $def_to_raw;
+
+                                if ($base === 'post_date') {
+                                        if ($from_filled || $to_filled) {
+                                                $dq = ['inclusive' => true, 'column' => 'post_date'];
+                                                if ($from_filled) $dq['after']  = $fromParts;
+                                                if ($to_filled)   $dq['before'] = $toParts;
+                                                $date_query[] = $dq;
+                                        }
+                                } else {
+                                        if ($from_filled && $to_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => [$from, $to],
+                                                        'type'    => 'DATE',
+                                                        'compare' => 'BETWEEN',
+                                                ];
+                                        } elseif ($from_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => $from,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '>=',
+                                                ];
+                                        } elseif ($to_filled) {
+                                                $meta_query[] = [
+                                                        'key'     => $base,
+                                                        'value'   => $to,
+                                                        'type'    => 'DATE',
+                                                        'compare' => '<=',
+                                                ];
+                                        }
+                                }
+                        }
                 }
 
 		// 🔍 Taxonomy filters

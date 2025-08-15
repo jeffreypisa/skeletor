@@ -9,6 +9,17 @@
             <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
             <div class="row">
                 <div class="col-md-3 mb-4 mb-md-0">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <h4 class="m-0">{{ title }}</h4>
+                        </div>
+                        <div class="col-auto">
+                            <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
+                                Reset filters
+                            </button>
+                        </div>
+                    </div>
+
                     {{ filter(filters.price) }}
                     {{ filter(filters.stock) }}
                     {{ filter(filters.stock_status, {
