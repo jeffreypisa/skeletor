@@ -213,8 +213,11 @@ class Components_FilterAjax {
                        'paged'          => $paged,
                        'orderby'        => $orderby,
                        'order'          => $order,
-                       'meta_query'     => $meta_query,
                ];
+
+               if (!empty($meta_query)) {
+                       $args['meta_query'] = $meta_query;
+               }
 
                if ($meta_key !== '') {
                        $args['meta_key'] = $meta_key;
@@ -240,7 +243,7 @@ if (in_array($key, $exclude_keys, true)) continue;
 
 if (taxonomy_exists($key)) continue;
 
-if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_') || str_starts_with($key, 'from_') || str_starts_with($key, 'to_')) continue;
+if (strpos($key, 'min_') === 0 || strpos($key, 'max_') === 0 || strpos($key, 'from_') === 0 || strpos($key, 'to_') === 0) continue;
 
 $value = $filters[$key];
 if ($value === '' || $value === null || (is_array($value) && $value === [])) continue;
