@@ -201,10 +201,11 @@ class Components_FilterAjax {
 
                         if (str_starts_with($key, 'min_') || str_starts_with($key, 'max_') || str_starts_with($key, 'from_') || str_starts_with($key, 'to_')) continue;
 
-			$filter_definitions[$key] = [
-				'acf_field' => $key,
-				'value'     => $filters[$key]
-			];
+                        $filter_definitions[$key] = [
+                                'name'   => $key,
+                                'source' => 'meta',
+                                'value'  => $filters[$key]
+                        ];
 		}
 
 		// 🧠 Combineer custom filter-output met bestaande query args
@@ -246,7 +247,7 @@ class Components_FilterAjax {
 
                foreach ($filter_defs_for_counts as $fname => &$def) {
                        $ftype = $def['type'] ?? 'select';
-                       $fsrc  = $def['source'] ?? 'acf';
+                       $fsrc  = $def['source'] ?? 'meta';
                        $key   = $def['name'] ?? $fname;
 
                        if ($ftype === 'range') {
@@ -270,7 +271,7 @@ class Components_FilterAjax {
                        }
 
                        if (empty($def['options'])) {
-                               if ($fsrc === 'acf') {
+                               if ($fsrc === 'acf' || $fsrc === 'meta') {
                                        $def['options'] = Components_Filter::get_options_from_meta($key);
                                } elseif ($fsrc === 'taxonomy') {
                                        $def['options'] = Components_Filter::get_options_from_taxonomy($key);
