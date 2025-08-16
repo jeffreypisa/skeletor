@@ -45,17 +45,20 @@ export function filter() {
 			}
 		});
 
-		for (const key in grouped) {
-			const value = grouped[key];
-			if (Array.isArray(value)) {
-				value.forEach(v => data.append(`${key}[]`, v));
-			} else {
-				data.append(key, value);
-			}
-		}
+                if (!('post_type' in grouped)) {
+                        grouped['post_type'] = form.dataset.postType || 'post';
+                }
+
+                for (const key in grouped) {
+                        const value = grouped[key];
+                        if (Array.isArray(value)) {
+                                value.forEach(v => data.append(`${key}[]`, v));
+                        } else {
+                                data.append(key, value);
+                        }
+                }
 
                 data.append('action', 'ajax_filter');
-                data.append('post_type', form.dataset.postType || 'post');
                 return data;
         };
 
