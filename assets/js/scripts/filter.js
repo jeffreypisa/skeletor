@@ -10,7 +10,7 @@ export function filter() {
 
         if (!filterForm || !resultContainer) return;
 
-        const wcOrderSelect = document.querySelector('.woocommerce-ordering select[name="orderby"]');
+        const wcOrderSelect = filterForm.querySelector('select[name="orderby"]');
 
 	const debounce = (fn, delay) => {
 		let timeout;
@@ -238,8 +238,6 @@ export function filter() {
         const fetchFilteredResults = (append = false) => {
                 const data = serializeForm(filterForm);
                 if (wcOrderSelect) {
-                        // ensure single values, even if the select lives inside the form
-                        data.set('orderby', wcOrderSelect.value);
                         const selected = wcOrderSelect.options[wcOrderSelect.selectedIndex];
                         if (selected && selected.dataset.order) {
                                 data.set('order', selected.dataset.order);
@@ -328,24 +326,12 @@ export function filter() {
                 });
         }
 
-        if (wcOrderSelect) {
-                const orderForm = wcOrderSelect.form;
-                if (orderForm) {
-                        orderForm.addEventListener('submit', (e) => e.preventDefault());
-                }
-                wcOrderSelect.addEventListener('change', () => {
-                        currentPage = 1;
-                        if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
-                        fetchFilteredResults(false);
+        if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                        currentPage++;
+                        fetchFilteredResults(true);
                 });
         }
-
-	if (loadMoreBtn) {
-		loadMoreBtn.addEventListener('click', () => {
-			currentPage++;
-			fetchFilteredResults(true);
-		});
-	}
 
 	const resetBtn = filterForm.querySelector('[data-filter-reset]');
 	if (resetBtn) {

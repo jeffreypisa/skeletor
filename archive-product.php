@@ -64,6 +64,46 @@ $query_args = array_merge(
     Components_Filter::build_query_from_filters($context['filters'])
 );
 
+$orderby = sanitize_text_field($_GET['orderby'] ?? '');
+$order   = sanitize_text_field($_GET['order'] ?? '');
+$ordering_args = [];
+
+if ($orderby !== '') {
+    if (function_exists('wc_get_catalog_ordering_args')) {
+        $ordering_args = wc_get_catalog_ordering_args($orderby, $order);
+    }
+
+    if (empty($ordering_args)) {
+        switch ($orderby) {
+            case 'price':
+                $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'ASC', 'meta_key' => '_price'];
+                break;
+            case 'price-desc':
+                $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => '_price'];
+                break;
+            case 'popularity':
+                $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => 'total_sales'];
+                break;
+            case 'rating':
+                $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => '_wc_average_rating'];
+                break;
+            case 'menu_order':
+                $ordering_args = ['orderby' => 'menu_order title', 'order' => 'ASC'];
+                break;
+            case 'date':
+                $ordering_args = ['orderby' => 'date', 'order' => 'DESC'];
+                break;
+            default:
+                $ordering_args = ['orderby' => 'date', 'order' => 'DESC'];
+                break;
+        }
+    }
+
+    $query_args = array_merge($query_args, $ordering_args);
+}
+
+$context['orderby'] = $orderby ?: 'menu_order';
+
 $query = new WP_Query($query_args);
 
 // ✅ Haal producten op met Timber

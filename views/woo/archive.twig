@@ -32,8 +32,25 @@
                     }) }}
                 </div>
                 <div class="col-md-9">
-                    <div class="before-shop-loop">
-                        {% do action('woocommerce_before_shop_loop') %}
+                    <div class="row mb-5">
+                        <div class="col-sm d-flex align-items-center">
+                            <p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+                        </div>
+                        <div class="col-sm-auto d-flex align-items-center">
+                            {{ sort_select(orderby, {
+                                id: 'orderby',
+                                name: 'orderby',
+                                layout: 'horizontal',
+                                options: {
+                                    'menu_order': 'Standaard',
+                                    'popularity': 'Populair',
+                                    'rating': 'Waardering',
+                                    'date': 'Nieuwste eerst',
+                                    'price': 'Prijs laag-hoog',
+                                    'price-desc': 'Prijs hoog-laag'
+                                }
+                            }) }}
+                        </div>
                     </div>
 
                     <div class="position-relative">
@@ -54,10 +71,6 @@
                             </button>
                         </div>
                         {% endif %}
-                    </div>
-
-                    <div class="after-shop-loop">
-                        {% do action('woocommerce_after_shop_loop') %}
                     </div>
                 </div>
             </div>
