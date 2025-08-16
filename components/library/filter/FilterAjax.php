@@ -119,14 +119,40 @@ class Components_FilterAjax {
                        }
                        $woo_order = sanitize_text_field($woo_order);
 
+                       $ordering_args = [];
                        if (function_exists('wc_get_catalog_ordering_args')) {
                                $ordering_args = wc_get_catalog_ordering_args($woo_orderby, $woo_order);
-                               $orderby       = $ordering_args['orderby'] ?? $orderby;
-                               $order         = $ordering_args['order'] ?? $order;
-                               if (!empty($ordering_args['meta_key'])) {
-                                       $meta_key = $ordering_args['meta_key'];
+                       }
+
+                       if (empty($ordering_args)) {
+                               switch ($woo_orderby) {
+                                       case 'price':
+                                               $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'ASC', 'meta_key' => '_price'];
+                                               break;
+                                       case 'price-desc':
+                                               $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => '_price'];
+                                               break;
+                                       case 'popularity':
+                                               $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => 'total_sales'];
+                                               break;
+                                       case 'rating':
+                                               $ordering_args = ['orderby' => 'meta_value_num', 'order' => 'DESC', 'meta_key' => '_wc_average_rating'];
+                                               break;
+                                       case 'menu_order':
+                                               $ordering_args = ['orderby' => 'menu_order title', 'order' => 'ASC'];
+                                               break;
+                                       case 'date':
+                                               $ordering_args = ['orderby' => 'date', 'order' => 'DESC'];
+                                               break;
+                                       default:
+                                               $ordering_args = ['orderby' => 'date', 'order' => 'DESC'];
+                                               break;
                                }
                        }
+
+                       $orderby  = $ordering_args['orderby'] ?? $orderby;
+                       $order    = $ordering_args['order'] ?? $order;
+                       $meta_key = $ordering_args['meta_key'] ?? $meta_key;
                } else {
                        switch ($sort) {
                                case 'date_asc':
