@@ -14,27 +14,9 @@
                     <a href="{{ site.link }}">Home </a> / Zoek
                 </div>
                 <div class="col-md-8 d-flex align-items-center">
-                    <div class="w-100">
-                        <div class="row">
-                            <div class="col-sm d-flex align-items-center">
-                                {% if total is defined %}
-                                <p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
-                                {% endif %}
-                            </div>
-                            <div class="col-sm-auto d-flex align-items-center">
-                                {{ sort_select(filters.sort, {
-                                    layout: 'horizontal',
-                                    options: {
-                                        'relevance': 'Relevantie',
-                                        'date_desc': 'Nieuwste eerst',
-                                        'date_asc': 'Oudste eerst',
-                                        'title_asc': 'Titel A-Z',
-                                        'title_desc': 'Titel Z-A'
-                                    }
-                                }) }}
-                            </div>
-                        </div>
-                    </div>
+                    {% if total is defined %}
+                    <p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+                    {% endif %}
                 </div>
             </div>
 
@@ -42,32 +24,21 @@
                 <div class="col">
                     <h4 class="m-0">{{ title }}</h4>
                 </div>
-                <div class="col-auto">
-                    <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>Reset filters</button>
-                </div>
             </div>
 
-            <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+            <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ search_query|e }}">
 
-            {{ filter('post_type', {
-                label: 'Type',
+            {{ filter(filters.post_type, {
                 show_field_label: true,
                 layout: 'horizontal',
                 button_class: 'btn-outline-dark',
                 all_label: 'Alle'
             }) }}
 
-            {% for name, f in filters %}
-                {% if name not in ['post_type'] %}
-                    {{ filter(f) }}
-                {% endif %}
-            {% endfor %}
-
             <div class="position-relative">
                 <div id="filter-loader" data-filter-loader class="filter-overlay d-none">
                     <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
                 </div>
-
                 <div id="filter-results">
                     {% include 'partials/list.twig' %}
                 </div>
