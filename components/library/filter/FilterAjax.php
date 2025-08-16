@@ -107,8 +107,17 @@ class Components_FilterAjax {
                $meta_key = '';
 
                if (!empty($filters['orderby'])) {
-                       $woo_orderby = sanitize_text_field($filters['orderby']);
-                       $woo_order   = sanitize_text_field($filters['order'] ?? '');
+                       $woo_orderby = $filters['orderby'];
+                       if (is_array($woo_orderby)) {
+                               $woo_orderby = reset($woo_orderby);
+                       }
+                       $woo_orderby = sanitize_text_field($woo_orderby);
+
+                       $woo_order = $filters['order'] ?? '';
+                       if (is_array($woo_order)) {
+                               $woo_order = reset($woo_order);
+                       }
+                       $woo_order = sanitize_text_field($woo_order);
 
                        if (function_exists('wc_get_catalog_ordering_args')) {
                                $ordering_args = wc_get_catalog_ordering_args($woo_orderby, $woo_order);

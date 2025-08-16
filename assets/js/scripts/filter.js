@@ -238,10 +238,13 @@ export function filter() {
         const fetchFilteredResults = (append = false) => {
                 const data = serializeForm(filterForm);
                 if (wcOrderSelect) {
-                        data.append('orderby', wcOrderSelect.value);
+                        // ensure single values, even if the select lives inside the form
+                        data.set('orderby', wcOrderSelect.value);
                         const selected = wcOrderSelect.options[wcOrderSelect.selectedIndex];
                         if (selected && selected.dataset.order) {
-                                data.append('order', selected.dataset.order);
+                                data.set('order', selected.dataset.order);
+                        } else {
+                                data.delete('order');
                         }
                 }
                 data.append('paged', currentPage);
