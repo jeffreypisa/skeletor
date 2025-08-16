@@ -19084,6 +19084,14 @@
       "oAP" : "\/views\/partials\/tease-locaties.twig",
       "oF" : 0
     },
+    "\/views\/partials\/tease-product.twig" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 0,
+      "oAP" : "\/views\/partials\/tease-product.twig",
+      "oF" : 0
+    },
     "\/views\/partials\/tease-testimonial.twig" : {
       "cB" : 0,
       "ft" : 8192,
