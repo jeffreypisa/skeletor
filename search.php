@@ -1,18 +1,65 @@
 <?php
 /**
- * Search results page
+ * Search results page with post type selector.
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
- *
- * @package  WordPress
- * @subpackage  Timber
- * @since   Timber 0.1
+ * @package WordPress
+ * @subpackage Timber
  */
 
-$templates = array( 'search.twig', 'archive.twig', 'index.twig' );
+$templates = ['search.twig', 'archive.twig', 'index.twig'];
 
-$context          = Timber::context();
-$context['title'] = 'Search results for ' . get_search_query();
-$context['posts'] = Timber::get_posts();
+$context = Timber::context();
 
-Timber::render( $templates, $context );
+$posts_per_page = 12;
+$context['posts_per_page'] = $posts_per_page;
+$context['col_class'] = 'col-12';
+
+$allowed_post_types = $_GET['post_types'] ?? [];
+if (!is_array($allowed_post_types)) {
+    $allowed_post_types = explode(',', $allowed_post_types);
+}
+$allowed_post_types = array_values(array_filter(array_map('sanitize_key', (array) $allowed_post_types)));
+if (empty($allowed_post_types)) {
+    $allowed_post_types = array_values(get_post_types(['public' => true, 'exclude_from_search' => false], 'names'));
+}
+$context['allowed_post_types'] = $allowed_post_types;
+
+$selected_post_type = sanitize_key($_GET['post_type'] ?? '');
+if ($selected_post_type && in_array($selected_post_type, $allowed_post_types, true)) {
+    $query_post_type = $selected_post_type;
+} else {
+    $selected_post_type = '';
+    $query_post_type    = $allowed_post_types;
+}
+$context['post_type'] = $selected_post_type;
+
+$context['filters'] = [
+    'post_type' => [
+        'name'   => 'post_type',
+        'label'  => 'Type',
+        'type'   => 'select',
+        'source' => 'post_type',
+        'post_types' => $allowed_post_types,
+        'value'  => $selected_post_type,
+    ],
+];
+$context['ajax_filters'] = $context['filters'];
+
+$context['search_query'] = get_search_query();
+
+$query_args = [
+    'post_type'      => $query_post_type,
+    'posts_per_page' => $posts_per_page,
+    'paged'          => get_query_var('paged') ?: 1,
+    's'              => $context['search_query'],
+];
+
+$query = new WP_Query($query_args);
+
+$context['posts']         = Timber::get_posts($query);
+$context['total']         = $query->found_posts;
+$context['current_page']  = get_query_var('paged') ?: 1;
+$context['max_num_pages'] = $query->max_num_pages;
+$context['title']         = 'Zoekresultaten voor ' . get_search_query();
+
+Timber::render($templates, $context);
