@@ -1,13 +1,59 @@
-{# see `archive.twig` for an alternative strategy of extending templates #}
-{% extends "base.twig" %}
+{% extends "index.twig" %}
 
 {% block content %}
-  {# see `base.twig:27` for where this block's content will be inserted #}
-  <div class="content-wrapper">
-    {% for post in posts %}
-      {% include ['tease-'~post.post_type~'.twig', 'tease.twig'] %}
-    {% endfor %}
+<section class="bg-greylight">
+    <div class="container">
+        <form data-filter-form data-post-type="{{ post_type }}">
+            <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
+            <input type="hidden" name="col_class" value="{{ col_class }}">
+            <input type="hidden" name="tease_template" value="partials/tease-search.twig">
+            {% for pt in allowed_post_types %}
+            <input type="hidden" name="post_types[]" value="{{ pt }}">
+            {% endfor %}
 
-    {% include 'partial/pagination.twig' with { pagination: posts.pagination({show_all: false, mid_size: 3, end_size: 2}) } %}
-  </div>
+            <div class="row mb-5">
+                <div class="col-md-4 d-flex align-items-center">
+                    <a href="{{ site.link }}">Home </a> / Zoek
+                </div>
+                <div class="col-md-8 d-flex align-items-center">
+                    {% if total is defined %}
+                    <p id="result-count" class="m-0" data-result-count>{{ total }} resultaten gevonden</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col">
+                    <h4 class="m-0">{{ title }}</h4>
+                </div>
+            </div>
+
+            <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ search_query|e }}">
+
+            {{ filter(filters.post_type, {
+                show_field_label: true,
+                layout: 'horizontal',
+                placeholder: 'Alle',
+                post_types: allowed_post_types
+            }) }}
+
+            <div class="position-relative">
+                <div id="filter-loader" data-filter-loader class="filter-overlay d-none">
+                    <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
+                </div>
+                <div id="filter-results">
+                    {% set max_pages = max_num_pages %}
+                    {% include 'partials/list.twig' with { tease_template: 'partials/tease-search.twig', col_class: col_class } %}
+                </div>
+
+                {% if current_page < max_num_pages %}
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-outline-dark" data-load-more>Laad meer</button>
+                </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</section>
 {% endblock %}
+

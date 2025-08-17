@@ -25,37 +25,46 @@ export function filter() {
                 const grouped = {};
 
                 form.querySelectorAll('input, select, textarea').forEach((el) => {
-			if (!el.name || el.disabled) return;
-			const name = el.name.replace(/\[\]$/, '');
+                        if (!el.name || el.disabled) return;
 
-			if (el.type === 'checkbox') {
-				if (el.checked) {
-					if (!grouped[name]) grouped[name] = [];
-					grouped[name].push(el.value);
-				}
-			} else if (el.type === 'radio') {
-				if (el.checked) {
-					grouped[name] = el.value;
-				}
-			} else if (el.tagName === 'SELECT' && el.multiple) {
-				if (!grouped[name]) grouped[name] = [];
-				Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));
-			} else {
-				grouped[name] = el.value;
-			}
-		});
+                        const rawName = el.name;
+                        const isArray = rawName.endsWith('[]');
+                        const name = rawName.replace(/\[\]$/, '');
 
-		for (const key in grouped) {
-			const value = grouped[key];
-			if (Array.isArray(value)) {
-				value.forEach(v => data.append(`${key}[]`, v));
-			} else {
-				data.append(key, value);
-			}
-		}
+                        if (el.type === 'checkbox') {
+                                if (el.checked) {
+                                        if (!grouped[name]) grouped[name] = [];
+                                        grouped[name].push(el.value);
+                                }
+                        } else if (el.type === 'radio') {
+                                if (el.checked) {
+                                        grouped[name] = el.value;
+                                }
+                        } else if (el.tagName === 'SELECT' && el.multiple) {
+                                if (!grouped[name]) grouped[name] = [];
+                                Array.from(el.selectedOptions).forEach(opt => grouped[name].push(opt.value));
+                        } else if (isArray) {
+                                if (!grouped[name]) grouped[name] = [];
+                                grouped[name].push(el.value);
+                        } else {
+                                grouped[name] = el.value;
+                        }
+                });
+
+                if (!('post_type' in grouped)) {
+                        grouped['post_type'] = form.dataset.postType || 'post';
+                }
+
+                for (const key in grouped) {
+                        const value = grouped[key];
+                        if (Array.isArray(value)) {
+                                value.forEach(v => data.append(`${key}[]`, v));
+                        } else {
+                                data.append(key, value);
+                        }
+                }
 
                 data.append('action', 'ajax_filter');
-                data.append('post_type', form.dataset.postType || 'post');
                 return data;
         };
 
@@ -237,6 +246,14 @@ export function filter() {
 
         const fetchFilteredResults = (append = false) => {
                 const data = serializeForm(filterForm);
+                const colClassField = filterForm.querySelector('input[name="col_class"]');
+                if (colClassField) {
+                        data.set('col_class', colClassField.value);
+                }
+                const teaseTemplateField = filterForm.querySelector('input[name="tease_template"]');
+                if (teaseTemplateField) {
+                        data.set('tease_template', teaseTemplateField.value);
+                }
                 if (wcOrderSelect) {
                         const selected = wcOrderSelect.options[wcOrderSelect.selectedIndex];
                         if (selected && selected.dataset.order) {
