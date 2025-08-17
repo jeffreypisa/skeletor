@@ -13,13 +13,13 @@ $context = Timber::context();
 $posts_per_page = 12;
 $context['posts_per_page'] = $posts_per_page;
 
-$allowed_post_types = $_GET['post_types'] ?? ['post', 'product'];
+$allowed_post_types = $_GET['post_types'] ?? [];
 if (!is_array($allowed_post_types)) {
     $allowed_post_types = explode(',', $allowed_post_types);
 }
 $allowed_post_types = array_values(array_filter(array_map('sanitize_key', (array) $allowed_post_types)));
 if (empty($allowed_post_types)) {
-    $allowed_post_types = ['post'];
+    $allowed_post_types = array_values(get_post_types(['public' => true, 'exclude_from_search' => false], 'names'));
 }
 $context['allowed_post_types'] = $allowed_post_types;
 
@@ -32,20 +32,13 @@ if ($selected_post_type && in_array($selected_post_type, $allowed_post_types, tr
 }
 $context['post_type'] = $selected_post_type;
 
-$post_type_options = [];
-foreach ($allowed_post_types as $type) {
-    $obj   = get_post_type_object($type);
-    $label = $obj ? $obj->labels->name : ucfirst($type);
-    $post_type_options[$label] = $type;
-}
-
 $context['filters'] = [
     'post_type' => [
         'name'   => 'post_type',
         'label'  => 'Type',
         'type'   => 'select',
-        'source' => 'acf',
-        'options'=> $post_type_options,
+        'source' => 'post_type',
+        'post_types' => $allowed_post_types,
         'value'  => $selected_post_type,
     ],
 ];

@@ -46,7 +46,7 @@ class Components_FilterAjax {
                }
                $allowed_post_types = array_values(array_filter(array_map('sanitize_key', (array) $allowed_post_types)));
                if (empty($allowed_post_types)) {
-                       $allowed_post_types = ['post'];
+                       $allowed_post_types = array_values(get_post_types(['public' => true, 'exclude_from_search' => false], 'names'));
                }
 
                if ($post_type_param === '' || !in_array($post_type_param, $allowed_post_types, true)) {
@@ -234,6 +234,11 @@ class Components_FilterAjax {
                        $fsrc  = $def['source'] ?? 'meta';
                        $key   = $def['name'] ?? $fname;
 
+                       if ($fsrc === 'post_type') {
+                               unset($filter_defs_for_counts[$fname]);
+                               continue;
+                       }
+
                        if ($ftype === 'range') {
                                $def['value'] = [
                                        'min' => $filters['min_' . $key] ?? null,
@@ -264,7 +269,7 @@ class Components_FilterAjax {
                }
                unset($def);
 
-               $global_count_args = ['post_type' => $post_type];
+               $global_count_args = ['post_type' => $query_post_type];
                if (!empty($filters['s'])) {
                        $global_count_args['s'] = sanitize_text_field($filters['s']);
                }

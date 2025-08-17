@@ -31,7 +31,8 @@
             {{ filter(filters.post_type, {
                 show_field_label: true,
                 layout: 'horizontal',
-                placeholder: 'Alle'
+                placeholder: 'Alle',
+                post_types: allowed_post_types
             }) }}
 
             <div class="position-relative">
