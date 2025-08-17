@@ -20,6 +20,7 @@ $context['filters'] = [];
 // 🔢 Aantal resultaten per pagina instelbaar
 $posts_per_page = 12;
 $context['posts_per_page'] = $posts_per_page;
+$context['col_class'] = 'col-12 mb-4';
 
 /**
  * 🧩 Filters
