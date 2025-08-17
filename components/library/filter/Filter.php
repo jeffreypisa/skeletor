@@ -11,7 +11,7 @@
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
  *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'buttons', 'range', 'date', 'date_range'
- *   'source'     => 'acf',                    // 'acf', 'meta', 'taxonomy' of 'post_date'
+ *   'source'     => 'acf',                    // 'acf', 'meta', 'taxonomy', 'post_date' of 'post_type'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *   'date_format'=> 'd-m-Y',                 // formaat voor datumvelden (optioneel)
@@ -64,15 +64,20 @@ class Components_Filter extends Site {
                        }
                }
 	
-		$name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
-		$type   = $data['type'] ?? 'select';
+                $name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
+                $type   = $data['type'] ?? 'select';
                 $source = $data['source'] ?? 'acf';
 
-                if (!$name || !in_array($source, ['acf', 'meta', 'taxonomy', 'post_date'])) {
+                if (!$name || !in_array($source, ['acf', 'meta', 'taxonomy', 'post_date', 'post_type'])) {
                         return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
                 }
-	
+
                $data['name'] = $name;
+
+               if (isset($args['post_types'])) {
+                       $data['post_types'] = $args['post_types'];
+                       unset($args['post_types']);
+               }
 
                $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
 
@@ -131,6 +136,8 @@ class Components_Filter extends Site {
                                         'name',
                                         $data['hide_empty_options'] ?? false
                                 );
+                        } elseif ($source === 'post_type') {
+                                $data['options'] = self::get_post_type_options($data['post_types'] ?? []);
                         }
                 }
 	
@@ -190,7 +197,7 @@ class Components_Filter extends Site {
 		return Timber::compile('sortselect.twig', $data);
 	}
 
-	public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false) {
+        public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false) {
 		$terms = get_terms([
 			'taxonomy'   => $taxonomy,
 			'hide_empty' => filter_var(
@@ -350,12 +357,19 @@ class Components_Filter extends Site {
                 $meta_query = [];
                 $tax_query  = [];
                 $date_query = [];
+                $post_type  = null;
 
 		foreach ($filters as $key => $filter) {
 			$value  = $filter['value'] ?? null;
 			$type   = $filter['type'] ?? null;
 			$source = $filter['source'] ?? 'acf';
-			$name   = $filter['name'] ?? $key;
+                        $name   = $filter['name'] ?? $key;
+
+                        // 🟡 Post Type
+                        if ($source === 'post_type' && !empty($value)) {
+                                $post_type = $value;
+                                continue;
+                        }
 
                         // 🟡 RANGE
                         if ($type === 'range' && is_array($value)) {
@@ -473,11 +487,33 @@ class Components_Filter extends Site {
                 }
 
                 $args = [];
+                if ($post_type !== null) $args['post_type'] = $post_type;
                 if (!empty($meta_query)) $args['meta_query'] = $meta_query;
                 if (!empty($tax_query))  $args['tax_query']  = $tax_query;
                 if (!empty($date_query)) $args['date_query'] = $date_query;
 
                 return $args;
+        }
+
+        /**
+         * Geeft beschikbare post types terug als [label => value].
+         *
+         * @param array $allowed Optionele lijst van toegestane post types.
+         * @return array
+         */
+        public static function get_post_type_options($allowed = []) {
+                $objs = get_post_types(['public' => true, 'exclude_from_search' => false], 'objects');
+
+                $options = [];
+                foreach ($objs as $slug => $obj) {
+                        if (!empty($allowed) && !in_array($slug, $allowed, true)) {
+                                continue;
+                        }
+                        $options[$obj->labels->name] = $slug;
+                }
+
+                ksort($options);
+                return $options;
         }
 	
 	/**
