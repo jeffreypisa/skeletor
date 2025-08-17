@@ -1,18 +1,25 @@
 {% if posts|length %}
         <div class="row">
+                {% set forced_col = col_class|default('') %}
                 {% for item in posts %}
-                        <div class="{{ item.post_type == 'product' ? 'col-sm-6 col-lg-4 col-xxl-3' : 'col-12' }} fade-in-item visible">
-                                {# Probeer eerst tease-[post_type].twig, anders tease.twig #}
-                                {% include [
+                        {% set col = forced_col ?: (item.post_type == 'product' ? 'col-sm-6 col-lg-4 col-xxl-3' : 'col-12') %}
+                        <div class="{{ col }} fade-in-item visible">
+                                {# Gebruik een meegegeven tease-template, anders tease-[post_type].twig of standaard tease.twig #}
+                                {% set templates = [] %}
+                                {% if tease_template is defined %}
+                                        {% set templates = templates|merge([tease_template]) %}
+                                {% endif %}
+                                {% set templates = templates|merge([
                                         'partials/tease-' ~ item.post_type ~ '.twig',
                                         'partials/tease.twig'
-                                ] with { item: item } %}
+                                ]) %}
+                                {% include templates with { item: item } %}
                         </div>
                 {% endfor %}
         </div>
-	<div data-max-pages="{{ max_pages|e('html_attr') }}" hidden></div>
+        <div data-max-pages="{{ max_pages|e('html_attr') }}" hidden></div>
 {% else %}
-	<p>Geen resultaten gevonden.</p>
+        <p>Geen resultaten gevonden.</p>
 {% endif %}
 
 <div id="result-count" style="display: none;">{{ total }} resultaten gevonden</div>

@@ -39,7 +39,24 @@ class Components_FilterAjax {
 			wp_die();
 		}
 	
-               $post_type      = sanitize_text_field($filters['post_type'] ?? 'post');
+               $post_type_param = sanitize_text_field($filters['post_type'] ?? '');
+               $allowed_post_types = $filters['post_types'] ?? [];
+               if (!is_array($allowed_post_types)) {
+                       $allowed_post_types = explode(',', $allowed_post_types);
+               }
+               $allowed_post_types = array_values(array_filter(array_map('sanitize_key', (array) $allowed_post_types)));
+               if (empty($allowed_post_types)) {
+                       $allowed_post_types = array_values(get_post_types(['public' => true, 'exclude_from_search' => false], 'names'));
+               }
+
+               if ($post_type_param === '' || !in_array($post_type_param, $allowed_post_types, true)) {
+                       $post_type      = $allowed_post_types[0];
+                       $query_post_type = $allowed_post_types;
+               } else {
+                       $post_type      = $post_type_param;
+                       $query_post_type = $post_type;
+               }
+
                $paged          = (int)($filters['paged'] ?? 1);
                $posts_per_page = isset($filters['posts_per_page']) ? (int) $filters['posts_per_page'] : 12;
 
@@ -179,7 +196,7 @@ class Components_FilterAjax {
 
                // 🔍 WP_Query args
                $args = array_merge([
-                       'post_type'      => $post_type,
+                       'post_type'      => $query_post_type,
                        'post_status'    => 'publish',
                        'posts_per_page' => $posts_per_page,
                        'paged'          => $paged,
@@ -201,13 +218,16 @@ class Components_FilterAjax {
 		
 		$posts = Timber::get_posts($query);
 		
-                $context = [
-                        'items'     => $posts,
-                        'posts'     => $posts,
-                        'max_pages' => $query->max_num_pages,
-                        'filters'   => $filters,
-                        'total'     => $query->found_posts,
-                ];
+               $context = [
+                       'items'     => $posts,
+                       'posts'     => $posts,
+                       'max_pages' => $query->max_num_pages,
+                       'filters'   => $filters,
+                       'total'     => $query->found_posts,
+               ];
+
+               $context['col_class'] = sanitize_text_field($filters['col_class'] ?? '');
+               $context['tease_template'] = sanitize_text_field($filters['tease_template'] ?? '');
 
                // 🧮 Dynamically calculate option counts for all defined filters
                $filter_defs_for_counts = $filter_definitions;
@@ -216,6 +236,11 @@ class Components_FilterAjax {
                        $ftype = $def['type'] ?? 'select';
                        $fsrc  = $def['source'] ?? 'meta';
                        $key   = $def['name'] ?? $fname;
+
+                       if ($fsrc === 'post_type') {
+                               unset($filter_defs_for_counts[$fname]);
+                               continue;
+                       }
 
                        if ($ftype === 'range') {
                                $def['value'] = [
@@ -247,7 +272,7 @@ class Components_FilterAjax {
                }
                unset($def);
 
-               $global_count_args = ['post_type' => $post_type];
+               $global_count_args = ['post_type' => $query_post_type];
                if (!empty($filters['s'])) {
                        $global_count_args['s'] = sanitize_text_field($filters['s']);
                }

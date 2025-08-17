@@ -51,31 +51,49 @@ Beschikbare presentatie-opties:
 {% set option_list_expand_label = option_list_expand_label ?? 'Toon meer' %}
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 {% set date_format = date_format ?? 'd-m-Y' %}
+{% set layout = layout ?? null %}
 
 {% if not name %}
   <pre>❌ Ongeldige filterdata ontvangen</pre>
 {% else %}
 
 <div class="mb-4">
-	{% if label and show_field_label %}
-	<label class="form-label">{{ label }}</label>
-	{% endif %}
+        {# Single Select #}
+        {% if type == 'select' %}
+        {% set select_layout = layout ?? 'vertical' %}
+        {% if select_layout == 'horizontal' %}
+        <div class="d-flex align-items-center gap-2">
+                {% if label and show_field_label %}
+                <label class="form-label mb-0">{{ label }}</label>
+                {% endif %}
+                <select name="{{ name }}" class="form-select">
+                        <option value="">{{ placeholder }}</option>
+                        {% for key, val in options %}
+                        <option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
+                        {% endfor %}
+                </select>
+        </div>
+        {% else %}
+                {% if label and show_field_label %}
+                <label class="form-label">{{ label }}</label>
+                {% endif %}
+                <select name="{{ name }}" class="form-select">
+                        <option value="">{{ placeholder }}</option>
+                        {% for key, val in options %}
+                        <option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
+                        {% endfor %}
+                </select>
+        {% endif %}
 
-	{# Single Select #}
-	{% if type == 'select' %}
-	<select name="{{ name }}" class="form-select">
-		<option value="">{{ placeholder }}</option>
-		{% for key, val in options %}
-		<option value="{{ val }}" {{ val == value ? 'selected' : '' }}>{{ key }}</option>
-		{% endfor %}
-	</select>
-
-	{# Radio of Checkbox #}
-	{% elseif type == 'checkbox' or type == 'radio' %}
-	{% set selected = value is iterable ? value : [value] %}
-	<div class="filter-options-wrapper" data-limit-options="{{ limit_options }}" data-expand-label="{{ option_list_expand_label }}" data-collapse-label="{{ option_list_collapse_label }}">
-		{% for key, val in options %}
-		<div class="form-check">
+        {# Radio of Checkbox #}
+        {% elseif type == 'checkbox' or type == 'radio' %}
+        {% if label and show_field_label %}
+        <label class="form-label">{{ label }}</label>
+        {% endif %}
+        {% set selected = value is iterable ? value : [value] %}
+        <div class="filter-options-wrapper" data-limit-options="{{ limit_options }}" data-expand-label="{{ option_list_expand_label }}" data-collapse-label="{{ option_list_collapse_label }}">
+                {% for key, val in options %}
+                <div class="form-check">
 			<label class="form-check-label">
 				<input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
                                 {{ key }}
@@ -89,12 +107,15 @@ Beschikbare presentatie-opties:
 		<button type="button" class="btn btn-sm btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
 	</div>
 
-	{# Buttons #}
-	{% elseif type == 'buttons' %}
-	{% set layout = layout ?? 'horizontal' %}
-	{% set button_class = button_class ?? 'btn-outline-primary' %}
-	{% set all_label = all_label ?? 'Alles' %}
-	{% set show_all_button = show_all_button ?? true %}
+        {# Buttons #}
+        {% elseif type == 'buttons' %}
+        {% if label and show_field_label %}
+        <label class="form-label">{{ label }}</label>
+        {% endif %}
+        {% set layout = layout ?? 'horizontal' %}
+        {% set button_class = button_class ?? 'btn-outline-primary' %}
+        {% set all_label = all_label ?? 'Alles' %}
+        {% set show_all_button = show_all_button ?? true %}
 	
 	<div class="filter-buttons {{ layout == 'vertical'
 	? 'd-grid gap-2'
@@ -120,10 +141,16 @@ Beschikbare presentatie-opties:
 
         {# Single Date Field #}
         {% elseif type == 'date' %}
+        {% if label and show_field_label %}
+        <label class="form-label">{{ label }}</label>
+        {% endif %}
         <input type="text" class="form-control" name="{{ name }}" value="{{ value }}" data-date-picker data-date-format="{{ date_format }}">
 
         {# Date Range #}
         {% elseif type == 'date_range' %}
+        {% if label and show_field_label %}
+        <label class="form-label">{{ label }}</label>
+        {% endif %}
         <div class="d-flex gap-2 align-items-center mb-3">
                 <input type="text" class="form-control" name="from_{{ acf_field }}" value="{{ value.from ?? '' }}" data-date-range-start="{{ acf_field }}" data-date-format="{{ date_format }}">
                 <span class="text-muted">tot</span>
@@ -132,17 +159,20 @@ Beschikbare presentatie-opties:
 
         {# Range Slider #}
         {% elseif type == 'range' %}
+        {% if label and show_field_label %}
+        <label class="form-label">{{ label }}</label>
+        {% endif %}
         <div class="range-wrapper">
                 <div class="d-flex gap-2 align-items-center mb-3">
                         <input type="number" class="form-control" name="min_{{ acf_field }}" value="{{ value.min ?? options.min }}" min="{{ options.min }}" max="{{ options.max }}">
 
-			<span class="text-muted">tot</span>
+                        <span class="text-muted">tot</span>
 
-			<input type="number" class="form-control" name="max_{{ acf_field }}" value="{{ value.max ?? options.max }}" min="{{ options.min }}" max="{{ options.max }}">
-		</div>
+                        <input type="number" class="form-control" name="max_{{ acf_field }}" value="{{ value.max ?? options.max }}" min="{{ options.min }}" max="{{ options.max }}">
+                </div>
 
-		<div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
-		</div>
+                <div class="range-slider" data-slider data-min="{{ options.min }}" data-max="{{ options.max }}">
+                </div>
         </div>
 {% endif %}
 </div>
