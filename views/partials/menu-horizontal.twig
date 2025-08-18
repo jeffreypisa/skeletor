@@ -2,10 +2,11 @@
 	{% for item in items %}
 		<li class="nav-item {% if item.children|length > 0 %}dropdown{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
 			<a 
-				class="{% if item.children|length > 0 %}dropdown-toggle{% endif %}" 
-				href="{{ item.link }}" 
-				{% if item.target %}target="{{ item.target }}"{% endif %}
-				{% if item.children|length > 0 %}data-bs-toggle="dropdown"  aria-expanded="false"{% endif %}
+                                class="{% if item.children|length > 0 %}dropdown-toggle{% endif %}"
+                                href="{{ item.link }}"
+                                {% if item.current %}aria-current="page"{% endif %}
+                                {% if item.target %}target="{{ item.target }}"{% endif %}
+                                {% if item.children|length > 0 %}data-bs-toggle="dropdown"  aria-expanded="false"{% endif %}
 			>
 				{{ item.title }}
 			</a>

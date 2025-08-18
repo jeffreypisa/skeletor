@@ -14,7 +14,7 @@
 			{% include 'header.twig' %}
 		{% endblock %}
 		
-		<main role="main" class="content-wrapper">
+<main id="content" role="main" class="content-wrapper" tabindex="-1">
 			{% if title %}<h1 class="d-none">{{title}}</h1>{% endif %}
 			{% block content %}
 				Sorry, no content
