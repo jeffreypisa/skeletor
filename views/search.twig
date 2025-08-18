@@ -3,7 +3,7 @@
 {% block content %}
 <section class="bg-greylight">
     <div class="container">
-        <form data-filter-form data-post-type="{{ post_type }}">
+        <form data-filter-form data-post-type="{{ post_type }}" data-require-search>
             <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
             <input type="hidden" name="col_class" value="{{ col_class }}">
             <input type="hidden" name="tease_template" value="partials/tease-search.twig">

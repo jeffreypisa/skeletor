@@ -12,6 +12,7 @@ export function filter() {
 
         const wcOrderSelect = filterForm.querySelector('select[name="orderby"]');
         const searchInput = filterForm.querySelector('input[name="s"]');
+        const requireSearch = filterForm.hasAttribute('data-require-search');
 
 	const debounce = (fn, delay) => {
 		let timeout;
@@ -246,7 +247,9 @@ export function filter() {
 	};
 
         const fetchFilteredResults = (append = false) => {
-                if (searchInput && searchInput.value.trim() === '') {
+
+                if (requireSearch && searchInput && searchInput.value.trim() === '') {
+
                         if (!append) {
                                 resultContainer.innerHTML = '<p class="text-muted">Voer een zoekterm in om resultaten te zien.</p>';
                                 if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
