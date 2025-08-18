@@ -20,13 +20,6 @@ require_once __DIR__ . '/components/Components.php';
 
 Timber\Timber::init();
 
-// Waarschuw als Advanced Custom Fields ontbreekt
-if (!function_exists('get_fields')) {
-    add_action('admin_notices', function () {
-        echo '<div class="notice notice-error"><p>ACF Pro plugin is required for this theme to function properly.</p></div>';
-    });
-}
-
 
 // Initialize your classes
 new ACFScripts();
