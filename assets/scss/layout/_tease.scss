@@ -9,22 +9,6 @@
 	font-size: 16px;
 	line-height: 1.25;
 	
-	&[href] {
-		figure {
-			overflow: hidden;
-			img {
-				transform: scale(1.0);
-				transition: .15s $ease;
-			}
-		}
-		&:hover {
-			figure {
-				img {
-					transform: scale(1.05);
-				}
-			}
-		}
-	}
 	i {
 		margin-top: 10px;
 		font-size: 32px;
@@ -33,27 +17,43 @@
 	img {
 		transition: .2s $ease;
 	}
-	&[href] .card {
-		transition: .2s $ease;
-	}
 	h3 {
 		transition: .2s $ease;
 	}
-	&[href]:hover {
-		h3 {
-			color: $primary;
+	
+	&[href] {
+		figure {
+			overflow: hidden;
+			img {
+				transform: scale(1.0);
+				transition: .15s $ease;
+			}
 		}
 		.card {
-			box-shadow: 0px 5px 25px rgba($dark, .15);
+			transition: .2s $ease;
 		}
-		i {
-			transform: translateX(15px);
-			color: $primary;
-		}
-		img {
-			opacity: .6
+		&:hover {
+			figure {
+				img {
+					transform: scale(1.05);
+				}
+			}
+			h3 {
+				color: $primary;
+			}
+			.card {
+				box-shadow: 0px 5px 25px rgba($dark, .15);
+			}
+			i {
+				transform: translateX(15px);
+				color: $primary;
+			}
+			img {
+				opacity: .6
+			}
 		}
 	}
+
 }
 
 @include media-breakpoint-down(md) {

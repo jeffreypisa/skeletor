@@ -31293,16 +31293,6 @@ section.bg-blue + section.bg-blue {
   font-size: 16px;
   line-height: 1.25;
 }
-.tease[href] figure {
-  overflow: hidden;
-}
-.tease[href] figure img {
-  transform: scale(1);
-  transition: 0.15s cubic-bezier(0.68, 0, 0.27, 1);
-}
-.tease[href]:hover figure img {
-  transform: scale(1.05);
-}
 .tease i {
   margin-top: 10px;
   font-size: 32px;
@@ -31311,11 +31301,21 @@ section.bg-blue + section.bg-blue {
 .tease img {
   transition: 0.2s cubic-bezier(0.68, 0, 0.27, 1);
 }
+.tease h3, .tease .h3 {
+  transition: 0.2s cubic-bezier(0.68, 0, 0.27, 1);
+}
+.tease[href] figure {
+  overflow: hidden;
+}
+.tease[href] figure img {
+  transform: scale(1);
+  transition: 0.15s cubic-bezier(0.68, 0, 0.27, 1);
+}
 .tease[href] .card {
   transition: 0.2s cubic-bezier(0.68, 0, 0.27, 1);
 }
-.tease h3, .tease .h3 {
-  transition: 0.2s cubic-bezier(0.68, 0, 0.27, 1);
+.tease[href]:hover figure img {
+  transform: scale(1.05);
 }
 .tease[href]:hover h3, .tease[href]:hover .h3 {
   color: #4986e7;
