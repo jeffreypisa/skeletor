@@ -26,6 +26,9 @@
                 <div class="col">
                     <h4 class="m-0">{{ title }}</h4>
                 </div>
+                <div class="col-auto">
+                    <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>Reset filters</button>
+                </div>
             </div>
 
             <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ search_query|e }}">
