@@ -7,7 +7,9 @@
         <div class="media-figure {% if not product_data.thumbnail %}placeholder{% endif %}">
                 <a href="{{ post.link }}">
                         {% if product_data.thumbnail %}
-                                <img src="{{ product_data.thumbnail }}" alt="{{ post.title }}" />
+                        <figure class="position-relative rounded bg-orange ratio ratio-3x2">
+                                <img src="{{ product_data.thumbnail }}" alt="{{ post.title }}" class="rounded" style="width: 100%; height: 100%; object-fit: cover;"/>
+                        </figure>
                         {% else %}
                                 <span class="thumb-placeholder"><i class="icon-camera"></i></span>
                         {% endif %}

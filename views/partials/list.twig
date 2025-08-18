@@ -1,8 +1,8 @@
 {% if posts|length %}
         <div class="row">
-                {% set forced_col = col_class|default('') %}
+                {% set forced_col = col_class|default('col-md-4') %}
                 {% for item in posts %}
-                        {% set col = forced_col ?: (item.post_type == 'product' ? 'col-sm-6 col-lg-4 col-xxl-3' : 'col-12') %}
+                        {% set col = forced_col %}
                         <div class="{{ col }} fade-in-item visible">
                                 {# Gebruik een meegegeven tease-template, anders tease-[post_type].twig of standaard tease.twig #}
                                 {% set templates = [] %}

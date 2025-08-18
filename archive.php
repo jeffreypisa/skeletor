@@ -17,7 +17,7 @@ $post_type = get_post_type();
 $context['post_type'] = $post_type; // Nodig voor AJAX (JS moet weten welk post_type gefilterd wordt)
 $context['filters'] = [];
 
-// 🔢 Aantal resultaten per pagina instelbaar
+// ⚙️ Basisinstellingen voor filters
 $posts_per_page = 12;
 $context['posts_per_page'] = $posts_per_page;
 $context['col_class'] = 'col-12 mb-4';

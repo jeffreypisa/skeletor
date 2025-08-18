@@ -11,11 +11,13 @@ use Timber\Timber;
 $context = Timber::context();
 $templates = ['woo/archive.twig']; // Gebruik de WooCommerce specifieke Twig-template
 
+$context['post_type'] = 'product';
+$context['filters'] = [];
+
 // ⚙️ Basisinstellingen voor filters
 $posts_per_page = 12;
 $context['posts_per_page'] = $posts_per_page;
-$context['post_type'] = 'product';
-$context['filters'] = [];
+$context['col_class'] = 'col-12 col-md-6 col-xl-4 mb-4';
 
 // ✅ Stel de juiste titel in voor de shop pagina en categorieën
 if (is_shop()) {
