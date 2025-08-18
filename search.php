@@ -17,9 +17,9 @@ $context['col_class'] = 'col-12';
 // Post types that should be available in search results and filters.
 // Modify this array to control which post types are searchable.
 $allowed_post_types = [
-    'post',
     'page',
-    // 'product',
+    'locaties',
+    'product'
 ];
 
 $allowed_post_types = array_values(array_filter(array_map('sanitize_key', $allowed_post_types)));
