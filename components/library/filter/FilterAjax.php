@@ -31,8 +31,9 @@ class Components_FilterAjax {
                        'day'   => (int) $d->format('d'),
                ] : [];
        }
-        public static function handle() {
-                $filters = $_POST;
+       public static function handle() {
+               check_ajax_referer('skeletor_filter_nonce', 'nonce');
+               $filters = $_POST;
 	
 		if (!is_array($filters)) {
 			echo '❌ Ongeldige filterdata ontvangen';

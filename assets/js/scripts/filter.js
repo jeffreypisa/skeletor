@@ -57,18 +57,21 @@ export function filter() {
                         grouped['post_type'] = form.dataset.postType || 'post';
                 }
 
-                for (const key in grouped) {
-                        const value = grouped[key];
-                        if (Array.isArray(value)) {
-                                value.forEach(v => data.append(`${key}[]`, v));
-                        } else {
-                                data.append(key, value);
-                        }
-                }
+for (const key in grouped) {
+const value = grouped[key];
+if (Array.isArray(value)) {
+value.forEach(v => data.append(`${key}[]`, v));
+} else {
+data.append(key, value);
+}
+}
 
-                data.append('action', 'ajax_filter');
-                return data;
-        };
+data.append('action', 'ajax_filter');
+if (window.ajaxurl && window.ajaxurl.nonce) {
+data.append('nonce', window.ajaxurl.nonce);
+}
+return data;
+};
 
 	const ajaxUrl = (typeof window.ajaxurl !== 'undefined' && window.ajaxurl.url) ?
 		window.ajaxurl.url :

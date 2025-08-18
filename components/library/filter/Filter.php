@@ -39,10 +39,11 @@ use Timber\Timber;
 use Twig\TwigFunction;
 
 class Components_Filter extends Site {
-	public function __construct() {
-		add_filter('timber/twig', [$this, 'add_to_twig']);
-		parent::__construct();
-	}
+public function __construct() {
+add_filter('timber/twig', [$this, 'add_to_twig']);
+add_action('save_post', ['Components_Filter', 'clear_cache']);
+parent::__construct();
+}
 
 	public function add_to_twig($twig) {
 		$twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
@@ -82,26 +83,27 @@ class Components_Filter extends Site {
                $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
 
                 // ⛏ Verwerk waarde vanuit $_GET
-                if ($type === 'range') {
+               if ($type === 'range') {
                         $data['value'] = [
-                                'min' => $_GET['min_' . $name] ?? null,
-                                'max' => $_GET['max_' . $name] ?? null,
+                                'min' => isset($_GET['min_' . $name]) ? floatval($_GET['min_' . $name]) : null,
+                                'max' => isset($_GET['max_' . $name]) ? floatval($_GET['max_' . $name]) : null,
                         ];
                } elseif ($type === 'date_range') {
-                       $from_dt = self::parse_date($_GET['from_' . $name] ?? '');
-                       $to_dt   = self::parse_date($_GET['to_' . $name] ?? '');
+                       $from_dt = self::parse_date(sanitize_text_field($_GET['from_' . $name] ?? ''));
+                       $to_dt   = self::parse_date(sanitize_text_field($_GET['to_' . $name] ?? ''));
                        $data['value'] = [
                                'from' => $from_dt ? $from_dt->format('d-m-Y') : '',
                                'to'   => $to_dt ? $to_dt->format('d-m-Y') : '',
                        ];
                } elseif ($type === 'date') {
-                       $dt = self::parse_date($_GET[$name] ?? '');
+                       $dt = self::parse_date(sanitize_text_field($_GET[$name] ?? ''));
                        $data['value'] = $dt ? $dt->format('d-m-Y') : '';
                } else {
                        if (in_array($type, ['checkbox', 'multiselect'])) {
-                               $data['value'] = $_GET[$name] ?? ($_GET[$name . '[]'] ?? null);
+                               $raw = $_GET[$name] ?? ($_GET[$name . '[]'] ?? null);
+                               $data['value'] = is_array($raw) ? array_map('sanitize_text_field', (array) $raw) : sanitize_text_field($raw);
                        } else {
-                               $data['value'] = $_GET[$name] ?? null;
+                               $data['value'] = isset($_GET[$name]) ? sanitize_text_field($_GET[$name]) : null;
                        }
                }
 
@@ -151,23 +153,24 @@ class Components_Filter extends Site {
 
                                if ($ftype === 'range') {
                                        $filter['value'] = [
-                                               'min' => $_GET['min_' . $fname] ?? null,
-                                               'max' => $_GET['max_' . $fname] ?? null,
+                                               'min' => isset($_GET['min_' . $fname]) ? floatval($_GET['min_' . $fname]) : null,
+                                               'max' => isset($_GET['max_' . $fname]) ? floatval($_GET['max_' . $fname]) : null,
                                        ];
                                } elseif ($ftype === 'date_range') {
-                                       $from = $_GET['from_' . $fname] ?? '';
-                                       $to   = $_GET['to_' . $fname] ?? '';
+                                       $from = sanitize_text_field($_GET['from_' . $fname] ?? '');
+                                       $to   = sanitize_text_field($_GET['to_' . $fname] ?? '');
                                        $filter['value'] = [
                                                'from' => $from,
                                                'to'   => $to,
                                        ];
                                } elseif ($ftype === 'date') {
-                                       $filter['value'] = $_GET[$fname] ?? '';
+                                       $filter['value'] = sanitize_text_field($_GET[$fname] ?? '');
                                } else {
                                        if (in_array($ftype, ['checkbox', 'multiselect'])) {
-                                               $filter['value'] = $_GET[$fname] ?? ($_GET[$fname . '[]'] ?? null);
+                                               $raw = $_GET[$fname] ?? ($_GET[$fname . '[]'] ?? null);
+                                               $filter['value'] = is_array($raw) ? array_map('sanitize_text_field', (array) $raw) : sanitize_text_field($raw);
                                        } else {
-                                               $filter['value'] = $_GET[$fname] ?? null;
+                                               $filter['value'] = isset($_GET[$fname]) ? sanitize_text_field($_GET[$fname]) : null;
                                        }
                                }
                        }
@@ -233,25 +236,33 @@ class Components_Filter extends Site {
 				?: ($wp_query->query_vars['post_type'] ?? 'post');
 		}
 
-		$results = $wpdb->get_col($wpdb->prepare(
-			"SELECT DISTINCT meta_value
-			 FROM {$wpdb->postmeta}
-			 WHERE meta_key = %s
-			 AND post_id IN (
-				 SELECT ID FROM {$wpdb->posts}
-				 WHERE post_type = %s AND post_status = 'publish'
-			 )
-			 ORDER BY meta_value ASC",
-			$meta_key,
-			$post_type
-		));
+                $transient_key = 'comp_filter_meta_' . $post_type . '_' . $meta_key;
+                $cached = get_transient($transient_key);
+                if ($cached !== false) {
+                        return $cached;
+                }
 
-		$options = [];
-		foreach ($results as $val) {
-			$options[$val] = $val;
-		}
-		return $options;
-	}
+                $results = $wpdb->get_col($wpdb->prepare(
+                        "SELECT DISTINCT meta_value
+                         FROM {$wpdb->postmeta}
+                         WHERE meta_key = %s
+                         AND post_id IN (
+                                 SELECT ID FROM {$wpdb->posts}
+                                 WHERE post_type = %s AND post_status = 'publish'
+                         )
+                         ORDER BY meta_value ASC",
+                        $meta_key,
+                        $post_type
+                ));
+
+                $options = [];
+                foreach ($results as $val) {
+                        $options[$val] = $val;
+                }
+
+                set_transient($transient_key, $options, DAY_IN_SECONDS);
+                return $options;
+        }
 
 	/**
 	 * Bepaalt automatisch het minimum en maximum numerieke waarde voor een ACF-veld.
@@ -267,8 +278,14 @@ class Components_Filter extends Site {
                global $wpdb;
 
 		if (!$post_type) {
-			$post_type = get_post_type() ?: get_query_var('post_type') ?: 'post';
-		}
+		$post_type = get_post_type() ?: get_query_var('post_type') ?: 'post';
+}
+
+		$transient_key = 'comp_filter_minmax_' . $post_type . '_' . $meta_key;
+		$cached = get_transient($transient_key);
+		if ($cached !== false) {
+		return $cached;
+}
 
 		$row = $wpdb->get_row($wpdb->prepare(
 			"SELECT MIN(CAST(meta_value AS UNSIGNED)) AS min, MAX(CAST(meta_value AS UNSIGNED)) AS max
@@ -282,11 +299,14 @@ class Components_Filter extends Site {
 			$post_type
 		));
 
-               return [
-                       'min' => $row->min ?? 0,
-                       'max' => $row->max ?? 100,
-               ];
-       }
+		$result = [
+'min' => $row->min ?? 0,
+'max' => $row->max ?? 100,
+];
+
+		set_transient($transient_key, $result, DAY_IN_SECONDS);
+		return $result;
+}
 
        private static function parse_date($date) {
                if (empty($date)) return null;
@@ -322,11 +342,17 @@ class Components_Filter extends Site {
        public static function get_auto_date_bounds($field, $source = 'acf', $post_type = null) {
                global $wpdb;
 
-               if (!$post_type) {
-                       $post_type = get_post_type() ?: get_query_var('post_type') ?: 'post';
-               }
+	if (!$post_type) {
+		$post_type = get_post_type() ?: get_query_var('post_type') ?: 'post';
+}
 
-               if ($source === 'post_date') {
+		$transient_key = 'comp_filter_dates_' . $post_type . '_' . $field . '_' . $source;
+		$cached = get_transient($transient_key);
+		if ($cached !== false) {
+		return $cached;
+}
+
+if ($source === 'post_date') {
                        $row = $wpdb->get_row($wpdb->prepare(
                                "SELECT MIN(post_date) AS min, MAX(post_date) AS max
                                 FROM {$wpdb->posts}
@@ -347,11 +373,14 @@ class Components_Filter extends Site {
                        ));
                }
 
-               return [
-                       'min' => $row->min ? date('d-m-Y', strtotime($row->min)) : '',
-                       'max' => $row->max ? date('d-m-Y', strtotime($row->max)) : '',
-               ];
-       }
+		$result = [
+'min' => $row->min ? date('d-m-Y', strtotime($row->min)) : '',
+'max' => $row->max ? date('d-m-Y', strtotime($row->max)) : '',
+];
+
+		set_transient($transient_key, $result, DAY_IN_SECONDS);
+		return $result;
+}
 
         public static function build_query_from_filters($filters) {
                 $meta_query = [];
@@ -492,11 +521,11 @@ class Components_Filter extends Site {
                 if (!empty($tax_query))  $args['tax_query']  = $tax_query;
                 if (!empty($date_query)) $args['date_query'] = $date_query;
 
-                return $args;
-        }
+return $args;
+}
 
-        /**
-         * Geeft beschikbare post types terug als [label => value].
+/**
+ * Geeft beschikbare post types terug als [label => value].
          *
          * @param array $allowed Optionele lijst van toegestane post types.
          * @return array
@@ -560,6 +589,11 @@ class Components_Filter extends Site {
                        wp_reset_postdata();
                }
 
-               return $counts;
-       }
+return $counts;
+}
+
+public static function clear_cache() {
+global $wpdb;
+$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_comp_filter_%' OR option_name LIKE '_transient_timeout_comp_filter_%'");
+}
 }

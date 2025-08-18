@@ -13,6 +13,7 @@ class HideUsers extends Site {
 
         // Voeg de filter toe via de constructor
         add_filter('rest_endpoints', [$this, 'disable_rest_endpoints']);
+        add_action('template_redirect', [$this, 'block_author_requests']);
     }
 
     /**
@@ -30,5 +31,12 @@ class HideUsers extends Site {
         }
 
         return $endpoints;
+    }
+
+    public function block_author_requests() {
+        if (is_author() || isset($_GET['author'])) {
+            wp_redirect(home_url());
+            exit;
+        }
     }
 }

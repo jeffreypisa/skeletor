@@ -20,6 +20,13 @@ require_once __DIR__ . '/components/Components.php';
 
 Timber\Timber::init();
 
+// Waarschuw als Advanced Custom Fields ontbreekt
+if (!function_exists('get_fields')) {
+    add_action('admin_notices', function () {
+        echo '<div class="notice notice-error"><p>ACF Pro plugin is required for this theme to function properly.</p></div>';
+    });
+}
+
 
 // Initialize your classes
 new ACFScripts();
@@ -33,12 +40,16 @@ new StarterSite();
 new ThemeSpecific();
 new WPAdmin();
 
+remove_action('wp_head', 'wp_generator');
 
 if (function_exists('acf_add_local_field_group')) {
     new ACF();
 }
 
-add_action('init', function () {
-    $polylang_strings = get_option('polylang_registered_strings', []);
-    error_log("Polylang geregistreerde strings: " . print_r($polylang_strings, true));
-});
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    add_action('init', function () {
+        $polylang_strings = get_option('polylang_registered_strings', []);
+        error_log('Polylang geregistreerde strings: ' . print_r($polylang_strings, true));
+    });
+}
+

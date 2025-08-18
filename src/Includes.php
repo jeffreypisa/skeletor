@@ -20,20 +20,31 @@ class Includes extends Site {
      */
     public function add_theme_scripts() {
         // Voeg de hoofdstijl toe
+       $css_file = get_template_directory() . '/dist/main-min.css';
        wp_enqueue_style(
            'styles',
            get_template_directory_uri() . '/dist/main-min.css',
            [],
-           filemtime(get_template_directory() . '/dist/main-min.css')
+           file_exists($css_file) ? filemtime($css_file) : null
        );
-       
+
+       $js_file = get_template_directory() . '/dist/main-min.js';
        wp_enqueue_script(
            'script',
            get_template_directory_uri() . '/dist/main-min.js',
            ['jquery'],
-           filemtime(get_template_directory() . '/dist/main-min.js'),
+           file_exists($js_file) ? filemtime($js_file) : null,
            true
        );
-       
+
+       wp_localize_script(
+           'script',
+           'ajaxurl',
+           [
+               'url' => admin_url('admin-ajax.php'),
+               'nonce' => wp_create_nonce('skeletor_filter_nonce'),
+           ]
+       );
+
     }
 }

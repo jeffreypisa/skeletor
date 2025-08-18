@@ -48,8 +48,8 @@ class StarterSite extends Site {
                 $context['footermenu'] = \Timber\Timber::get_menu('footermenu');
                 $context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
 		
-		// Voeg optiespagina velden toe
-		$context['options'] = get_fields('options');
+                // Voeg optiespagina velden toe
+                $context['options'] = function_exists('get_fields') ? get_fields('options') : [];
 
 		// Voeg een helperfunctie toe voor thumbnails
 		$context['get_thumbnail'] = function ($post_id) {
@@ -133,7 +133,7 @@ class StarterSite extends Site {
 	 * @return array Aangepaste Twig-opties.
 	 */
 	public function update_twig_environment_options($options) {
-		// $options['autoescape'] = true; // Indien nodig inschakelen
-		return $options;
-	}
+                $options['autoescape'] = true;
+                return $options;
+        }
 }

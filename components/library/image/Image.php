@@ -25,7 +25,7 @@ class Components_Image extends Site {
 			'figure_class' => '', // Extra CSS-klassen voor de <figure>
 			'img_class' => 'w-100', // Extra CSS-klassen voor de <img>
 			'object_fit' => 'cover',
-			'lazyload' => false,
+                        'lazyload' => true,
 			'style' => null,
 			'show_caption' => false,
 			'caption_position' => 'on-left', // Standaard: linksonder op de afbeelding

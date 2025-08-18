@@ -11,19 +11,26 @@ class ACFScripts extends Site {
 	public function __construct() {
 		parent::__construct();
 
-		// Voeg filters toe via de constructor
-		add_filter('acf/settings/save_json', [$this, 'my_acf_json_save_point']);
-		add_filter('acf/fields/flexible_content/layout_title/name=stroken', [$this, 'my_acf_fields_flexible_content_layout_title'], 10, 4);
-		add_filter('acf/load_field/name=select_post_type', [$this, 'yourprefix_acf_load_post_types']);
-	}
+                // Voeg filters toe via de constructor
+                add_filter('acf/settings/save_json', [$this, 'my_acf_json_save_point']);
+                add_filter('acf/fields/flexible_content/layout_title/name=stroken', [$this, 'my_acf_fields_flexible_content_layout_title'], 10, 4);
+                add_filter('acf/load_field/name=select_post_type', [$this, 'yourprefix_acf_load_post_types']);
+                add_action('after_switch_theme', [$this, 'ensure_acf_json_dir']);
+        }
 
 	// Stel het pad in voor het opslaan van ACF JSON-bestanden
 	public function my_acf_json_save_point($path) {
-		// Stel het pad in naar de map 'acf-json' in het child theme
-		$path = get_stylesheet_directory() . '/acf-json';
+                // Stel het pad in naar de map 'acf-json' in het child theme
+                $path = get_stylesheet_directory() . '/acf-json';
+                wp_mkdir_p($path);
 
-		return $path;
-	}
+                return $path;
+        }
+
+        public function ensure_acf_json_dir() {
+                $path = get_stylesheet_directory() . '/acf-json';
+                wp_mkdir_p($path);
+        }
 
 	// Pas de layouttitel aan voor een flexibel inhoudsveld
 	public function my_acf_fields_flexible_content_layout_title($title, $field, $layout, $i) {
