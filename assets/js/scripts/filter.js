@@ -11,6 +11,8 @@ export function filter() {
         if (!filterForm || !resultContainer) return;
 
         const wcOrderSelect = filterForm.querySelector('select[name="orderby"]');
+        const searchInput = filterForm.querySelector('input[name="s"]');
+        const requireSearch = filterForm.hasAttribute('data-require-search');
 
 	const debounce = (fn, delay) => {
 		let timeout;
@@ -245,6 +247,14 @@ export function filter() {
 	};
 
         const fetchFilteredResults = (append = false) => {
+                if (requireSearch && searchInput && searchInput.value.trim() === '') {
+                        if (!append) {
+                                resultContainer.innerHTML = '<p class="text-muted">Voer een zoekterm in om resultaten te zien.</p>';
+                                if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
+                        }
+                        return;
+                }
+
                 const data = serializeForm(filterForm);
                 const colClassField = filterForm.querySelector('input[name="col_class"]');
                 if (colClassField) {
@@ -330,7 +340,6 @@ export function filter() {
 		fetchFilteredResults(false);
 	}, 300));
 
-        const searchInput = filterForm.querySelector('input[name="s"]');
         if (searchInput) {
                 searchInput.addEventListener('input', debounce(() => {
                         currentPage = 1;
