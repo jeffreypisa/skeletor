@@ -42,11 +42,15 @@
                     <div class="spinner-border text-secondary" role="status" aria-hidden="true"></div>
                 </div>
                 <div id="filter-results">
+                    {% if show_search_prompt|default(false) %}
+                    <p class="text-muted">Voer een zoekterm in om resultaten te zien.</p>
+                    {% else %}
                     {% set max_pages = max_num_pages %}
                     {% include 'partials/list.twig' with { tease_template: 'partials/tease-search.twig', col_class: col_class } %}
+                    {% endif %}
                 </div>
 
-                {% if current_page < max_num_pages %}
+                {% if not show_search_prompt|default(false) and current_page < max_num_pages %}
                 <div class="text-center mt-4">
                     <button type="button" class="btn btn-outline-dark" data-load-more>Laad meer</button>
                 </div>
