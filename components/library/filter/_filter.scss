@@ -76,3 +76,11 @@
 .noUi-connect {
 	background: $primary;
 }
+
+.filter-options-wrapper {
+	.form-check-label {
+		.muted {
+			opacity: .5;
+		}
+	}
+}

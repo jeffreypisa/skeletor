@@ -7,7 +7,7 @@
       "uuidString" : "57A87351-E1AA-4909-8F6E-C2FBFD45AB84"
     }
   ],
-  "creatorBuild" : "34704",
+  "creatorBuild" : "34892",
   "files" : {
     "\/.nova\/Configuration.json" : {
       "ft" : 524288,
@@ -1395,14 +1395,14 @@
     "\/assets\/scss\/main.scss" : {
       "aP" : 0,
       "bl" : 0,
-      "co" : 0,
+      "co" : 1,
       "ec" : 1,
       "ft" : 4,
       "ma" : 1,
       "oA" : 0,
       "oAP" : "\/dist\/main-min.css",
       "oF" : 2,
-      "oS" : 1,
+      "oS" : 3,
       "pg" : 0
     },
     "\/assets\/scss\/plugins\/_flatpickr.scss" : {
@@ -20182,6 +20182,9 @@
         "active" : 0,
         "optionString" : "{'skipBlankLines': false, 'ignoreComments': false}"
       },
+      "no-unassigned-vars" : {
+        "active" : 0
+      },
       "no-undef" : {
         "active" : 1,
         "optionString" : "{'typeof': false}"
@@ -20262,7 +20265,8 @@
         "active" : 0
       },
       "no-useless-escape" : {
-        "active" : 1
+        "active" : 1,
+        "optionString" : "{'allowRegexCharacters': []}"
       },
       "no-useless-rename" : {
         "active" : 0,
