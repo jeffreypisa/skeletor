@@ -11,9 +11,20 @@ Usage:
     container_width: 20,
     title: 'More',
     url: 'https://example.com',
+<<<<<<< HEAD
     position: 'right',
     gap: 10,
     target: 'blank'
+=======
+    title_position: 'right',
+    title_level: 'span',
+    title_class: '',
+    icon_class: '',
+    gap: 10,
+    target: 'blank',
+    color_primary: '',
+    color_secondary: ''
+>>>>>>> add-link-support-to-icon-component-nthuuj
 }) }}
 
 Parameters:
@@ -25,6 +36,7 @@ Parameters:
 - class (string, optional): Extra CSS-klassen voor de container.
 - title (string, optional): Tekst bij het icoon.
 - url (string, optional): Link om het icoon heen. Leeg laat alleen het icoon zien.
+<<<<<<< HEAD
 - position (string, optional): Positie van de tekst: 'left', 'right', 'top' of 'bottom'. Standaard 'right'.
 - gap (int|string, optional): Ruimte tussen icoon en titel. Standaard 10.
 - target (string, optional): Linkdoel, 'self' of 'blank'. Standaard 'self'.
@@ -33,11 +45,32 @@ Parameters:
 <{{ tag }} class="icon icon--{{ position }} {{ class }}" style="gap: {{ gap }};"{% if url %} href="{{ url }}" target="{{ target }}"{% endif %}>
     {% if position in ['left','top'] and title %}
         <span class="icon__text">{{ title }}</span>
+=======
+- title_position (string, optional): Positie van de tekst: 'left', 'right', 'top' of 'bottom'. Standaard 'right'.
+- title_level (string, optional): HTML-tag voor de titel, zoals 'span', 'h2', 'h3'. Standaard 'span'.
+- title_class (string, optional): Extra CSS-klassen voor de titel.
+- icon_class (string, optional): Extra CSS-klassen voor het SVG-element.
+- gap (int|string, optional): Ruimte tussen icoon en titel. Standaard 10.
+- target (string, optional): Linkdoel, 'self' of 'blank'. Standaard 'self'.
+- color_primary (string, optional): Kleur voor het primaire deel van een duotone icoon.
+- color_secondary (string, optional): Kleur voor het secundaire deel van een duotone icoon.
+#}
+{% set tag = url ? 'a' : 'span' %}
+{% set text_tag = title_level %}
+<{{ tag }} class="icon icon--{{ title_position }} {{ class }}" style="gap: {{ gap }};"{% if url %} href="{{ url }}" target="{{ target }}"{% endif %}>
+    {% if title_position in ['left','top'] and title %}
+        <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
+>>>>>>> add-link-support-to-icon-component-nthuuj
     {% endif %}
     <span class="icon__figure"{% if container_width != 'auto' or container_height != 'auto' %} style="{% if container_width != 'auto' %}width: {{ container_width }};{% endif %}{% if container_height != 'auto' %} height: {{ container_height }};{% endif %}"{% endif %}>
         {{ svg|raw }}
     </span>
+<<<<<<< HEAD
     {% if position in ['right','bottom'] and title %}
         <span class="icon__text">{{ title }}</span>
+=======
+    {% if title_position in ['right','bottom'] and title %}
+        <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
+>>>>>>> add-link-support-to-icon-component-nthuuj
     {% endif %}
 </{{ tag }}>
