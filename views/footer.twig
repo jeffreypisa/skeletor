@@ -30,26 +30,52 @@
 					{{ heading(options.footer_navigatie_socialmedia_titel, {
 						level: 'h5'
 					}) }}
-					<a href="{{ options.facebook }}" target="_blank"> 
-						{{ icon({ 
-							icon: 'facebook', 
-							style: 'brands', 
-							library: 'fontawesome', 
-							class: 'arrow',
-							container_height: 22, 
-							container_width: 22 
-						}) }}
-						facebook
-					</a>
-					{{ social_media_links({
-						facebook: { url: options.facebook, suffix: 'f' },
-						instagram: { url: options.instagram },
-						linkedin: { url: options.linkedin, suffix: 'in' },
-						x: { url: options.x }
-					}, {
-						show_icons: true,
-						class: 'social-media-links'
+
+					{{ icon({ 
+						icon: 'facebook', 
+						style: 'brands', 
+						class: 'socal-media-link',
+						container_height: 22, 
+						container_width: 22,
+						title: 'Facebook',
+						url: options.facebook,
+						position: 'right'
 					}) }}
+					
+					{{ icon({ 
+						icon: 'instagram', 
+						style: 'brands', 
+						class: 'd-block socal-media-link',
+						container_height: 22, 
+						container_width: 22,
+						title: 'Instagram',
+						url: options.facebook,
+						position: 'right'
+					}) }}
+					
+					{{ icon({ 
+						icon: 'linkedin', 
+						style: 'brands', 
+						class: 'socal-media-link',
+						container_height: 22, 
+						container_width: 22,
+						title: 'Linkedin',
+						url: options.facebook,
+						position: 'right'
+					}) }}
+					
+					{{ icon({ 
+						icon: 'x-twitter', 
+						style: 'brands', 
+						class: 'socal-media-link',
+						container_height: 22, 
+						container_width: 22,
+						title: 'X',
+						url: options.facebook,
+						position: 'right'
+					}) }}
+					</a>
+					
 				</div>
 
 				<div class="col-md-4 order-md-first text-center text-md-start">
