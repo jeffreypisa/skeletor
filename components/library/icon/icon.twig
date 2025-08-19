@@ -1,0 +1,26 @@
+{#
+Icon Component
+
+Parameters:
+- icon (string, vereist): Font Awesome-icoonnaam (bijv. 'arrow-right').
+- title (string, optioneel): Tekst bij het icoon.
+- url (string, optioneel): Link-URL. Indien leeg, geen link.
+- position (string, optioneel): Positie van de tekst ten opzichte van het icoon ('left', 'right', 'top', 'bottom'). Standaard: 'right'.
+- icon_style (string, optioneel): Font Awesome-stijl ('light', 'solid', 'regular', 'brands'). Standaard: 'light'.
+- class (string, optioneel): Extra CSS-klassen.
+#}
+
+{% set icon_prefix = {
+    'solid': 'fas',
+    'regular': 'far',
+    'light': 'fal',
+    'brands': 'fab'
+}[icon_style]|default('fal') %}
+
+{% set tag = url ? 'a' : 'span' %}
+<{{ tag }}{% if url %} href="{{ url }}"{% endif %} class="icon icon--{{ position }} {{ class }}">
+    <i class="{{ icon_prefix }} fa-{{ icon }}"></i>
+    {% if title %}
+        <span class="icon__text">{{ title }}</span>
+    {% endif %}
+</{{ tag }}>

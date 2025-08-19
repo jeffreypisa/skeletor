@@ -1,0 +1,23 @@
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.25rem;
+
+  &--left {
+    flex-direction: row-reverse;
+  }
+
+  &--right {
+    flex-direction: row;
+  }
+
+  &--top {
+    flex-direction: column-reverse;
+  }
+
+  &--bottom {
+    flex-direction: column;
+  }
+}
