@@ -1,0 +1,12 @@
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    aspect-ratio: 1;
+}
+
+.icon svg {
+    display: block;
+    fill: currentColor;
+}
