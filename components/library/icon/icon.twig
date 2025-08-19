@@ -7,8 +7,9 @@ Usage:
     style: 'light',
     library: 'fontawesome',
     class: 'arrow',
-    container_height: 20,
-    container_width: 20,
+    icon_wrapper_height: 20,
+    icon_wrapper_width: 20,
+    icon_wrapper_class: '',
     title: 'More',
     url: 'https://example.com',
     title_position: 'right',
@@ -25,9 +26,10 @@ Parameters:
 - icon (string, required): Naam van het icoon-bestand.
 - style (string, optional): Stijlmap binnen de library. Standaard 'solid'.
 - library (string, optional): Naam van de icon-library. Standaard 'fontawesome'.
-- container_height (int|string, optional): Hoogte van de container. Standaard 30.
-- container_width (int|string, optional): Breedte van de container. Standaard gelijk aan de hoogte.
-- class (string, optional): Extra CSS-klassen voor de container.
+- icon_wrapper_height (int|string, optional): Hoogte van de icon_wrapper. Standaard 30.
+- icon_wrapper_width (int|string, optional): Breedte van de icon_wrapper. Standaard gelijk aan de hoogte.
+- icon_wrapper_class (string, optional): Extra CSS-klassen voor de icon_wrapper.
+- class (string, optional): Extra CSS-klassen voor het component.
 - title (string, optional): Tekst bij het icoon.
 - url (string, optional): Link om het icoon heen. Leeg laat alleen het icoon zien.
 - title_position (string, optional): Positie van de tekst: 'left', 'right', 'top' of 'bottom'. Standaard 'right'.
@@ -45,7 +47,7 @@ Parameters:
     {% if title_position in ['left','top'] and title %}
         <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
     {% endif %}
-    <span class="icon__figure"{% if container_width != 'auto' or container_height != 'auto' %} style="{% if container_width != 'auto' %}width: {{ container_width }};{% endif %}{% if container_height != 'auto' %} height: {{ container_height }};{% endif %}"{% endif %}>
+    <span class="icon__wrapper{{ icon_wrapper_class ? ' ' ~ icon_wrapper_class : '' }}"{% if icon_wrapper_width != 'auto' or icon_wrapper_height != 'auto' %} style="{% if icon_wrapper_width != 'auto' %}width: {{ icon_wrapper_width }};{% endif %}{% if icon_wrapper_height != 'auto' %} height: {{ icon_wrapper_height }};{% endif %}"{% endif %}>
         {{ svg|raw }}
     </span>
     {% if title_position in ['right','bottom'] and title %}

@@ -1,13 +1,11 @@
 .icon {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     line-height: 1;
-    text-align: center;
     gap: 10px;
 }
 
-.icon__figure {
+.icon__wrapper {
     display: inline-flex;
     align-items: center;
     justify-content: center;

@@ -24,8 +24,9 @@ class Components_Icon extends Site {
             'style' => 'light',
             'library' => 'fontawesome',
             'class' => '',
-            'container_height' => 20,
-            'container_width' => 20,
+            'icon_wrapper_height' => 20,
+            'icon_wrapper_width' => 20,
+            'icon_wrapper_class' => '',
             'title' => '',
             'url' => '',
             'title_position' => 'right',
@@ -72,17 +73,19 @@ class Components_Icon extends Site {
         $style_attr = $style_attr !== '' ? ' style="' . esc_attr($style_attr) . '"' : '';
         $svg = preg_replace('/<svg\b([^>]*)>/', '<svg$1' . $class_attr . $style_attr . ' width="100%" height="100%">', $svg, 1);
 
-        $container_height = $settings['container_height'];
-        if (is_numeric($container_height)) {
-            $container_height .= 'px';
+        $icon_wrapper_height = $settings['icon_wrapper_height'];
+        if (is_numeric($icon_wrapper_height)) {
+            $icon_wrapper_height .= 'px';
         }
 
-        $container_width = $settings['container_width'];
-        if ($container_width === 'auto') {
-            $container_width = $container_height;
-        } elseif (is_numeric($container_width)) {
-            $container_width .= 'px';
+        $icon_wrapper_width = $settings['icon_wrapper_width'];
+        if ($icon_wrapper_width === 'auto') {
+            $icon_wrapper_width = $icon_wrapper_height;
+        } elseif (is_numeric($icon_wrapper_width)) {
+            $icon_wrapper_width .= 'px';
         }
+
+        $icon_wrapper_class = sanitize_text_field($settings['icon_wrapper_class']);
 
         $gap = $settings['gap'];
         if (is_numeric($gap)) {
@@ -105,8 +108,9 @@ class Components_Icon extends Site {
         $context = [
             'svg' => $svg,
             'class' => trim($settings['class']),
-            'container_width' => $container_width,
-            'container_height' => $container_height,
+            'icon_wrapper_width' => $icon_wrapper_width,
+            'icon_wrapper_height' => $icon_wrapper_height,
+            'icon_wrapper_class' => $icon_wrapper_class,
             'title' => $title,
             'url' => $url,
             'title_position' => $title_position,
