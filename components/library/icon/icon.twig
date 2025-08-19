@@ -11,7 +11,9 @@ Usage:
     container_width: 20,
     title: 'More',
     url: 'https://example.com',
-    position: 'right'
+    position: 'right',
+    gap: 10,
+    target: 'blank'
 }) }}
 
 Parameters:
@@ -24,9 +26,11 @@ Parameters:
 - title (string, optional): Tekst bij het icoon.
 - url (string, optional): Link om het icoon heen. Leeg laat alleen het icoon zien.
 - position (string, optional): Positie van de tekst: 'left', 'right', 'top' of 'bottom'. Standaard 'right'.
+- gap (int|string, optional): Ruimte tussen icoon en titel. Standaard 10.
+- target (string, optional): Linkdoel, 'self' of 'blank'. Standaard 'self'.
 #}
 {% set tag = url ? 'a' : 'span' %}
-<{{ tag }} class="icon icon--{{ position }} {{ class }}"{% if url %} href="{{ url }}"{% endif %}>
+<{{ tag }} class="icon icon--{{ position }} {{ class }}" style="gap: {{ gap }};"{% if url %} href="{{ url }}" target="{{ target }}"{% endif %}>
     {% if position in ['left','top'] and title %}
         <span class="icon__text">{{ title }}</span>
     {% endif %}

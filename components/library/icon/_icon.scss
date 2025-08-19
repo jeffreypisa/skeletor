@@ -4,6 +4,7 @@
     justify-content: center;
     line-height: 1;
     text-align: center;
+    gap: 10px;
 }
 
 .icon__figure {
@@ -30,22 +31,6 @@
 
 .icon--bottom {
     flex-direction: column-reverse;
-}
-
-.icon--left .icon__text {
-    margin-right: 0.5em;
-}
-
-.icon--right .icon__text {
-    margin-left: 0.5em;
-}
-
-.icon--top .icon__text {
-    margin-bottom: 0.5em;
-}
-
-.icon--bottom .icon__text {
-    margin-top: 0.5em;
 }
 
 .icon svg {

@@ -28,7 +28,9 @@ class Components_Icon extends Site {
             'container_width' => 20,
             'title' => '',
             'url' => '',
-            'position' => 'right'
+            'position' => 'right',
+            'gap' => 10,
+            'target' => 'self'
         ];
 
         $settings = array_merge($defaults, $args);
@@ -65,6 +67,16 @@ class Components_Icon extends Site {
             $container_width .= 'px';
         }
 
+        $gap = $settings['gap'];
+        if (is_numeric($gap)) {
+            $gap .= 'px';
+        } else {
+            $gap = sanitize_text_field($gap);
+        }
+
+        $allowed_targets = ['self', 'blank'];
+        $target = in_array($settings['target'], $allowed_targets, true) ? '_' . $settings['target'] : '_self';
+
         $title = sanitize_text_field($settings['title']);
         $url = esc_url($settings['url']);
         $allowed_positions = ['left', 'right', 'top', 'bottom'];
@@ -77,7 +89,9 @@ class Components_Icon extends Site {
             'container_height' => $container_height,
             'title' => $title,
             'url' => $url,
-            'position' => $position
+            'position' => $position,
+            'gap' => $gap,
+            'target' => $target
         ];
 
         return Timber::compile('icon/icon.twig', $context);
