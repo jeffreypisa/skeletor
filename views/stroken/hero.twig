@@ -13,7 +13,14 @@
 		{% endif %}
 
 		<button class="js-scrollnextsection btn btn-outline-light btn-round"> 
-			<i class="fal fa-arrow-down"></i>
+			{{ icon({ 
+				icon: 'arrow-down', 
+				style: 'light', 
+				library: 'fontawesome', 
+				class: 'arrow',
+				container_height: 20, 
+				container_width: 20 
+			}) }}
 		</button>
 
 		<div class="content w-100">

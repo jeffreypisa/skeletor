@@ -96,13 +96,17 @@
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 2;
-
+		svg {
+			fill: $light;
+			transition: .15s $ease;
+		}
 		&:hover, &:focus {
 			color: $primary;
 			box-shadow: 0px 0px 20px rgba(255,255,255,.5);
 
-			i {
-				transform: translateY(2px);
+			svg {
+				fill: $dark;
+				transform: translateY(6px);
 			}
 		}
 	}

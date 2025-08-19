@@ -20,12 +20,12 @@ class Components_Icon extends Site {
         }
 
         $defaults = [
-            'icon' => null,
-            'style' => 'solid',
+            'icon' => 'check',
+            'style' => 'light',
             'library' => 'fontawesome',
             'class' => '',
-            'container_height' => 30,
-            'container_width' => 'auto'
+            'container_height' => 20,
+            'container_width' => 20
         ];
 
         $settings = array_merge($defaults, $args);

@@ -1,35 +1,46 @@
 <footer id="footer">
 	{% if options.footer_calltoaction_titel or options.footer_calltoaction_tekst or options.footer_calltoaction_link %}
-		<div class="calltoaction bg-primary text-white text-center">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
-						{{ heading(options.footer_calltoaction_titel, {
+	<div class="calltoaction bg-primary text-white text-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
+					{{ heading(options.footer_calltoaction_titel, {
 							level: 'h3'
 						}) }}
-						{{ text(options.footer_calltoaction_tekst) }}
-						<br>
-						{{ button(options.footer_calltoaction_link, 'outline-light') }}
-					</div>
+					{{ text(options.footer_calltoaction_tekst) }}
+					<br>
+					{{ button(options.footer_calltoaction_link, 'outline-light') }}
 				</div>
 			</div>
 		</div>
+	</div>
 	{% endif %}
 	<div class="footer bg-dark">
 		<div class="container">
 			<div class="row mb-5">
-                                <div class="col-6 col-md-3 offset-md-2 offset-lg-3 mb-4 mb-md-0">
-                                        {{ heading(options.footer_navigatie_menu_titel, {
+				<div class="col-6 col-md-3 offset-md-2 offset-lg-3 mb-4 mb-md-0">
+					{{ heading(options.footer_navigatie_menu_titel, {
                                                 level: 'h5'
                                         }) }}
-                                        <nav aria-label="Footer navigation">
-                                                {% include "partials/menu-clean.twig" with {'items': footermenu.get_items} %}
-                                        </nav>
-                                </div>
+					<nav aria-label="Footer navigation">
+						{% include "partials/menu-clean.twig" with {'items': footermenu.get_items} %}
+					</nav>
+				</div>
 				<div class="col-6 col-md-3 col-lg-2 mb-4 mb-md-0">
 					{{ heading(options.footer_navigatie_socialmedia_titel, {
 						level: 'h5'
 					}) }}
+					<a href="{{ options.facebook }}" target="_blank"> 
+						{{ icon({ 
+							icon: 'facebook', 
+							style: 'brands', 
+							library: 'fontawesome', 
+							class: 'arrow',
+							container_height: 22, 
+							container_width: 22 
+						}) }}
+						facebook
+					</a>
 					{{ social_media_links({
 						facebook: { url: options.facebook, suffix: 'f' },
 						instagram: { url: options.instagram },
@@ -40,11 +51,11 @@
 						class: 'social-media-links'
 					}) }}
 				</div>
-				
-                                <div class="col-md-4 order-md-first text-center text-md-start">
-                                        <img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}" class="mb-3">
-                                        {{ text(options.footer_navigatie_tekst) }}
-                                </div>
+
+				<div class="col-md-4 order-md-first text-center text-md-start">
+					<img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}" class="mb-3">
+					{{ text(options.footer_navigatie_tekst) }}
+				</div>
 			</div>
 			<div class="subfooter text-center text-md-start">
 				<div class="">©{{"now"|date('Y')}} All rights reserved {{ site.title}} </div>
