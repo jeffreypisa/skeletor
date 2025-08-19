@@ -3,6 +3,34 @@
     align-items: center;
     justify-content: center;
     line-height: 1;
+    text-align: center;
+    gap: 10px;
+}
+
+.icon__figure {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon__text {
+    display: inline-block;
+}
+
+.icon--left {
+    flex-direction: row;
+}
+
+.icon--right {
+    flex-direction: row-reverse;
+}
+
+.icon--top {
+    flex-direction: column;
+}
+
+.icon--bottom {
+    flex-direction: column-reverse;
 }
 
 .icon svg {
