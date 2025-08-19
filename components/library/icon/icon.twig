@@ -1,0 +1,19 @@
+{#
+Icon Component
+
+Usage:
+{{ icon({ icon: 'check', style: 'light', library: 'fontawesome', class: 'extra-class', width: 24, height: 24, container_width: 40 }) }}
+
+Parameters:
+- icon (string, required): Naam van het icoon-bestand.
+- style (string, optional): Stijlmap binnen de library. Standaard 'solid'.
+- library (string, optional): Naam van de icon-library. Standaard 'fontawesome'.
+- width (int|string, optional): Breedte attribuut voor het SVG-element. Standaard 'auto'.
+- height (int|string, optional): Hoogte attribuut voor het SVG-element. Standaard 30.
+- container_width (int|string, optional): Breedte van de vierkante container. Standaard 'auto'.
+- class (string, optional): Extra CSS-klassen voor de container.
+#}
+
+<span class="{{ class }}"{% if container_width != 'auto' %} style="width: {{ container_width }}; height: {{ container_width }};"{% endif %}>
+    {{ svg|raw }}
+</span>
