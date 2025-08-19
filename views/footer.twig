@@ -5,8 +5,8 @@
 			<div class="row">
 				<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
 					{{ heading(options.footer_calltoaction_titel, {
-							level: 'h3'
-						}) }}
+						level: 'h3'
+					}) }}
 					{{ text(options.footer_calltoaction_tekst) }}
 					<br>
 					{{ button(options.footer_calltoaction_link, 'outline-light') }}
@@ -20,8 +20,8 @@
 			<div class="row mb-5">
 				<div class="col-6 col-md-3 offset-md-2 offset-lg-3 mb-4 mb-md-0">
 					{{ heading(options.footer_navigatie_menu_titel, {
-                                                level: 'h5'
-                                        }) }}
+                        level: 'h5'
+                    }) }}
 					<nav aria-label="Footer navigation">
 						{% include "partials/menu-clean.twig" with {'items': footermenu.get_items} %}
 					</nav>
@@ -30,52 +30,56 @@
 					{{ heading(options.footer_navigatie_socialmedia_titel, {
 						level: 'h5'
 					}) }}
-
-					{{ icon({ 
-						icon: 'facebook', 
-						style: 'brands', 
-						class: 'socal-media-link',
-						container_height: 22, 
-						container_width: 22,
-						title: 'Facebook',
-						url: options.facebook,
-						position: 'right'
-					}) }}
-					
-					{{ icon({ 
-						icon: 'instagram', 
-						style: 'brands', 
-						class: 'd-block socal-media-link',
-						container_height: 22, 
-						container_width: 22,
-						title: 'Instagram',
-						url: options.facebook,
-						position: 'right'
-					}) }}
-					
-					{{ icon({ 
-						icon: 'linkedin', 
-						style: 'brands', 
-						class: 'socal-media-link',
-						container_height: 22, 
-						container_width: 22,
-						title: 'Linkedin',
-						url: options.facebook,
-						position: 'right'
-					}) }}
-					
-					{{ icon({ 
-						icon: 'x-twitter', 
-						style: 'brands', 
-						class: 'socal-media-link',
-						container_height: 22, 
-						container_width: 22,
-						title: 'X',
-						url: options.facebook,
-						position: 'right'
-					}) }}
-					</a>
-					
+					<ul class="list-unstyled">
+						<li>
+							{{ icon({ 
+								icon: 'facebook', 
+								style: 'brands', 
+								class: 'socal-media-link',
+								container_height: 22, 
+								container_width: 22,
+								title: 'Facebook',
+								url: options.facebook,
+								position: 'right'
+							}) }}
+						</li>
+						<li>
+							{{ icon({ 
+								icon: 'instagram', 
+								style: 'brands', 
+								class: 'socal-media-link',
+								container_height: 22, 
+								container_width: 22,
+								title: 'Instagram',
+								url: options.facebook,
+								position: 'right'
+							}) }}
+						</li>
+						<li>
+							{{ icon({ 
+								icon: 'linkedin', 
+								style: 'brands', 
+								class: 'socal-media-link',
+								container_height: 22, 
+								container_width: 22,
+								title: 'Linkedin',
+								url: options.facebook,
+								position: 'right'
+							}) }}
+						</li>
+						<li>
+							{{ icon({ 
+								icon: 'x-twitter', 
+								style: 'brands', 
+								class: 'socal-media-link',
+								container_height: 22, 
+								container_width: 22,
+								title: 'X',
+								url: options.facebook,
+								position: 'right'
+							}) }}
+						</li>
+					</ul>
 				</div>
 
 				<div class="col-md-4 order-md-first text-center text-md-start">

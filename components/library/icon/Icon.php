@@ -28,11 +28,6 @@ class Components_Icon extends Site {
             'container_width' => 20,
             'title' => '',
             'url' => '',
-<<<<<<< HEAD
-            'position' => 'right',
-            'gap' => 10,
-            'target' => 'self'
-=======
             'title_position' => 'right',
             'title_level' => 'span',
             'title_class' => '',
@@ -41,7 +36,6 @@ class Components_Icon extends Site {
             'target' => 'self',
             'color_primary' => '',
             'color_secondary' => ''
->>>>>>> add-link-support-to-icon-component-nthuuj
         ];
 
         $settings = array_merge($defaults, $args);
@@ -103,14 +97,10 @@ class Components_Icon extends Site {
         $title = sanitize_text_field($settings['title']);
         $url = esc_url($settings['url']);
         $allowed_positions = ['left', 'right', 'top', 'bottom'];
-<<<<<<< HEAD
-        $position = in_array($settings['position'], $allowed_positions, true) ? $settings['position'] : 'right';
-=======
         $title_position = in_array($settings['title_position'], $allowed_positions, true) ? $settings['title_position'] : 'right';
         $allowed_levels = ['span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
         $title_level = in_array($settings['title_level'], $allowed_levels, true) ? $settings['title_level'] : 'span';
         $title_class = sanitize_text_field($settings['title_class']);
->>>>>>> add-link-support-to-icon-component-nthuuj
 
         $context = [
             'svg' => $svg,
@@ -119,13 +109,9 @@ class Components_Icon extends Site {
             'container_height' => $container_height,
             'title' => $title,
             'url' => $url,
-<<<<<<< HEAD
-            'position' => $position,
-=======
             'title_position' => $title_position,
             'title_level' => $title_level,
             'title_class' => $title_class,
->>>>>>> add-link-support-to-icon-component-nthuuj
             'gap' => $gap,
             'target' => $target
         ];

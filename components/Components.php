@@ -7,7 +7,6 @@ require_once __DIR__ . '/library/filter/FilterAjax.php';
 require_once __DIR__ . '/library/heading/Heading.php';
 require_once __DIR__ . '/library/image/Image.php';
 require_once __DIR__ . '/library/icon/Icon.php';
-require_once __DIR__ . '/library/socialmedialinks/SocialMediaLinks.php';
 require_once __DIR__ . '/library/swiper/Swiper.php';
 require_once __DIR__ . '/library/text/Text.php';
 
@@ -17,7 +16,6 @@ new Components_Filter();
 new Components_Heading();
 new Components_Image();
 new Components_Icon();
-new Components_SocialMediaLinks();
 new Components_Swiper();
 new Components_Text();
 
