@@ -2,13 +2,16 @@
 Icon Component
 
 Usage:
-{{ icon({ 
-    icon: 'arrow-down', 
-    style: 'light', 
-    library: 'fontawesome', 
+{{ icon({
+    icon: 'arrow-down',
+    style: 'light',
+    library: 'fontawesome',
     class: 'arrow',
-    container_height: 20, 
-    container_width: 20 
+    container_height: 20,
+    container_width: 20,
+    title: 'More',
+    url: 'https://example.com',
+    position: 'right'
 }) }}
 
 Parameters:
@@ -18,8 +21,19 @@ Parameters:
 - container_height (int|string, optional): Hoogte van de container. Standaard 30.
 - container_width (int|string, optional): Breedte van de container. Standaard gelijk aan de hoogte.
 - class (string, optional): Extra CSS-klassen voor de container.
+- title (string, optional): Tekst bij het icoon.
+- url (string, optional): Link om het icoon heen. Leeg laat alleen het icoon zien.
+- position (string, optional): Positie van de tekst: 'left', 'right', 'top' of 'bottom'. Standaard 'right'.
 #}
-
-<span class="{{ class }}"{% if container_width != 'auto' or container_height != 'auto' %} style="{% if container_width != 'auto' %}width: {{ container_width }};{% endif %}{% if container_height != 'auto' %} height: {{ container_height }};{% endif %}"{% endif %}>
-    {{ svg|raw }}
-</span>
+{% set tag = url ? 'a' : 'span' %}
+<{{ tag }} class="icon icon--{{ position }} {{ class }}"{% if url %} href="{{ url }}"{% endif %}>
+    {% if position in ['left','top'] and title %}
+        <span class="icon__text">{{ title }}</span>
+    {% endif %}
+    <span class="icon__figure"{% if container_width != 'auto' or container_height != 'auto' %} style="{% if container_width != 'auto' %}width: {{ container_width }};{% endif %}{% if container_height != 'auto' %} height: {{ container_height }};{% endif %}"{% endif %}>
+        {{ svg|raw }}
+    </span>
+    {% if position in ['right','bottom'] and title %}
+        <span class="icon__text">{{ title }}</span>
+    {% endif %}
+</{{ tag }}>

@@ -25,7 +25,10 @@ class Components_Icon extends Site {
             'library' => 'fontawesome',
             'class' => '',
             'container_height' => 20,
-            'container_width' => 20
+            'container_width' => 20,
+            'title' => '',
+            'url' => '',
+            'position' => 'right'
         ];
 
         $settings = array_merge($defaults, $args);
@@ -62,11 +65,19 @@ class Components_Icon extends Site {
             $container_width .= 'px';
         }
 
+        $title = sanitize_text_field($settings['title']);
+        $url = esc_url($settings['url']);
+        $allowed_positions = ['left', 'right', 'top', 'bottom'];
+        $position = in_array($settings['position'], $allowed_positions, true) ? $settings['position'] : 'right';
+
         $context = [
             'svg' => $svg,
-            'class' => trim('icon ' . $settings['class']),
+            'class' => trim($settings['class']),
             'container_width' => $container_width,
-            'container_height' => $container_height
+            'container_height' => $container_height,
+            'title' => $title,
+            'url' => $url,
+            'position' => $position
         ];
 
         return Timber::compile('icon/icon.twig', $context);
