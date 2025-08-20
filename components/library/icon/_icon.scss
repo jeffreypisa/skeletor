@@ -16,19 +16,19 @@
 }
 
 .icon--left {
-    flex-direction: row;
-}
-
-.icon--right {
     flex-direction: row-reverse;
 }
 
+.icon--right {
+    flex-direction: row;
+}
+
 .icon--top {
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 
 .icon--bottom {
-    flex-direction: column-reverse;
+    flex-direction: column;
 }
 
 .icon svg {

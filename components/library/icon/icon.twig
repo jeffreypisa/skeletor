@@ -44,12 +44,12 @@ Parameters:
 {% set tag = url ? 'a' : 'span' %}
 {% set text_tag = title_level %}
 <{{ tag }} class="icon icon--{{ title_position }} {{ class }}" style="gap: {{ gap }};"{% if url %} href="{{ url }}" target="{{ target }}"{% endif %}>
-    {% if title_position in ['left','top'] and title %}
-        <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
-    {% endif %}
     <span class="icon__wrapper{{ icon_wrapper_class ? ' ' ~ icon_wrapper_class : '' }}"{% if icon_wrapper_width != 'auto' or icon_wrapper_height != 'auto' %} style="{% if icon_wrapper_width != 'auto' %}width: {{ icon_wrapper_width }};{% endif %}{% if icon_wrapper_height != 'auto' %} height: {{ icon_wrapper_height }};{% endif %}"{% endif %}>
         {{ svg|raw }}
     </span>
+    {% if title_position in ['left','top'] and title %}
+        <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
+    {% endif %}
     {% if title_position in ['right','bottom'] and title %}
         <{{ text_tag }} class="icon__text {{ title_class }}">{{ title }}</{{ text_tag }}>
     {% endif %}
