@@ -66,6 +66,13 @@ $context['filters']['published'] = [
   'type'   => 'date_range',
   'source' => 'post_date',
 ];
+
+$context['filters']['author'] = [
+  'name'   => 'author',
+  'label'  => 'Auteur',
+  'type'   => 'checkbox',
+  'source' => 'author',
+];
   
 /**
  * 🔎 Query bouwen
