@@ -61,15 +61,17 @@ Definieer filters in PHP en render ze in Twig:
 - `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
 - Voor type `buttons` zijn extra opties beschikbaar: `button_class`, `all_label`, `show_all_button`.
 
-Voor een datumfilter kan gefilterd worden op publicatiedatum (`source: 'post_date'`) of op een ACF-datumveld (`source: 'acf'`).
+Mogelijke waardes voor `source` zijn `field`, `meta`, `taxonomy`, `post_date`, `post_type`, `user` en `author`.
+
+Voor een datumfilter kan gefilterd worden op publicatiedatum (`source: 'post_date'`) of op een veld (`source: 'field'`).
 
 ```php
-// Enkel datumveld (ACF)
+// Enkel datumveld (field)
 $context['filters']['event_date'] = [
   'name'   => 'event_date',
   'label'  => 'Datum',
   'type'   => 'date',
-  'source' => 'acf',
+  'source' => 'field',
 ];
 
 // Van/tot op publicatiedatum
