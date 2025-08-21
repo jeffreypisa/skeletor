@@ -6,7 +6,7 @@ Gebruik:
 #}
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb m-0">
         {% for crumb in crumbs %}
             <li class="breadcrumb-item {{ loop.last ? 'active' : '' }}"{% if loop.last %} aria-current="page"{% endif %}>
                 {% if crumb.url and not loop.last %}
