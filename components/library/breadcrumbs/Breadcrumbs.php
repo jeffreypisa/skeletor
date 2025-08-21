@@ -43,11 +43,12 @@ class Components_Breadcrumbs extends Site {
 
         if (is_search()) {
             $crumbs[] = [
-                'title' => sprintf(__('Search results for %s'), get_search_query()),
+                'title' => __('Zoeken'),
             ];
         } elseif (is_archive()) {
+            $title = preg_replace('/^[^:]+:\s*/', '', get_the_archive_title());
             $crumbs[] = [
-                'title' => get_the_archive_title(),
+                'title' => $title,
             ];
         } elseif (is_singular()) {
             $post = get_post();
