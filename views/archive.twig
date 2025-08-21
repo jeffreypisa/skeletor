@@ -6,11 +6,20 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-               <form data-filter-form data-post-type="{{ post_type }}">
-                       <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
+        <form data-filter-form data-post-type="{{ post_type }}">
+            <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
-					<a href="{{ site.link }}">Home </a> / {{ post_type|capitalize }}
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item">
+								<a href="{{ site.link }}">Home </a>
+							</li>
+							<li class="breadcrumb-item active" aria-current="page">
+								{{ post_type|capitalize }}
+							</li>
+						</ol>
+					</nav>
 				</div>
 				<div class="col-md-8 d-flex align-items-center">
 					<div class="w-100">

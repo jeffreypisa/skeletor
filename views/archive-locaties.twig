@@ -11,7 +11,16 @@
 			<input type="hidden" name="col_class" value="{{ col_class }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
-					<a href="{{ site.link }}">Home </a> <span> / </span> {{ post_type|capitalize }}
+					<nav aria-label="breadcrumb">
+					  <ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ site.link }}">Home </a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							{{ post_type|capitalize }}
+						</li>
+					  </ol>
+					</nav>
 				</div>
 				<div class="col-md-8 d-flex align-items-center">
 					<div class="w-100">
