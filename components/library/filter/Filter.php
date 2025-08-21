@@ -11,7 +11,7 @@
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
  *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'buttons', 'range', 'date', 'date_range'
- *   'source'     => 'acf',                    // 'acf', 'meta', 'taxonomy', 'post_date' of 'post_type'
+ *   'source'     => 'field',                  // 'field', 'meta', 'taxonomy', 'post_date', 'post_type', 'user', 'author'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *   'date_format'=> 'd-m-Y',                 // formaat voor datumvelden (optioneel)
@@ -21,12 +21,12 @@
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
  * ];
  *
- * // Datumfilter (publicatiedatum of ACF-datumveld)
+ * // Datumfilter (publicatiedatum of veld)
  * $context['filters']['datum'] = [
- *   'name'   => 'event_date',           // ACF-veldnaam of 'post_date'
+ *   'name'   => 'event_date',           // veldnaam of 'post_date'
  *   'label'  => 'Datum',
  *   'type'   => 'date_range',           // 'date' voor enkel veld
-*   'source' => 'acf',                 // or 'meta' or 'post_date'
+ *   'source' => 'field',               // or 'meta' or 'post_date'
  *   // Waarden worden automatisch uit $_GET['event_date'] of
  *   // $_GET['from_event_date']/$_GET['to_event_date'] gelezen.
  *   // Wanneer geen waardes worden meegegeven vult het component
@@ -67,9 +67,9 @@ parent::__construct();
 	
                 $name   = $data['name'] ?? $data['taxonomy'] ?? $data['acf_field'] ?? null;
                 $type   = $data['type'] ?? 'select';
-                $source = $data['source'] ?? 'acf';
+                $source = $data['source'] ?? 'field';
 
-                if (!$name || !in_array($source, ['acf', 'meta', 'taxonomy', 'post_date', 'post_type'])) {
+                if (!$name || !in_array($source, ['field', 'meta', 'taxonomy', 'post_date', 'post_type', 'user', 'author'])) {
                         return "<pre>❌ Ongeldige filterconfiguratie\n" . print_r($data, true) . "</pre>";
                 }
 
@@ -130,7 +130,7 @@ parent::__construct();
 	
 		// 🧾 Opties ophalen indien leeg
                 if (!isset($data['options']) || empty($data['options'])) {
-                        if ($source === 'acf' || $source === 'meta') {
+                        if ($source === 'field' || $source === 'meta') {
                                 $data['options'] = self::get_options_from_meta($name);
                         } elseif ($source === 'taxonomy') {
                                 $data['options'] = self::get_options_from_taxonomy(
@@ -140,6 +140,10 @@ parent::__construct();
                                 );
                         } elseif ($source === 'post_type') {
                                 $data['options'] = self::get_post_type_options($data['post_types'] ?? []);
+                        } elseif ($source === 'user') {
+                                $data['options'] = self::get_user_options();
+                        } elseif ($source === 'author') {
+                                $data['options'] = self::get_author_options($data['post_types'] ?? null);
                         }
                 }
 	
@@ -335,11 +339,11 @@ parent::__construct();
         * Bepaalt automatisch de oudste en nieuwste datum voor een veld of publicatiedatum.
         *
         * @param string $field      Meta key or special value 'post_date'.
-        * @param string $source     'acf', 'meta' or 'post_date'.
+        * @param string $source     'field', 'meta' or 'post_date'.
         * @param string $post_type  Optioneel post type (default huidige query).
         * @return array ['min' => 'd-m-Y', 'max' => 'd-m-Y']
         */
-       public static function get_auto_date_bounds($field, $source = 'acf', $post_type = null) {
+       public static function get_auto_date_bounds($field, $source = 'field', $post_type = null) {
                global $wpdb;
 
 	if (!$post_type) {
@@ -387,11 +391,12 @@ if ($source === 'post_date') {
                 $tax_query  = [];
                 $date_query = [];
                 $post_type  = null;
+                $authors    = [];
 
-		foreach ($filters as $key => $filter) {
-			$value  = $filter['value'] ?? null;
-			$type   = $filter['type'] ?? null;
-			$source = $filter['source'] ?? 'acf';
+                foreach ($filters as $key => $filter) {
+                        $value  = $filter['value'] ?? null;
+                        $type   = $filter['type'] ?? null;
+                        $source = $filter['source'] ?? 'field';
                         $name   = $filter['name'] ?? $key;
 
                         // 🟡 Post Type
@@ -505,8 +510,14 @@ if ($source === 'post_date') {
                                 }
                         }
 
-                        // 🟡 ACF (meta)
-                        elseif (($source === 'acf' || $source === 'meta') && !empty($value)) {
+                        // 🟡 Authors / Users
+                        elseif (($source === 'author' || $source === 'user') && !empty($value)) {
+                                $ids = is_array($value) ? array_map('intval', $value) : [intval($value)];
+                                $authors = array_merge($authors, $ids);
+                        }
+
+                        // 🟡 Meta veld
+                        elseif (($source === 'field' || $source === 'meta') && !empty($value)) {
                                 $meta_query[] = [
                                         'key'     => $name,
                                         'value'   => is_array($value) ? $value : [$value],
@@ -520,6 +531,7 @@ if ($source === 'post_date') {
                 if (!empty($meta_query)) $args['meta_query'] = $meta_query;
                 if (!empty($tax_query))  $args['tax_query']  = $tax_query;
                 if (!empty($date_query)) $args['date_query'] = $date_query;
+                if (!empty($authors))    $args['author__in'] = array_unique($authors);
 
 return $args;
 }
@@ -544,6 +556,48 @@ return $args;
                 ksort($options);
                 return $options;
         }
+
+        /**
+         * Geeft een lijst van WordPress-gebruikers terug als [label => value].
+         *
+         * @param array $args Optionele argumenten voor get_users.
+         * @return array
+         */
+        public static function get_user_options($args = []) {
+                $users = get_users($args);
+                $options = [];
+                foreach ($users as $user) {
+                        $options[$user->display_name] = (string) $user->ID;
+                }
+                ksort($options);
+                return $options;
+        }
+
+        /**
+         * Geeft een lijst van auteurs terug op basis van posts in opgegeven post types.
+         *
+         * @param string|array|null $post_types Post type(s) om op te zoeken.
+         * @return array
+         */
+        public static function get_author_options($post_types = null) {
+                global $wpdb;
+                if (!$post_types) {
+                        $post_types = get_post_type() ?: get_query_var('post_type') ?: 'post';
+                }
+                $post_types = (array) $post_types;
+                $placeholders = implode(',', array_fill(0, count($post_types), '%s'));
+                $sql = "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ($placeholders)";
+                $author_ids = $wpdb->get_col($wpdb->prepare($sql, ...$post_types));
+                $options = [];
+                foreach ($author_ids as $uid) {
+                        $user = get_user_by('ID', $uid);
+                        if ($user) {
+                                $options[$user->display_name] = (string) $uid;
+                        }
+                }
+                ksort($options);
+                return $options;
+        }
 	
 	/**
 	 * Berekent per optie hoeveel posts eraan voldoen met de huidige filters actief (behalve zichzelf).
@@ -559,7 +613,7 @@ return $args;
                $counts  = [];
                $options = $filter['options'];
                $type    = $filter['type'] ?? 'select';
-               $source  = $filter['source'] ?? 'acf';
+               $source  = $filter['source'] ?? 'field';
                $name    = $filter['name'] ?? $filter_key;
 
                // Verwijder dit filter zelf tijdelijk uit de actieve filters

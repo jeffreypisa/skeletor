@@ -70,7 +70,7 @@ class Components_FilterAjax {
                // ✏️ Vul de huidige waardes in en sla standaardwaarden over
                foreach ($filter_definitions as $fname => &$def) {
                        $type   = $def['type'] ?? 'select';
-                       $source = $def['source'] ?? 'acf';
+                       $source = $def['source'] ?? 'field';
                        $name   = $def['name'] ?? $fname;
 
                        if ($type === 'range') {
@@ -235,7 +235,7 @@ class Components_FilterAjax {
 
                foreach ($filter_defs_for_counts as $fname => &$def) {
                        $ftype = $def['type'] ?? 'select';
-                       $fsrc  = $def['source'] ?? 'meta';
+                       $fsrc  = $def['source'] ?? 'field';
                        $key   = $def['name'] ?? $fname;
 
                        if ($fsrc === 'post_type') {
@@ -264,10 +264,14 @@ class Components_FilterAjax {
                        }
 
                        if (empty($def['options'])) {
-                               if ($fsrc === 'acf' || $fsrc === 'meta') {
+                               if ($fsrc === 'field' || $fsrc === 'meta') {
                                        $def['options'] = Components_Filter::get_options_from_meta($key);
                                } elseif ($fsrc === 'taxonomy') {
                                        $def['options'] = Components_Filter::get_options_from_taxonomy($key);
+                               } elseif ($fsrc === 'user') {
+                                       $def['options'] = Components_Filter::get_user_options();
+                               } elseif ($fsrc === 'author') {
+                                       $def['options'] = Components_Filter::get_author_options($query_post_type);
                                }
                        }
                }

@@ -33,7 +33,7 @@ $context['col_class'] = 'col-12 mb-4';
  *   'name'       => 'uren',                   // input name, ook gebruikt in GET
  *   'label'      => 'Uren',                   // veldlabel
  *   'type'       => 'checkbox',               // 'select', 'checkbox', 'radio', 'range'
- *   'source'     => 'acf',                    // 'acf' of 'taxonomy'
+ *   'source'     => 'field',                  // 'field' of 'taxonomy'
  *   'value'      => $_GET['uren'] ?? null,    // huidige waarde (optioneel)
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *
@@ -56,7 +56,7 @@ $context['filters']['rating'] = [
   'name'   => 'rating',
   'label'  => 'Rating',
   'type'   => 'range',
-  'source' => 'acf'
+  'source' => 'field'
 ];
 
 // 🧩 Filter: publicatiedatum (van–tot)
@@ -65,6 +65,13 @@ $context['filters']['published'] = [
   'label'  => 'Periode',
   'type'   => 'date_range',
   'source' => 'post_date',
+];
+
+$context['filters']['author'] = [
+  'name'   => 'author',
+  'label'  => 'Auteur',
+  'type'   => 'checkbox',
+  'source' => 'author',
 ];
   
 /**
