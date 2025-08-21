@@ -6,11 +6,11 @@
 				{{ site.description }}
 			</div>
 			{% if servicemenu %}
-			<div class="col-auto d-flex align-items-center">
-				<nav aria-label="Service navigation">
-					{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
-				</nav>
-			</div>
+				<div class="col-auto d-flex align-items-center">
+					<nav aria-label="Service navigation">
+						{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
+					</nav>
+				</div>
 			{% endif %}
 		</div>
 	</div>
@@ -27,30 +27,30 @@
 				</a>
 			</div>
 			{% if headermenu %}
-			<div class="col-auto d-none d-lg-flex align-items-center">
-				<nav class="primary-navigation" aria-label="Primary navigation">
-					{% include "partials/menu-dropdown.twig" with {'items': headermenu.get_items} %}
-				</nav>
-			</div>
+				<div class="col-auto d-none d-lg-flex align-items-center">
+					<nav class="primary-navigation" aria-label="Primary navigation">
+						{% include "partials/menu-dropdown.twig" with {'items': headermenu.get_items} %}
+					</nav>
+				</div>
 			{% endif %}
 		</div>
 	</div>
 </header>
 
 {% if headermenu %}
-<!-- Hamburger menu button -->
-<button id="mobilemenubtn" class="d-lg-none" aria-label="Toggle navigation" aria-controls="mobilemenu" aria-expanded="false">
-	<span class="lines" aria-hidden="true">
-		<span></span>
-		<span></span>
-		<span></span>
-	</span>
-</button>
-
-<!-- Mobile menu -->
-<nav class="mobilemenu" id="mobilemenu" aria-label="Mobile navigation">
-	<ul class="menu-items">
-		{% include "partials/menu.twig" with {'items': mobielmenu.get_items} %}
-	</ul>
-</nav>
+	<!-- Hamburger menu button -->
+	<button id="mobilemenubtn" class="d-lg-none" aria-label="Toggle navigation" aria-controls="mobilemenu" aria-expanded="false">
+		<span class="lines" aria-hidden="true">
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+	</button>
+	
+	<!-- Mobile menu -->
+	<nav class="mobilemenu d-lg-none" id="mobilemenu" aria-label="Mobile navigation">
+		<ul class="menu-items">
+			{% include "partials/menu.twig" with {'items': mobielmenu.get_items} %}
+		</ul>
+	</nav>
 {% endif %}

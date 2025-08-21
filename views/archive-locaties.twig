@@ -6,9 +6,9 @@
 {% block content %}
 <section class="bg-greylight">
 	<div class="container">
-               <form data-filter-form data-post-type="{{ post_type }}">
-                       <input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
-                       <input type="hidden" name="col_class" value="{{ col_class }}">
+        <form data-filter-form data-post-type="{{ post_type }}">
+			<input type="hidden" name="posts_per_page" value="{{ posts_per_page }}">
+			<input type="hidden" name="col_class" value="{{ col_class }}">
 			<div class="row mb-5">
 				<div class="col-md-4 d-flex align-items-center">
 					<a href="{{ site.link }}">Home </a> <span> / </span> {{ post_type|capitalize }}
@@ -39,40 +39,47 @@
 			</div>
 			<div class="row">
                 <div class="col-md-4">
-                        <button class="btn btn-outline-dark w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
-                                <i class="fa-solid fa-filter me-2"></i> Filter resultaten
-                        </button>
+                    <button class="btn btn-outline-dark w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
+                        {{ icon({ 
+							icon: 'filter', 
+							style: 'solid', 
+							library: 'fontawesome', 
+							container_height: 20, 
+							container_width: 20,
+						}) }} 
+						<span style="padding-left: 6px">Filter resultaten</span>
+                    </button>
 
-                        <div class="collapse d-md-block" id="filtersCollapse">
-                                <div class="row mb-4">
-                                        <div class="col">
-                                                <h4 class="m-0"> {{ title }} </h4>
-                                        </div>
-                                        <div class="col-auto">
-                                                <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
-                                                        Reset filters
-                                                </button>
-                                        </div>
-                                </div>
-
-                                <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
-
-                                {{ filter(filters.published) }}
-
-                                {{ filter(filters.rating) }}
-
-                                {{ filter(filters.provincies, {
-                                        limit_options: 3,
-                                        option_list_expand_label: 'Meer opties',
-                                        option_list_collapse_label: 'Minder opties',
-                                        layout: 'vertical',
-                                        show_field_label: true,
-                                        label: 'Alle uren',
-                                        show_option_counts: true
-                                }) }}
-								
-								{{ filter(filters.author) }}
+                    <div class="collapse d-md-block" id="filtersCollapse">
+                        <div class="row mb-4">
+                            <div class="col">
+                                <h4 class="m-0"> {{ title }} </h4>
+                            </div>
+                            <div class="col-auto">
+                                <button type="reset" class="btn btn-sm btn-outline-dark" data-filter-reset>
+                                    Reset filters
+                                </button>
+                            </div>
                         </div>
+
+                        <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+
+                        {{ filter(filters.published) }}
+
+                        {{ filter(filters.rating) }}
+
+                        {{ filter(filters.provincies, {
+                            limit_options: 3,
+                            option_list_expand_label: 'Meer opties',
+                            option_list_collapse_label: 'Minder opties',
+                            layout: 'vertical',
+                            show_field_label: true,
+                            label: 'Alle uren',
+                            show_option_counts: true
+                        }) }}
+						
+						{{ filter(filters.author) }}
+                    </div>
                 </div>
 				<div class="col-md-8">
 					<div class="position-relative">
@@ -81,17 +88,15 @@
 						</div>
 
 						<div id="filter-results">
-
 							{% include 'partials/list.twig' %}
-
 						</div>
 
 						{% if current_page < max_num_pages %}
-						<div class="text-center mt-4">
-							<button type="button" class="btn btn-outline-dark" data-load-more>
-								Laad meer
-							</button>
-						</div>
+							<div class="text-center mt-4">
+								<button type="button" class="btn btn-outline-dark" data-load-more>
+									Laad meer
+								</button>
+							</div>
 						{% endif %}
 					</div>
 				</div>
