@@ -147,8 +147,9 @@ parent::__construct();
                         }
                 }
 	
-               // 🧮 Tellingen ophalen als gewenst
-               if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
+               // 🧮 Tellingen ophalen wanneer nodig
+               $needs_counts = (($args['show_option_counts'] ?? false) || ($data['hide_empty_options'] ?? false)) && isset($data['name']);
+               if ($needs_counts) {
                        $ctx_filters = Timber::context()['filters'] ?? [];
 
                        foreach ($ctx_filters as $key => &$filter) {
@@ -185,7 +186,23 @@ parent::__construct();
                                $global_args['s'] = sanitize_text_field($_GET['s']);
                        }
 
-                       $args['option_counts'] = self::get_option_counts($ctx_filters, $data['name'], $global_args);
+                       $option_counts = self::get_option_counts($ctx_filters, $data['name'], $global_args);
+
+                       if ($data['hide_empty_options'] ?? false) {
+                               $data['options'] = array_filter(
+                                       $data['options'],
+                                       function ($val) use ($option_counts) {
+                                               return ($option_counts[$val] ?? 0) > 0;
+                                       }
+                               );
+                       }
+
+                       if ($args['show_option_counts'] ?? false) {
+                               $args['option_counts'] = array_intersect_key(
+                                       $option_counts,
+                                       array_flip($data['options'])
+                               );
+                       }
                }
 	
 		return Timber::compile('filter.twig', array_merge($data, $args));
