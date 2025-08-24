@@ -329,7 +329,7 @@ return data;
                                                 counts = {};
                                         }
                                         if (Object.keys(counts).length) {
-                                                filterForm.querySelectorAll('[data-option-count]').forEach(target => {
+                                                document.querySelectorAll('[data-option-count]').forEach(target => {
                                                         const [filterName, val] = target.dataset.optionCount.split(':');
                                                         const count = counts?.[filterName]?.[val];
                                                         if (typeof count !== 'undefined') {
