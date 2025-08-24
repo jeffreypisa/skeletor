@@ -329,10 +329,12 @@ return data;
                                                 counts = {};
                                         }
                                         if (Object.keys(counts).length) {
-                                                document.querySelectorAll('[data-option-count]').forEach(target => {
+                                                filterForm.querySelectorAll('[data-option-count]').forEach(target => {
                                                         const [filterName, val] = target.dataset.optionCount.split(':');
-                                                        const count = counts?.[filterName]?.[val] ?? 0;
-                                                        target.textContent = count;
+                                                        const count = counts?.[filterName]?.[val];
+                                                        if (typeof count !== 'undefined') {
+                                                                target.textContent = count;
+                                                        }
                                                 });
                                         }
                                 }
