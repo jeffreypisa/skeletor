@@ -74,9 +74,19 @@
                             option_list_collapse_label: 'Minder opties',
                             layout: 'vertical',
                             show_field_label: true,
-                            label: 'Alle uren',
+                            label: 'Alle locaties',
                             show_option_counts: true
                         }) }}
+						
+						{{ filter(filters.genres, {
+							limit_options: 3,
+							option_list_expand_label: 'Meer opties',
+							option_list_collapse_label: 'Minder opties',
+							layout: 'vertical',
+							show_field_label: true,
+							label: 'Alle genres',
+							show_option_counts: true
+						}) }}
 						
 						{{ filter(filters.author) }}
                     </div>

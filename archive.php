@@ -44,6 +44,14 @@ $context['col_class'] = 'col-12 mb-4';
  */
  
 // 🧩 Filter: 'provincies'
+
+$context['filters']['rating'] = [
+  'name'   => 'rating',
+  'label'  => 'Rating',
+  'type'   => 'range',
+  'source' => 'field'
+];
+
 $context['filters']['provincies'] = [
   'name'   => 'provincies',
   'label'  => 'Provincies',
@@ -52,11 +60,12 @@ $context['filters']['provincies'] = [
   'hide_empty_options' => true
 ];
 
-$context['filters']['rating'] = [
-  'name'   => 'rating',
-  'label'  => 'Rating',
-  'type'   => 'range',
-  'source' => 'field'
+$context['filters']['genres'] = [
+  'name'   => 'genre',
+  'label'  => 'Genres',
+  'type'   => 'checkbox',
+  'source' => 'taxonomy',
+  'hide_empty_options' => true
 ];
 
 // 🧩 Filter: publicatiedatum (van–tot)
