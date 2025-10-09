@@ -28,6 +28,18 @@ if (is_shop()) {
     $context['title'] = post_type_archive_title('', false);
 }
 
+$context['filters']['s'] = Components_Filter::create_search_filter(
+    $_GET['s'] ?? '',
+    [
+        'include' => [
+            'title'   => true,
+            'content' => true,
+        ],
+        'meta_keys' => ['_sku'],
+    ]
+);
+$context['search_query'] = $context['filters']['s']['value'];
+
 // 🧩 Filters voor WooCommerce producten
 $context['filters']['price'] = [
     'name'   => '_price',
