@@ -42,7 +42,18 @@ $context['col_class'] = 'col-12 mb-4';
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
  * ];
  */
- 
+
+$context['filters']['s'] = Components_Filter::create_search_filter(
+        $_GET['s'] ?? '',
+        [
+                'include' => [
+                        'title'   => true,
+                        'content' => true,
+                        'excerpt' => true,
+                ],
+        ]
+);
+
 // 🧩 Filter: 'provincies'
 
 $context['filters']['rating'] = [

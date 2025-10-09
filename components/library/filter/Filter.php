@@ -45,11 +45,33 @@ add_action('save_post', ['Components_Filter', 'clear_cache']);
 parent::__construct();
 }
 
-	public function add_to_twig($twig) {
-		$twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
-		$twig->addFunction(new TwigFunction('sort_select', [$this, 'render_sort_select'], ['is_safe' => ['html']]));
-		return $twig;
-	}
+       /**
+        * Maakt een configuratie-array voor het zoekveld van het filtercomponent.
+        *
+        * @param string $value    De huidige zoekterm.
+        * @param array  $settings Instellingen voor de zoekvelden.
+        *
+        * @return array
+        */
+       public static function create_search_filter($value = '', array $settings = []) {
+               if (!is_string($value)) {
+                       $value = '';
+               }
+
+               return [
+                       'name'            => 's',
+                       'type'            => 'search',
+                       'source'          => 'search',
+                       'value'           => sanitize_text_field(wp_unslash($value)),
+                       'search_settings' => self::normalize_search_settings($settings),
+               ];
+       }
+
+        public function add_to_twig($twig) {
+                $twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
+                $twig->addFunction(new TwigFunction('sort_select', [$this, 'render_sort_select'], ['is_safe' => ['html']]));
+                return $twig;
+        }
 
        public function render_filter($data, $args = []) {
                if (!is_array($data)) {
@@ -335,6 +357,106 @@ parent::__construct();
                ] : [];
        }
 
+       private static function normalize_search_settings($settings) {
+               if (!is_array($settings)) {
+                       $settings = [];
+               }
+
+               $default_columns = [];
+
+               if (isset($settings['columns'])) {
+                       $default_columns = is_array($settings['columns'])
+                               ? $settings['columns']
+                               : [$settings['columns']];
+               }
+
+               $toggle_columns = [];
+               if (isset($settings['include']) && is_array($settings['include'])) {
+                       foreach ($settings['include'] as $key => $enabled) {
+                               if ($enabled) {
+                                       $toggle_columns[] = $key;
+                               }
+                       }
+               }
+
+               foreach (['title', 'content', 'excerpt', 'slug'] as $column_key) {
+                       $flag = 'include_' . $column_key;
+                       if (array_key_exists($flag, $settings)) {
+                               if ($settings[$flag]) {
+                                       $toggle_columns[] = $column_key;
+                               }
+                       }
+               }
+
+               $columns = array_merge($default_columns, $toggle_columns);
+               if (empty($columns)) {
+                       $columns = ['title', 'content'];
+               }
+
+               $column_map = [
+                       'title'       => 'post_title',
+                       'post_title'  => 'post_title',
+                       'content'     => 'post_content',
+                       'post_content'=> 'post_content',
+                       'excerpt'     => 'post_excerpt',
+                       'post_excerpt'=> 'post_excerpt',
+                       'slug'        => 'post_name',
+                       'post_name'   => 'post_name',
+               ];
+
+               $normalized_columns = [];
+               foreach ($columns as $column) {
+                       $key = strtolower((string) $column);
+                       if (isset($column_map[$key])) {
+                               $normalized_columns[] = $column_map[$key];
+                       }
+               }
+               $normalized_columns = array_values(array_unique($normalized_columns));
+
+               $meta_keys_input = [];
+               foreach (['meta_keys', 'acf_fields', 'fields'] as $meta_key_option) {
+                       if (!empty($settings[$meta_key_option])) {
+                               $meta_keys_input = $settings[$meta_key_option];
+                               break;
+                       }
+               }
+
+               if (!is_array($meta_keys_input)) {
+                       $meta_keys_input = $meta_keys_input ? [$meta_keys_input] : [];
+               }
+
+               $meta_keys = [];
+               foreach ($meta_keys_input as $meta_key) {
+                       if (!is_string($meta_key)) {
+                               continue;
+                       }
+                       $meta_key = wp_unslash($meta_key);
+                       $meta_key = preg_replace('/[^A-Za-z0-9_:\-]/', '', $meta_key);
+                       if ($meta_key !== '') {
+                               $meta_keys[] = $meta_key;
+                       }
+               }
+               $meta_keys = array_values(array_unique($meta_keys));
+
+               $allowed_compares = ['LIKE', 'NOT LIKE', '=', '!=', '>', '>=', '<', '<='];
+               $meta_compare = strtoupper($settings['meta_compare'] ?? 'LIKE');
+               if (!in_array($meta_compare, $allowed_compares, true)) {
+                       $meta_compare = 'LIKE';
+               }
+
+               $meta_relation = strtoupper($settings['meta_relation'] ?? 'OR');
+               if (!in_array($meta_relation, ['AND', 'OR'], true)) {
+                       $meta_relation = 'OR';
+               }
+
+               return [
+                       'columns'       => $normalized_columns,
+                       'meta_keys'     => $meta_keys,
+                       'meta_compare'  => $meta_compare,
+                       'meta_relation' => $meta_relation,
+               ];
+       }
+
        /**
         * Bepaalt automatisch de oudste en nieuwste datum voor een veld of publicatiedatum.
         *
@@ -392,12 +514,29 @@ if ($source === 'post_date') {
                 $date_query = [];
                 $post_type  = null;
                 $authors    = [];
+               $search_term = null;
+               $search_settings = [
+                       'columns'       => [],
+                       'meta_keys'     => [],
+                       'meta_compare'  => 'LIKE',
+                       'meta_relation' => 'OR',
+               ];
 
                 foreach ($filters as $key => $filter) {
                         $value  = $filter['value'] ?? null;
                         $type   = $filter['type'] ?? null;
                         $source = $filter['source'] ?? 'field';
                         $name   = $filter['name'] ?? $key;
+
+                        $is_search_filter = ($name === 's') || !empty($filter['is_search']) || $type === 'search';
+
+                        if ($is_search_filter) {
+                                $search_term = is_array($value) ? '' : sanitize_text_field(wp_unslash((string) $value));
+                                $search_settings = self::normalize_search_settings(
+                                        $filter['search_settings'] ?? $filter['search'] ?? []
+                                );
+                                continue;
+                        }
 
                         // 🟡 Post Type
                         if ($source === 'post_type' && !empty($value)) {
@@ -526,12 +665,45 @@ if ($source === 'post_date') {
                         }
                 }
 
+                if ($search_term !== null && $search_term !== '') {
+                        if (empty($search_settings['columns'])) {
+                                $search_settings['columns'] = ['post_title', 'post_content'];
+                        }
+
+                        if (!empty($search_settings['meta_keys'])) {
+                                $search_meta_group = ['relation' => $search_settings['meta_relation'] ?? 'OR'];
+
+                                foreach ($search_settings['meta_keys'] as $meta_key) {
+                                        $compare = $search_settings['meta_compare'] ?? 'LIKE';
+                                        $search_meta_group[] = [
+                                                'key'     => $meta_key,
+                                                'value'   => $search_term,
+                                                'compare' => $compare,
+                                        ];
+                                }
+
+                                if (count($search_meta_group) > 1) {
+                                        if (!empty($meta_query) && !isset($meta_query['relation'])) {
+                                                $meta_query['relation'] = 'AND';
+                                        }
+                                        $meta_query[] = $search_meta_group;
+                                }
+                        }
+                }
+
                 $args = [];
                 if ($post_type !== null) $args['post_type'] = $post_type;
                 if (!empty($meta_query)) $args['meta_query'] = $meta_query;
                 if (!empty($tax_query))  $args['tax_query']  = $tax_query;
                 if (!empty($date_query)) $args['date_query'] = $date_query;
                 if (!empty($authors))    $args['author__in'] = array_unique($authors);
+
+                if ($search_term !== null && $search_term !== '') {
+                        $args['s'] = $search_term;
+                        if (!empty($search_settings['columns'])) {
+                                $args['search_columns'] = $search_settings['columns'];
+                        }
+                }
 
 return $args;
 }

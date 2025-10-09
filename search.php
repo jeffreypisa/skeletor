@@ -47,9 +47,19 @@ $context['filters'] = [
         'value'  => $selected_post_type,
     ],
 ];
-$context['ajax_filters'] = $context['filters'];
 
-$context['search_query'] = trim(get_search_query());
+$context['filters']['s'] = Components_Filter::create_search_filter(
+    $_GET['s'] ?? get_search_query(),
+    [
+        'include' => [
+            'title'   => true,
+            'content' => true,
+            'excerpt' => true,
+        ],
+    ]
+);
+$context['search_query'] = $context['filters']['s']['value'];
+$context['ajax_filters'] = $context['filters'];
 
 if ($context['search_query'] === '') {
     $context['posts']            = [];
@@ -62,8 +72,12 @@ if ($context['search_query'] === '') {
         'post_type'      => $query_post_type,
         'posts_per_page' => $posts_per_page,
         'paged'          => get_query_var('paged') ?: 1,
-        's'              => $context['search_query'],
     ];
+
+    $query_args = array_merge(
+        $query_args,
+        Components_Filter::build_query_from_filters($context['filters'])
+    );
 
     $query = new WP_Query($query_args);
 
