@@ -21,3 +21,24 @@
     <link rel="manifest" href="{{ theme.link }}/assets/favicon/site.webmanifest" />
     
     {{function('wp_head')}}
+    
+    <meta name="author" content="Emonks – https://www.emonks.nl">
+     
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "{{ site.name|e('js') }}",
+            "url": "{{ site.url|e('js') }}",
+            "author": {
+            "@type": "Organization",
+            "name": "Emonks",
+            "url": "https://www.emonks.nl"
+        },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Emonks",
+                "url": "https://www.emonks.nl"
+            }
+        }
+    </script>
