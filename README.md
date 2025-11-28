@@ -61,12 +61,7 @@ Definieer filters in PHP en render ze in Twig:
 - Presentatie-opties: `limit_options`, `option_list_expand_label`, `option_list_collapse_label`, `placeholder`, `layout`, `show_field_label`, `show_option_counts`, `date_format`.
 - `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
 - Voor type `buttons` zijn extra opties beschikbaar: `button_class`, `all_label`, `show_all_button`.
-- Voor taxonomieën kan een hiërarchische weergave worden aangezet met `show_hierarchy: true` en verder worden gestuurd met:
-  - `hierarchy_collapsible` (standaard: true) – maakt in- en uitklappen mogelijk
-  - `hierarchy_expanded` (default: false) – start alle takken uitgeklapt
-  - `show_hierarchy_controls` (default: true) – toon knoppen voor "Alles uitklappen/inklappen"
-  - `hierarchy_limit_children` – maximum aantal zichtbare sub-taxonomieën per ouder, met automatisch "toon meer/minder"
-  - `child_expand_label` en `child_collapse_label` – labels voor het tonen en verbergen van subniveau's
+- Voor taxonomieën kan een hiërarchische weergave worden aangezet met `show_hierarchy` (standaard: `true`).
 
 Mogelijke waardes voor `source` zijn `field`, `meta`, `taxonomy`, `post_date`, `post_type`, `user` en `author`.
 

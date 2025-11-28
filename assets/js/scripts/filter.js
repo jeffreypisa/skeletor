@@ -133,111 +133,7 @@ return data;
                 });
         };
 
-        const initHierarchyFilters = () => {
-                requestAnimationFrame(() => {
-                        const setExpanded = (btn, expanded) => {
-                                const option = btn.closest('[data-filter-option]');
-                                const children = option ? option.querySelector(':scope > [data-filter-branch-children]') : null;
-                                const icon = btn.querySelector('[data-branch-icon]');
-
-                                if (children) {
-                                        children.hidden = !expanded;
-                                }
-
-                                btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                                btn.classList.toggle('is-expanded', expanded);
-
-                                if (icon) {
-                                        icon.textContent = expanded ? '▾' : '▸';
-                                }
-                        };
-
-                        const initChildLimits = (container) => {
-                                const limit = parseInt(container.dataset.limitChildren || 0, 10);
-                                if (!limit) return;
-
-                                const options = container.querySelectorAll(':scope > [data-filter-option]');
-                                const toggleBtn = container.querySelector(':scope > [data-children-toggle]');
-                                const expandLabel = container.dataset.childExpandLabel || 'Toon meer';
-                                const collapseLabel = container.dataset.childCollapseLabel || 'Toon minder';
-
-                                if (!toggleBtn || options.length <= limit) return;
-
-                                const setState = (expanded) => {
-                                        container.dataset.childrenExpanded = expanded ? 'true' : 'false';
-                                        options.forEach((opt, index) => {
-                                                opt.style.display = (expanded || index < limit) ? '' : 'none';
-                                        });
-                                        toggleBtn.textContent = expanded ? collapseLabel : expandLabel;
-                                        toggleBtn.setAttribute('aria-label', expanded ? collapseLabel : expandLabel);
-                                        toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                                };
-
-                                setState(container.dataset.childrenExpanded === 'true');
-                                toggleBtn.classList.remove('d-none');
-
-                                if (!toggleBtn.dataset.initialized) {
-                                        toggleBtn.addEventListener('click', () => {
-                                                const expanded = container.dataset.childrenExpanded === 'true';
-                                                setState(!expanded);
-                                        });
-                                        toggleBtn.dataset.initialized = 'true';
-                                }
-                        };
-
-                        document.querySelectorAll('[data-filter-branch-toggle]').forEach(btn => {
-                                if (btn.dataset.initialized) return;
-
-                                const defaultExpanded = btn.dataset.defaultExpanded === 'true';
-                                setExpanded(btn, defaultExpanded);
-
-                                btn.addEventListener('click', () => {
-                                        const expanded = btn.getAttribute('aria-expanded') === 'true';
-                                        setExpanded(btn, !expanded);
-                                });
-
-                                btn.dataset.initialized = 'true';
-                        });
-
-                        document.querySelectorAll('[data-hierarchical-options]').forEach(wrapper => {
-                                const expandAllBtn = wrapper.querySelector('[data-expand-all-branches]');
-                                const collapseAllBtn = wrapper.querySelector('[data-collapse-all-branches]');
-
-                                const setAll = (expanded) => {
-                                        wrapper.querySelectorAll('[data-filter-branch-toggle]').forEach(btn => setExpanded(btn, expanded));
-                                };
-
-                                const expandCheckedParents = () => {
-                                        wrapper.querySelectorAll('input:checked').forEach(input => {
-                                                let option = input.closest('[data-filter-option]');
-                                                while (option) {
-                                                        const toggle = option.querySelector(':scope > .d-flex [data-filter-branch-toggle]');
-                                                        if (toggle) {
-                                                                setExpanded(toggle, true);
-                                                        }
-                                                        option = option.parentElement?.closest('[data-filter-option]') || null;
-                                                }
-                                        });
-                                };
-
-                                expandCheckedParents();
-
-                                wrapper.querySelectorAll('[data-filter-branch-children]').forEach(initChildLimits);
-
-                                if (expandAllBtn && !expandAllBtn.dataset.initialized) {
-                                        expandAllBtn.addEventListener('click', () => setAll(true));
-                                        expandAllBtn.dataset.initialized = 'true';
-                                }
-
-                                if (collapseAllBtn && !collapseAllBtn.dataset.initialized) {
-                                        collapseAllBtn.addEventListener('click', () => setAll(false));
-                                        collapseAllBtn.dataset.initialized = 'true';
-                                }
-                        });
-                });
-        };
-
-	const initFilterButtons = () => {
+        const initFilterButtons = () => {
 		document.querySelectorAll('.filter-buttons').forEach(group => {
 			const hiddenInput = group.nextElementSibling;
 			if (!hiddenInput || hiddenInput.type !== 'hidden') return;
@@ -394,18 +290,17 @@ return data;
 				toggleLoader(false);
 
 				if (append) {
-					resultContainer.insertAdjacentHTML('beforeend', html);
-				} else {
-					resultContainer.innerHTML = html;
-					animateItems();
-				}
+                                resultContainer.insertAdjacentHTML('beforeend', html);
+                        } else {
+                                resultContainer.innerHTML = html;
+                                animateItems();
+                        }
 
-				initSliders();
-				initDatePickers();
-                                initOptionToggles();
-                                initHierarchyFilters();
-                                initFilterButtons();
-				swiperInit();
+                        initSliders();
+                        initDatePickers();
+                        initOptionToggles();
+                        initFilterButtons();
+                        swiperInit();
 
 				const el = document.createElement('div');
 				el.innerHTML = html;
@@ -542,6 +437,5 @@ return data;
         initSliders();
         initDatePickers();
         initOptionToggles();
-        initHierarchyFilters();
         initFilterButtons();
 }

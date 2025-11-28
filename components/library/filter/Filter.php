@@ -104,10 +104,10 @@ parent::__construct();
 
                $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
                $data['show_hierarchy'] = filter_var(
-                       $data['show_hierarchy'] ?? $args['show_hierarchy'] ?? false,
+                       $data['show_hierarchy'] ?? $args['show_hierarchy'] ?? true,
                        FILTER_VALIDATE_BOOLEAN,
                        FILTER_NULL_ON_FAILURE
-               ) ?? false;
+               ) ?? true;
 
                 // ⛏ Verwerk waarde vanuit $_GET
                if ($type === 'range') {
