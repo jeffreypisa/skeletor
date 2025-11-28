@@ -103,6 +103,11 @@ parent::__construct();
                }
 
                $args['date_format'] = $data['date_format'] ?? $args['date_format'] ?? 'd-m-Y';
+               $data['show_hierarchy'] = filter_var(
+                       $data['show_hierarchy'] ?? $args['show_hierarchy'] ?? false,
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? false;
 
                 // ⛏ Verwerk waarde vanuit $_GET
                if ($type === 'range') {
@@ -168,6 +173,15 @@ parent::__construct();
                                 $data['options'] = self::get_author_options($data['post_types'] ?? null);
                         }
                 }
+
+               if ($source === 'taxonomy' && $data['show_hierarchy'] && !isset($data['options_tree'])) {
+                       $data['options_tree'] = self::get_options_from_taxonomy(
+                               $name,
+                               'name',
+                               $data['hide_empty_options'] ?? false,
+                               true
+                       );
+               }
 	
                $sort_options = strtolower((string) ($data['sort_options'] ?? 'none'));
                $needs_option_counts = ($args['show_option_counts'] ?? false)
@@ -239,23 +253,52 @@ parent::__construct();
 		return Timber::compile('sortselect.twig', $data);
 	}
 
-        public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false) {
-		$terms = get_terms([
-			'taxonomy'   => $taxonomy,
-			'hide_empty' => filter_var(
-				$hide_empty,
-				FILTER_VALIDATE_BOOLEAN,
-				FILTER_NULL_ON_FAILURE
-			) ?? false,
-			'orderby'    => $orderby,
-		]);
-	
-		$options = [];
-		foreach ($terms as $term) {
-			$options[$term->name] = $term->slug;
-		}
-		return $options;
-	}
+       public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false, $as_tree = false) {
+               $terms = get_terms([
+                       'taxonomy'   => $taxonomy,
+                       'hide_empty' => filter_var(
+                               $hide_empty,
+                               FILTER_VALIDATE_BOOLEAN,
+                               FILTER_NULL_ON_FAILURE
+                       ) ?? false,
+                       'orderby'    => $orderby,
+               ]);
+
+               if ($as_tree) {
+                       return self::build_taxonomy_tree($terms);
+               }
+
+               $options = [];
+               foreach ($terms as $term) {
+                       $options[$term->name] = $term->slug;
+               }
+               return $options;
+       }
+
+       private static function build_taxonomy_tree(array $terms) {
+               $children = [];
+               foreach ($terms as $term) {
+                       $parent_id = (int) $term->parent;
+                       if (!isset($children[$parent_id])) {
+                               $children[$parent_id] = [];
+                       }
+                       $children[$parent_id][] = $term;
+               }
+
+               $buildBranch = function ($parent_id) use (&$buildBranch, $children) {
+                       $branch = [];
+                       foreach ($children[$parent_id] ?? [] as $term) {
+                               $branch[] = [
+                                       'label'    => $term->name,
+                                       'value'    => $term->slug,
+                                       'children' => $buildBranch((int) $term->term_id),
+                               ];
+                       }
+                       return $branch;
+               };
+
+               return $buildBranch(0);
+       }
 
 	/**
 	 * Haalt unieke waarden op uit de meta van gepubliceerde posts voor een gegeven ACF-veld.

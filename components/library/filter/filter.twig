@@ -36,7 +36,61 @@ Beschikbare presentatie-opties:
 - button_class: string – knopstijl (alleen voor type 'buttons')
 - all_label: string – label voor 'alles'-knop (alleen voor type 'buttons')
 - show_all_button: true/false – toon 'alles'-knop (alleen voor type 'buttons')
+- show_hierarchy: true/false – toon taxonomieën hiërarchisch met subniveau's
+- hierarchy_collapsible: true/false – maak subniveau's inklapbaar
+- hierarchy_expanded: true/false – start alle takken uitgeklapt
+- show_hierarchy_controls: true/false – toon knoppen 'Alles uitklappen/inklappen'
+- hierarchy_limit_children: int – max. zichtbare sub-taxonomieën per ouder met 'toon meer/minder'
+- child_expand_label / child_collapse_label: strings – labels voor subniveau toggles
 #}
+
+{% macro render_option_node(node, type, name, selected, show_option_counts, option_counts, hierarchy_collapsible, hierarchy_expanded, hierarchy_limit_children, child_expand_label, child_collapse_label) %}
+  <div class="filter-option" data-filter-option>
+    <div class="d-flex gap-2 align-items-start">
+      {% if node.children|length and hierarchy_collapsible %}
+        <button type="button"
+          class="btn btn-sm btn-link p-0 filter-branch-toggle"
+          data-filter-branch-toggle
+          aria-expanded="{{ hierarchy_expanded ? 'true' : 'false' }}"
+          data-default-expanded="{{ hierarchy_expanded ? 'true' : 'false' }}"
+          aria-label="Wissel subfilters">
+          <span class="filter-branch-icon" data-branch-icon aria-hidden="true">{{ hierarchy_expanded ? '▾' : '▸' }}</span>
+          <span class="visually-hidden">{{ hierarchy_expanded ? 'Verberg subfilters' : 'Toon subfilters' }}</span>
+        </button>
+      {% else %}
+        <span class="filter-branch-placeholder" aria-hidden="true"></span>
+      {% endif %}
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ node.value }}" {% if node.value in selected %}checked{% endif %}>
+          {{ node.label }}
+          {% if show_option_counts and option_counts[node.value] is defined %}
+            <span class="muted">(<span class="filter-option-count" data-option-count="{{ name }}:{{ node.value }}">{{ option_counts[node.value] }}</span>)</span>
+          {% endif %}
+        </label>
+      </div>
+    </div>
+
+    {% if node.children|length %}
+      <div class="filter-branch-children ms-4" data-filter-branch-children
+        {% if hierarchy_limit_children %}
+          data-limit-children="{{ hierarchy_limit_children }}"
+          data-child-expand-label="{{ child_expand_label }}"
+          data-child-collapse-label="{{ child_collapse_label }}"
+        {% endif %}
+        {% if hierarchy_collapsible and not hierarchy_expanded %}hidden{% endif %}>
+        {% for child in node.children %}
+          {{ _self.render_option_node(child, type, name, selected, show_option_counts, option_counts, hierarchy_collapsible, hierarchy_expanded, hierarchy_limit_children, child_expand_label, child_collapse_label) }}
+        {% endfor %}
+
+        {% if hierarchy_limit_children %}
+          <button type="button" class="btn btn-sm btn-link filter-children-toggle d-none" data-children-toggle aria-expanded="false"></button>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
 
 {% set name = name ?? acf_field ?? '' %}
 {% set acf_field = acf_field ?? name %}
@@ -44,6 +98,7 @@ Beschikbare presentatie-opties:
 {% set type = type ?? '' %}
 {% set label = label ?? '' %}
 {% set options = options ?? {} %}
+{% set options_tree = options_tree ?? [] %}
 {% set placeholder = placeholder ?? 'Maak een keuze' %}
 {% set show_field_label = show_field_label ?? true %}
 {% set show_option_counts = show_option_counts ?? false %}
@@ -52,6 +107,15 @@ Beschikbare presentatie-opties:
 {% set option_list_collapse_label = option_list_collapse_label ?? 'Toon minder' %}
 {% set date_format = date_format ?? 'd-m-Y' %}
 {% set layout = layout ?? null %}
+{% set show_hierarchy = show_hierarchy ?? false %}
+{% set expand_all_label = expand_all_label ?? 'Alles uitklappen' %}
+{% set collapse_all_label = collapse_all_label ?? 'Alles inklappen' %}
+{% set hierarchy_collapsible = hierarchy_collapsible ?? true %}
+{% set hierarchy_expanded = hierarchy_expanded ?? false %}
+{% set hierarchy_limit_children = hierarchy_limit_children ?? 0 %}
+{% set child_expand_label = child_expand_label ?? option_list_expand_label %}
+{% set child_collapse_label = child_collapse_label ?? option_list_collapse_label %}
+{% set show_hierarchy_controls = show_hierarchy_controls ?? true %}
 
 {% if not name %}
   <pre>❌ Ongeldige filterdata ontvangen</pre>
@@ -91,21 +155,34 @@ Beschikbare presentatie-opties:
         <label class="form-label">{{ label }}</label>
         {% endif %}
         {% set selected = value is iterable ? value : [value] %}
-        <div class="filter-options-wrapper" data-limit-options="{{ limit_options }}" data-expand-label="{{ option_list_expand_label }}" data-collapse-label="{{ option_list_collapse_label }}">
-                {% for key, val in options %}
-                <div class="form-check">
-			<label class="form-check-label">
-				<input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
-                                {{ key }}
+        <div class="filter-options-wrapper{% if show_hierarchy %} filter-options-hierarchical{% endif %}" data-limit-options="{{ limit_options }}" data-expand-label="{{ option_list_expand_label }}" data-collapse-label="{{ option_list_collapse_label }}" {% if show_hierarchy %}data-hierarchical-options{% endif %}>
+          {% if show_hierarchy and options_tree|length %}
+            {% if show_hierarchy_controls and hierarchy_collapsible %}
+              <div class="d-flex gap-2 mb-2 justify-content-end filter-hierarchy-actions">
+                <button type="button" class="btn btn-sm btn-link" data-expand-all-branches>{{ expand_all_label }}</button>
+                <button type="button" class="btn btn-sm btn-link" data-collapse-all-branches>{{ collapse_all_label }}</button>
+              </div>
+            {% endif %}
+
+            {% for node in options_tree %}
+              {{ _self.render_option_node(node, type, name, selected, show_option_counts, option_counts, hierarchy_collapsible, hierarchy_expanded, hierarchy_limit_children, child_expand_label, child_collapse_label) }}
+            {% endfor %}
+          {% else %}
+            {% for key, val in options %}
+            <div class="form-check">
+                    <label class="form-check-label">
+                            <input class="form-check-input" type="{{ type }}" name="{{ name }}{% if type == 'checkbox' %}[]{% endif %}" value="{{ val }}" {% if val in selected %}checked{% endif %}>
+                            {{ key }}
             {% if show_option_counts and option_counts[val] is defined %}
               <span class="muted">(<span class="filter-option-count" data-option-count="{{ name }}:{{ val }}">{{ option_counts[val] }}</span>)</span>
             {% endif %}
-			</label>
-		</div>
-		{% endfor %}
+                    </label>
+            </div>
+            {% endfor %}
+          {% endif %}
 
-		<button type="button" class="btn btn-sm btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
-	</div>
+          <button type="button" class="btn btn-sm btn-link filter-toggle-btn d-none" aria-expanded="false"></button>
+        </div>
 
         {# Buttons #}
         {% elseif type == 'buttons' %}
