@@ -75,7 +75,8 @@
                             layout: 'vertical',
                             show_field_label: true,
                             label: 'Alle locaties',
-                            show_option_counts: true
+                            show_option_counts: true,
+							show_hierarchy: true
                         }) }}
 						
 						{{ filter(filters.genres, {
@@ -85,7 +86,7 @@
 							layout: 'vertical',
 							show_field_label: true,
 							label: 'Alle genres',
-							show_option_counts: true
+							show_option_counts: true,
 						}) }}
 						
 						{{ filter(filters.author) }}
