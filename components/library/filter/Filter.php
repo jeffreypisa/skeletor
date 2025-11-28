@@ -17,7 +17,7 @@
  *   'date_format'=> 'd-m-Y',                 // formaat voor datumvelden (optioneel)
  *
  *   // Alleen data-logica in PHP (géén presentatie):
- *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'
+ *   'sort_options'       => 'asc',      // 'asc', 'desc', 'count_asc', 'count_desc', 'none'
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
  * ];
  *
@@ -169,8 +169,12 @@ parent::__construct();
                         }
                 }
 	
-               // 🧮 Tellingen ophalen als gewenst
-               if (($args['show_option_counts'] ?? false) && isset($data['name'])) {
+               $sort_options = strtolower((string) ($data['sort_options'] ?? 'none'));
+               $needs_option_counts = ($args['show_option_counts'] ?? false)
+                       || in_array($sort_options, ['count_asc', 'count_desc'], true);
+
+               // 🧮 Tellingen ophalen als gewenst (of wanneer sorteren op aantal)
+               if ($needs_option_counts && isset($data['name'])) {
                        $ctx_filters = Timber::context()['filters'] ?? [];
 
                        foreach ($ctx_filters as $key => &$filter) {
@@ -209,9 +213,18 @@ parent::__construct();
 
                        $args['option_counts'] = self::get_option_counts($ctx_filters, $data['name'], $global_args);
                }
-	
-		return Timber::compile('filter.twig', array_merge($data, $args));
-	}
+
+               // ↕️ Sorteren van opties
+               if (isset($data['options']) && is_array($data['options'])) {
+                       $data['options'] = self::sort_option_list(
+                               $data['options'],
+                               $sort_options,
+                               $args['option_counts'] ?? []
+                       );
+               }
+
+                return Timber::compile('filter.twig', array_merge($data, $args));
+        }
 	
 	public function render_sort_select($value = '', $args = []) {
 		$defaults = [
@@ -770,9 +783,56 @@ return $args;
                 ksort($options);
                 return $options;
         }
-	
-	/**
-	 * Berekent per optie hoeveel posts eraan voldoen met de huidige filters actief (behalve zichzelf).
+
+       /**
+        * Sorteert een optielijst op label of aantal resultaten.
+        *
+        * @param array  $options        Assoc array van label => value
+        * @param string $sort           'asc', 'desc', 'count_asc', 'count_desc' of 'none'
+        * @param array  $option_counts  Waardes => aantal posts (voor counts-sorting)
+        * @return array                 Gesorteerde opties
+        */
+       private static function sort_option_list(array $options, string $sort, array $option_counts = []) {
+               $sort = strtolower($sort);
+
+               if ($sort === '' || $sort === 'none') {
+                       return $options;
+               }
+
+               $items = [];
+               foreach ($options as $label => $value) {
+                       $items[] = [
+                               'label' => (string) $label,
+                               'value' => $value,
+                               'count' => $option_counts[$value] ?? 0,
+                       ];
+               }
+
+               if (in_array($sort, ['asc', 'desc'], true)) {
+                       usort($items, function ($a, $b) use ($sort) {
+                               $cmp = strcasecmp($a['label'], $b['label']);
+                               return $sort === 'asc' ? $cmp : -$cmp;
+                       });
+               } elseif (in_array($sort, ['count_asc', 'count_desc'], true)) {
+                       usort($items, function ($a, $b) use ($sort) {
+                               $cmp = ($a['count'] <=> $b['count']);
+                               if ($cmp === 0) {
+                                       $cmp = strcasecmp($a['label'], $b['label']);
+                               }
+                               return $sort === 'count_asc' ? $cmp : -$cmp;
+                       });
+               }
+
+               $sorted = [];
+               foreach ($items as $item) {
+                       $sorted[$item['label']] = $item['value'];
+               }
+
+               return $sorted;
+       }
+
+       /**
+        * Berekent per optie hoeveel posts eraan voldoen met de huidige filters actief (behalve zichzelf).
 	 *
 	 * @param array $filters Alle filters (inclusief de actieve waardes)
 	 * @param string $filter_key De filter waarvoor je wil tellen

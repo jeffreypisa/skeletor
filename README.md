@@ -57,6 +57,7 @@ Definieer filters in PHP en render ze in Twig:
 ```
 - Ondersteunt `select`, `checkbox`, `radio`, `buttons`, `range`, `date` en `date_range`.
 - Data-opties per filter: `name`, `label`, `type`, `source`, `options`, `value`, `sort_options`, `hide_empty_options`.
+- `sort_options` ondersteunt `asc`, `desc`, `count_asc`, `count_desc` en `none` om opties respectievelijk op label of aantal resultaten te sorteren.
 - Presentatie-opties: `limit_options`, `option_list_expand_label`, `option_list_collapse_label`, `placeholder`, `layout`, `show_field_label`, `show_option_counts`, `date_format`.
 - `sort_select` accepteert `id`, `name`, `label`, `value` en voegt een standaard sorteermenu toe.
 - Voor type `buttons` zijn extra opties beschikbaar: `button_class`, `all_label`, `show_all_button`.

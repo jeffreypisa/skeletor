@@ -38,7 +38,7 @@ $context['col_class'] = 'col-12 mb-4';
  *   'options'    => Components_Filter::get_options_from_meta('uren'), // array met key => value
  *
  *   // Alleen data-logica in PHP (géén presentatie):
- *   'sort_options'       => 'asc',      // 'asc', 'desc', 'none'
+ *   'sort_options'       => 'asc',      // 'asc', 'desc', 'count_asc', 'count_desc', 'none'
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
  * ];
  */
