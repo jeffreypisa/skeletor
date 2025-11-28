@@ -76,7 +76,8 @@ $context['filters']['genres'] = [
   'label'  => 'Genres',
   'type'   => 'checkbox',
   'source' => 'taxonomy',
-  'hide_empty_options' => true
+  'hide_empty_options' => true,
+  'sort_options' => 'count_asc'
 ];
 
 // 🧩 Filter: publicatiedatum (van–tot)
