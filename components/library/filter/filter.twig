@@ -85,7 +85,12 @@ Beschikbare presentatie-opties:
         {% endfor %}
 
         {% if hierarchy_limit_children %}
-          <button type="button" class="btn btn-sm btn-link filter-children-toggle d-none" data-children-toggle aria-expanded="false"></button>
+          <button
+            type="button"
+            class="btn btn-sm btn-link filter-children-toggle d-none"
+            data-children-toggle
+            aria-expanded="false"
+          >{{ child_expand_label }}</button>
         {% endif %}
       </div>
     {% endif %}

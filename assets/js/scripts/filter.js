@@ -169,6 +169,7 @@ return data;
                                                 opt.style.display = (expanded || index < limit) ? '' : 'none';
                                         });
                                         toggleBtn.textContent = expanded ? collapseLabel : expandLabel;
+                                        toggleBtn.setAttribute('aria-label', expanded ? collapseLabel : expandLabel);
                                         toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
                                 };
 
