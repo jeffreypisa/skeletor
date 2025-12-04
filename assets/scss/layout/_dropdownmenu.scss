@@ -1,23 +1,37 @@
 header {
-	.dropdown-toggle.show {
-		color: $primary !important;
-	}
-	/* Zorgt ervoor dat het dropdown-menu volledig breed is */
+        .dropdown-toggle.show {
+                color: $primary !important;
+        }
+        .nav-button {
+                border: none;
+                background: transparent;
+                padding: 0;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+        }
+        /* Zorgt ervoor dat het dropdown-menu volledig breed is */
         .dropdown-menu {
                 left: 0;
                 right: 0;
                 width: 100%;
                 top: 100%;
-		background-color: white; /* Pas aan naar wens */
-		padding: 40px 0 !important;
-		margin-top: 38px !important;
-		box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.05);
-		z-index: -1 !important;
-		transition: opacity 0.3s ease, transform 0.3s ease;
-		border-top: 1px solid #f0f0f0 !important;
-		border-radius: 0 !important;
+                background-color: white; /* Pas aan naar wens */
+                padding: 40px 0 !important;
+                margin-top: 0 !important;
+                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+                z-index: 5 !important;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                transform: translateY(-12px);
+                opacity: 0;
+                border-top: 1px solid #f0f0f0 !important;
+                border-radius: 0 !important;
                 .row {
                         flex-wrap: wrap !important;
+                }
+                &.show {
+                        transform: translateY(0);
+                        opacity: 1;
                 }
         }
 
@@ -52,10 +66,10 @@ header {
                 }
         }
 	
-	/* Zorgt ervoor dat het menu onder de header valt */
-	.header + .dropdown-menu {
-		margin-top: 50px;
-	}
+        /* Zorgt ervoor dat het menu onder de header valt */
+        .header + .dropdown-menu {
+                margin-top: 50px;
+        }
 	
 	/* Zorgt ervoor dat de kolommen mooi uitlijnen */
 	.dropdown-menu .row {

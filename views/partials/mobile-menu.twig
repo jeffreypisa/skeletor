@@ -23,24 +23,25 @@
 
                 {% for item in items %}
                         <li class="mobilemenu__item {{ item.children|length > 0 ? 'has-children' }}">
-                                <a
-                                        class="mobilemenu__link"
-                                        href="{{ item.link }}"
-                                        {% if item.target %}target="{{ item.target }}"{% endif %}
-                                        {% if item.current %}aria-current="page"{% endif %}
-                                >
-                                        {{ item.title }}
-                                </a>
-
                                 {% if item.children|length > 0 %}
                                         <button
-                                                class="mobilemenu__toggle"
+                                                class="mobilemenu__link-button"
                                                 type="button"
                                                 data-submenu-target="submenu-{{ item.id }}"
                                                 aria-label="Open submenu van {{ item.title }}"
                                         >
+                                                <span class="mobilemenu__label">{{ item.title }}</span>
                                                 <span class="chevron chevron-right" aria-hidden="true"></span>
                                         </button>
+                                {% else %}
+                                        <a
+                                                class="mobilemenu__link"
+                                                href="{{ item.link }}"
+                                                {% if item.target %}target="{{ item.target }}"{% endif %}
+                                                {% if item.current %}aria-current="page"{% endif %}
+                                        >
+                                                {{ item.title }}
+                                        </a>
                                 {% endif %}
                         </li>
                 {% endfor %}

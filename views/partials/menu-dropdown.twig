@@ -8,19 +8,27 @@
                 {% endif %}
 
                 <li class="nav-item {% if item.children|length > 0 %}dropdown position-static{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
-                        <a
-                                class="{{ linkstijl }} {% if item.children|length > 0 %}dropdown-toggle{% endif %}"
-                                href="{{ item.link }}"
-                                {% if item.current %}aria-current="page"{% endif %}
-                                {% if item.target %}target="{{ item.target }}"{% endif %}
-                                {% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false"{% endif %}
-                        >
-                                {{ item.title }}
-                                {% if item.children|length > 0 %}
+                        {% if item.children|length > 0 %}
+                                <button
+                                        class="{{ linkstijl }} dropdown-toggle nav-button"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                >
+                                        {{ item.title }}
                                         <span class="chevron chevron-down" aria-hidden="true"></span>
                                         <span class="visually-hidden">Open submenu</span>
-                                {% endif %}
-                        </a>
+                                </button>
+                        {% else %}
+                                <a
+                                        class="{{ linkstijl }}"
+                                        href="{{ item.link }}"
+                                        {% if item.current %}aria-current="page"{% endif %}
+                                        {% if item.target %}target="{{ item.target }}"{% endif %}
+                                >
+                                        {{ item.title }}
+                                </a>
+                        {% endif %}
 
                         {% if item.children|length > 0 %}
                                 <div class="dropdown-menu w-100 mt-0 border-0">

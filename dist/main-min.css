@@ -21,3 +21,5 @@
 .dropdown-menu__content *:last-child{margin-bottom:0}
 .dropdown-menu__links .dropdown-item{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:100%;white-space:normal}
 .dropdown-menu__links .dropdown-item .chevron{flex-shrink:0}
+/* custom overrides */
+.mobilemenu{padding:80px 0 32px}.mobilemenu__panels{position:relative;flex:1 1 auto;width:100%;overflow:hidden;padding:0 24px}.mobilemenu__level{padding:0 24px 16px}.mobilemenu__link,.mobilemenu__link-button{background:0 0;border:0;padding:0;text-align:left;width:100%;display:inline-flex;align-items:center;justify-content:space-between;color:inherit;text-decoration:none}.nav-button{border:0;background:0 0;padding:0;display:inline-flex;align-items:center;gap:6px}header .dropdown-menu{margin-top:0!important;box-shadow:0 6px 12px rgba(0,0,0,.08);z-index:5!important;transform:translateY(-12px);opacity:0;transition:opacity .3s ease,transform .3s ease}header .dropdown-menu.show{transform:translateY(0);opacity:1}

@@ -49,7 +49,7 @@
         transition: transform 0.4s $ease;
         display: flex;
         flex-direction: column;
-        padding: 80px 24px 32px;
+        padding: 80px 0 32px;
         overflow: hidden;
 
         &.active {
@@ -59,11 +59,14 @@
         &__panels {
                 position: relative;
                 flex: 1 1 auto;
+                width: 100%;
+                overflow: hidden;
+                padding: 0 24px;
         }
 
         &__level {
                 list-style: none;
-                padding: 0;
+                padding: 0 24px 16px;
                 margin: 0;
                 position: absolute;
                 inset: 0;
@@ -113,11 +116,20 @@
                 border-bottom: 1px solid $gray-200;
         }
 
-        &__link {
+        &__link,
+        &__link-button {
                 @extend .h5;
                 color: $dark;
                 text-decoration: none;
                 margin: 0;
+                background: none;
+                border: none;
+                padding: 0;
+                text-align: left;
+                width: 100%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: space-between;
 
                 &:hover {
                         color: $primary;
