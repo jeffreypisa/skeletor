@@ -58,6 +58,9 @@ body {
                                 a {
                                         color: #fff;
                                         text-decoration: none;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        gap: 6px;
 
                                         &:hover {
                                                 color: $primary;
@@ -99,6 +102,9 @@ body {
                                         a {
                                                 color: $dark;
                                                 text-decoration: none;
+                                                display: inline-flex;
+                                                align-items: center;
+                                                gap: 6px;
 
                                                 &:hover {
                                                         color: $primary;

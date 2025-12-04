@@ -1,44 +1,55 @@
 <ul class="navbar-nav w-100">
-	{% for item in items %}
-		{% set linkstijl = 'nav-link' %}
-		{% if item.link_stijl == 'btn-primary' %}
-			{% set linkstijl = 'btn btn-primary text-white' %}
-		{% elseif item.link_stijl == 'btn-secondary' %}
-			{% set linkstijl = 'btn btn-secondary text-white' %}
-		{% endif %}
+        {% for item in items %}
+                {% set linkstijl = 'nav-link' %}
+                {% if item.link_stijl == 'btn-primary' %}
+                        {% set linkstijl = 'btn btn-primary text-white' %}
+                {% elseif item.link_stijl == 'btn-secondary' %}
+                        {% set linkstijl = 'btn btn-secondary text-white' %}
+                {% endif %}
 
-		<li class="nav-item {% if item.children|length > 0 %}dropdown position-static{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
-			<a 
-				class="{{ linkstijl }} {% if item.children|length > 0 %}dropdown-toggle{% endif %}" 
+                <li class="nav-item {% if item.children|length > 0 %}dropdown position-static{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
+                        <a
+                                class="{{ linkstijl }} {% if item.children|length > 0 %}dropdown-toggle{% endif %}"
                                 href="{{ item.link }}"
                                 {% if item.current %}aria-current="page"{% endif %}
                                 {% if item.target %}target="{{ item.target }}"{% endif %}
                                 {% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false"{% endif %}
-			>
-				{{ item.title }}
-			</a>
+                        >
+                                {{ item.title }}
+                                {% if item.children|length > 0 %}
+                                        <span class="chevron chevron-down" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Open submenu</span>
+                                {% endif %}
+                        </a>
 
-			{% if item.children|length > 0 %}
-				<div class="dropdown-menu w-100 mt-0 border-0">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-4">
-							</div>
-							<div class="col-md-8">
-								<div class="row">
-									{% for child in item.children %}
-										<div class="col-md-6">
-											<a class="dropdown-item {{ child.classes | join(' ') }}" href="{{ child.link }}" {% if child.target %}target="{{ child.target }}"{% endif %}>
-												{{ child.title }}
-											</a>
-										</div>
-									{% endfor %}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			{% endif %}
-		</li>
-	{% endfor %}
+                        {% if item.children|length > 0 %}
+                                <div class="dropdown-menu w-100 mt-0 border-0">
+                                        <div class="container">
+                                                <div class="row g-4">
+                                                        <div class="col-lg-4 dropdown-menu__intro">
+                                                                {% if item.meta('dropdown_intro') %}
+                                                                        <div class="dropdown-menu__content">{{ item.meta('dropdown_intro') }}</div>
+                                                                {% endif %}
+                                                        </div>
+                                                        <div class="col-lg-8">
+                                                                <div class="row g-2 dropdown-menu__links">
+                                                                        {% for child in item.children %}
+                                                                                <div class="col-md-6">
+                                                                                        <a class="dropdown-item {{ child.classes | join(' ') }}" href="{{ child.link }}" {% if child.target %}target="{{ child.target }}"{% endif %}>
+                                                                                                {{ child.title }}
+                                                                                                {% if child.children|length > 0 %}
+                                                                                                        <span class="chevron chevron-right" aria-hidden="true"></span>
+                                                                                                        <span class="visually-hidden">Heeft een submenu</span>
+                                                                                                {% endif %}
+                                                                                        </a>
+                                                                                </div>
+                                                                        {% endfor %}
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        {% endif %}
+                </li>
+        {% endfor %}
 </ul>

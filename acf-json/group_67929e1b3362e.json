@@ -29,6 +29,27 @@
             "ui": 0,
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_67b23c0f4a3a1",
+            "label": "Dropdown tekst",
+            "name": "dropdown_intro",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Tekstblok links in de dropdown voor menu-items met submenu's.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
         }
     ],
     "location": [
@@ -49,5 +70,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1737662162
+    "modified": 1741440000
 }

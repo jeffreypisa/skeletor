@@ -3,11 +3,11 @@ header {
 		color: $primary !important;
 	}
 	/* Zorgt ervoor dat het dropdown-menu volledig breed is */
-	.dropdown-menu {
-		left: 0;
-		right: 0;
-		width: 100%;
-		top: 100%;
+        .dropdown-menu {
+                left: 0;
+                right: 0;
+                width: 100%;
+                top: 100%;
 		background-color: white; /* Pas aan naar wens */
 		padding: 40px 0 !important;
 		margin-top: 38px !important;
@@ -16,10 +16,41 @@ header {
 		transition: opacity 0.3s ease, transform 0.3s ease;
 		border-top: 1px solid #f0f0f0 !important;
 		border-radius: 0 !important;
-		.row {
-			flex-wrap: wrap !important;
-		}
-	}
+                .row {
+                        flex-wrap: wrap !important;
+                }
+        }
+
+        .dropdown-menu__intro {
+                p {
+                        margin: 0;
+                        color: $dark;
+                }
+        }
+
+        .dropdown-menu__content {
+                font-size: 1rem;
+                line-height: 1.6;
+
+                *:last-child {
+                        margin-bottom: 0;
+                }
+        }
+
+        .dropdown-menu__links {
+                .dropdown-item {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 8px;
+                        width: 100%;
+                        white-space: normal;
+
+                        .chevron {
+                                flex-shrink: 0;
+                        }
+                }
+        }
 	
 	/* Zorgt ervoor dat het menu onder de header valt */
 	.header + .dropdown-menu {
