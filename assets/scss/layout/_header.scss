@@ -45,7 +45,8 @@ body {
 
                                                &.current-menu-parent>a:not(.btn),
                                                &.current-menu-item>a:not(.btn),
-                                               &.current_page_item>a:not(.btn) {
+                                               &.current_page_item>a:not(.btn),
+                                               &.current-menu-ancestor>a:not(.btn) {
                                                        color: #fff;
                                                        text-decoration: underline;
                                                        text-decoration-thickness: 2px;
@@ -55,6 +56,16 @@ body {
 
                                        .dropdown-toggle {
                                                color: #fff;
+
+                                               &.current-menu-parent,
+                                               &.current-menu-ancestor,
+                                               &.current-menu-item,
+                                               &.current_page_item {
+                                                       color: #fff;
+                                                       text-decoration: underline;
+                                                       text-decoration-thickness: 2px;
+                                                       text-underline-offset: 8px;
+                                               }
 
                                                &::after {
                                                        border-color: currentColor;
@@ -190,13 +201,43 @@ body {
                                                 color: $primary;
                                         }
                                 }
-                        }
-                }
-        }
+                       }
+               }
+       }
 
-        .main-nav {
-                min-height: $header-height;
-                display: flex;
+       &.header-transparent {
+               .header:not(.scrolled) {
+                       .navbar-nav {
+                               li.current-menu-parent > a:not(.btn),
+                               li.current-menu-item > a:not(.btn),
+                               li.current_page_item > a:not(.btn),
+                               li.current-menu-ancestor > a:not(.btn) {
+                                       color: #fff;
+                                       text-decoration: underline;
+                                       text-decoration-thickness: 2px;
+                                       text-underline-offset: 8px;
+                               }
+
+                               .dropdown-toggle.current-menu-parent,
+                               .dropdown-toggle.current-menu-ancestor,
+                               .dropdown-toggle.current-menu-item,
+                               .dropdown-toggle.current_page_item {
+                                       color: #fff;
+                                       text-decoration: underline;
+                                       text-decoration-thickness: 2px;
+                                       text-underline-offset: 8px;
+                               }
+
+                               .dropdown-toggle::after {
+                                       border-color: currentColor;
+                               }
+                       }
+               }
+       }
+
+       .main-nav {
+               min-height: $header-height;
+               display: flex;
                 align-items: center;
         }
 

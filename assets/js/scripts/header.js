@@ -5,19 +5,21 @@ export function header() {
 	const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
 	const subNav = document.querySelector('.sub-nav');
 	const panelTransition = 320;
-	let lastScrollTop = 0;
-	let lastDirection = 'up';
-	let ticking = false;
-	let scrollThreshold = 24; // Voorkomt knipperen bij kleine bewegingen
-	let scrolledThreshold = 140; // Vanaf wanneer de achtergrond wit wordt
+        let lastScrollTop = 0;
+        let lastDirection = 'up';
+        let ticking = false;
+        let scrollThreshold = 24; // Voorkomt knipperen bij kleine bewegingen
+        let scrolledThreshold = 140; // Vanaf wanneer de achtergrond wit wordt
+        let hideOffset = 160; // Vanaf wanneer de header mag verdwijnen bij scroll naar beneden
 
 	const updateHeaderOffset = () => {
 		const headerHeight = header?.offsetHeight || 0;
 		const topbarHeight = topbar?.offsetHeight || 0;
 		const totalHeight = headerHeight || topbarHeight;
 
-		scrolledThreshold = Math.max(140, totalHeight + topbarHeight + 30);
-		scrollThreshold = Math.max(16, Math.round((headerHeight || 60) * 0.4));
+                scrolledThreshold = Math.max(140, totalHeight + topbarHeight + 30);
+                scrollThreshold = Math.max(16, Math.round((headerHeight || 60) * 0.4));
+                hideOffset = Math.max(120, totalHeight + 10);
 
                 document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
                 document.documentElement.style.setProperty('--header-total-height', `${totalHeight}px`);
@@ -103,7 +105,8 @@ export function header() {
 
 	function updateHeader() {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		const beyondScrolled = scrollTop > scrolledThreshold;
+                const beyondScrolled = scrollTop > scrolledThreshold;
+                const pastHideOffset = scrollTop > hideOffset;
 
 		if (document.querySelector('.dropdown-menu.show')) {
 			closeOpenDropdowns();
@@ -115,22 +118,22 @@ export function header() {
 			header.classList.remove('scrolled');
 		}
 
-		if (scrollTop <= 0) {
-			header.classList.remove('hidden');
-			header.classList.add('visible');
-			lastDirection = 'up';
-			lastScrollTop = 0;
-			ticking = false;
-			return;
-		}
+                if (scrollTop <= 0) {
+                        header.classList.remove('hidden');
+                        header.classList.add('visible');
+                        lastDirection = 'up';
+                        lastScrollTop = 0;
+                        ticking = false;
+                        return;
+                }
 
-                if (beyondScrolled && scrollTop > lastScrollTop + scrollThreshold) {
+                if (pastHideOffset && scrollTop > lastScrollTop + scrollThreshold) {
                         if (lastDirection !== 'down') {
                                 header.classList.remove('visible');
                                 header.classList.add('hidden');
                                 lastDirection = 'down';
                         }
-                } else if (scrollTop < lastScrollTop - scrollThreshold || !beyondScrolled) {
+                } else if (scrollTop < lastScrollTop - scrollThreshold || !pastHideOffset) {
                         if (lastDirection !== 'up') {
                                 header.classList.remove('hidden');
                                 header.classList.add('visible');
