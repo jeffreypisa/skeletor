@@ -1,4 +1,9 @@
 header {
+        .sub-nav {
+                position: relative;
+                z-index: 900;
+        }
+
         .nav-button.dropdown-toggle::after {
                 display: none !important;
         }
@@ -31,12 +36,14 @@ header {
                 opacity: 0;
                 border-top: 1px solid #f0f0f0 !important;
                 border-radius: 0 !important;
+                pointer-events: none;
                 .row {
                         flex-wrap: wrap !important;
                 }
                 &.show {
                         transform: translateY(0);
                         opacity: 1;
+                        pointer-events: auto;
                 }
         }
 
@@ -65,24 +72,20 @@ header {
                         width: 100%;
                         white-space: normal;
 
-                        .chevron {
-                                flex-shrink: 0;
+                                .chevron {
+                                        flex-shrink: 0;
+                                }
                         }
-                }
         }
-	
-        /* Zorgt ervoor dat het menu onder de header valt */
-        .header + .dropdown-menu {
-                margin-top: 0;
-        }
-	
-	/* Zorgt ervoor dat de kolommen mooi uitlijnen */
+
+        /* Zorgt ervoor dat de kolommen mooi uitlijnen */
         .dropdown-menu .row {
                 flex-wrap: nowrap;
                 overflow-x: auto;
         }
 
-        .nav-button[aria-expanded='true'] {
+        .nav-button[aria-expanded='true'],
+        .nav-item.is-active .nav-button {
                 color: $primary !important;
                 text-decoration: underline;
                 text-decoration-thickness: 2px;

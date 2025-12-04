@@ -1,63 +1,78 @@
-<ul class="navbar-nav w-100">
-        {% for item in items %}
-                {% set linkstijl = 'nav-link' %}
-                {% if item.link_stijl == 'btn-primary' %}
-                        {% set linkstijl = 'btn btn-primary text-white' %}
-                {% elseif item.link_stijl == 'btn-secondary' %}
-                        {% set linkstijl = 'btn btn-secondary text-white' %}
-                {% endif %}
-
-                <li class="nav-item {% if item.children|length > 0 %}dropdown position-static{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
-                        {% if item.children|length > 0 %}
-                                <button
-                                        class="{{ linkstijl }} dropdown-toggle nav-button"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                >
-                                        {{ item.title }}
-                                        <span class="chevron chevron-down" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Open submenu</span>
-                                </button>
-                        {% else %}
-                                <a
-                                        class="{{ linkstijl }}"
-                                        href="{{ item.link }}"
-                                        {% if item.current %}aria-current="page"{% endif %}
-                                        {% if item.target %}target="{{ item.target }}"{% endif %}
-                                >
-                                        {{ item.title }}
-                                </a>
+{% macro nav(items) %}
+        <ul class="navbar-nav w-100">
+                {% for item in items %}
+                        {% set linkstijl = 'nav-link' %}
+                        {% if item.link_stijl == 'btn-primary' %}
+                                {% set linkstijl = 'btn btn-primary text-white' %}
+                        {% elseif item.link_stijl == 'btn-secondary' %}
+                                {% set linkstijl = 'btn btn-secondary text-white' %}
                         {% endif %}
 
-                        {% if item.children|length > 0 %}
-                                <div class="dropdown-menu w-100 mt-0 border-0">
-                                        <div class="container">
-                                                <div class="row g-4">
-                                                        <div class="col-lg-4 dropdown-menu__intro">
-                                                                {% if item.meta('dropdown_intro') %}
-                                                                        <div class="dropdown-menu__content">{{ item.meta('dropdown_intro') }}</div>
-                                                                {% endif %}
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                                <div class="row g-2 dropdown-menu__links">
-                                                                        {% for child in item.children %}
-                                                                                <div class="col-md-6">
-                                                                                        <a class="dropdown-item {{ child.classes | join(' ') }}" href="{{ child.link }}" {% if child.target %}target="{{ child.target }}"{% endif %}>
-                                                                                                {{ child.title }}
-                                                                                                {% if child.children|length > 0 %}
-                                                                                                        <span class="chevron chevron-right" aria-hidden="true"></span>
-                                                                                                        <span class="visually-hidden">Heeft een submenu</span>
-                                                                                                {% endif %}
-                                                                                        </a>
-                                                                                </div>
-                                                                        {% endfor %}
-                                                                </div>
+                        <li class="nav-item {{ item.children|length > 0 ? 'has-dropdown' }} {{ item.classes | join(' ') }} d-flex align-items-center">
+                                {% if item.children|length > 0 %}
+                                        <button
+                                                class="{{ linkstijl }} dropdown-toggle nav-button"
+                                                type="button"
+                                                id="dropdown-trigger-{{ item.id }}"
+                                                data-dropdown-trigger="dropdown-{{ item.id }}"
+                                                aria-expanded="false"
+                                                aria-controls="dropdown-{{ item.id }}"
+                                        >
+                                                {{ item.title }}
+                                                <span class="chevron chevron-down" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Open submenu</span>
+                                        </button>
+                                {% else %}
+                                        <a
+                                                class="{{ linkstijl }}"
+                                                href="{{ item.link }}"
+                                                {% if item.current %}aria-current="page"{% endif %}
+                                                {% if item.target %}target="{{ item.target }}"{% endif %}
+                                        >
+                                                {{ item.title }}
+                                        </a>
+                                {% endif %}
+                        </li>
+                {% endfor %}
+        </ul>
+{% endmacro %}
+
+{% macro panels(items) %}
+        {% for item in items %}
+                {% if item.children|length > 0 %}
+                        <div
+                                class="dropdown-menu w-100 mt-0 border-0"
+                                id="dropdown-{{ item.id }}"
+                                data-dropdown-panel="dropdown-{{ item.id }}"
+                                aria-labelledby="dropdown-trigger-{{ item.id }}"
+                        >
+                                <div class="container">
+                                        <div class="row g-4">
+                                                <div class="col-lg-4 dropdown-menu__intro">
+                                                        {% if item.meta('dropdown_intro') %}
+                                                                <div class="dropdown-menu__content">{{ item.meta('dropdown_intro') }}</div>
+                                                        {% endif %}
+                                                </div>
+                                                <div class="col-lg-8">
+                                                        <div class="row g-2 dropdown-menu__links">
+                                                                {% for child in item.children %}
+                                                                        <div class="col-md-6">
+                                                                                <a class="dropdown-item {{ child.classes | join(' ') }}" href="{{ child.link }}" {% if child.target %}target="{{ child.target }}"{% endif %}>
+                                                                                        {{ child.title }}
+                                                                                        {% if child.children|length > 0 %}
+                                                                                                <span class="chevron chevron-right" aria-hidden="true"></span>
+                                                                                                <span class="visually-hidden">Heeft een submenu</span>
+                                                                                        {% endif %}
+                                                                                </a>
+                                                                        </div>
+                                                                {% endfor %}
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
-                        {% endif %}
-                </li>
+                        </div>
+                {% endif %}
         {% endfor %}
-</ul>
+{% endmacro %}
+
+{% import _self as dropdown %}

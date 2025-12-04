@@ -43,13 +43,15 @@ body {
                position: sticky;
                top: 0;
                width: 100%;
-               height: $header-height;
+               min-height: $header-height;
                background: $light;
                z-index: 1000;
                overflow: visible;
                transition: opacity 0.3s $ease, transform 0.3s $ease, background 0.3s $ease;
                opacity: 1;
                transform: translateY(0);
+               display: flex;
+               flex-direction: column;
 
                 .navbar-nav {
                         gap: 20px;
@@ -122,6 +124,12 @@ body {
                 }
         }
 
+        .main-nav {
+                min-height: $header-height;
+                display: flex;
+                align-items: center;
+        }
+
 }
 
 @include media-breakpoint-up(lg) {
@@ -131,13 +139,17 @@ body {
 
        body {
                .header {
-                       height: $header-height-lg;
+                       min-height: $header-height-lg;
 
                        .header-brand {
                                img {
                                        height: 30px;
                                }
                        }
+               }
+
+               .main-nav {
+                       min-height: $header-height-lg;
                }
        }
 }

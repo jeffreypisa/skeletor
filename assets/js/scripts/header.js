@@ -1,7 +1,9 @@
 export function header() {
         const header = document.querySelector('.header');
         const topbar = document.querySelector('.topbar');
-        const dropdownToggles = document.querySelectorAll('.primary-navigation .dropdown-toggle');
+        const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
+        const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
+        const subNav = document.querySelector('.sub-nav');
         let lastScrollTop = 0;
         let lastDirection = 'up';
         let ticking = false;
@@ -11,26 +13,55 @@ export function header() {
         const updateHeaderOffset = () => {
                 const headerHeight = header?.offsetHeight || 0;
                 const topbarHeight = topbar?.offsetHeight || 0;
+                const totalHeight = headerHeight || topbarHeight;
 
                 document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-                document.documentElement.style.setProperty('--header-total-height', `${headerHeight + topbarHeight}px`);
+                document.documentElement.style.setProperty('--header-total-height', `${totalHeight}px`);
         };
 
         const closeOpenDropdowns = () => {
-                dropdownToggles.forEach((toggle) => {
-                        if (window.bootstrap?.Dropdown) {
-                                const instance = window.bootstrap.Dropdown.getOrCreateInstance(toggle);
-                                instance.hide();
-                        }
+                dropdownPanels.forEach((panel) => panel.classList.remove('show'));
 
+                dropdownToggles.forEach((toggle) => {
                         toggle.setAttribute('aria-expanded', 'false');
                         toggle.classList.remove('show');
+                        toggle.classList.remove('is-active');
                         toggle.parentElement?.classList.remove('show');
-
-                        const dropdownMenu = toggle.parentElement?.querySelector('.dropdown-menu');
-                        dropdownMenu?.classList.remove('show');
+                        toggle.parentElement?.classList.remove('is-active');
                 });
+
+                subNav?.setAttribute('aria-hidden', 'true');
         };
+
+        dropdownToggles.forEach((toggle) => {
+                const targetId = toggle.getAttribute('data-dropdown-trigger');
+
+                toggle.addEventListener('click', (event) => {
+                        event.preventDefault();
+
+                        const currentExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                        const targetPanel = document.querySelector(`[data-dropdown-panel="${targetId}"]`);
+
+                        closeOpenDropdowns();
+
+                        if (!currentExpanded && targetPanel) {
+                                toggle.setAttribute('aria-expanded', 'true');
+                                toggle.classList.add('is-active');
+                                toggle.parentElement?.classList.add('is-active');
+                                targetPanel.classList.add('show');
+                                subNav?.setAttribute('aria-hidden', 'false');
+                        }
+                });
+        });
+
+        document.addEventListener('click', (event) => {
+                const isToggle = event.target.closest('[data-dropdown-trigger]');
+                const isPanel = event.target.closest('[data-dropdown-panel]');
+
+                if (!isToggle && !isPanel) {
+                        closeOpenDropdowns();
+                }
+        });
 
         function updateHeader() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
