@@ -4,6 +4,7 @@ export function header() {
         const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
         const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
         const subNav = document.querySelector('.sub-nav');
+        const panelTransition = 320;
         let lastScrollTop = 0;
         let lastDirection = 'up';
         let ticking = false;
@@ -20,7 +21,10 @@ export function header() {
         };
 
         const closeOpenDropdowns = () => {
-                dropdownPanels.forEach((panel) => panel.classList.remove('show'));
+                dropdownPanels.forEach((panel) => {
+                        panel.classList.remove('show');
+                        panel.classList.remove('is-leaving');
+                });
 
                 dropdownToggles.forEach((toggle) => {
                         toggle.setAttribute('aria-expanded', 'false');
@@ -31,6 +35,18 @@ export function header() {
                 });
 
                 subNav?.setAttribute('aria-hidden', 'true');
+                subNav?.classList.remove('is-open');
+        };
+
+        const transitionExistingPanel = (panel) => {
+                if (!panel || !panel.classList.contains('show')) return;
+
+                panel.classList.add('is-leaving');
+                panel.classList.remove('show');
+
+                window.setTimeout(() => {
+                        panel.classList.remove('is-leaving');
+                }, panelTransition);
         };
 
         dropdownToggles.forEach((toggle) => {
@@ -42,14 +58,33 @@ export function header() {
                         const currentExpanded = toggle.getAttribute('aria-expanded') === 'true';
                         const targetPanel = document.querySelector(`[data-dropdown-panel="${targetId}"]`);
 
-                        closeOpenDropdowns();
+                        const expandedPanel = document.querySelector('.dropdown-menu.show');
 
-                        if (!currentExpanded && targetPanel) {
-                                toggle.setAttribute('aria-expanded', 'true');
-                                toggle.classList.add('is-active');
-                                toggle.parentElement?.classList.add('is-active');
+                        if (currentExpanded) {
+                                closeOpenDropdowns();
+                                return;
+                        }
+
+                        dropdownToggles.forEach((button) => {
+                                const isActiveToggle = button === toggle;
+                                button.setAttribute('aria-expanded', isActiveToggle ? 'true' : 'false');
+                                button.classList.toggle('is-active', isActiveToggle);
+                                button.parentElement?.classList.toggle('is-active', isActiveToggle);
+                        });
+
+                        transitionExistingPanel(expandedPanel && expandedPanel !== targetPanel ? expandedPanel : null);
+
+                        dropdownPanels.forEach((panel) => {
+                                if (panel !== targetPanel && panel !== expandedPanel) {
+                                        panel.classList.remove('show');
+                                        panel.classList.remove('is-leaving');
+                                }
+                        });
+
+                        if (targetPanel) {
                                 targetPanel.classList.add('show');
                                 subNav?.setAttribute('aria-hidden', 'false');
+                                subNav?.classList.add('is-open');
                         }
                 });
         });

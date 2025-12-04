@@ -103,7 +103,6 @@
                 background: transparent;
                 color: $dark;
                 font-weight: 700;
-                width: 100%;
                 padding: 12px 0;
                 text-align: left;
                 font-size: 1.125rem;
@@ -163,10 +162,10 @@
 
 .chevron {
         display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-right: 2px solid currentColor;
-        border-bottom: 2px solid currentColor;
+        width: 8px;
+        height: 8px;
+        border-right: 1.75px solid currentColor;
+        border-bottom: 1.75px solid currentColor;
         transform: rotate(45deg);
 
         &.chevron-down {
