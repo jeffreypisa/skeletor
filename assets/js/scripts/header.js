@@ -11,6 +11,8 @@ export function header() {
         const updateHeaderOffset = () => {
                 const headerHeight = header?.offsetHeight || 0;
                 const topbarHeight = topbar?.offsetHeight || 0;
+
+                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
                 document.documentElement.style.setProperty('--header-total-height', `${headerHeight + topbarHeight}px`);
         };
 

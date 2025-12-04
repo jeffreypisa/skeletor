@@ -16,16 +16,16 @@ header {
         }
         /* Zorgt ervoor dat het dropdown-menu volledig breed is */
         .dropdown-menu {
-                position: fixed;
+                position: absolute;
                 left: 0;
                 right: 0;
                 width: 100%;
-                top: var(--header-total-height, 110px);
+                top: var(--header-height, 110px);
                 background-color: white; /* Pas aan naar wens */
                 padding: 40px 0 !important;
                 margin-top: 0 !important;
                 box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
-                z-index: 5 !important;
+                z-index: 900 !important;
                 transition: opacity 0.3s ease, transform 0.3s ease;
                 transform: translateY(-12px);
                 opacity: 0;
