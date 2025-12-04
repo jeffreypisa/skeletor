@@ -10,6 +10,20 @@ $topbar-height-lg: 40px;
 }
 
 body {
+       --header-total-height: #{$header-height};
+
+       &.has-topbar {
+               --header-total-height: #{ $header-height + $topbar-height };
+       }
+
+       @include media-breakpoint-up(lg) {
+               --header-total-height: #{$header-height-lg};
+
+               &.has-topbar {
+                       --header-total-height: #{ $header-height-lg + $topbar-height-lg };
+               }
+       }
+
        &.header-transparent {
                .header {
                        background: transparent;
