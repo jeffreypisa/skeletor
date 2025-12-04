@@ -1,4 +1,8 @@
 header {
+        .nav-button.dropdown-toggle::after {
+                display: none !important;
+        }
+
         .dropdown-toggle.show {
                 color: $primary !important;
         }
@@ -12,10 +16,11 @@ header {
         }
         /* Zorgt ervoor dat het dropdown-menu volledig breed is */
         .dropdown-menu {
+                position: fixed;
                 left: 0;
                 right: 0;
                 width: 100%;
-                top: 100%;
+                top: var(--header-total-height, 110px);
                 background-color: white; /* Pas aan naar wens */
                 padding: 40px 0 !important;
                 margin-top: 0 !important;
@@ -68,12 +73,19 @@ header {
 	
         /* Zorgt ervoor dat het menu onder de header valt */
         .header + .dropdown-menu {
-                margin-top: 50px;
+                margin-top: 0;
         }
 	
 	/* Zorgt ervoor dat de kolommen mooi uitlijnen */
-	.dropdown-menu .row {
-		flex-wrap: nowrap;
-		overflow-x: auto;
-	}
+        .dropdown-menu .row {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+        }
+
+        .nav-button[aria-expanded='true'] {
+                color: $primary !important;
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+                text-underline-offset: 8px;
+        }
 }

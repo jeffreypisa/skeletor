@@ -35,6 +35,12 @@ export function mobileMenu() {
                 setActivePanel('submenu-root');
         };
 
+        const closeOnViewportChange = () => {
+                if (mobileMenu.classList.contains('active')) {
+                        closeMenu();
+                }
+        };
+
         mobileMenuBtn.addEventListener('click', () => {
                 if (mobileMenu.classList.contains('active')) {
                         closeMenu();
@@ -79,4 +85,7 @@ export function mobileMenu() {
                         closeMenu();
                 }
         });
+
+        window.addEventListener('resize', closeOnViewportChange);
+        window.addEventListener('scroll', closeOnViewportChange, { passive: true });
 }

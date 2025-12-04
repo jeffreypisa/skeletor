@@ -1,13 +1,41 @@
 export function header() {
-	const header = document.querySelector('.header');
-	let lastScrollTop = 0;
-	let lastDirection = 'up';
-	let ticking = false;
-	const scrollThreshold = 10; // Voorkomt knipperen bij kleine bewegingen
-	const scrolledThreshold = 50; // Vanaf wanneer de achtergrond wit wordt
+        const header = document.querySelector('.header');
+        const topbar = document.querySelector('.topbar');
+        const dropdownToggles = document.querySelectorAll('.primary-navigation .dropdown-toggle');
+        let lastScrollTop = 0;
+        let lastDirection = 'up';
+        let ticking = false;
+        const scrollThreshold = 10; // Voorkomt knipperen bij kleine bewegingen
+        const scrolledThreshold = 50; // Vanaf wanneer de achtergrond wit wordt
 
-	function updateHeader() {
-		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const updateHeaderOffset = () => {
+                const headerHeight = header?.offsetHeight || 0;
+                const topbarHeight = topbar?.offsetHeight || 0;
+                document.documentElement.style.setProperty('--header-total-height', `${headerHeight + topbarHeight}px`);
+        };
+
+        const closeOpenDropdowns = () => {
+                dropdownToggles.forEach((toggle) => {
+                        if (window.bootstrap?.Dropdown) {
+                                const instance = window.bootstrap.Dropdown.getOrCreateInstance(toggle);
+                                instance.hide();
+                        }
+
+                        toggle.setAttribute('aria-expanded', 'false');
+                        toggle.classList.remove('show');
+                        toggle.parentElement?.classList.remove('show');
+
+                        const dropdownMenu = toggle.parentElement?.querySelector('.dropdown-menu');
+                        dropdownMenu?.classList.remove('show');
+                });
+        };
+
+        function updateHeader() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (document.querySelector('.dropdown-menu.show')) {
+                        closeOpenDropdowns();
+                }
 
 		// Voeg of verwijder de 'scrolled' class op basis van scrollhoogte
 		if (scrollTop > scrolledThreshold) {
@@ -36,10 +64,17 @@ export function header() {
 		ticking = false;
 	}
 
-	window.addEventListener('scroll', () => {
-		if (!ticking) {
-			requestAnimationFrame(updateHeader);
-			ticking = true;
-		}
-	});
+        window.addEventListener('scroll', () => {
+                if (!ticking) {
+                        requestAnimationFrame(updateHeader);
+                        ticking = true;
+                }
+        });
+
+        window.addEventListener('resize', () => {
+                updateHeaderOffset();
+                closeOpenDropdowns();
+        });
+
+        updateHeaderOffset();
 }
