@@ -28,6 +28,41 @@ body {
                .header {
                        background: transparent;
 
+                       &:not(.scrolled) {
+                               .navbar-nav {
+                                       li {
+                                               a {
+                                                       color: #fff;
+                                                       text-decoration: none;
+
+                                                       &:hover {
+                                                               color: #fff;
+                                                               text-decoration: underline;
+                                                               text-decoration-thickness: 2px;
+                                                               text-underline-offset: 8px;
+                                                       }
+                                               }
+
+                                               &.current-menu-parent>a:not(.btn),
+                                               &.current-menu-item>a:not(.btn),
+                                               &.current_page_item>a:not(.btn) {
+                                                       color: #fff;
+                                                       text-decoration: underline;
+                                                       text-decoration-thickness: 2px;
+                                                       text-underline-offset: 8px;
+                                               }
+                                       }
+
+                                       .dropdown-toggle {
+                                               color: #fff;
+
+                                               &::after {
+                                                       border-color: currentColor;
+                                               }
+                                       }
+                               }
+                       }
+
                        .header-brand {
                                img {
                                        filter: brightness(0) invert(1);
@@ -86,10 +121,10 @@ body {
                         gap: 20px;
                         flex-direction: row;
 
-                        li {
-                                a {
-                                        color: #fff;
-                                        text-decoration: none;
+                               li {
+                                       a {
+                                               color: #fff;
+                                               text-decoration: none;
                                         display: inline-flex;
                                         align-items: center;
                                         gap: 6px;
