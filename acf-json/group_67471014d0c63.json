@@ -61,6 +61,42 @@
             "save_options": 0
         },
         {
+            "key": "field_67b1b72a2f8aa",
+            "label": "Transparante header",
+            "name": "hero_transparante_header",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Kies hoe de header zich gedraagt. Standaard volgt de instelling per post type.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67ae136850fc3",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "inherit": "Standaard (per posttype)",
+                "transparent": "Altijd transparant",
+                "solid": "Nooit transparant"
+            },
+            "default_value": "inherit",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
             "key": "field_674711ae13853",
             "label": "Afbeelding",
             "name": "hero_afbeelding",

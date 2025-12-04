@@ -13,6 +13,21 @@ body {
        &.header-transparent {
                .header {
                        background: transparent;
+
+                       .header-brand {
+                               img {
+                                       filter: brightness(0) invert(1);
+                               }
+                       }
+               }
+
+               .topbar {
+                       background: transparent;
+                       color: #fff;
+
+                       a {
+                               color: #fff;
+                       }
                }
        }
 
@@ -96,9 +111,15 @@ body {
                         opacity: 1;
                 }
 
-                &.scrolled {
-                        background: $light !important;
-                        box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.05);
+               &.scrolled {
+                       background: $light !important;
+                       box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.05);
+
+                        .header-brand {
+                                img {
+                                        filter: none;
+                                }
+                        }
 
                         .navbar-nav {
                                 li {

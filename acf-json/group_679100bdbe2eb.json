@@ -249,6 +249,53 @@
             "default_value": "",
             "allow_in_bindings": 1,
             "placeholder": ""
+        },
+        {
+            "key": "field_67cf2246f8fa1",
+            "label": "Header",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_67cf227df8fa2",
+            "label": "Transparante header standaard",
+            "name": "header_transparante_post_types",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Selecteer voor welke post types de header standaard transparant mag zijn wanneer de hero een afbeelding heeft.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "page": "Pagina's",
+                "post": "Berichten",
+                "product": "Producten",
+                "locaties": "Locaties"
+            },
+            "default_value": [],
+            "return_format": "value",
+            "allow_custom": 0,
+            "layout": "vertical",
+            "toggle": 0,
+            "allow_in_bindings": 0,
+            "save_custom": 0,
+            "custom_choice_button_text": "Voeg optie toe"
         }
     ],
     "location": [

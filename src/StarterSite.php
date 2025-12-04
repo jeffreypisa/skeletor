@@ -73,7 +73,44 @@ class StarterSite extends Site {
                 if (apply_filters('skeletor_show_topbar', true)) {
                         $classes[] = 'has-topbar';
                 }
+
+                if ($this->should_use_transparent_header()) {
+                        $classes[] = 'header-transparent';
+                }
+
                 return $classes;
+        }
+
+        private function should_use_transparent_header(): bool {
+                if (!is_singular()) {
+                        return false;
+                }
+
+                if (!get_field('hero_tonen')) {
+                        return false;
+                }
+
+                $hero_background = get_field('hero_achtergrond');
+                $hero_image = get_field('hero_afbeelding');
+
+                if ($hero_background !== 'afbeelding' || empty($hero_image)) {
+                        return false;
+                }
+
+                $preference = get_field('hero_transparante_header');
+
+                if ($preference === 'transparent') {
+                        return true;
+                }
+
+                if ($preference === 'solid') {
+                        return false;
+                }
+
+                $options = get_fields('options');
+                $default_post_types = $options['header_transparante_post_types'] ?? [];
+
+                return in_array(get_post_type(), $default_post_types, true);
         }
 
 	/**

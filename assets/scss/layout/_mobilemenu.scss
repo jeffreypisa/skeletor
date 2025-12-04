@@ -40,6 +40,28 @@
         }
 }
 
+body.header-transparent {
+        #mobilemenubtn {
+                background: transparent;
+
+                .lines {
+                        span {
+                                background-color: #fff;
+                        }
+                }
+        }
+
+        .header.scrolled ~ #mobilemenubtn {
+                background: $light;
+
+                .lines {
+                        span {
+                                background-color: $dark;
+                        }
+                }
+        }
+}
+
 .mobilemenu {
         position: fixed;
         inset: 0;
