@@ -90,26 +90,28 @@
 
         &__meta {
                 display: flex;
-                align-items: center;
-                gap: 12px;
-                padding-bottom: 8px;
-                border-bottom: 1px solid $gray-200;
+                align-items: stretch;
                 margin-bottom: 8px;
+                border-bottom: 1px solid $gray-200;
         }
 
         &__back {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
+                gap: 10px;
                 border: none;
                 background: transparent;
                 color: $dark;
-                font-weight: 600;
-                padding: 0;
-        }
-
-        &__current {
                 font-weight: 700;
+                width: 100%;
+                padding: 12px 0;
+                text-align: left;
+                font-size: 1.125rem;
+                line-height: 1.3;
+
+                &:hover {
+                        color: $primary;
+                }
         }
 
         &__item {
