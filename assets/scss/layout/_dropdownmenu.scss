@@ -30,6 +30,7 @@ header {
                 left: 0;
                 right: 0;
                 width: 100%;
+                display: block !important;
                 top: var(--header-total-height, var(--header-height, 110px));
                 background-color: white; /* Pas aan naar wens */
                 padding: 40px 0 !important;
@@ -57,7 +58,7 @@ header {
                         opacity: 0;
                         transform: translateY(-12px);
                         pointer-events: none;
-                        visibility: hidden;
+                        visibility: visible;
                 }
         }
 
