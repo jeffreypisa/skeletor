@@ -7,7 +7,6 @@ export function header() {
         const panelTransition = 320;
         const stickyRevealOffset = 600;
         let lastScrollTop = 0;
-        let lastDirection = 'up';
         let ticking = false;
         let scrollThreshold = 24; // Voorkomt knipperen bij kleine bewegingen
         let scrolledThreshold = 140; // Vanaf wanneer de achtergrond wit wordt
@@ -15,14 +14,12 @@ export function header() {
         let stickyJustActivated = false;
 
 	const updateHeaderOffset = () => {
-		const headerHeight = header?.offsetHeight || 0;
-		const topbarHeight = topbar?.offsetHeight || 0;
-		const totalHeight = headerHeight || topbarHeight;
+                const headerHeight = header?.offsetHeight || 0;
 
-                scrolledThreshold = Math.max(140, totalHeight + topbarHeight + 30);
+                scrolledThreshold = Math.max(140, (headerHeight || 60) + 30);
                 scrollThreshold = Math.max(16, Math.round((headerHeight || 60) * 0.4));
                 document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-                document.documentElement.style.setProperty('--header-total-height', `${totalHeight}px`);
+                document.documentElement.style.setProperty('--header-total-height', `${headerHeight}px`);
         };
 
         const setStickyState = (active, { animate = false } = {}) => {
@@ -44,6 +41,12 @@ export function header() {
                                 header.classList.add('visible');
                                 header.classList.remove('hidden');
                         });
+
+                        window.setTimeout(() => {
+                                stickyJustActivated = false;
+                        }, panelTransition);
+                } else {
+                        stickyJustActivated = false;
                 }
         };
 
@@ -143,36 +146,30 @@ export function header() {
 
                 if (scrollTop <= 0) {
                         setStickyState(false);
-                        lastDirection = 'up';
                         lastScrollTop = 0;
                         ticking = false;
                         return;
                 }
 
-                if (!stickyActive && !pastStickyReveal) {
+                if (!pastStickyReveal) {
                         setStickyState(false);
-                        lastDirection = direction;
                         lastScrollTop = scrollTop;
                         ticking = false;
                         return;
                 }
 
                 if (direction === 'up') {
-                        if (!stickyActive && pastStickyReveal) {
+                        if (!stickyActive) {
                                 setStickyState(true, { animate: true });
                         }
 
-                        if (stickyActive && !stickyJustActivated) {
-                                header.classList.remove('hidden');
-                                header.classList.add('visible');
-                        }
-                } else if (stickyActive && scrollTop > lastScrollTop + scrollThreshold) {
+                        header.classList.remove('hidden');
+                        header.classList.add('visible');
+                } else if (stickyActive && !stickyJustActivated && scrollTop > lastScrollTop + scrollThreshold) {
                         header.classList.remove('visible');
                         header.classList.add('hidden');
                 }
 
-                stickyJustActivated = false;
-                lastDirection = direction;
                 lastScrollTop = scrollTop;
                 ticking = false;
         }

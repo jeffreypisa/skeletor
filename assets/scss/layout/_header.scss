@@ -128,8 +128,10 @@ body {
                flex-direction: column;
 
                 &.is-sticky {
-                        position: sticky;
+                        position: fixed;
                         top: 0;
+                        left: 0;
+                        right: 0;
                         transform: translateY(0);
                 }
 
