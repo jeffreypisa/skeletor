@@ -1,211 +1,211 @@
 /* Hamburger button styles */
 #mobilemenubtn {
-        position: fixed;
-        top: 10px;
-        right: 25px;
-        z-index: 1100;
-        cursor: pointer;
-        background: $light;
-        border: none;
-        padding: 10px 8px;
+	position: fixed;
+	top: 10px;
+	right: 25px;
+	z-index: 1100;
+	cursor: pointer;
+	background: $light;
+	border: none;
+	padding: 10px 8px;
 
-        .lines {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
+	.lines {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 
-                span {
-                        display: block;
-                        width: 25px;
-                        height: 3px;
-                        background-color: $dark;
-                        transition: transform 0.3s $ease, opacity 0.3s $ease;
-                }
-        }
+		span {
+			display: block;
+			width: 25px;
+			height: 3px;
+			background-color: $dark;
+			transition: transform 0.3s $ease, opacity 0.3s $ease;
+		}
+	}
 
-        &.active .lines span:nth-child(1) {
-                transform: rotate(45deg) translate(6px, 6px);
-        }
+	&.active .lines span:nth-child(1) {
+		transform: rotate(45deg) translate(6px, 6px);
+	}
 
-        &.active .lines span:nth-child(2) {
-                opacity: 0;
-        }
+	&.active .lines span:nth-child(2) {
+		opacity: 0;
+	}
 
-        &.active .lines span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
-        }
+	&.active .lines span:nth-child(3) {
+		transform: rotate(-45deg) translate(5px, -5px);
+	}
 
-        &.active {
-                transform: rotate(-90deg);
-        }
+	&.active {
+		transform: rotate(-90deg);
+	}
 }
 
 body.header-transparent {
-        #mobilemenubtn {
-                background: transparent;
+	#mobilemenubtn {
+		background: transparent;
 
-                .lines {
-                        span {
-                                background-color: #fff;
-                        }
-                }
-        }
+		.lines {
+			span {
+				background-color: #fff;
+			}
+		}
+	}
 
-        .header.scrolled ~ #mobilemenubtn {
-                background: $light;
+	.header.scrolled~#mobilemenubtn {
+		background: $light;
 
-                .lines {
-                        span {
-                                background-color: $dark;
-                        }
-                }
-        }
+		.lines {
+			span {
+				background-color: $dark;
+			}
+		}
+	}
 }
 
 .mobilemenu {
-        position: fixed;
-        inset: 0;
-        background-color: rgba($light, 0.98);
-        z-index: 999;
-        transform: translateX(-100%);
-        transition: transform 0.4s $ease;
-        display: flex;
-        flex-direction: column;
-        padding: 80px 0 32px;
-        overflow: hidden;
+	position: fixed;
+	inset: 0;
+	background-color: rgba($light, 0.98);
+	z-index: 999;
+	transform: translateX(-100%);
+	transition: transform 0.4s $ease;
+	display: flex;
+	flex-direction: column;
+	padding: 80px 0 32px;
+	overflow: hidden;
 
-        &.active {
-                transform: translateX(0);
-        }
+	&.active {
+		transform: translateX(0);
+	}
 
-        .container {
-                flex: 1 1 auto;
-                display: flex;
-        }
+	.container {
+		flex: 1 1 auto;
+		display: flex;
+	}
 
-        &__panels {
-                position: relative;
-                flex: 1 1 auto;
-                width: 100%;
-                overflow: hidden;
-                padding: 0;
-        }
+	&__panels {
+		position: relative;
+		flex: 1 1 auto;
+		width: 100%;
+		overflow: hidden;
+		padding: 0;
+	}
 
-        &__level {
-                list-style: none;
-                padding: 0 0 16px;
-                margin: 0;
-                position: absolute;
-                inset: 0;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                background: rgba($light, 0.98);
-                transform: translateX(100%);
-                transition: transform 0.35s $ease;
-                overflow-y: auto;
+	&__level {
+		list-style: none;
+		padding: 0 0 16px;
+		margin: 0;
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0px;
+		background: rgba($light, 0.98);
+		transform: translateX(100%);
+		transition: transform 0.35s $ease;
+		overflow-y: auto;
 
-                &.is-active {
-                        transform: translateX(0);
-                }
-        }
+		&.is-active {
+			transform: translateX(0);
+		}
+	}
 
-        &__meta {
-                display: flex;
-                align-items: stretch;
-                margin-bottom: 8px;
-                border-bottom: 1px solid $gray-200;
-        }
+	&__meta {
+		display: flex;
+		align-items: stretch;
+		border-bottom: 1px solid $greylight;
+	}
 
-        &__back {
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                border: none;
-                background: transparent;
-                color: $dark;
-                font-weight: 700;
-                padding: 12px 0;
-                text-align: left;
-                font-size: 1.125rem;
-                line-height: 1.3;
-                width: 100%;
-                justify-content: flex-start;
+	&__back {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		border: none;
+		background: transparent;
+		color: $dark;
+		font-weight: 700;
+		padding: 12px 0;
+		text-align: left;
+		font-size: 1.125rem;
+		line-height: 1.3;
+		width: 100%;
+		justify-content: flex-start;
 
-                &:hover {
-                        color: $primary;
-                        background: rgba($primary, 0.08);
-                }
-        }
+		&:hover {
+			color: $primary;
+			background: rgba($primary, 0.08);
+		}
+	}
 
-        &__item {
-                display: flex;
-                align-items: stretch;
-                justify-content: space-between;
-                gap: 12px;
-                border-bottom: 1px solid $gray-200;
+	&__item {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-between;
+		gap: 12px;
+		border-bottom: 1px solid $greylight;
 
-                &:hover {
-                        background: rgba($primary, 0.06);
-                }
-        }
+		&:hover {
+			background: rgba($primary, 0.06);
+		}
+	}
 
-        &__link,
-        &__link-button {
-                @extend .h5;
-                font-size: 1.125rem;
-                font-weight: 700;
-                line-height: 1.3;
-                color: $dark;
-                text-decoration: none;
-                margin: 0;
-                background: none;
-                border: none;
-                padding: 12px 0;
-                text-align: left;
-                width: 100%;
-                display: inline-flex;
-                align-items: center;
-                justify-content: space-between;
+	&__link,
+	&__link-button {
+		@extend .h5;
+		font-size: 1.125rem;
+		font-weight: 700;
+		line-height: 1.3;
+		color: $dark;
+		text-decoration: none;
+		margin: 0;
+		background: none;
+		border: none;
+		padding: 12px 0;
+		text-align: left;
+		width: 100%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
 
-                .mobilemenu__label {
-                        font: inherit;
-                        line-height: inherit;
-                }
+		.mobilemenu__label {
+			font: inherit;
+			line-height: inherit;
+		}
 
-                &:hover {
-                        color: $primary;
-                }
-        }
+		&:hover {
+			color: $primary;
+		}
+	}
 
-        &__toggle {
-                border: none;
-                background: transparent;
-                color: $dark;
-                padding: 0;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-        }
+	&__toggle {
+		border: none;
+		background: transparent;
+		color: $dark;
+		padding: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 .chevron {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-right: 1.75px solid currentColor;
-        border-bottom: 1.75px solid currentColor;
-        transform: rotate(45deg);
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-right: 1.75px solid currentColor;
+	border-bottom: 1.75px solid currentColor;
+	transform: rotate(45deg);
+	margin: 0 2px;
 
-        &.chevron-down {
-                transform: rotate(45deg) translateY(-1px);
-        }
+	&.chevron-down {
+		transform: rotate(45deg) translateY(-1px);
+	}
 
-        &.chevron-right {
-                transform: rotate(-45deg);
-        }
+	&.chevron-right {
+		transform: rotate(-45deg);
+	}
 
-        &.chevron-left {
-                transform: rotate(135deg);
-        }
+	&.chevron-left {
+		transform: rotate(135deg);
+	}
 }

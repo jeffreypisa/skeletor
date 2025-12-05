@@ -2,20 +2,16 @@
 .dropdown-item:not(:last-child) {
 	border-bottom: $dropdown-border-width solid $dropdown-border-color;
 }
-
-// Optioneel: verwijder marges rond de divider
 $dropdown-divider-margin-y: 0;
 
-// Verwijder extra ruimte boven en onder de dropdown
-$dropdown-padding-y: 0;
+$dropdown-padding-y: 60px;
 
 $dropdown-link-active-bg: #fff;
 
 
 .dropdown-menu {
-	padding: 0 15px 0 !important;
 	box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
-	border-radius: 10px;
+	border-radius: 0px !important;
 	border: 0 !important;
 
 	.dropdown-item {

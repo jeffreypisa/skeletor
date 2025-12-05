@@ -1,109 +1,114 @@
 header {
-        .sub-nav {
-                position: relative;
-                z-index: 900;
-                pointer-events: none;
+	.sub-nav {
+		position: relative;
+		z-index: 900;
+		pointer-events: none;
 
-                &.is-open {
-                        pointer-events: auto;
-                }
-        }
+		&.is-open {
+			pointer-events: auto;
+		}
+	}
 
-        .nav-button.dropdown-toggle::after {
-                display: none !important;
-        }
+	.nav-button.dropdown-toggle::after {
+		display: none !important;
+	}
 
-        .dropdown-toggle.show {
-                color: $primary !important;
-        }
-        .nav-button {
-                border: none;
-                background: transparent;
-                padding: 0;
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-        }
-        /* Zorgt ervoor dat het dropdown-menu volledig breed is */
-        .dropdown-menu {
-                position: fixed;
-                left: 0;
-                right: 0;
-                width: 100%;
-                display: block !important;
-                top: var(--header-total-height, var(--header-height, 110px));
-                background-color: white; /* Pas aan naar wens */
-                padding: 40px 0 !important;
-                margin-top: 0 !important;
-                box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
-                z-index: 900 !important;
-                transition: opacity 0.32s ease, transform 0.32s ease;
-                transform: translateY(-12px);
-                opacity: 0;
-                visibility: hidden;
-                border-top: 1px solid #f0f0f0 !important;
-                border-radius: 0 !important;
-                pointer-events: none;
-                .row {
-                        flex-wrap: wrap !important;
-                }
-                &.show {
-                        transform: translateY(0);
-                        opacity: 1;
-                        pointer-events: auto;
-                        visibility: visible;
-                }
+	.dropdown-toggle.show {
+		color: $primary !important;
+	}
 
-                &.is-leaving {
-                        opacity: 0;
-                        transform: translateY(-12px);
-                        pointer-events: none;
-                        visibility: visible;
-                }
-        }
+	.nav-button {
+		border: none;
+		background: transparent;
+		padding: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
 
-        .dropdown-menu__intro {
-                p {
-                        margin: 0;
-                        color: $dark;
-                }
-        }
+	/* Zorgt ervoor dat het dropdown-menu volledig breed is */
+	.dropdown-menu {
+		position: fixed;
+		left: 0;
+		right: 0;
+		width: 100%;
+		display: block !important;
+		top: var(--header-total-height, var(--header-height, 110px));
+		background-color: white;
+		/* Pas aan naar wens */
+		padding: 40px 0 !important;
+		margin-top: 0 !important;
+		box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+		z-index: 900 !important;
+		transition: opacity 0.32s ease, transform 0.32s ease;
+		transform: translateY(-12px);
+		opacity: 0;
+		visibility: hidden;
+		border-top: 1px solid #f0f0f0 !important;
+		border-radius: 0 !important;
+		pointer-events: none;
 
-        .dropdown-menu__content {
-                font-size: 1rem;
-                line-height: 1.6;
+		.row {
+			flex-wrap: wrap !important;
+		}
 
-                *:last-child {
-                        margin-bottom: 0;
-                }
-        }
+		&.show {
+			transform: translateY(0);
+			opacity: 1;
+			pointer-events: auto;
+			visibility: visible;
+		}
 
-        .dropdown-menu__links {
-                .dropdown-item {
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        gap: 8px;
-                        width: 100%;
-                        white-space: normal;
+		&.is-leaving {
+			opacity: 0;
+			transform: translateY(-12px);
+			pointer-events: none;
+			visibility: visible;
+		}
+	}
 
-                                .chevron {
-                                        flex-shrink: 0;
-                                }
-                        }
-        }
+	.dropdown-menu__intro {
+		p {
+			margin: 0;
+			color: $dark;
+		}
+	}
 
-        /* Zorgt ervoor dat de kolommen mooi uitlijnen */
-        .dropdown-menu .row {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-        }
+	.dropdown-menu__content {
+		font-size: 1rem;
+		line-height: 1.6;
 
-        .nav-button[aria-expanded='true'],
-        .nav-item.is-active .nav-button {
-                color: $primary !important;
-                text-decoration: underline;
-                text-decoration-thickness: 2px;
-                text-underline-offset: 8px;
-        }
+		*:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.dropdown-menu__links {
+		.dropdown-item {
+			display: inline-flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
+			width: 100%;
+			white-space: normal;
+
+			.chevron {
+				flex-shrink: 0;
+			}
+		}
+	}
+
+	/* Zorgt ervoor dat de kolommen mooi uitlijnen */
+	.dropdown-menu .row {
+		flex-wrap: nowrap;
+		overflow-x: auto;
+	}
+
+	.nav-button[aria-expanded='true'],
+	.nav-item.is-active .nav-button {
+		color: $primary !important;
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 8px;
+	}
 }

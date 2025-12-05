@@ -7,7 +7,6 @@
 body.header-transparent {
         .strook-hero {
                 margin-top: calc(-1 * var(--header-total-height, 60px));
-                padding-top: calc(150px + var(--header-total-height, 60px));
         }
 }
 
