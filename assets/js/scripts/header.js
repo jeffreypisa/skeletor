@@ -103,14 +103,23 @@ export function header() {
 		}
 	});
 
-	function updateHeader() {
-		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        function updateHeader() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const beyondScrolled = scrollTop > scrolledThreshold;
                 const pastHideOffset = scrollTop > hideOffset;
 
-		if (document.querySelector('.dropdown-menu.show')) {
-			closeOpenDropdowns();
-		}
+                if (!pastHideOffset) {
+                        header.classList.remove('hidden');
+                        header.classList.add('visible');
+                        lastDirection = 'up';
+                        lastScrollTop = scrollTop;
+                        ticking = false;
+                        return;
+                }
+
+                if (document.querySelector('.dropdown-menu.show')) {
+                        closeOpenDropdowns();
+                }
 
 		if (beyondScrolled) {
 			header.classList.add('scrolled');
