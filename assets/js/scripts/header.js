@@ -53,6 +53,8 @@ export function header() {
                         }, panelTransition);
                 } else {
                         stickyJustActivated = false;
+                        header.classList.add('visible');
+                        header.classList.remove('hidden');
                 }
         };
 

@@ -138,13 +138,14 @@ body {
 		display: flex;
 		flex-direction: column;
 
-		&.is-sticky {
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			transform: translateY(0);
-		}
+                &.is-sticky {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        transform: translateY(-100%);
+                        opacity: 0;
+                }
 
 		.navbar-nav {
 			gap: 20px;
@@ -187,14 +188,14 @@ body {
 			}
 		}
 
-		&.is-sticky.hidden {
-			transform: translateY(-100%);
-			opacity: 0;
-		}
+                &.is-sticky.hidden {
+                        transform: translateY(-100%);
+                        opacity: 0;
+                }
 
-		&.is-sticky.visible {
-			transform: translateY(0);
-			opacity: 1;
+                &.is-sticky.visible {
+                        transform: translateY(0);
+                        opacity: 1;
 		}
 
 		&.scrolled {
