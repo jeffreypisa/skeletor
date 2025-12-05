@@ -1,16 +1,17 @@
 export function header() {
 	const header = document.querySelector('.header');
 	const topbar = document.querySelector('.topbar');
-	const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
-	const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
-	const subNav = document.querySelector('.sub-nav');
-	const panelTransition = 320;
+        const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
+        const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
+        const subNav = document.querySelector('.sub-nav');
+        const panelTransition = 320;
+        const stickyRevealOffset = 600;
         let lastScrollTop = 0;
         let lastDirection = 'up';
         let ticking = false;
         let scrollThreshold = 24; // Voorkomt knipperen bij kleine bewegingen
         let scrolledThreshold = 140; // Vanaf wanneer de achtergrond wit wordt
-        let hideOffset = 160; // Vanaf wanneer de header mag verdwijnen bij scroll naar beneden
+        let stickyActive = false;
 
 	const updateHeaderOffset = () => {
 		const headerHeight = header?.offsetHeight || 0;
@@ -19,11 +20,18 @@ export function header() {
 
                 scrolledThreshold = Math.max(140, totalHeight + topbarHeight + 30);
                 scrollThreshold = Math.max(16, Math.round((headerHeight || 60) * 0.4));
-                hideOffset = Math.max(120, totalHeight + 10);
-
                 document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
                 document.documentElement.style.setProperty('--header-total-height', `${totalHeight}px`);
-	};
+        };
+
+        const setStickyState = (active) => {
+                stickyActive = active;
+                header.classList.toggle('is-sticky', active);
+
+                if (!active) {
+                        header.classList.remove('hidden', 'visible');
+                }
+        };
 
 	const closeOpenDropdowns = () => {
 		dropdownPanels.forEach((panel) => {
@@ -106,53 +114,53 @@ export function header() {
         function updateHeader() {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const beyondScrolled = scrollTop > scrolledThreshold;
-                const pastHideOffset = scrollTop > hideOffset;
+                const direction = scrollTop > lastScrollTop ? 'down' : 'up';
+                const pastStickyReveal = scrollTop > stickyRevealOffset;
 
-                if (!pastHideOffset) {
-                        header.classList.remove('hidden');
-                        header.classList.add('visible');
-                        lastDirection = 'up';
-                        lastScrollTop = scrollTop;
-                        ticking = false;
-                        return;
-                }
-
-                if (document.querySelector('.dropdown-menu.show')) {
+                if (document.querySelector('.dropdown-menu.show') && direction === 'down') {
                         closeOpenDropdowns();
                 }
 
-		if (beyondScrolled) {
-			header.classList.add('scrolled');
-		} else {
-			header.classList.remove('scrolled');
-		}
+                if (beyondScrolled) {
+                        header.classList.add('scrolled');
+                } else {
+                        header.classList.remove('scrolled');
+                }
 
                 if (scrollTop <= 0) {
-                        header.classList.remove('hidden');
-                        header.classList.add('visible');
+                        setStickyState(false);
                         lastDirection = 'up';
                         lastScrollTop = 0;
                         ticking = false;
                         return;
                 }
 
-                if (pastHideOffset && scrollTop > lastScrollTop + scrollThreshold) {
-                        if (lastDirection !== 'down') {
-                                header.classList.remove('visible');
-                                header.classList.add('hidden');
-                                lastDirection = 'down';
-                        }
-                } else if (scrollTop < lastScrollTop - scrollThreshold || !pastHideOffset) {
-                        if (lastDirection !== 'up') {
-                                header.classList.remove('hidden');
-                                header.classList.add('visible');
-                                lastDirection = 'up';
-                        }
+                if (!stickyActive && !pastStickyReveal) {
+                        setStickyState(false);
+                        lastDirection = direction;
+                        lastScrollTop = scrollTop;
+                        ticking = false;
+                        return;
                 }
 
-		lastScrollTop = scrollTop;
-		ticking = false;
-	}
+                if (direction === 'up') {
+                        if (!stickyActive && pastStickyReveal) {
+                                setStickyState(true);
+                        }
+
+                        if (stickyActive) {
+                                header.classList.remove('hidden');
+                                header.classList.add('visible');
+                        }
+                } else if (stickyActive && scrollTop > lastScrollTop + scrollThreshold) {
+                        header.classList.remove('visible');
+                        header.classList.add('hidden');
+                }
+
+                lastDirection = direction;
+                lastScrollTop = scrollTop;
+                ticking = false;
+        }
 
 	window.addEventListener('scroll', () => {
 		if (!ticking) {

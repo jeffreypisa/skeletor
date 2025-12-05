@@ -115,8 +115,7 @@ body {
        }
 
        .header {
-               position: sticky;
-               top: 0;
+               position: relative;
                width: 100%;
                min-height: $header-height;
                background: $light;
@@ -124,9 +123,15 @@ body {
                overflow: visible;
                transition: opacity 0.3s $ease, transform 0.3s $ease, background 0.3s $ease;
                opacity: 1;
-               transform: translateY(0);
+               transform: none;
                display: flex;
                flex-direction: column;
+
+                &.is-sticky {
+                        position: sticky;
+                        top: 0;
+                        transform: translateY(0);
+                }
 
                 .navbar-nav {
                         gap: 20px;
@@ -161,12 +166,12 @@ body {
                         }
                 }
 
-                &.hidden {
+                &.is-sticky.hidden {
                         transform: translateY(-100%);
                         opacity: 0;
                 }
 
-                &.visible {
+                &.is-sticky.visible {
                         transform: translateY(0);
                         opacity: 1;
                 }
