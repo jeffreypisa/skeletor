@@ -12,6 +12,7 @@ export function header() {
         let scrollThreshold = 24; // Voorkomt knipperen bij kleine bewegingen
         let scrolledThreshold = 140; // Vanaf wanneer de achtergrond wit wordt
         let stickyActive = false;
+        let stickyJustActivated = false;
 
 	const updateHeaderOffset = () => {
 		const headerHeight = header?.offsetHeight || 0;
@@ -24,12 +25,25 @@ export function header() {
                 document.documentElement.style.setProperty('--header-total-height', `${totalHeight}px`);
         };
 
-        const setStickyState = (active) => {
+        const setStickyState = (active, { animate = false } = {}) => {
                 stickyActive = active;
                 header.classList.toggle('is-sticky', active);
 
                 if (!active) {
+                        stickyJustActivated = false;
                         header.classList.remove('hidden', 'visible');
+                        return;
+                }
+
+                if (animate) {
+                        stickyJustActivated = true;
+                        header.classList.add('hidden');
+                        header.classList.remove('visible');
+
+                        requestAnimationFrame(() => {
+                                header.classList.add('visible');
+                                header.classList.remove('hidden');
+                        });
                 }
         };
 
@@ -145,10 +159,10 @@ export function header() {
 
                 if (direction === 'up') {
                         if (!stickyActive && pastStickyReveal) {
-                                setStickyState(true);
+                                setStickyState(true, { animate: true });
                         }
 
-                        if (stickyActive) {
+                        if (stickyActive && !stickyJustActivated) {
                                 header.classList.remove('hidden');
                                 header.classList.add('visible');
                         }
@@ -157,6 +171,7 @@ export function header() {
                         header.classList.add('hidden');
                 }
 
+                stickyJustActivated = false;
                 lastDirection = direction;
                 lastScrollTop = scrollTop;
                 ticking = false;
