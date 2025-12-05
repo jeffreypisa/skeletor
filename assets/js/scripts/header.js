@@ -1,6 +1,8 @@
 export function header() {
-	const header = document.querySelector('.header');
-	const topbar = document.querySelector('.topbar');
+        const header = document.querySelector('.header');
+        const topbar = document.querySelector('.topbar');
+        const body = document.body;
+        const root = document.documentElement;
         const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
         const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
         const subNav = document.querySelector('.sub-nav');
@@ -13,18 +15,22 @@ export function header() {
         let stickyActive = false;
         let stickyJustActivated = false;
 
-	const updateHeaderOffset = () => {
+        const updateHeaderOffset = () => {
                 const headerHeight = header?.offsetHeight || 0;
+                const topbarHeight = topbar?.offsetHeight || 0;
+                const totalHeight = headerHeight + topbarHeight;
 
                 scrolledThreshold = Math.max(140, (headerHeight || 60) + 30);
                 scrollThreshold = Math.max(16, Math.round((headerHeight || 60) * 0.4));
-                document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-                document.documentElement.style.setProperty('--header-total-height', `${headerHeight}px`);
+                root.style.setProperty('--header-height', `${headerHeight}px`);
+                root.style.setProperty('--header-total-height', `${totalHeight}px`);
+                root.style.setProperty('--header-sticky-space', `${totalHeight}px`);
         };
 
         const setStickyState = (active, { animate = false } = {}) => {
                 stickyActive = active;
                 header.classList.toggle('is-sticky', active);
+                body.classList.toggle('header-sticky-active', active);
 
                 if (!active) {
                         stickyJustActivated = false;
