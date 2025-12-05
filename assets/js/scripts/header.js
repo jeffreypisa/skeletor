@@ -62,13 +62,14 @@ export function header() {
 			panel.classList.remove('is-leaving');
 		});
 
-		dropdownToggles.forEach((toggle) => {
-			toggle.setAttribute('aria-expanded', 'false');
-			toggle.classList.remove('show');
-			toggle.classList.remove('is-active');
-			toggle.parentElement?.classList.remove('show');
-			toggle.parentElement?.classList.remove('is-active');
-		});
+                dropdownToggles.forEach((toggle) => {
+                        toggle.setAttribute('aria-expanded', 'false');
+                        toggle.classList.remove('show');
+                        toggle.classList.remove('is-active');
+                        const parent = toggle.closest('.nav-item');
+                        parent?.classList.remove('show');
+                        parent?.classList.remove('is-active');
+                });
 
 		subNav?.setAttribute('aria-hidden', 'true');
 		subNav?.classList.remove('is-open');
@@ -85,11 +86,11 @@ export function header() {
 		}, panelTransition);
 	};
 
-	dropdownToggles.forEach((toggle) => {
-		const targetId = toggle.getAttribute('data-dropdown-trigger');
+        dropdownToggles.forEach((toggle) => {
+                const targetId = toggle.getAttribute('data-dropdown-trigger');
 
-		toggle.addEventListener('click', (event) => {
-			event.preventDefault();
+                toggle.addEventListener('click', (event) => {
+                        event.preventDefault();
 
                         const currentExpanded = toggle.getAttribute('aria-expanded') === 'true';
 			const targetPanel = document.querySelector(`[data-dropdown-panel="${targetId}"]`);
@@ -101,12 +102,13 @@ export function header() {
 				return;
 			}
 
-			dropdownToggles.forEach((button) => {
-				const isActiveToggle = button === toggle;
-				button.setAttribute('aria-expanded', isActiveToggle ? 'true' : 'false');
-				button.classList.toggle('is-active', isActiveToggle);
-				button.parentElement?.classList.toggle('is-active', isActiveToggle);
-			});
+                        dropdownToggles.forEach((button) => {
+                                const isActiveToggle = button === toggle;
+                                const parent = button.closest('.nav-item');
+                                button.setAttribute('aria-expanded', isActiveToggle ? 'true' : 'false');
+                                button.classList.toggle('is-active', isActiveToggle);
+                                parent?.classList.toggle('is-active', isActiveToggle);
+                        });
 
 			transitionExistingPanel(expandedPanel && expandedPanel != targetPanel ? expandedPanel : null);
 
@@ -169,8 +171,10 @@ export function header() {
                                 setStickyState(true, { animate: true });
                         }
 
-                        header.classList.remove('hidden');
-                        header.classList.add('visible');
+                        if (!stickyJustActivated) {
+                                header.classList.remove('hidden');
+                                header.classList.add('visible');
+                        }
                 } else if (stickyActive && !stickyJustActivated && scrollTop > lastScrollTop + scrollThreshold) {
                         header.classList.remove('visible');
                         header.classList.add('hidden');

@@ -37,9 +37,9 @@ body {
 			background: transparent;
 
 			&:not(.scrolled) {
-				.navbar-nav {
-					li {
-						a {
+                                .navbar-nav {
+                                        li {
+                                                a {
 							color: #fff;
 							text-decoration: none;
 
@@ -62,27 +62,34 @@ body {
 						}
 					}
 
-					.dropdown-toggle {
-						color: #fff;
+                                        .dropdown-toggle {
+                                                color: #fff;
 
-						&.current-menu-parent,
-						&.current-menu-ancestor,
-						&.current-menu-item,
-						&.current_page_item {
-							color: #fff;
-							text-decoration: underline;
-							text-decoration-thickness: 2px;
-							text-underline-offset: 8px;
-						}
+                                                &.current-menu-parent,
+                                                &.current-menu-ancestor,
+                                                &.current-menu-item,
+                                                &.current_page_item {
+                                                        color: #fff;
+                                                        text-decoration: underline;
+                                                        text-decoration-thickness: 2px;
+                                                        text-underline-offset: 8px;
+                                                }
 
-						&::after {
-							border-color: currentColor;
-						}
-					}
-				}
-			}
+                                                &::after {
+                                                        border-color: currentColor;
+                                                }
+                                        }
+                                        .nav-button[aria-expanded='true'],
+                                        .nav-item.is-active .nav-button {
+                                                color: #fff !important;
+                                                text-decoration: underline;
+                                                text-decoration-thickness: 2px;
+                                                text-underline-offset: 8px;
+                                        }
+                                }
+                        }
 
-			.header-brand {
+                        .header-brand {
 				img {
 					filter: brightness(0) invert(1);
 				}

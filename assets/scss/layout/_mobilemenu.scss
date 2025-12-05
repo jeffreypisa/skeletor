@@ -189,13 +189,13 @@ body.header-transparent {
 }
 
 .chevron {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	border-right: 1.75px solid currentColor;
-	border-bottom: 1.75px solid currentColor;
-	transform: rotate(45deg);
-	margin: 0 2px;
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-right: 1.25px solid currentColor;
+        border-bottom: 1.25px solid currentColor;
+        transform: rotate(45deg);
+        margin: 0 1px;
 
 	&.chevron-down {
 		transform: rotate(45deg) translateY(-1px);
