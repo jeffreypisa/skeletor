@@ -1,9 +1,9 @@
 /* Hamburger button styles */
 #mobilemenubtn {
-	position: fixed;
-	top: 10px;
-	right: 25px;
-	z-index: 1100;
+        position: fixed;
+        top: 10px;
+        right: 25px;
+        z-index: 1100;
 	cursor: pointer;
 	background: $light;
 	border: none;
@@ -63,16 +63,16 @@ body.header-transparent {
 }
 
 .mobilemenu {
-	position: fixed;
-	inset: 0;
-	background-color: rgba($light, 0.98);
-	z-index: 999;
-	transform: translateX(-100%);
-	transition: transform 0.4s $ease;
-	display: flex;
-	flex-direction: column;
-	padding: 80px 0 32px;
-	overflow: hidden;
+        position: fixed;
+        inset: var(--header-total-height, var(--header-height, 60px)) 0 0;
+        background-color: rgba($light, 0.98);
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.4s $ease;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0 32px;
+        overflow: hidden;
 
 	&.active {
 		transform: translateX(0);

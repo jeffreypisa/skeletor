@@ -8,6 +8,7 @@ export function header() {
     const subNav = document.querySelector('.sub-nav');
     const panelTransition = 320;
     const stickyRevealOffset = 600;
+    const desktopMedia = window.matchMedia('(min-width: 992px)');
 
     let lastScrollTop = 0;
     let ticking = false;
@@ -15,6 +16,30 @@ export function header() {
     let scrolledThreshold = 140;
     let stickyActive = false;
     let stickyJustActivated = false;
+
+    const ensureMobileStickyState = (scrollTop) => {
+        if (desktopMedia.matches) {
+            return false;
+        }
+
+        if (!stickyActive) {
+            setStickyState(true);
+        }
+
+        if (scrollTop > scrolledThreshold) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+
+        header.classList.remove('hidden');
+        header.classList.add('visible');
+
+        lastScrollTop = scrollTop;
+        ticking = false;
+
+        return true;
+    };
 
     const updateHeaderOffset = () => {
         const headerHeight = header?.offsetHeight || 0;
@@ -160,6 +185,10 @@ export function header() {
         const direction = scrollTop > lastScrollTop ? 'down' : 'up';
         const pastStickyReveal = scrollTop > stickyRevealOffset;
 
+        if (ensureMobileStickyState(scrollTop)) {
+            return;
+        }
+
         if (document.querySelector('.dropdown-menu.show') && direction === 'down') {
             closeOpenDropdowns();
         }
@@ -219,11 +248,24 @@ export function header() {
         }
     });
 
-    window.addEventListener('resize', () => {
+    const handleMediaChange = () => {
         updateHeaderOffset();
         closeOpenDropdowns();
-    });
+
+        if (desktopMedia.matches) {
+            setStickyState(false);
+            updateHeader();
+            return;
+        }
+
+        setStickyState(true);
+        header?.classList.add('visible');
+        header?.classList.remove('hidden');
+    };
+
+    window.addEventListener('resize', handleMediaChange);
+    desktopMedia.addEventListener('change', handleMediaChange);
 
     header?.classList.add('visible');
-    updateHeaderOffset();
+    handleMediaChange();
 }
