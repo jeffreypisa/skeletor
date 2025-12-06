@@ -8,7 +8,11 @@ export function header() {
     const subNav = document.querySelector('.sub-nav');
     const panelTransition = 320;
     const stickyRevealOffset = 600;
-    const desktopMedia = window.matchMedia('(min-width: 992px)');
+    const desktopBreakpoint =
+        getComputedStyle(root)
+            .getPropertyValue('--header-desktop-breakpoint')
+            .trim() || '992px';
+    const desktopMedia = window.matchMedia(`(min-width: ${desktopBreakpoint})`);
 
     let lastScrollTop = 0;
     let ticking = false;

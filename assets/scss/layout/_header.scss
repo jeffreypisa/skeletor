@@ -3,6 +3,10 @@ $header-height-lg: 110px;
 $topbar-height: 30px;
 $topbar-height-lg: 40px;
 
+:root {
+	--header-desktop-breakpoint: #{map-get($grid-breakpoints, lg)};
+}
+
 .topbar {
 	height: $topbar-height;
 	background: $light;
