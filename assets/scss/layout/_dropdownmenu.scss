@@ -33,6 +33,14 @@ header {
 
 		.row {
 			flex-wrap: wrap !important;
+			.dropdown-item {
+				&.current-menu-parent,
+				&.current-menu-item,
+				&.current_page_item,
+				&.current-menu-ancestor {
+					color: $primary
+				}
+			}
 		}
 
 		&.show {
