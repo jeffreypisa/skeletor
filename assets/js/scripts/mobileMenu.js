@@ -12,6 +12,19 @@ export function mobileMenu() {
         let menuBreakpointWidth = getBreakpointWidth();
         let bodyStickyClassFromMenu = false;
 
+        const syncStickySpacing = () => {
+                const headerHeight = header?.offsetHeight || 0;
+                const fallbackHeight = header?.querySelector('.topbar')?.offsetHeight || 0;
+                const stickySpace = headerHeight || fallbackHeight;
+
+                if (stickySpace) {
+                        document.documentElement.style.setProperty(
+                                '--header-sticky-space',
+                                `${stickySpace}px`
+                        );
+                }
+        };
+
         function getBreakpointWidth() {
                 const breakpointVar = `--bs-breakpoint-${menuBreakpoint}`;
                 const cssValue = getComputedStyle(document.documentElement)
@@ -46,6 +59,7 @@ export function mobileMenu() {
                 bodyStickyClassFromMenu = window.innerWidth < menuBreakpointWidth;
 
                 if (bodyStickyClassFromMenu) {
+                        syncStickySpacing();
                         document.body.classList.add('header-sticky-active');
                 }
                 toggleAria(true);
@@ -117,6 +131,9 @@ export function mobileMenu() {
 
         window.addEventListener('resize', () => {
                 updateBreakpointWidth();
+                if (mobileMenu.classList.contains('active')) {
+                        syncStickySpacing();
+                }
                 closeOnViewportChange();
         });
         window.addEventListener('scroll', closeOnViewportChange, { passive: true });
