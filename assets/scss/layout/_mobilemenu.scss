@@ -2,7 +2,7 @@
 #mobilemenubtn {
 	position: fixed;
 	top: 21px;
-	right: 15px;
+	right: 12px;
 	z-index: 1100;
 	cursor: pointer;
 	background: $light;
@@ -39,6 +39,13 @@
 		transform: rotate(-90deg);
 	}
 }
+
+@include media-breakpoint-up(md) {
+	#mobilemenubtn {
+		right: 40px;
+	}
+}
+
 
 body.header-transparent {
 	#mobilemenubtn {
