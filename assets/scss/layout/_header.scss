@@ -1,9 +1,14 @@
 $menu_breakpoint: 'lg';
 
-$header-height: 60px;
+$header-height: 80px;
 $header-height-lg: 110px;
-$topbar-height: 0; // voor berekening header uitklap bij menu
+
+$topbar-height: 0;
 $topbar-height-lg: 40px;
+
+$logo-height: 24px;
+$logo-height-lg: 30px;
+
 
 .topbar {
 	height: $topbar-height;
@@ -284,6 +289,12 @@ body {
 				}
 			}
 		}
+		.header-brand {
+			img {
+				height: $logo-height;
+				width: auto;
+			}
+		}
 	}
 
 	&.header-transparent {
@@ -335,7 +346,7 @@ body {
 
 			.header-brand {
 				img {
-					height: 30px;
+					height: $logo-height-lg;
 				}
 			}
 		}

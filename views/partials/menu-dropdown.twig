@@ -31,12 +31,12 @@
             <div class="dropdown-menu w-100 mt-0 border-0" id="dropdown-{{ item.id }}" data-dropdown-panel="dropdown-{{ item.id }}" aria-labelledby="dropdown-trigger-{{ item.id }}">
                 <div class="container">
                     <div class="row g-4">
-                        <div class="col-{{ menu_breakpoint }}-4 dropdown-menu__intro">
+                        <div class="col-lg-4 dropdown-menu__intro">
                             {% if item.meta('dropdown_intro') %}
                             <div class="dropdown-menu__content">{{ item.meta('dropdown_intro') }}</div>
                             {% endif %}
                         </div>
-                        <div class="col-{{ menu_breakpoint }}-8">
+                        <div class="col-lg-8">
                             <div class="row g-2 dropdown-menu__links">
                                 {% for child in item.children %}
                                 <div class="col-md-6">

@@ -1,8 +1,8 @@
 /* Hamburger button styles */
 #mobilemenubtn {
 	position: fixed;
-	top: 10px;
-	right: 25px;
+	top: 21px;
+	right: 15px;
 	z-index: 1100;
 	cursor: pointer;
 	background: $light;
@@ -60,6 +60,18 @@ body.header-transparent {
 			}
 		}
 	}
+	&.mobilemenu-open {
+		.header {
+			.header-brand img {
+				filter: none;
+			}
+		}
+		#mobilemenubtn .lines {
+			span {
+				background-color: $dark;
+			}
+		}
+	}
 }
 
 .mobilemenu {
@@ -76,11 +88,6 @@ body.header-transparent {
 
 	&.active {
 		transform: translateX(0);
-	}
-
-	.container {
-		flex: 1 1 auto;
-		display: flex;
 	}
 
 	&__panels {
@@ -114,6 +121,12 @@ body.header-transparent {
 		display: flex;
 		align-items: stretch;
 		border-bottom: 1px solid $greylight;
+		.container-fluid {
+			display: inline-flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 10px;
+		}
 	}
 
 	&__back {
@@ -130,7 +143,13 @@ body.header-transparent {
 		line-height: 1.3;
 		width: 100%;
 		justify-content: flex-start;
-
+		
+		.container-fluid {
+			display: inline-flex;
+			justify-content: start;
+			align-items: center;
+			gap: 10px;
+		}
 		&:hover {
 			color: $primary;
 			background: rgba($primary, 0.08);
@@ -143,7 +162,13 @@ body.header-transparent {
 		justify-content: space-between;
 		gap: 12px;
 		border-bottom: 1px solid $greylight;
-
+		
+		.container-fluid{
+			display: inline-flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 10px;
+		}
 		&:hover {
 			background: rgba($primary, 0.06);
 		}
@@ -189,39 +214,39 @@ body.header-transparent {
 }
 
 .chevron {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-right: 1.75px solid currentColor;
-        border-bottom: 1.75px solid currentColor;
-        transform: rotate(45deg);
-        margin: 0 2px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 1.75px solid currentColor;
+    border-bottom: 1.75px solid currentColor;
+    transform: rotate(45deg);
+    margin: 0 2px;
 
-        &.chevron-down {
-                transform: rotate(45deg) translateY(-1px);
-        }
+    &.chevron-down {
+            transform: rotate(45deg) translateY(-1px);
+    }
 
-        &.chevron-right {
-                transform: rotate(-45deg);
-        }
+    &.chevron-right {
+            transform: rotate(-45deg);
+    }
 
-        &.chevron-left {
-                transform: rotate(135deg);
-        }
+    &.chevron-left {
+            transform: rotate(135deg);
+    }
 }
 
 @include media-breakpoint-down($menu_breakpoint) {
-        body.mobilemenu-open {
-                overflow: hidden;
-
-                .header {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        z-index: 1100;
-                        transform: none;
-                        opacity: 1;
-                }
-        }
+	body.mobilemenu-open {
+		overflow: hidden;
+		
+		.header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 1100;
+			transform: none;
+			opacity: 1;
+		}
+	}
 }

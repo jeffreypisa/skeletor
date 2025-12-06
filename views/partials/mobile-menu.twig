@@ -1,42 +1,48 @@
 {% macro mobile_menu_list(items, parent) %}
-{% set is_root = parent is null %}
-<ul class="mobilemenu__level{% if is_root %} is-active{% endif %}" id="submenu-{{ is_root ? 'root' : parent.id }}" data-menu-panel {% if not is_root %}data-parent-panel="{{ parent.menu_item_parent ? 'submenu-' ~ parent.menu_item_parent : 'submenu-root' }}" {% endif %} aria-hidden="{{ is_root ? 'false' : 'true' }}">
-	{% if not is_root %}
-		<li class="mobilemenu__meta">
-			<button class="mobilemenu__back" type="button" data-submenu-back="{{ parent.menu_item_parent ? 'submenu-' ~ parent.menu_item_parent : 'submenu-root' }}">
-				<span class="chevron chevron-left" aria-hidden="true"></span>
-				<span class="mobilemenu__back-label">Terug</span>
-			</button>
-		</li>
-	{% endif %}
-
+	{% set is_root = parent is null %}
+	<ul class="mobilemenu__level{% if is_root %} is-active{% endif %}" id="submenu-{{ is_root ? 'root' : parent.id }}" data-menu-panel {% if not is_root %}data-parent-panel="{{ parent.menu_item_parent ? 'submenu-' ~ parent.menu_item_parent : 'submenu-root' }}" {% endif %} aria-hidden="{{ is_root ? 'false' : 'true' }}">
+		{% if not is_root %}
+			<li class="mobilemenu__meta">
+				<button class="mobilemenu__back" type="button" data-submenu-back="{{ parent.menu_item_parent ? 'submenu-' ~ parent.menu_item_parent : 'submenu-root' }}">
+					<div class="container-fluid">
+						<span class="chevron chevron-left" aria-hidden="true"></span>
+						<span class="mobilemenu__back-label">Terug</span>
+					</div>
+				</button>
+			</li>
+		{% endif %}
+	
+		{% for item in items %}
+			<li class="mobilemenu__item {{ item.children|length > 0 ? 'has-children' }}">
+				{% if item.children|length > 0 %}
+					<button class="mobilemenu__link-button" type="button" data-submenu-target="submenu-{{ item.id }}" aria-label="Open submenu van {{ item.title }}">
+						<div class="container-fluid">
+							<span class="mobilemenu__label">{{ item.title }}</span>
+							<span class="chevron chevron-right" aria-hidden="true"></span>
+						</div>
+					</button>
+				{% else %}
+					<a class="mobilemenu__link" href="{{ item.link }}" {% if item.target %}target="{{ item.target }}" {% endif %} {% if item.current %}aria-current="page" {% endif %}>
+						<div class="container-fluid">
+							{{ item.title }}
+						</div>
+					</a>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	
 	{% for item in items %}
-		<li class="mobilemenu__item {{ item.children|length > 0 ? 'has-children' }}">
-			{% if item.children|length > 0 %}
-				<button class="mobilemenu__link-button" type="button" data-submenu-target="submenu-{{ item.id }}" aria-label="Open submenu van {{ item.title }}">
-					<span class="mobilemenu__label">{{ item.title }}</span>
-					<span class="chevron chevron-right" aria-hidden="true"></span>
-			</button>
-			{% else %}
-				<a class="mobilemenu__link" href="{{ item.link }}" {% if item.target %}target="{{ item.target }}" {% endif %} {% if item.current %}aria-current="page" {% endif %}>
-					{{ item.title }}
-				</a>
-			{% endif %}
-		</li>
+		{% if item.children|length > 0 %}
+			{{ _self.mobile_menu_list(item.children, item) }}
+		{% endif %}
 	{% endfor %}
-</ul>
 
-{% for item in items %}
-{% if item.children|length > 0 %}
-{{ _self.mobile_menu_list(item.children, item) }}
-                {% endif %}
-        {% endfor %}
 {% endmacro %}
 
 {% import _self as mobile %}
 
-<div class="container">
-	<div class="mobilemenu__panels">
-		{{ mobile.mobile_menu_list(items, null) }}
-	</div>
+
+<div class="mobilemenu__panels">
+	{{ mobile.mobile_menu_list(items, null) }}
 </div>

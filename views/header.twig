@@ -6,7 +6,7 @@
 <header class="header" role="banner" data-menu-breakpoint="{{ menu_breakpoint }}">
 	{% if show_topbar %}
 		<div class="topbar d-none d-{{ menu_breakpoint }}-flex align-items-center">
-			<div class="container">
+			<div class="container-fluid container-{{ menu_breakpoint }}">
 				<div class="row w-100 g-2">
 					<div class="col d-flex align-items-center">
 						{{ site.description }}
@@ -24,7 +24,7 @@
 	{% endif %}
 
 	<div class="main-nav d-flex align-items-center">
-		<div class="container">
+		<div class="container-fluid container-{{ menu_breakpoint }}">
 			<div class="row w-100 g-2">
 				<div class="col d-flex align-items-center">
 					<a class="header-brand" href="{{ site.url }}" rel="home">
