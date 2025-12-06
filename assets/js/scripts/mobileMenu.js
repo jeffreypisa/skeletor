@@ -1,12 +1,30 @@
 export function mobileMenu() {
         const mobileMenuBtn = document.getElementById('mobilemenubtn');
         const mobileMenu = document.getElementById('mobilemenu');
+        const header = document.querySelector('.header');
 
         if (!mobileMenuBtn || !mobileMenu) {
                 return;
         }
 
         const menuPanels = mobileMenu.querySelectorAll('[data-menu-panel]');
+        const menuBreakpoint = header?.dataset.menuBreakpoint || 'lg';
+        let menuBreakpointWidth = getBreakpointWidth();
+        let bodyStickyClassFromMenu = false;
+
+        function getBreakpointWidth() {
+                const breakpointVar = `--bs-breakpoint-${menuBreakpoint}`;
+                const cssValue = getComputedStyle(document.documentElement)
+                        .getPropertyValue(breakpointVar)
+                        .trim();
+                const numericValue = parseInt(cssValue, 10);
+
+                return Number.isNaN(numericValue) ? 992 : numericValue;
+        }
+
+        const updateBreakpointWidth = () => {
+                menuBreakpointWidth = getBreakpointWidth();
+        };
 
         const toggleAria = (isOpen) => {
                 mobileMenuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -25,6 +43,11 @@ export function mobileMenu() {
                 mobileMenuBtn.classList.add('active');
                 mobileMenu.classList.add('active');
                 document.body.classList.add('mobilemenu-open');
+                bodyStickyClassFromMenu = window.innerWidth < menuBreakpointWidth;
+
+                if (bodyStickyClassFromMenu) {
+                        document.body.classList.add('header-sticky-active');
+                }
                 toggleAria(true);
                 setActivePanel('submenu-root');
         };
@@ -33,6 +56,10 @@ export function mobileMenu() {
                 mobileMenuBtn.classList.remove('active');
                 mobileMenu.classList.remove('active');
                 document.body.classList.remove('mobilemenu-open');
+                if (bodyStickyClassFromMenu) {
+                        document.body.classList.remove('header-sticky-active');
+                        bodyStickyClassFromMenu = false;
+                }
                 toggleAria(false);
                 setActivePanel('submenu-root');
         };
@@ -88,6 +115,9 @@ export function mobileMenu() {
                 }
         });
 
-        window.addEventListener('resize', closeOnViewportChange);
+        window.addEventListener('resize', () => {
+                updateBreakpointWidth();
+                closeOnViewportChange();
+        });
         window.addEventListener('scroll', closeOnViewportChange, { passive: true });
 }
