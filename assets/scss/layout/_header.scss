@@ -37,9 +37,28 @@ body {
 			background: transparent;
 
 			&:not(.scrolled) {
+				.topbar {
+					color: #fff;
+					background: transparent;
+					.nav-item {
+						a {
+							color: #fff;
+							&:hover {
+								color: #fff;
+							}
+						}
+						
+						&.current-menu-parent > a,
+						&.current-menu-item > a,
+						&.current_page_item > a,
+						&.current-menu-ancestor > a {
+							color: #fff;
+						}
+					}
+				}
 				.navbar-nav {
 					li {
-						a {
+						.nav-link {
 							color: #fff;
 							text-decoration: none;
 
@@ -51,10 +70,10 @@ body {
 							}
 						}
 
-						&.current-menu-parent > a:not(.btn),
-						&.current-menu-item > a:not(.btn),
-						&.current_page_item > a:not(.btn),
-						&.current-menu-ancestor > a:not(.btn) {
+						&.current-menu-parent > .nav-link,
+						&.current-menu-item > .nav-link,
+						&.current_page_item > .nav-link,
+						&.current-menu-ancestor > .nav-link {
 							color: #fff;
 							text-decoration: underline;
 							text-decoration-thickness: 2px;
@@ -68,7 +87,8 @@ body {
 						&.current-menu-parent,
 						&.current-menu-ancestor,
 						&.current-menu-item,
-						&.current_page_item {
+						&.current_page_item,
+						&:hover {
 							color: #fff;
 							text-decoration: underline;
 							text-decoration-thickness: 2px;
@@ -88,15 +108,6 @@ body {
 				}
 			}
 		}
-
-		.topbar {
-			background: transparent;
-			color: #fff;
-
-			a {
-				color: #fff;
-			}
-		}
 	}
 
 	&:not(.header-transparent) {
@@ -106,18 +117,19 @@ body {
 
 				.navbar-nav {
 					li {
-						a {
+						.nav-link {
 							color: $dark;
-							text-decoration: none;
 
 							&:hover {
 								color: $primary;
 							}
 						}
 
-						&.current-menu-parent > a:not(.btn),
-						&.current-menu-item > a:not(.btn),
-						&.current_page_item > a:not(.btn) {
+						&.current-menu-parent > .nav-link,
+						&.current-menu-item > .nav-link,
+						&.current_page_item > .nav-link,
+						&.current-menu-ancestor > .nav-link,
+						.dropdown-toggle.is-active {
 							color: $primary;
 						}
 					}
@@ -148,17 +160,38 @@ body {
 			top: 0;
 			left: 0;
 			right: 0;
-			width: 100%;
+			width: 100%;	
 			z-index: 9999;
 			transform: translateY(0);
 		}
-
+		
+		.topbar {
+			.nav-item {
+				a {
+					color: $dark;
+					text-decoration: none;
+					&:hover {
+						color: $primary;
+					}
+				}
+				
+				&.current-menu-parent > a,
+				&.current-menu-item > a,
+				&.current_page_item > a,
+				&.current-menu-ancestor > a {
+					color: $primary;
+					text-decoration: underline;
+					text-underline-offset: 6px;
+					text-decoration-thickness: 2px;
+				}
+			}
+		}
 		.navbar-nav {
 			gap: 20px;
 			flex-direction: row;
 
 			li {
-				a {
+				.nav-link {
 					color: $dark;
 					text-decoration: none;
 					display: inline-flex;
@@ -170,9 +203,11 @@ body {
 					}
 				}
 
-				&.current-menu-parent > a:not(.btn),
-				&.current-menu-item > a:not(.btn),
-				&.current_page_item > a:not(.btn) {
+				&.current-menu-parent > .nav-link,
+				&.current-menu-item > .nav-link,
+				&.current_page_item > .nav-link,
+				&.current-menu-ancestor > .nav-link,
+				.dropdown-toggle.is-active {
 					color: $primary;
 					text-decoration: underline;
 					text-decoration-thickness: 2px;
@@ -217,7 +252,7 @@ body {
 
 			.navbar-nav {
 				li {
-					a {
+					.nav-link {
 						color: $dark;
 						text-decoration: none;
 						display: inline-flex;
@@ -229,11 +264,17 @@ body {
 						}
 					}
 
-					&.current-menu-parent > a:not(.btn),
-					&.current-menu-item > a:not(.btn),
-					&.current_page_item > a:not(.btn) {
+					&.current-menu-parent > .nav-link,
+					&.current-menu-item > .nav-link,
+					&.current_page_item > .nav-link,
+					&.current-menu-ancestor > .nav-link,
+					.dropdown-toggle.is-active {
 						color: $primary;
+						text-decoration: underline;
+						text-decoration-thickness: 2px;
+						text-underline-offset: 8px;
 					}
+					
 				}
 			}
 		}
@@ -242,10 +283,10 @@ body {
 	&.header-transparent {
 		.header:not(.scrolled) {
 			.navbar-nav {
-				li.current-menu-parent > a:not(.btn),
-				li.current-menu-item > a:not(.btn),
-				li.current_page_item > a:not(.btn),
-				li.current-menu-ancestor > a:not(.btn) {
+				li.current-menu-parent > .nav-link,
+				li.current-menu-item > .nav-link,
+				li.current_page_item > .nav-link,
+				li.current-menu-ancestor > .nav-link {
 					color: #fff;
 					text-decoration: underline;
 					text-decoration-thickness: 2px;
@@ -255,7 +296,8 @@ body {
 				.dropdown-toggle.current-menu-parent,
 				.dropdown-toggle.current-menu-ancestor,
 				.dropdown-toggle.current-menu-item,
-				.dropdown-toggle.current_page_item {
+				.dropdown-toggle.current_page_item,
+				.dropdown-toggle.is-active {
 					color: #fff;
 					text-decoration: underline;
 					text-decoration-thickness: 2px;
