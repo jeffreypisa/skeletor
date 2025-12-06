@@ -39,17 +39,17 @@ class StarterSite extends Site {
 			};
 		}
 
-                $show_topbar = apply_filters('skeletor_show_topbar', true);
-                $context['show_topbar'] = $show_topbar;
+        $show_topbar = apply_filters('skeletor_show_topbar', true);
+        $context['show_topbar'] = $show_topbar;
 
-                // Haal menu's op
-                $context['headermenu'] = \Timber\Timber::get_menu('headermenu');
-                $context['servicemenu'] = \Timber\Timber::get_menu('servicemenu');
-                $context['footermenu'] = \Timber\Timber::get_menu('footermenu');
-                $context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
-		
-                // Voeg optiespagina velden toe
-                $context['options'] = get_fields('options');
+        // Haal menu's op
+        $context['headermenu'] = \Timber\Timber::get_menu('headermenu');
+        $context['servicemenu'] = \Timber\Timber::get_menu('servicemenu');
+        $context['footermenu'] = \Timber\Timber::get_menu('footermenu');
+        $context['mobielmenu'] = \Timber\Timber::get_menu('mobielmenu');
+
+        // Voeg optiespagina velden toe
+        $context['options'] = get_fields('options');
 
 		// Voeg een helperfunctie toe voor thumbnails
 		$context['get_thumbnail'] = function ($post_id) {

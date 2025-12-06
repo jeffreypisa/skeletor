@@ -9,23 +9,6 @@ header {
 		}
 	}
 
-	.nav-button.dropdown-toggle::after {
-		display: none !important;
-	}
-
-	.dropdown-toggle.show {
-		color: $primary !important;
-	}
-
-	.nav-button {
-		border: none;
-		background: transparent;
-		padding: 0;
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-	}
-
 	/* Zorgt ervoor dat het dropdown-menu volledig breed is */
 	.dropdown-menu {
 		position: fixed;
@@ -33,7 +16,7 @@ header {
 		right: 0;
 		width: 100%;
 		display: block !important;
-		top: var(--header-total-height, var(--header-height, 110px));
+		top: var(--header-height);
 		background-color: white;
 		/* Pas aan naar wens */
 		padding: 40px 0 !important;
@@ -104,11 +87,4 @@ header {
 		overflow-x: auto;
 	}
 
-	.nav-button[aria-expanded='true'],
-	.nav-item.is-active .nav-button {
-		color: $primary !important;
-		text-decoration: underline;
-		text-decoration-thickness: 2px;
-		text-underline-offset: 8px;
-	}
 }

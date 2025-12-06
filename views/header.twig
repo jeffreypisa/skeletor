@@ -1,64 +1,67 @@
+{% set menu_breakpoint = 'lg' %}
+{# menu_breakpoint accepteert 'sm' | 'md' | 'lg' | 'xl' | 'xxl' #}
+
 {% import "partials/menu-dropdown.twig" as dropdown %}
 
 <header class="header" role="banner">
-        {% if show_topbar %}
-                <div class="topbar d-none d-lg-flex align-items-center">
-                        <div class="container">
-                                <div class="row w-100 g-2">
-                                        <div class="col small d-flex align-items-center">
-                                                {{ site.description }}
-                                        </div>
-                                        {% if servicemenu %}
-                                                <div class="col-auto d-flex align-items-center">
-                                                        <nav aria-label="Service navigation">
-                                                                {% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
-                                                        </nav>
-                                                </div>
-                                        {% endif %}
-                                </div>
-                        </div>
-                </div>
-        {% endif %}
+	{% if show_topbar %}
+		<div class="topbar d-none d-{{ menu_breakpoint }}-flex align-items-center">
+			<div class="container">
+				<div class="row w-100 g-2">
+					<div class="col d-flex align-items-center">
+						{{ site.description }}
+					</div>
+					{% if servicemenu %}
+					<div class="col-auto d-flex align-items-center">
+						<nav aria-label="Service navigation">
+							{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
+						</nav>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
 
-        <div class="main-nav d-flex align-items-center">
-                <div class="container">
-                        <div class="row w-100 g-2">
-                                <div class="col d-flex align-items-center">
-                                        <a class="header-brand" href="{{ site.url }}" rel="home">
-                                                <span class="d-none">{{ site.name }}</span>
-                                                <img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}">
-                                        </a>
-                                </div>
-                                {% if headermenu %}
-                                        <div class="col-auto d-none d-lg-flex align-items-center">
-                                                <nav class="primary-navigation" aria-label="Primary navigation">
-                                                        {{ dropdown.nav(headermenu.get_items) }}
-                                                </nav>
-                                        </div>
-                                {% endif %}
-                        </div>
-                </div>
-        </div>
+	<div class="main-nav d-flex align-items-center">
+		<div class="container">
+			<div class="row w-100 g-2">
+				<div class="col d-flex align-items-center">
+					<a class="header-brand" href="{{ site.url }}" rel="home">
+						<span class="d-none">{{ site.name }}</span>
+						<img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}">
+					</a>
+				</div>
+				{% if headermenu %}
+				<div class="col-auto d-none d-{{ menu_breakpoint }}-flex align-items-center">
+					<nav class="primary-navigation" aria-label="Primary navigation">
+						{{ dropdown.nav(headermenu.get_items) }}
+					</nav>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
-        {% if headermenu %}
-                <div class="sub-nav" aria-hidden="true">
-                        {{ dropdown.panels(headermenu.get_items) }}
-                </div>
-        {% endif %}
+	{% if headermenu %}
+		<div class="sub-nav" aria-hidden="true">
+			{{ dropdown.panels(headermenu.get_items) }}
+		</div>
+	{% endif %}
 </header>
 
 {% if headermenu %}
-        <!-- Hamburger menu button -->
-        <button id="mobilemenubtn" class="d-lg-none" aria-label="Toggle navigation" aria-controls="mobilemenu" aria-expanded="false">
-                <span class="lines" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                </span>
-        </button>
-
-        <!-- Mobile menu -->
-        <nav class="mobilemenu d-lg-none" id="mobilemenu" aria-label="Mobile navigation" aria-hidden="true">
-                {% include "partials/mobile-menu.twig" with { 'items': mobielmenu.get_items } %}
-        </nav>
+	<!-- Hamburger menu button -->
+	<button id="mobilemenubtn" class="d-{{ menu_breakpoint }}-none" aria-label="Toggle navigation" aria-controls="mobilemenu" aria-expanded="false">
+		<span class="lines" aria-hidden="true">
+			<span></span>
+			<span></span>
+			<span></span>
+		</span>
+	</button>
+	
+	<!-- Mobile menu -->
+	<nav class="mobilemenu d-{{ menu_breakpoint }}-none" id="mobilemenu" aria-label="Mobile navigation" aria-hidden="true">
+		{% include "partials/mobile-menu.twig" with { 'items': mobielmenu.get_items } %}
+	</nav>
 {% endif %}
