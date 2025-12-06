@@ -13,10 +13,11 @@ class StarterSite extends Site {
             add_filter('timber/twig', [$this, 'add_to_twig']);
             add_filter('timber/twig/environment/options', [$this, 'update_twig_environment_options']);
             add_filter('body_class', [$this, 'add_body_class']);
-		
-		// Extra template-locaties toevoegen
-		Timber::$locations = [
-			get_template_directory() . '/views',
+            add_filter('wp_nav_menu_objects', [$this, 'set_post_type_archive_active']);
+
+                // Extra template-locaties toevoegen
+                Timber::$locations = [
+                        get_template_directory() . '/views',
 			get_template_directory() . '/components/library', // Extra locatie voor componenten
 		];
 		
@@ -111,6 +112,39 @@ class StarterSite extends Site {
                 $default_post_types = $options['header_transparante_post_types'] ?? [];
 
                 return in_array(get_post_type(), $default_post_types, true);
+        }
+
+        /**
+         * Markeer het archief-menu item als actief op enkelvoudige pagina's van het post type.
+         *
+         * @param array $items De huidige menu-items.
+         * @return array
+         */
+        public function set_post_type_archive_active($items) {
+                if (!is_singular()) {
+                        return $items;
+                }
+
+                $post_type = get_post_type();
+
+                foreach ($items as $item) {
+                        if (($item->type ?? '') !== 'post_type_archive') {
+                                continue;
+                        }
+
+                        if (($item->object ?? '') !== $post_type) {
+                                continue;
+                        }
+
+                        $item->classes = array_unique(array_merge(
+                                $item->classes,
+                                ['current-menu-ancestor', 'current-menu-parent']
+                        ));
+
+                        $item->current = true;
+                }
+
+                return $items;
         }
 
 	/**
