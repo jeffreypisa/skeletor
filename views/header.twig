@@ -3,7 +3,7 @@
 
 {% import "partials/menu-dropdown.twig" as dropdown %}
 
-<header class="header" role="banner">
+<header class="header" role="banner" data-menu-breakpoint="{{ menu_breakpoint }}">
 	{% if show_topbar %}
 		<div class="topbar d-none d-{{ menu_breakpoint }}-flex align-items-center">
 			<div class="container">

@@ -8,6 +8,7 @@ export function header() {
     const subNav = document.querySelector('.sub-nav');
     const panelTransition = 320;
     const stickyRevealOffset = 600;
+    const menuBreakpoint = header?.dataset.menuBreakpoint || 'lg';
 
     let lastScrollTop = 0;
     let ticking = false;
@@ -15,6 +16,19 @@ export function header() {
     let scrolledThreshold = 140;
     let stickyActive = false;
     let stickyJustActivated = false;
+    let menuBreakpointWidth = getBreakpointWidth();
+
+    function getBreakpointWidth() {
+        const breakpointVar = `--bs-breakpoint-${menuBreakpoint}`;
+        const cssValue = getComputedStyle(document.documentElement)
+            .getPropertyValue(breakpointVar)
+            .trim();
+        const numericValue = parseInt(cssValue, 10);
+
+        return Number.isNaN(numericValue) ? 992 : numericValue;
+    }
+
+    const isDesktop = () => window.innerWidth >= menuBreakpointWidth;
 
     const updateHeaderOffset = () => {
         const headerHeight = header?.offsetHeight || 0;
@@ -159,8 +173,9 @@ export function header() {
         const beyondScrolled = scrollTop > scrolledThreshold;
         const direction = scrollTop > lastScrollTop ? 'down' : 'up';
         const pastStickyReveal = scrollTop > stickyRevealOffset;
+        const desktopView = isDesktop();
 
-        if (document.querySelector('.dropdown-menu.show') && direction === 'down') {
+        if (desktopView && document.querySelector('.dropdown-menu.show')) {
             closeOpenDropdowns();
         }
 
@@ -168,6 +183,13 @@ export function header() {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
+        }
+
+        if (!desktopView) {
+            setStickyState(false);
+            lastScrollTop = scrollTop;
+            ticking = false;
+            return;
         }
 
         if (scrollTop <= 0) {
@@ -220,8 +242,13 @@ export function header() {
     });
 
     window.addEventListener('resize', () => {
+        menuBreakpointWidth = getBreakpointWidth();
         updateHeaderOffset();
         closeOpenDropdowns();
+
+        if (!isDesktop()) {
+            setStickyState(false);
+        }
     });
 
     header?.classList.add('visible');

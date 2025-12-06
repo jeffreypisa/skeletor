@@ -189,23 +189,39 @@ body.header-transparent {
 }
 
 .chevron {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	border-right: 1.75px solid currentColor;
-	border-bottom: 1.75px solid currentColor;
-	transform: rotate(45deg);
-	margin: 0 2px;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-right: 1.75px solid currentColor;
+        border-bottom: 1.75px solid currentColor;
+        transform: rotate(45deg);
+        margin: 0 2px;
 
-	&.chevron-down {
-		transform: rotate(45deg) translateY(-1px);
-	}
+        &.chevron-down {
+                transform: rotate(45deg) translateY(-1px);
+        }
 
-	&.chevron-right {
-		transform: rotate(-45deg);
-	}
+        &.chevron-right {
+                transform: rotate(-45deg);
+        }
 
-	&.chevron-left {
-		transform: rotate(135deg);
-	}
+        &.chevron-left {
+                transform: rotate(135deg);
+        }
+}
+
+@include media-breakpoint-down($menu_breakpoint) {
+        body.mobilemenu-open {
+                overflow: hidden;
+
+                .header {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 1100;
+                        transform: none;
+                        opacity: 1;
+                }
+        }
 }

@@ -24,6 +24,7 @@ export function mobileMenu() {
         const openMenu = () => {
                 mobileMenuBtn.classList.add('active');
                 mobileMenu.classList.add('active');
+                document.body.classList.add('mobilemenu-open');
                 toggleAria(true);
                 setActivePanel('submenu-root');
         };
@@ -31,6 +32,7 @@ export function mobileMenu() {
         const closeMenu = () => {
                 mobileMenuBtn.classList.remove('active');
                 mobileMenu.classList.remove('active');
+                document.body.classList.remove('mobilemenu-open');
                 toggleAria(false);
                 setActivePanel('submenu-root');
         };
