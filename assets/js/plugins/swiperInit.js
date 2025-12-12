@@ -1,5 +1,6 @@
 // Updated JavaScript for Swiper Component
 import Swiper from 'swiper/bundle';
+import { matchheightUpdate } from './matchheightInit.js';
 
 export function swiperInit() {
 	const swiperContainers = document.querySelectorAll('.js-swiper');
@@ -31,33 +32,39 @@ export function swiperInit() {
 					? { el: container.querySelector('.swiper-pagination'), clickable: true }
 					: false,
 				on: {
-					init: function () {
-						if (!this.params.loop) {
-							updateNavigation(this);
-						}
+                                        init: function () {
+                                                if (!this.params.loop) {
+                                                        updateNavigation(this);
+                                                }
 
 						// Pas styling toe voor nextSlideVisible indien van toepassing
 						applyNextSlideVisible(container, settings, this);
 
 						// Controleer of er bullets zijn en pas marge toe
-						togglePaginationClass(container, this);
+                                                togglePaginationClass(container, this);
 
-						// Verberg bullets als alle slides zichtbaar zijn
-						togglePaginationVisibility(container, this);
-					},
-					slideChange: function () {
-						if (!this.params.loop) {
-							updateNavigation(this);
-						}
-						applyNextSlideVisible(container, settings, this);
-						togglePaginationClass(container, this);
-						togglePaginationVisibility(container, this);
-					},
-					resize: function () {
-						applyNextSlideVisible(container, settings, this);
-						togglePaginationClass(container, this);
-						togglePaginationVisibility(container, this);
-					},
+                                                // Verberg bullets als alle slides zichtbaar zijn
+                                                togglePaginationVisibility(container, this);
+
+                                                matchheightUpdate();
+                                        },
+                                        slideChange: function () {
+                                                if (!this.params.loop) {
+                                                        updateNavigation(this);
+                                                }
+                                                applyNextSlideVisible(container, settings, this);
+                                                togglePaginationClass(container, this);
+                                                togglePaginationVisibility(container, this);
+
+                                                matchheightUpdate();
+                                        },
+                                        resize: function () {
+                                                applyNextSlideVisible(container, settings, this);
+                                                togglePaginationClass(container, this);
+                                                togglePaginationVisibility(container, this);
+
+                                                matchheightUpdate();
+                                        },
 					reachBeginning: function () {
 						updateNavigation(this);
 					},
@@ -73,20 +80,22 @@ export function swiperInit() {
 
 			const finalSettings = Object.assign({}, defaultSettings, settings);
 
-			const swiperInstance = new Swiper(container, finalSettings);
+                        const swiperInstance = new Swiper(container, finalSettings);
 
-			if (!finalSettings.loop) {
-				updateNavigation(swiperInstance);
-			}
+                        if (!finalSettings.loop) {
+                                updateNavigation(swiperInstance);
+                        }
 
-			applyNextSlideVisible(container, settings, swiperInstance);
-			togglePaginationClass(container, swiperInstance);
-			togglePaginationVisibility(container, swiperInstance);
+                        applyNextSlideVisible(container, settings, swiperInstance);
+                        togglePaginationClass(container, swiperInstance);
+                        togglePaginationVisibility(container, swiperInstance);
 
-		} catch (error) {
-			console.error('Fout bij het verwerken van Swiper-instellingen:', error);
-		}
-	});
+                        matchheightUpdate();
+
+                } catch (error) {
+                        console.error('Fout bij het verwerken van Swiper-instellingen:', error);
+                }
+        });
 }
 
 function applyNextSlideVisible(container, settings, swiper) {
