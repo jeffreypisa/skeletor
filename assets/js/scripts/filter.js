@@ -2,6 +2,7 @@ import noUiSlider from 'nouislider';
 import flatpickr from 'flatpickr/dist/flatpickr.js';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin.js';
 import { swiperInit } from '../plugins/swiperInit.js';
+import { matchheightUpdate } from '../plugins/matchheightInit.js';
 
 export function filter() {
         const filterForm = document.querySelector('[data-filter-form]');
@@ -301,6 +302,7 @@ return data;
                         initOptionToggles();
                         initFilterButtons();
                         swiperInit();
+                        matchheightUpdate();
 
 				const el = document.createElement('div');
 				el.innerHTML = html;
