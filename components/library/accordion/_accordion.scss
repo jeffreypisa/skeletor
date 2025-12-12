@@ -9,6 +9,7 @@
 			margin: 0;
 
 			.accordion-button {
+				display: block;
 				text-align: left;
 				padding: 0;
 				background: transparent;
@@ -16,6 +17,9 @@
 				width: 100%;
 				font-weight: inherit;
 				font-size: inherit;
+				&:after {
+					display: none;
+				}
 				.accordion-title {
 					display: flex;
 					justify-content: space-between;
@@ -23,6 +27,10 @@
 
 					.col-auto {
 						min-width: 25px;
+						svg {
+							height: 20px;
+							width: auto;
+						}
 					}
 				}
 
