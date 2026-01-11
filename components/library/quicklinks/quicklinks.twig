@@ -1,0 +1,14 @@
+{% if mode in ['all', 'nav'] %}
+	<nav class="quicklinks" data-quicklinks-nav>
+		<p class="quicklinks__title">{{ title }}</p>
+		<ul class="quicklinks__list" data-quicklinks-list></ul>
+	</nav>
+{% endif %}
+{% if mode in ['all', 'mobile'] %}
+	<div class="quicklinks__mobile" data-quicklinks-mobile>
+		<div class="container">
+			<label class="visually-hidden" for="quicklinks-select-{{ id }}">Ga naar sectie</label>
+			<select class="form-select" id="quicklinks-select-{{ id }}" data-quicklinks-select></select>
+		</div>
+	</div>
+{% endif %}
