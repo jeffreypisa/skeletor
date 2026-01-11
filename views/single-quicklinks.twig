@@ -25,18 +25,18 @@
 			</div>
 		</section>
 		{% if post.content %}
-			<section class="bg-greylight quicklinks-section" data-quicklinks-section>
+			<section class="bg-greylight inpage-nav-section" data-inpage-nav-section>
 				<div class="container">
 					<div class="row justify-content-center">
 						<div class="col-md-11 col-lg-10 col-xl-9">
 							<div class="row">
 								<div class="col-lg-8">
-									<div class="quicklinks__content" data-quicklinks-content>
+									<div class="inpage-nav-content" data-inpage-nav-content>
 										{{ post.content }}
 									</div>
 								</div>
 								<div class="col-lg-4">
-									{{ quicklinks({
+									{{ inpage_nav({
 										title: 'Inhoud',
 										mode: 'nav'
 									}) }}
@@ -45,7 +45,7 @@
 						</div>
 					</div>
 				</div>
-					{{ quicklinks({
+					{{ inpage_nav({
 						title: 'Inhoud',
 						mode: 'mobile'
 					}) }}

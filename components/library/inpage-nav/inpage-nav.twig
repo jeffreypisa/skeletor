@@ -1,0 +1,14 @@
+{% if mode in ['all', 'nav'] %}
+	<nav class="inpage-nav" data-inpage-nav>
+		<p class="inpage-nav-title">{{ title }}</p>
+		<ul class="inpage-nav-list" data-inpage-nav-list></ul>
+	</nav>
+{% endif %}
+{% if mode in ['all', 'mobile'] %}
+	<div class="inpage-nav-mobile" data-inpage-nav-mobile>
+		<div class="container">
+			<label class="visually-hidden" for="inpage-nav-select-{{ id }}">Ga naar sectie</label>
+			<select class="form-select" id="inpage-nav-select-{{ id }}" data-inpage-nav-select></select>
+		</div>
+	</div>
+{% endif %}

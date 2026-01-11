@@ -12,7 +12,7 @@ import { filter } from './scripts/filter.js';
 import { footer } from './scripts/footer.js';
 import { header } from './scripts/header.js';
 import { mobileMenu } from './scripts/mobileMenu.js';
-import { quicklinks } from './scripts/quicklinks.js';
+import { inpageNav } from './scripts/inpageNav.js';
 import { scrollAnimations } from './scripts/scrollAnimations.js';
 import { scrollToNextSection } from './scripts/scrollToNextSection.js';
 import { siteIsLoaded } from './scripts/siteIsLoaded.js';
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Init plugins die afhankelijk zijn van DOM-content
 	lightgalleryInit();
-	quicklinks();
+	inpageNav();
 	wcag();
 	cta();
 	if (document.querySelector('[data-filter-form]')) {

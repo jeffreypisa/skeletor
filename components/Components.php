@@ -10,7 +10,7 @@ require_once __DIR__ . '/library/image/Image.php';
 require_once __DIR__ . '/library/icon/Icon.php';
 require_once __DIR__ . '/library/swiper/Swiper.php';
 require_once __DIR__ . '/library/text/Text.php';
-require_once __DIR__ . '/library/quicklinks/Quicklinks.php';
+require_once __DIR__ . '/library/inpage-nav/InpageNav.php';
 
 new Components_Accordion();
 new Components_Button();
@@ -19,7 +19,7 @@ new Components_Filter();
 new Components_Heading();
 new Components_Image();
 new Components_Icon();
-new Components_Quicklinks();
+new Components_InpageNav();
 new Components_Swiper();
 new Components_Text();
 

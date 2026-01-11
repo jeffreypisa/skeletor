@@ -18,15 +18,15 @@ const ensureUniqueId = (base, usedIds) => {
 	return candidate;
 };
 
-export const quicklinks = () => {
-	const sections = document.querySelectorAll('[data-quicklinks-section]');
+export const inpageNav = () => {
+	const sections = document.querySelectorAll('[data-inpage-nav-section]');
 
 	sections.forEach((section) => {
-		const content = section.querySelector('[data-quicklinks-content]');
-		const list = section.querySelector('[data-quicklinks-list]');
-		const nav = section.querySelector('[data-quicklinks-nav]');
-		const select = section.querySelector('[data-quicklinks-select]');
-		const mobile = section.querySelector('[data-quicklinks-mobile]');
+		const content = section.querySelector('[data-inpage-nav-content]');
+		const list = section.querySelector('[data-inpage-nav-list]');
+		const nav = section.querySelector('[data-inpage-nav]');
+		const select = section.querySelector('[data-inpage-nav-select]');
+		const mobile = section.querySelector('[data-inpage-nav-mobile]');
 
 		if (!content || !list || !nav || !select || !mobile) {
 			return;
