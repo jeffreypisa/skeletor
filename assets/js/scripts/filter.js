@@ -101,35 +101,62 @@ return data;
         const initOptionToggles = () => {
                 requestAnimationFrame(() => {
                         document.querySelectorAll('[data-limit-options]').forEach(wrapper => {
-				const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
-				const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
-				const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
+                                const limit = parseInt(wrapper.dataset.limitOptions || 0, 10);
+                                const expandLabel = wrapper.dataset.expandLabel || 'Toon meer';
+                                const collapseLabel = wrapper.dataset.collapseLabel || 'Toon minder';
 
-				const options = wrapper.querySelectorAll('.form-check');
-				const toggleBtn = wrapper.querySelector('.filter-toggle-btn');
+                                const optionNodes = Array.from(wrapper.querySelectorAll(':scope > .filter-option'));
+                                const options = optionNodes.length
+                                        ? optionNodes
+                                        : Array.from(wrapper.querySelectorAll(':scope > .form-check'));
+                                const toggleBtn = wrapper.querySelector(':scope > .filter-toggle-btn');
 
-				if (!toggleBtn || limit <= 0 || options.length <= limit) return;
+                                if (!toggleBtn || limit <= 0 || options.length <= limit) return;
 
-				const setState = (isExpanded) => {
-					wrapper.dataset.expanded = isExpanded ? 'true' : 'false';
-					options.forEach((opt, index) => {
-						opt.style.display = (isExpanded || index < limit) ? '' : 'none';
-					});
-					toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
-				};
+                                const setState = (isExpanded) => {
+                                        wrapper.dataset.expanded = isExpanded ? 'true' : 'false';
+                                        options.forEach((opt, index) => {
+                                                opt.style.display = (isExpanded || index < limit) ? '' : 'none';
+                                        });
+                                        toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
+                                };
 
-				const expanded = wrapper.dataset.expanded === 'true';
-				setState(expanded);
+                                const expanded = wrapper.dataset.expanded === 'true';
+                                setState(expanded);
 
-				toggleBtn.classList.remove('d-none');
+                                toggleBtn.classList.remove('d-none');
 
-				if (!toggleBtn.dataset.initialized) {
-					toggleBtn.addEventListener('click', () => {
-						const isExpanded = wrapper.dataset.expanded === 'true';
-						setState(!isExpanded);
-					});
-					toggleBtn.dataset.initialized = 'true';
+                                if (!toggleBtn.dataset.initialized) {
+                                        toggleBtn.addEventListener('click', () => {
+                                                const isExpanded = wrapper.dataset.expanded === 'true';
+                                                setState(!isExpanded);
+                                        });
+                                        toggleBtn.dataset.initialized = 'true';
                                 }
+                        });
+
+                        document.querySelectorAll('[data-children-toggle]').forEach(toggleBtn => {
+                                if (toggleBtn.dataset.initialized) return;
+                                const container = toggleBtn.nextElementSibling;
+                                if (!container || !container.hasAttribute('data-children-container')) return;
+
+                                const expandLabel = toggleBtn.dataset.expandLabel || 'Toon subcategorieën';
+                                const collapseLabel = toggleBtn.dataset.collapseLabel || 'Verberg subcategorieën';
+
+                                const setState = (isExpanded) => {
+                                        toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                                        toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
+                                        container.hidden = !isExpanded;
+                                };
+
+                                const initialExpanded = toggleBtn.getAttribute('aria-expanded') === 'true' && !container.hidden;
+                                setState(initialExpanded);
+
+                                toggleBtn.addEventListener('click', () => {
+                                        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                                        setState(!isExpanded);
+                                });
+                                toggleBtn.dataset.initialized = 'true';
                         });
                 });
         };

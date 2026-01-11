@@ -108,6 +108,11 @@ parent::__construct();
                        FILTER_VALIDATE_BOOLEAN,
                        FILTER_NULL_ON_FAILURE
                ) ?? true;
+               $data['collapse_children'] = filter_var(
+                       $data['collapse_children'] ?? $args['collapse_children'] ?? false,
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? false;
 
                 // ⛏ Verwerk waarde vanuit $_GET
                if ($type === 'range') {
