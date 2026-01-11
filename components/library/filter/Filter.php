@@ -113,6 +113,11 @@ parent::__construct();
                        FILTER_VALIDATE_BOOLEAN,
                        FILTER_NULL_ON_FAILURE
                ) ?? false;
+               $data['parent_selectable'] = filter_var(
+                       $data['parent_selectable'] ?? $args['parent_selectable'] ?? true,
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? true;
 
                 // ⛏ Verwerk waarde vanuit $_GET
                if ($type === 'range') {

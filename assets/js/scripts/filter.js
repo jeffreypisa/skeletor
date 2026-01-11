@@ -135,28 +135,31 @@ return data;
                                 }
                         });
 
-                        document.querySelectorAll('[data-children-toggle]').forEach(toggleBtn => {
-                                if (toggleBtn.dataset.initialized) return;
-                                const container = toggleBtn.nextElementSibling;
-                                if (!container || !container.hasAttribute('data-children-container')) return;
+                        document.querySelectorAll('[data-children-toggle]').forEach(toggleEl => {
+                                if (toggleEl.dataset.initialized) return;
+                                const option = toggleEl.closest('.filter-option');
+                                const container = option?.querySelector(':scope > .filter-branch-children[data-children-container]');
+                                if (!container) return;
 
-                                const expandLabel = toggleBtn.dataset.expandLabel || 'Toon subcategorieën';
-                                const collapseLabel = toggleBtn.dataset.collapseLabel || 'Verberg subcategorieën';
+                                const expandLabel = toggleEl.dataset.expandLabel || 'Toon subcategorieën';
+                                const collapseLabel = toggleEl.dataset.collapseLabel || 'Verberg subcategorieën';
 
                                 const setState = (isExpanded) => {
-                                        toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                                        toggleBtn.textContent = isExpanded ? collapseLabel : expandLabel;
+                                        toggleEl.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                                        toggleEl.setAttribute('aria-label', isExpanded ? collapseLabel : expandLabel);
+                                        toggleEl.setAttribute('title', isExpanded ? collapseLabel : expandLabel);
                                         container.hidden = !isExpanded;
                                 };
 
-                                const initialExpanded = toggleBtn.getAttribute('aria-expanded') === 'true' && !container.hidden;
+                                const initialExpanded = toggleEl.getAttribute('aria-expanded') === 'true' && !container.hidden;
                                 setState(initialExpanded);
 
-                                toggleBtn.addEventListener('click', () => {
-                                        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                                toggleEl.addEventListener('click', (event) => {
+                                        if (event.target.closest('input')) return;
+                                        const isExpanded = toggleEl.getAttribute('aria-expanded') === 'true';
                                         setState(!isExpanded);
                                 });
-                                toggleBtn.dataset.initialized = 'true';
+                                toggleEl.dataset.initialized = 'true';
                         });
                 });
         };
