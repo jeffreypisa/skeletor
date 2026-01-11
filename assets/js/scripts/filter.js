@@ -141,13 +141,8 @@ return data;
                                 const container = option?.querySelector(':scope > .filter-branch-children[data-children-container]');
                                 if (!container) return;
 
-                                const expandLabel = toggleEl.dataset.expandLabel || 'Toon subcategorieën';
-                                const collapseLabel = toggleEl.dataset.collapseLabel || 'Verberg subcategorieën';
-
                                 const setState = (isExpanded) => {
                                         toggleEl.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                                        toggleEl.setAttribute('aria-label', isExpanded ? collapseLabel : expandLabel);
-                                        toggleEl.setAttribute('title', isExpanded ? collapseLabel : expandLabel);
                                         container.hidden = !isExpanded;
                                 };
 
