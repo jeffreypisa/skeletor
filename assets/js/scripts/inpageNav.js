@@ -1,24 +1,26 @@
-const slugify = (text) => {
-	return text
-		.toLowerCase()
-		.trim()
-		.replace(/[^a-z0-9\s-]/g, '')
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-');
-};
+export function inpageNav() {
+	const slugify = (text) => {
+		return text
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-z0-9\s-]/g, '')
+			.replace(/\s+/g, '-')
+			.replace(/-+/g, '-');
+	};
 
-const ensureUniqueId = (base, usedIds) => {
-	let candidate = base;
-	let counter = 2;
-	while (usedIds.has(candidate)) {
-		candidate = `${base}-${counter}`;
-		counter += 1;
-	}
-	usedIds.add(candidate);
-	return candidate;
-};
+	const ensureUniqueId = (base, usedIds) => {
+		let candidate = base;
+		let counter = 2;
 
-export const inpageNav = () => {
+		while (usedIds.has(candidate)) {
+			candidate = `${base}-${counter}`;
+			counter += 1;
+		}
+
+		usedIds.add(candidate);
+		return candidate;
+	};
+
 	const sections = document.querySelectorAll('[data-inpage-nav-section]');
 
 	sections.forEach((section) => {
@@ -32,7 +34,9 @@ export const inpageNav = () => {
 			return;
 		}
 
-		const headings = Array.from(content.querySelectorAll('h2')).filter((heading) => heading.textContent.trim());
+		const headings = Array.from(content.querySelectorAll('h2')).filter((heading) =>
+			heading.textContent.trim()
+		);
 
 		if (!headings.length) {
 			nav.style.display = 'none';
@@ -71,6 +75,7 @@ export const inpageNav = () => {
 			links.forEach((link) => {
 				link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
 			});
+
 			if (select.value !== id) {
 				select.value = id;
 			}
@@ -82,12 +87,12 @@ export const inpageNav = () => {
 
 		list.addEventListener('click', (event) => {
 			const target = event.target.closest('a');
-			if (!target) {
-				return;
-			}
+			if (!target) return;
+
 			event.preventDefault();
 			const id = target.getAttribute('href').replace('#', '');
 			const heading = document.getElementById(id);
+
 			if (heading) {
 				heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			}
@@ -95,6 +100,7 @@ export const inpageNav = () => {
 
 		select.addEventListener('change', () => {
 			const heading = document.getElementById(select.value);
+
 			if (heading) {
 				heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			}
@@ -115,7 +121,7 @@ export const inpageNav = () => {
 			},
 			{
 				rootMargin: '-35% 0px -55% 0px',
-				threshold: 0,
+				threshold: 0
 			}
 		);
 
@@ -129,10 +135,10 @@ export const inpageNav = () => {
 			},
 			{
 				rootMargin: '-10% 0px -10% 0px',
-				threshold: 0,
+				threshold: 0
 			}
 		);
 
 		sectionObserver.observe(section);
 	});
-};
+}

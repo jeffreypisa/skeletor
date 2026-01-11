@@ -2,14 +2,13 @@ import { g as getDocument } from '../shared/ssr-window.esm.mjs';
 
 /* eslint no-underscore-dangle: "off" */
 /* eslint no-use-before-define: "off" */
-function Autoplay(_ref) {
-  let {
-    swiper,
-    extendParams,
-    on,
-    emit,
-    params
-  } = _ref;
+function Autoplay({
+  swiper,
+  extendParams,
+  on,
+  emit,
+  params
+}) {
   swiper.autoplay = {
     running: false,
     paused: false,
