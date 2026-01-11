@@ -1,3 +1,27 @@
+{#
+🧭 Inpage Nav Component – inpage-nav.twig
+
+Standaard rendert dit component zowel de desktop-navigatie als de mobiele select.
+Gebruik `mode` alleen wanneer je de markup op verschillende plekken in de layout
+moet plaatsen.
+
+Voorbeeld (standaard, beide varianten):
+{{ inpage_nav({
+  title: 'Inhoud'
+}) }}
+
+Voorbeeld (los plaatsen):
+{{ inpage_nav({ title: 'Inhoud', mode: 'nav' }) }}
+{{ inpage_nav({ title: 'Inhoud', mode: 'mobile' }) }}
+
+Beschikbare opties:
+- title: string – titel boven de lijst
+- mode: 'all' (default), 'nav', 'mobile'
+
+De mobiele variant is altijd een select-element; gebruik `mode: 'mobile'` alleen
+als je deze los wilt positioneren.
+#}
+
 {% if mode in ['all', 'nav'] %}
 	<nav class="inpage-nav" data-inpage-nav>
 		<p class="inpage-nav-title">{{ title }}</p>
