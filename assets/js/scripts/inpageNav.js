@@ -22,6 +22,9 @@ export function inpageNav() {
 	};
 
 	const sections = document.querySelectorAll('[data-inpage-nav-section]');
+	const root = document.documentElement;
+	const header = document.querySelector('.header');
+	const baseOffset = 60;
 
 	sections.forEach((section) => {
 		const content = section.querySelector('[data-inpage-nav-content]');
@@ -71,6 +74,20 @@ export function inpageNav() {
 
 		const links = Array.from(list.querySelectorAll('a'));
 
+		const getHeaderOffset = () => {
+			if (!header) return 0;
+			if (!header.classList.contains('visible')) return 0;
+			return header.getBoundingClientRect().height;
+		};
+
+		const getScrollOffset = () => baseOffset + getHeaderOffset();
+
+		const updateAnchorOffset = () => {
+			const offset = getScrollOffset();
+			root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
+			return offset;
+		};
+
 		const setActive = (id) => {
 			links.forEach((link) => {
 				link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
@@ -81,9 +98,22 @@ export function inpageNav() {
 			}
 		};
 
-		if (headings[0]?.id) {
-			setActive(headings[0].id);
-		}
+		const updateActiveHeading = () => {
+			if (!headings.length) return;
+			const offset = updateAnchorOffset();
+			let activeId = headings[0].id;
+
+			headings.forEach((heading) => {
+				const top = heading.getBoundingClientRect().top;
+				if (top - offset <= 1) {
+					activeId = heading.id;
+				}
+			});
+
+			setActive(activeId);
+		};
+
+		updateActiveHeading();
 
 		list.addEventListener('click', (event) => {
 			const target = event.target.closest('a');
@@ -94,7 +124,15 @@ export function inpageNav() {
 			const heading = document.getElementById(id);
 
 			if (heading) {
-				heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				const offset = updateAnchorOffset();
+				const targetTop =
+					heading.getBoundingClientRect().top + window.pageYOffset - offset;
+
+				setActive(id);
+				window.scrollTo({
+					top: Math.max(0, targetTop),
+					behavior: 'smooth'
+				});
 			}
 		});
 
@@ -102,30 +140,37 @@ export function inpageNav() {
 			const heading = document.getElementById(select.value);
 
 			if (heading) {
-				heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				const offset = updateAnchorOffset();
+				const targetTop =
+					heading.getBoundingClientRect().top + window.pageYOffset - offset;
+
+				setActive(heading.id);
+				window.scrollTo({
+					top: Math.max(0, targetTop),
+					behavior: 'smooth'
+				});
 			}
+		});
+
+		let scrollTicking = false;
+		const handleScroll = () => {
+			if (scrollTicking) return;
+			scrollTicking = true;
+			requestAnimationFrame(() => {
+				updateActiveHeading();
+				scrollTicking = false;
+			});
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', () => {
+			updateActiveHeading();
 		});
 
 		if (!('IntersectionObserver' in window)) {
 			mobile.classList.add('is-visible');
 			return;
 		}
-
-		const headingObserver = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						setActive(entry.target.id);
-					}
-				});
-			},
-			{
-				rootMargin: '-35% 0px -55% 0px',
-				threshold: 0
-			}
-		);
-
-		headings.forEach((heading) => headingObserver.observe(heading));
 
 		const sectionObserver = new IntersectionObserver(
 			(entries) => {

@@ -5,7 +5,7 @@
 
 .inpage-nav-content {
 	h2 {
-		scroll-margin-top: calc(60px + var(--header-sticky-offset, 0px));
+		scroll-margin-top: var(--inpage-anchor-offset, 60px);
 	}
 }
 
