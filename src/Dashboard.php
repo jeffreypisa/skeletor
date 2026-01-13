@@ -280,13 +280,14 @@ class Dashboard extends Site {
 				padding: 12px;
 				border-radius: 14px;
 				border: 1px solid #e5e5e5;
-				background: #f6f7f7;
+				background: #fff;
 				transition: transform .08s ease, background .08s ease, border-color .08s ease;
 			}
 			.emonks-tile:hover {
 				background: #fff;
 				border-color: #cfd7df;
 				transform: translateY(-1px);
+				box-shadow: 0 6px 18px rgba(0,0,0,.06);
 			}
 			.emonks-tile .count {
 				font-size: 20px;
@@ -530,7 +531,6 @@ class Dashboard extends Site {
 										<div class="title"><?php echo esc_html($a['title']); ?></div>
 										<div class="desc"><?php echo esc_html($a['desc']); ?></div>
 									</div>
-									<span class="button button-secondary btn">Open</span>
 								</a>
 							<?php endforeach; ?>
 						<?php endif; ?>
