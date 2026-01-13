@@ -84,13 +84,29 @@ export function inpageNav() {
 			parseCssNumber(
 				getComputedStyle(root).getPropertyValue('--header-sticky-offset')
 			);
+			
+		const getBreakpointWidth = () => {
+			const cssValue = getComputedStyle(root)
+				.getPropertyValue('--bs-breakpoint-lg')
+				.trim();
+			const numericValue = parseInt(cssValue, 10);
+		
+			return Number.isNaN(numericValue) ? 992 : numericValue;
+		};
+		
+		const isDesktop = () => window.innerWidth >= getBreakpointWidth();
 
 		// ✅ Altijd extra ruimte boven de H2 na scrollen
 		const EXTRA_H2_SPACE = 30;
 
 		const getDirectionalOffset = (targetTop, currentTop) => {
 			if (targetTop < currentTop) {
-				return getHeaderHeight();
+				const stickyOffset = getStickyOffset();
+				if (isDesktop()) {
+					return Math.max(stickyOffset, getHeaderHeight());
+				}
+				
+				return stickyOffset;
 			}
 
 			return 0;
