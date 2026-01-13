@@ -80,7 +80,7 @@ export function header() {
                 header.classList.remove('hidden');
                 root.style.setProperty(
                     '--header-sticky-offset',
-                    'var(--header-total-height)'
+                    'var(--header-height)'
                 );
             });
 
@@ -93,7 +93,7 @@ export function header() {
             header.classList.remove('hidden');
             root.style.setProperty(
                 '--header-sticky-offset',
-                'var(--header-total-height)'
+                'var(--header-height)'
             );
         }
     };
@@ -240,7 +240,7 @@ export function header() {
                     header.classList.add('visible');
                     root.style.setProperty(
                         '--header-sticky-offset',
-                        'var(--header-total-height)'
+                        'var(--header-height)'
                     );
                 }
             }
