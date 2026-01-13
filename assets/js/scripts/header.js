@@ -49,6 +49,7 @@ export function header() {
             stickyJustActivated = false;
             header.classList.remove('is-sticky', 'hidden', 'visible', 'no-anim');
             body.classList.remove('header-sticky-active');
+            root.style.setProperty('--header-sticky-offset', '0px');
             return;
         }
 
@@ -58,6 +59,7 @@ export function header() {
             header.classList.add('is-sticky');
             header.classList.add('hidden');
             header.classList.remove('visible');
+            root.style.setProperty('--header-sticky-offset', '0px');
             header.offsetHeight;
             header.classList.remove('no-anim');
             stickyJustActivated = false;
@@ -71,10 +73,15 @@ export function header() {
             stickyJustActivated = true;
             header.classList.add('hidden');
             header.classList.remove('visible');
+            root.style.setProperty('--header-sticky-offset', '0px');
 
             requestAnimationFrame(() => {
                 header.classList.add('visible');
                 header.classList.remove('hidden');
+                root.style.setProperty(
+                    '--header-sticky-offset',
+                    'var(--header-total-height)'
+                );
             });
 
             window.setTimeout(() => {
@@ -84,6 +91,10 @@ export function header() {
             stickyJustActivated = false;
             header.classList.add('visible');
             header.classList.remove('hidden');
+            root.style.setProperty(
+                '--header-sticky-offset',
+                'var(--header-total-height)'
+            );
         }
     };
 
@@ -218,6 +229,7 @@ export function header() {
             ) {
                 header.classList.remove('visible');
                 header.classList.add('hidden');
+                root.style.setProperty('--header-sticky-offset', '0px');
             }
         } else {
             if (stickyActive) {
@@ -226,6 +238,10 @@ export function header() {
                 } else {
                     header.classList.remove('hidden');
                     header.classList.add('visible');
+                    root.style.setProperty(
+                        '--header-sticky-offset',
+                        'var(--header-total-height)'
+                    );
                 }
             }
         }
