@@ -154,6 +154,10 @@ class Dashboard extends Site {
 		if (!$screen || $screen->id !== 'dashboard') return;
 		?>
 		<style>
+			#wpbody-content > .wrap > h1 {
+				display: none;
+			}
+
 			#emonks_custom_dashboard {
 				background: transparent;
 				border: 0;
@@ -190,9 +194,9 @@ class Dashboard extends Site {
 
 			.emonks-grid {
 				display: grid;
-				grid-template-columns: 1.1fr 1.3fr;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
 				gap: 18px;
-				align-items: start;
+				align-items: stretch;
 			}
 
 			.emonks-card {
@@ -201,6 +205,9 @@ class Dashboard extends Site {
 				border-radius: 14px;
 				box-shadow: 0 1px 2px rgba(0,0,0,.04);
 				padding: 16px;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
 			}
 
 			.emonks-card h2 {
@@ -310,10 +317,10 @@ class Dashboard extends Site {
 			/* Bottom grid */
 			.emonks-grid-2 {
 				display: grid;
-				grid-template-columns: 1.4fr 1fr;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
 				gap: 18px;
 				margin-top: 18px;
-				align-items: start;
+				align-items: stretch;
 			}
 
 			/* Recent list */
@@ -335,8 +342,16 @@ class Dashboard extends Site {
 			}
 
 			/* Help */
+			.emonks-help { margin-top: 16px; }
 			.emonks-help p { margin: 0 0 12px 0; color: #3c434a; }
 			.emonks-help .button { border-radius: 10px; padding: 7px 12px; }
+			.emonks-subtitle {
+				margin: 18px 0 10px 0;
+				font-size: 12px;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: #646970;
+			}
 
 			@media (max-width: 980px) {
 				.emonks-grid { grid-template-columns: 1fr; }
@@ -505,6 +520,29 @@ class Dashboard extends Site {
 		$updates_url = admin_url('update-core.php');
 		$health_url  = admin_url('site-health.php');
 		$mailto      = 'mailto:jeffrey@emonks.nl';
+		$phone_number_display = '085-060-3600';
+		$phone_number_link    = 'tel:+31850603600';
+
+		if (!function_exists('is_plugin_active')) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$managewp_plugins = array(
+			'worker/init.php',
+			'managewp-worker/init.php',
+			'managewp-worker/managewp-worker.php',
+			'managewp/worker.php',
+		);
+
+		$managewp_active = false;
+		if (function_exists('is_plugin_active')) {
+			foreach ($managewp_plugins as $plugin_file) {
+				if (is_plugin_active($plugin_file)) {
+					$managewp_active = true;
+					break;
+				}
+			}
+		}
 
 		?>
 		<div class="emonks-dash">
@@ -632,17 +670,28 @@ class Dashboard extends Site {
 						</a>
 					</div>
 
+					<h3 class="emonks-subtitle">Emonks onderhoud</h3>
+
+					<div class="emonks-help">
+						<?php if ($managewp_active) : ?>
+							<p>
+								<strong>Emonks onderhoud is actief.</strong> Plugins worden elke maandagochtend vroeg bijgewerkt, uptime monitoring is actief en er worden dagelijks back-ups gemaakt.
+							</p>
+							<a class="button button-secondary" href="<?php echo esc_url($phone_number_link); ?>">
+								Vragen? Bel <?php echo esc_html($phone_number_display); ?>
+							</a>
+						<?php else : ?>
+							<p>
+								<strong>Er is geen actief Emonks onderhoud gevonden.</strong> Hierdoor is er geen uptime monitoring, dagelijkse back-ups of support vanuit Emonks actief.
+							</p>
+							<a class="button button-primary" href="<?php echo esc_url($mailto); ?>">
+								Vraag onderhoud aan via jeffrey@emonks.nl
+							</a>
+						<?php endif; ?>
+					</div>
+
 					<?php do_action('emonks_dashboard_extra_status_block'); ?>
 				</div>
-			</div>
-
-			<!-- Hulp nodig -->
-			<div class="emonks-card emonks-help" style="margin-top:18px;">
-				<h2>Hulp nodig?</h2>
-				<p>Neem contact op met Emonks.</p>
-				<a class="button button-primary" href="<?php echo esc_url($mailto); ?>">
-					Stuur een mail: jeffrey@emonks.nl
-				</a>
 			</div>
 		</div>
 		<?php
