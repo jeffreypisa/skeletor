@@ -78,14 +78,15 @@ export function inpageNav() {
 		};
 
 		const getHeaderHeight = () =>
-			parseCssNumber(
-				getComputedStyle(root).getPropertyValue('--header-height')
-			);
+			parseCssNumber(getComputedStyle(root).getPropertyValue('--header-height'));
 
 		const getStickyOffset = () =>
 			parseCssNumber(
 				getComputedStyle(root).getPropertyValue('--header-sticky-offset')
 			);
+
+		// ✅ Altijd extra ruimte boven de H2 na scrollen
+		const EXTRA_H2_SPACE = 30;
 
 		const getDirectionalOffset = (targetTop, currentTop) => {
 			if (targetTop < currentTop) {
@@ -96,7 +97,7 @@ export function inpageNav() {
 		};
 
 		const updateAnchorOffset = () => {
-			const offset = getStickyOffset();
+			const offset = getStickyOffset() + EXTRA_H2_SPACE;
 			root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
 			return offset;
 		};
@@ -139,7 +140,9 @@ export function inpageNav() {
 			if (heading) {
 				const currentTop = window.pageYOffset;
 				const headingTop = heading.getBoundingClientRect().top + currentTop;
-				const offset = getDirectionalOffset(headingTop, currentTop);
+
+				// ✅ directionele offset + altijd 30px extra ruimte
+				const offset = getDirectionalOffset(headingTop, currentTop) + EXTRA_H2_SPACE;
 				const targetTop = headingTop - offset;
 
 				root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
@@ -157,7 +160,9 @@ export function inpageNav() {
 			if (heading) {
 				const currentTop = window.pageYOffset;
 				const headingTop = heading.getBoundingClientRect().top + currentTop;
-				const offset = getDirectionalOffset(headingTop, currentTop);
+
+				// ✅ directionele offset + altijd 30px extra ruimte
+				const offset = getDirectionalOffset(headingTop, currentTop) + EXTRA_H2_SPACE;
 				const targetTop = headingTop - offset;
 
 				root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
