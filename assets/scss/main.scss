@@ -75,15 +75,8 @@ Theme by Emonks
 // 4. Plugin (init)
 // ==========================================
 
-// FontAwesome
-// $fa-font-path: '../assets/fontawesome/webfonts';
-// @import '../fontawesome/scss/brands.scss';
-// @import '../fontawesome/scss/light.scss';
-// @import '../fontawesome/scss/solid.scss';
-// @import '../fontawesome/scss/fontawesome.scss';
-
 // Swiper
-@import '../node_modules/swiper/swiper.scss';
+@import 'plugins/swiper';
 
 // NoUISlider
 @import 'plugins/nouislider';
