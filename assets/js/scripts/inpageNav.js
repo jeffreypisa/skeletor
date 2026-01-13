@@ -23,8 +23,6 @@ export function inpageNav() {
 
 	const sections = document.querySelectorAll('[data-inpage-nav-section]');
 	const root = document.documentElement;
-	const header = document.querySelector('.header');
-	const baseOffset = 60;
 
 	sections.forEach((section) => {
 		const content = section.querySelector('[data-inpage-nav-content]');
@@ -74,24 +72,31 @@ export function inpageNav() {
 
 		const links = Array.from(list.querySelectorAll('a'));
 
-		const getHeaderOffset = () => {
-			if (!header) return 0;
-			if (!header.classList.contains('visible')) return 0;
-			return header.getBoundingClientRect().height;
+		const parseCssNumber = (value) => {
+			const parsed = parseFloat(value);
+			return Number.isNaN(parsed) ? 0 : parsed;
 		};
 
-		const getScrollOffset = () => baseOffset + getHeaderOffset();
+		const getHeaderHeight = () =>
+			parseCssNumber(
+				getComputedStyle(root).getPropertyValue('--header-height')
+			);
+
+		const getStickyOffset = () =>
+			parseCssNumber(
+				getComputedStyle(root).getPropertyValue('--header-sticky-offset')
+			);
 
 		const getDirectionalOffset = (targetTop, currentTop) => {
-			if (targetTop > currentTop) {
-				return baseOffset;
+			if (targetTop < currentTop) {
+				return getHeaderHeight();
 			}
 
-			return baseOffset + getHeaderOffset();
+			return 0;
 		};
 
 		const updateAnchorOffset = () => {
-			const offset = getScrollOffset();
+			const offset = getStickyOffset();
 			root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
 			return offset;
 		};
@@ -137,6 +142,7 @@ export function inpageNav() {
 				const offset = getDirectionalOffset(headingTop, currentTop);
 				const targetTop = headingTop - offset;
 
+				root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
 				setActive(id);
 				window.scrollTo({
 					top: Math.max(0, targetTop),
@@ -154,6 +160,7 @@ export function inpageNav() {
 				const offset = getDirectionalOffset(headingTop, currentTop);
 				const targetTop = headingTop - offset;
 
+				root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
 				setActive(heading.id);
 				window.scrollTo({
 					top: Math.max(0, targetTop),

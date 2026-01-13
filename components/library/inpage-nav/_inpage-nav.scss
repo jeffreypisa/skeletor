@@ -11,8 +11,7 @@
 
 .inpage-nav {
 	position: sticky;
-	top: calc(2rem + var(--header-sticky-offset, 0px));
-	transition: top 0.3s ease;
+	top: 2rem;
 	padding: 1.5rem;
 	background-color: $light;
 	border-radius: 1rem;
