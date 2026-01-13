@@ -3,7 +3,7 @@
 use Timber\Site;
 
 /**
- * EMONKS Custom Dashboard (OOP versie voor jouw thema-structuur)
+ * Emonks Custom Dashboard (OOP versie voor jouw thema-structuur)
  *
  * Features:
  * - Welkom [naam] + sitenaam
@@ -86,7 +86,7 @@ class Dashboard extends Site {
 
 		wp_add_dashboard_widget(
 			'emonks_custom_dashboard',
-			'EMONKS Dashboard',
+			'Emonks Dashboard',
 			array($this, 'render_custom_dashboard')
 		);
 	}
@@ -195,8 +195,9 @@ class Dashboard extends Site {
 			.emonks-grid {
 				display: grid;
 				grid-template-columns: repeat(2, minmax(0, 1fr));
-				gap: 18px;
+				gap: 20px;
 				align-items: stretch;
+				margin-bottom: 50px;
 			}
 
 			.emonks-card {
@@ -342,7 +343,7 @@ class Dashboard extends Site {
 			}
 
 			/* Help */
-			.emonks-help { margin-top: 16px; }
+
 			.emonks-help p { margin: 0 0 12px 0; color: #3c434a; }
 			.emonks-help .button { border-radius: 10px; padding: 7px 12px; }
 			.emonks-subtitle {
@@ -520,8 +521,8 @@ class Dashboard extends Site {
 		$updates_url = admin_url('update-core.php');
 		$health_url  = admin_url('site-health.php');
 		$mailto      = 'mailto:jeffrey@emonks.nl';
-		$phone_number_display = '085-060-3600';
-		$phone_number_link    = 'tel:+31850603600';
+		$phone_number_display = '06-24370701';
+		$phone_number_link    = 'tel:+31624370701';
 
 		if (!function_exists('is_plugin_active')) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -669,8 +670,9 @@ class Dashboard extends Site {
 							<span class="button button-secondary btn">Open</span>
 						</a>
 					</div>
-
-					<h3 class="emonks-subtitle">Emonks onderhoud</h3>
+					
+					<br><br>
+					<h2 class="emonks-title">Emonks onderhoud</h2>
 
 					<div class="emonks-help">
 						<?php if ($managewp_active) : ?>
@@ -685,7 +687,7 @@ class Dashboard extends Site {
 								<strong>Er is geen actief Emonks onderhoud gevonden.</strong> Hierdoor is er geen uptime monitoring, dagelijkse back-ups of support vanuit Emonks actief.
 							</p>
 							<a class="button button-primary" href="<?php echo esc_url($mailto); ?>">
-								Vraag onderhoud aan via jeffrey@emonks.nl
+								Vraag onderhoud aan
 							</a>
 						<?php endif; ?>
 					</div>
