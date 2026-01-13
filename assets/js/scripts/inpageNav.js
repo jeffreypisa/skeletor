@@ -82,6 +82,14 @@ export function inpageNav() {
 
 		const getScrollOffset = () => baseOffset + getHeaderOffset();
 
+		const getDirectionalOffset = (targetTop, currentTop) => {
+			if (targetTop > currentTop) {
+				return baseOffset;
+			}
+
+			return baseOffset + getHeaderOffset();
+		};
+
 		const updateAnchorOffset = () => {
 			const offset = getScrollOffset();
 			root.style.setProperty('--inpage-anchor-offset', `${offset}px`);
@@ -124,9 +132,10 @@ export function inpageNav() {
 			const heading = document.getElementById(id);
 
 			if (heading) {
-				const offset = updateAnchorOffset();
-				const targetTop =
-					heading.getBoundingClientRect().top + window.pageYOffset - offset;
+				const currentTop = window.pageYOffset;
+				const headingTop = heading.getBoundingClientRect().top + currentTop;
+				const offset = getDirectionalOffset(headingTop, currentTop);
+				const targetTop = headingTop - offset;
 
 				setActive(id);
 				window.scrollTo({
@@ -140,9 +149,10 @@ export function inpageNav() {
 			const heading = document.getElementById(select.value);
 
 			if (heading) {
-				const offset = updateAnchorOffset();
-				const targetTop =
-					heading.getBoundingClientRect().top + window.pageYOffset - offset;
+				const currentTop = window.pageYOffset;
+				const headingTop = heading.getBoundingClientRect().top + currentTop;
+				const offset = getDirectionalOffset(headingTop, currentTop);
+				const targetTop = headingTop - offset;
 
 				setActive(heading.id);
 				window.scrollTo({
