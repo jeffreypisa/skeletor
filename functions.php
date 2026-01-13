@@ -6,6 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // Include your theme-specific files.
 require_once __DIR__ . '/src/ACFScripts.php';
 require_once __DIR__ . '/src/CustomWooCommerce.php';
+require_once __DIR__ . '/src/Dashboard.php';
 require_once __DIR__ . '/src/Gutenberg.php';
 require_once __DIR__ . '/src/HideUsers.php';
 require_once __DIR__ . '/src/Includes.php';
@@ -24,6 +25,7 @@ Timber\Timber::init();
 // Initialize your classes
 new ACFScripts();
 new CustomWooCommerce();
+new Dashboard();
 new Gutenberg();
 new HideUsers();
 new Includes();
