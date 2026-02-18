@@ -3,6 +3,10 @@
 {% block content %}
 	{% include 'stroken/hero.twig' %}
 	{% if post.content %}
+		{% set content_without_fullwidth_buttons = post.content|replace({
+			'wp-block-button__width-100': '',
+			'w-100': ''
+		}) %}
 		<section class="strook-content">
 			<div class="container">
 				<div class="row justify-content-center">
@@ -11,7 +15,7 @@
 							level: 'h2',
 							class: 'mb-5'
 						}) }}
-						{{ post.content }}
+						{{ content_without_fullwidth_buttons }}
 					</div>
 				</div>
 			</div>

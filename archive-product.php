@@ -72,11 +72,47 @@ $query_args = [
     'posts_per_page' => $posts_per_page,
     'paged'          => get_query_var('paged') ?: 1,
 ];
+$current_taxonomy_filter = null;
 
-$query_args = array_merge(
-    $query_args,
-    Components_Filter::build_query_from_filters($context['filters'])
-);
+// ✅ Behoud de huidige WooCommerce taxonomy-context (bv. productcategorie)
+if (is_tax('product_cat') || is_tax('product_tag')) {
+    $queried_term = get_queried_object();
+
+    if ($queried_term instanceof WP_Term) {
+        $taxonomy_filter = [
+            'taxonomy' => $queried_term->taxonomy,
+            'field'    => 'term_id',
+            'terms'    => [$queried_term->term_id],
+        ];
+
+        if ('product_cat' === $queried_term->taxonomy) {
+            $taxonomy_filter['include_children'] = true;
+        }
+        $current_taxonomy_filter = $taxonomy_filter;
+    }
+}
+
+$filter_query_args = Components_Filter::build_query_from_filters($context['filters']);
+
+if ($current_taxonomy_filter) {
+    $existing_tax_query = $filter_query_args['tax_query'] ?? [];
+
+    if (!is_array($existing_tax_query)) {
+        $existing_tax_query = [];
+    }
+
+    if (empty($existing_tax_query)) {
+        $filter_query_args['tax_query'] = [$current_taxonomy_filter];
+    } else {
+        if (!isset($existing_tax_query['relation'])) {
+            $existing_tax_query['relation'] = 'AND';
+        }
+        $existing_tax_query[] = $current_taxonomy_filter;
+        $filter_query_args['tax_query'] = $existing_tax_query;
+    }
+}
+
+$query_args = array_merge($query_args, $filter_query_args);
 
 $orderby = sanitize_text_field($_GET['orderby'] ?? '');
 $order   = sanitize_text_field($_GET['order'] ?? '');

@@ -2,24 +2,31 @@
 
 {% block content %}
 
-<div class="product">
+<div class="product woo-single-product">
 	<section class="bg-transparent">
 		<div class="container">
 			{% do action('woocommerce_before_single_product') %}
 
 			<article itemscope itemtype="https://schema.org/Product" class="single-product-details {{ post.class }}">
+				<div class="single-product-card">
+					<div class="row g-4 g-xl-5 align-items-start">
+						<div class="col-lg-7">
+							<div class="entry-images">
+								{% do action('woocommerce_before_single_product_summary') %}
+							</div>
+						</div>
 
-				<div class="entry-images">
-					{% do action('woocommerce_before_single_product_summary') %}
-
-					<!-- <img src="{{ post.thumbnail.src('shop_single') }}" /> -->
+						<div class="col-lg-5">
+							<div class="summary entry-summary">
+								{% do action('woocommerce_single_product_summary') %}
+							</div>
+						</div>
+					</div>
 				</div>
 
-				<div class="summary entry-summary">
-					{% do action('woocommerce_single_product_summary') %}
+				<div class="single-product-extra">
+					{% do action('woocommerce_after_single_product_summary') %}
 				</div>
-
-				{% do action('woocommerce_after_single_product_summary') %}
 
 				<meta itemprop="url" content="{{ post.link }}" />
 
@@ -30,10 +37,10 @@
 	{% if related_products is not empty %}
 	<section class="bg-transparent related-products">
 		<div class="container">
-			<h2 class="mb-4">{{ __('Gerelateerde Producten', 'woocommerce') }}</h2>
-			<div class="row w-100">
+			<h2 class="mb-4">{{ __('Gerelateerde producten', 'woocommerce') }}</h2>
+			<div class="row g-4">
 				{% for post in related_products %}
-				<div class="col-sm-6 col-lg-4 col-xxl-3">
+				<div class="col-sm-6 col-xl-4 col-xxl-3">
 					{% include "woo/partials/tease-product.twig" with { post: post } %}
 				</div>
 				{% endfor %}
