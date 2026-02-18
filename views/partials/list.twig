@@ -1,6 +1,6 @@
 {% if posts|length %}
         <div class="row">
-                {% set forced_col = col_class|default('col-md-4') %}
+                {% set forced_col = col_class|default('col-12') %}
                 {% for item in posts %}
                         {% set col = forced_col %}
                         <div class="{{ col }} fade-in-item visible">

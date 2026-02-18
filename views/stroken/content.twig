@@ -18,7 +18,7 @@
 					{{ heading(item.titel, { level: 'h2' }) }}
 					{{ text(item.tekst, { class: 'mb-0' }) }}
 					{% if item.link_primair or item.link_secundair %}
-						<div class="d-flex justify-content-center justify-content-md-start gap-3 mt-4">
+						<div class="d-flex flex-column justify-content-center justify-content-md-start gap-3 mt-4">
 							{{ button(item.link_primair) }}
 							{{ button(item.link_secundair, 'outline-dark') }}
 						</div>
