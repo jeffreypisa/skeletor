@@ -29,12 +29,19 @@ class Components_Heading extends Site {
 			'inview_animation' => ''
 		];
 		$settings = array_merge($defaults, $options);
+		$animation = trim((string) $settings['inview_animation']);
+
+		// Sta zowel "word-rise" als "animate-word-rise" en underscore-varianten toe.
+		if ($animation !== '') {
+			$animation = str_replace('_', '-', $animation);
+			$animation = preg_replace('/^animate-/', '', $animation);
+		}
 
 		return Timber::compile('heading/heading.twig', [
 			'text' => $text,
 			'level' => $settings['level'],
-			'class' => $settings['class'] . ($settings['inview_animation'] ? ' animate-' . $settings['inview_animation'] : ''),
-			'inview_animation' => $settings['inview_animation'],
+			'class' => trim($settings['class'] . ($animation ? ' animate-' . $animation : '')),
+			'inview_animation' => $animation,
 		]);
 	}
 }

@@ -44,6 +44,13 @@ class Components_Text extends Site {
 			'inview_animation' => ''
 		];
 		$settings = array_merge($defaults, $options);
+		$animation = trim((string) $settings['inview_animation']);
+
+		// Sta zowel "word-rise" als "animate-word-rise" en underscore-varianten toe.
+		if ($animation !== '') {
+			$animation = str_replace('_', '-', $animation);
+			$animation = preg_replace('/^animate-/', '', $animation);
+		}
 
 		// **Beperk tekstlengte indien ingesteld (pas NA vertaling toe)**
 		if (!empty($settings['max_length']) && mb_strlen($text) > $settings['max_length']) {
@@ -55,9 +62,10 @@ class Components_Text extends Site {
 
 		$text_data = [
 			'text' => $text,
-			'class' => trim($settings['class'] . ($settings['inview_animation'] ? ' animate-' . $settings['inview_animation'] : '')),
+			'class' => trim($settings['class'] . ($animation ? ' animate-' . $animation : '')),
 			'tag' => $settings['tag'],
 			'style' => $settings['style'],
+			'inview_animation' => $animation,
 			'is_html' => preg_match('/<[^>]+>/', $text), // Controleer of de inhoud al HTML is
 		];
 

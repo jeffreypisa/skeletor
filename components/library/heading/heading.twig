@@ -9,7 +9,9 @@ Parameters:
 - options (array, optioneel): Instellingen voor de heading, met:
   - level (string, optioneel): HTML-niveau van de titel ('h1', 'h2', etc.). Standaard: 'h2'.
   - class (string, optioneel): Extra CSS-klassen voor styling.
-  - inview_animation (string, optioneel): Voegt een animatie toe wanneer de heading in beeld komt. Mogelijke waarden: 'fade-in', 'typewriter'.
+  - inview_animation (string, optioneel): Voegt een animatie toe wanneer de heading in beeld komt.
+    Mogelijke waarden:
+    'fade-in', 'typewriter', 'word-rise', 'line-reveal', 'blur-up', 'stagger-lines', 'char-fade-soft', 'underline-draw', 'parallax-in'.
 
 Voorbeelden:
 1. Standaard heading:
@@ -19,11 +21,11 @@ Voorbeelden:
    {{ heading(item.titel, {
        level: 'h2',
        class: 'mb-3',
-       inview_animation: 'typewriter'
+       inview_animation: 'word-rise'
    }) }}
 
 #}
 
-<{{ level }} class="{{ class }}" data-text="{{ text }}">
+<{{ level }} class="{{ class }}" data-text="{{ text }}" {% if inview_animation == 'word-rise' %}data-word-rise-text="{{ text|striptags|trim }}"{% endif %}>
     {{ text }}
 </{{ level }}>

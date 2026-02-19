@@ -11,7 +11,9 @@ Parameters:
   - tag (string, optioneel): HTML-tag (bijv. 'p', 'span', 'div'). Standaard: 'p'.
   - style (string, optioneel): Inline stijlen voor extra aanpassingen.
   - max_length (int, optioneel): Maximale lengte van de tekst (in tekens). Tekst wordt ingekort met '...' als deze langer is.
-  - inview_animation (string, optioneel): Voegt een animatie toe wanneer het element in beeld komt. Mogelijke waarden: 'fade-in', 'typewriter'.
+  - inview_animation (string, optioneel): Voegt een animatie toe wanneer het element in beeld komt.
+    Mogelijke waarden:
+    'fade-in', 'typewriter', 'word-rise', 'line-reveal', 'blur-up', 'stagger-lines', 'char-fade-soft', 'underline-draw', 'parallax-in'.
 
 Voorbeelden:
 
@@ -24,12 +26,12 @@ Voorbeelden:
      tag: 'p',
      style: 'font-size: 1.2rem; line-height: 1.5;',
      max_length: 20,
-     inview_animation: 'typewriter'
+     inview_animation: 'word-rise'
    }) }}
 
 #}
 
-<div{% if class %} class="{{ class }}"{% endif %}{% if style %} style="{{ style }}"{% endif %}>
+<div{% if class %} class="{{ class }}"{% endif %} data-text="{{ text|striptags|trim }}"{% if inview_animation == 'word-rise' %} data-word-rise-text="{{ text|striptags|trim }}"{% endif %}{% if style %} style="{{ style }}"{% endif %}>
     {% if text|trim %}
         {% if is_html %}
             {{ text|raw }}
