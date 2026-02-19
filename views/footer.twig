@@ -1,95 +1,108 @@
 <footer id="footer">
 	{% if options.footer_calltoaction_titel or options.footer_calltoaction_tekst or options.footer_calltoaction_link %}
-	<div class="calltoaction bg-primary text-white text-center">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
-					{{ heading(options.footer_calltoaction_titel, {
-						level: 'h3'
-					}) }}
-					{{ text(options.footer_calltoaction_tekst) }}
-					<br>
-					{{ button(options.footer_calltoaction_link, 'outline-light') }}
+		<div class="calltoaction bg-primary text-white text-center">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 offset-md-1 col-xl-8 offset-xl-2">
+						{{ heading(options.footer_calltoaction_titel, {
+							level: 'h3'
+						}) }}
+						{{ text(options.footer_calltoaction_tekst) }}
+						<br>
+						{{ button(options.footer_calltoaction_link, 'outline-light') }}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	{% endif %}
-	<div class="footer bg-dark">
+	<div class="footer bg-dark text-light">
+		{% set footer_sections = footermenu.get_items %}
+		{% set section_columns = [] %}
+		{% set standalone_links = [] %}
+		{% for section in footer_sections %}
+			{% if section.children|length > 0 %}
+				{% set section_columns = section_columns|merge([section]) %}
+			{% else %}
+				{% set standalone_links = standalone_links|merge([section]) %}
+			{% endif %}
+		{% endfor %}
+		{% set privacy_url = function('get_privacy_policy_url') %}
+		{% set cookie_page = function('get_page_by_path', 'cookieverklaring') ?: function('get_page_by_path', 'cookie-verklaring') %}
 		<div class="container">
-			<div class="row mb-5">
-				<div class="col-6 col-md-3 offset-md-2 offset-lg-3 mb-4 mb-md-0">
-					{{ heading(options.footer_navigatie_menu_titel, {
-                        level: 'h5'
-                    }) }}
-					<nav aria-label="Footer navigation">
-						{% include "partials/menu-clean.twig" with {'items': footermenu.get_items} %}
-					</nav>
+			<div class="footer__main row justify-content-between gy-5">
+				<div class="col-lg-4 text-center text-lg-start">
+					<a href="{{ site.url }}" class="footer__brand">
+						<img src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}" height="48">
+					</a>
+					<div class="footer__address">
+						{{ text(options.footer_navigatie_tekst) }}
+					</div>
 				</div>
-				<div class="col-6 col-md-3 col-lg-2 mb-4 mb-md-0">
-					{{ heading(options.footer_navigatie_socialmedia_titel, {
-						level: 'h5'
-					}) }}
-					<ul class="list-unstyled">
-						<li>
-							{{ icon({ 
-								icon: 'facebook', 
-								style: 'brands', 
-								class: 'socal-media-link',
-								container_height: 22, 
-								container_width: 22,
-								title: 'Facebook',
-								url: options.facebook,
-								position: 'left'
-							}) }}
-						</li>
-						<li>
-							{{ icon({ 
-								icon: 'instagram', 
-								style: 'brands', 
-								class: 'socal-media-link',
-								container_height: 22, 
-								container_width: 22,
-								title: 'Instagram',
-								url: options.facebook,
-								position: 'left'
-							}) }}
-						</li>
-						<li>
-							{{ icon({ 
-								icon: 'linkedin', 
-								style: 'brands', 
-								class: 'socal-media-link',
-								container_height: 22, 
-								container_width: 22,
-								title: 'Linkedin',
-								url: options.facebook,
-								position: 'left'
-							}) }}
-						</li>
-						<li>
-							{{ icon({ 
-								icon: 'x-twitter', 
-								style: 'brands', 
-								class: 'socal-media-link',
-								container_height: 22, 
-								container_width: 22,
-								title: 'X',
-								url: options.facebook,
-								position: 'left'
-							}) }}
-						</li>
-					</ul>
-				</div>
-
-				<div class="col-md-4 order-md-first text-center text-md-start">
-					<img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}" class="mb-3">
-					{{ text(options.footer_navigatie_tekst) }}
+				<div class="col-lg-7 col-xxl-6">
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4">
+						{% for section in section_columns %}
+							<div class="col">
+								<nav class="footer__nav" aria-label="{{ section.title }}">
+									<h5 class="footer__title">{{ section.title }}</h5>
+									{% if section.children|length > 0 %}
+										<ul class="footer__menu list-unstyled">
+											{% for child in section.children %}
+												<li>
+													<a href="{{ child.link }}" {% if child.target %}target="{{ child.target }}" rel="noopener"{% endif %}>{{ child.title }}</a>
+												</li>
+											{% endfor %}
+										</ul>
+									{% endif %}
+								</nav>
+							</div>
+						{% endfor %}
+						{% if standalone_links|length > 0 %}
+							<div class="col">
+								<nav class="footer__nav" aria-label="{{ options.footer_navigatie_menu_titel ?: 'Navigatie' }}">
+									<h5 class="footer__title">{{ options.footer_navigatie_menu_titel ?: 'Navigatie' }}</h5>
+									<ul class="footer__menu list-unstyled">
+										{% for item in standalone_links %}
+											<li>
+												<a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}" rel="noopener"{% endif %}>{{ item.title }}</a>
+											</li>
+										{% endfor %}
+									</ul>
+								</nav>
+							</div>
+						{% endif %}
+					</div>
 				</div>
 			</div>
-			<div class="subfooter text-center text-md-start">
-				<div class="">©{{"now"|date('Y')}} All rights reserved {{ site.title}} </div>
-				<div class="text-sm">Website door <a href="https://www.emonks.nl/" target="_blank" rel="noopener">Emonks</a> </div>
+
+			<div class="footer__meta text-center">
+				<div class="footer__meta-links">
+					{% if privacy_url %}
+						<a href="{{ privacy_url }}">Privacyverklaring</a>
+					{% endif %}
+					{% if cookie_page %}
+						<a href="{{ function('get_permalink', cookie_page.ID) }}">Cookieverklaring</a>
+					{% endif %}
+					<a href="https://www.emonks.nl/" target="_blank" rel="noopener">Website door Emonks</a>
+				</div>
+
+				{% if options.facebook or options.instagram or options.linkedin or options.x %}
+					<ul class="footer__social list-unstyled">
+						{% if options.facebook %}
+							<li>{{ icon({ icon: 'facebook', style: 'brands', class: 'footer__social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'Facebook', title_position: 'right', title_class: 'visually-hidden', url: options.facebook, target: 'blank' }) }}</li>
+						{% endif %}
+						{% if options.instagram %}
+							<li>{{ icon({ icon: 'instagram', style: 'brands', class: 'footer__social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'Instagram', title_position: 'right', title_class: 'visually-hidden', url: options.instagram, target: 'blank' }) }}</li>
+						{% endif %}
+						{% if options.linkedin %}
+							<li>{{ icon({ icon: 'linkedin', style: 'brands', class: 'footer__social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'LinkedIn', title_position: 'right', title_class: 'visually-hidden', url: options.linkedin, target: 'blank' }) }}</li>
+						{% endif %}
+						{% if options.x %}
+							<li>{{ icon({ icon: 'x-twitter', style: 'brands', class: 'footer__social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'X', title_position: 'right', title_class: 'visually-hidden', url: options.x, target: 'blank' }) }}</li>
+						{% endif %}
+					</ul>
+				{% endif %}
+
+				<div class="footer__copyright">© {{ "now"|date('Y') }} {{ site.title }}</div>
 			</div>
 		</div>
 	</div>

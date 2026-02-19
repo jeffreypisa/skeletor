@@ -1,27 +1,146 @@
-footer {
+$spacer-footer-main: 100px;
+$spacer-footer-meta: 50px;
+
+footer {	
 	.calltoaction {
 		padding: 60px 0 80px;
 	}
+
 	.footer {
-		padding: 60px 0;
+		isolation: isolate;
+		overflow: hidden;
+		padding: $spacer-footer-main 0 $spacer-footer-meta;
 		font-size: 14px;
 		line-height: 22px;
+		position: relative;
+
 		a {
-			color: $light;
+			color: rgba($light, 0.78);
 			text-decoration: none;
+			transition: color .15s $ease;
+
 			&:hover {
 				color: $primary;
-				i {
-					background: $primary
+			}
+		}
+
+		.footer__brand {
+			display: inline-flex;
+			margin-bottom: 24px;
+			img {
+				height: 30px;
+				filter: brightness(0) invert(1);
+			}
+		}
+
+		.footer__address {
+			color: rgba($light, 0.72);
+			max-width: 320px;
+			p:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		.footer__main {
+			margin-bottom: $spacer-footer-main;
+		}
+
+		.footer__title {
+			color: $light;
+			font-size: 1.05rem;
+			letter-spacing: .04em;
+			margin: 0 0 1.05rem;
+			text-transform: uppercase;
+		}
+
+		.footer__menu {
+			margin: 0;
+			padding: 0;
+
+			li:not(:last-child) {
+				margin-bottom: 10px;
+			}
+		}
+
+		.footer__nav {
+			height: 100%;
+		}
+
+		.footer__meta {
+			border-top: 1px solid rgba($light, 0.1);
+			padding-top: $spacer-footer-meta;
+		}
+
+		.footer__meta-links {
+			align-items: center;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 14px 28px;
+			justify-content: center;
+			margin-bottom: 15px;
+
+			a {
+				font-size: .95rem;
+				letter-spacing: .02em;
+				text-transform: uppercase;
+			}
+		}
+
+		.footer__social {
+			display: flex;
+			gap: 12px;
+			justify-content: center;
+			margin: 0 0 20px;
+			padding: 0;
+
+			li {
+				margin: 0;
+			}
+
+			a,
+			.footer__social-link {
+				align-items: center;
+				display: inline-flex;
+				height: 40px;
+				justify-content: center;
+				width: 40px;
+
+				&:hover {
+					border-color: $primary;
+					color: $primary;
 				}
 			}
 		}
-		ul {
-			li {
-				margin-bottom: 10px;
-				a {
-					color: $light;
-					text-decoration: none;
+
+		.footer__copyright {
+			color: rgba($light, 0.62);
+			font-size: .95rem;
+			letter-spacing: .04em;
+			text-transform: uppercase;
+		}
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	footer {
+		.footer {
+			.footer__address {
+				margin-inline: auto;
+			}
+
+			.footer__title {
+				margin-bottom: .75rem;
+			}
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	footer {
+		.footer {
+			.footer__main {
+				.col-lg-8 .row {
+					row-gap: 1.5rem;
 				}
 			}
 		}
