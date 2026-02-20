@@ -34,7 +34,7 @@ export function scrollAnimations() {
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'underline-draw');
 				} else {
-					entry.target.classList.add('in-view');
+					addInViewWithDelay(entry.target);
 				}
 				observer.unobserve(entry.target);
 			}

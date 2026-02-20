@@ -24,24 +24,26 @@ div.figcaption-below-left, div.figcaption-below-right {
 figure {
 	position: relative;
 	overflow: hidden;
-	transition: all 0.3s ease;
 
 	& img {
 		display: block;
 		width: 100%;
 		height: auto;
-		transition: transform 1.2s ease, opacity 1.2s ease;
+		position: relative;
+		z-index: 1;
+		transition: transform calc(0.95s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), opacity calc(0.75s / var(--inview-speed-factor, 1)) ease, filter calc(0.75s / var(--inview-speed-factor, 1)) ease;
+		will-change: transform, opacity, filter;
 	}
 
 	&.animate-zoom-in img {
-		transform: scale(1.2);
+		transform: scale(1.18);
 	}
 	&.in-view.animate-zoom-in img {
 		transform: scale(1);
 	}
 
 	&.animate-zoom-out img {
-		transform: scale(0.8);
+		transform: scale(0.86);
 	}
 	&.in-view.animate-zoom-out img {
 		transform: scale(1);
@@ -54,14 +56,195 @@ figure {
 		opacity: 1;
 	}
 
-	&.animate-slide-in-zoom img {
-		transform: translate(-30%, 30%) scale(1.4);
+	&.animate-reveal-mask img {
 		opacity: 0;
-		transition: transform 1s ease, opacity 0.8s ease;
+		transform: scale(1.15);
+		-webkit-clip-path: inset(0 100% 0 0);
+		clip-path: inset(0 100% 0 0);
+		transition: opacity calc(0.45s / var(--inview-speed-factor, 1)) ease;
 	}
-	&.in-view.animate-slide-in-zoom img {
-		transform: translate(0, 0) scale(1);
+	&.in-view.animate-reveal-mask img {
+		opacity: 1;
+		animation: reveal-mask-sweep calc(1s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	&.animate-depth-pop img {
+		opacity: 0;
+		filter: blur(9px);
+		transform: translate3d(0, 18px, 0) scale(0.94);
+	}
+	&.in-view.animate-depth-pop img {
+		opacity: 1;
+		filter: blur(0);
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+
+	&.animate-frame-draw::after {
+		border: 1.5px solid currentColor;
+		content: '';
+		inset: 0.75rem;
+		opacity: 0;
+		pointer-events: none;
+		position: absolute;
+		transform: scaleX(0.6);
+		transform-origin: left center;
+		transition: transform calc(0.85s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), opacity calc(0.5s / var(--inview-speed-factor, 1)) ease;
+		z-index: 2;
+	}
+
+	&.animate-frame-draw img {
+		opacity: 0;
+		transform: scale(1.05);
+	}
+
+	&.in-view.animate-frame-draw::after {
+		opacity: 0.65;
+		transform: scaleX(1);
+	}
+
+	&.in-view.animate-frame-draw img {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	&.animate-cinematic-tilt {
+		perspective: 1200px;
+		transform-style: preserve-3d;
+		transition: box-shadow calc(0.95s / var(--inview-speed-factor, 1)) ease;
+	}
+
+	&.animate-cinematic-tilt img {
+		opacity: 0;
+		transform: perspective(1200px) rotateX(14deg) rotateY(-12deg) translate3d(0, 22px, 0) scale(1.06);
+		transform-origin: center center;
+	}
+
+	&.in-view.animate-cinematic-tilt img {
+		opacity: 1;
+		animation: cinematic-tilt-settle calc(1s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	&.in-view.animate-cinematic-tilt {
+		box-shadow: 0 28px 54px rgba(0, 0, 0, 0.2);
+	}
+
+	&.animate-duotone-fade img {
+		filter: grayscale(1) contrast(1.08) saturate(0.35) brightness(0.95);
+		opacity: 0.85;
+	}
+
+	&.in-view.animate-duotone-fade img {
+		filter: grayscale(0) contrast(1) saturate(1) brightness(1);
 		opacity: 1;
 	}
 
+	&.animate-shutter-slices img {
+		-webkit-clip-path: inset(0 50% 0 50%);
+		clip-path: inset(0 50% 0 50%);
+		opacity: 0;
+		transform: scale(1.06);
+		transition: clip-path calc(0.9s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), -webkit-clip-path calc(0.9s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), transform calc(0.8s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), opacity calc(0.55s / var(--inview-speed-factor, 1)) ease;
+	}
+
+	&.in-view.animate-shutter-slices img {
+		-webkit-clip-path: inset(0 0 0 0);
+		clip-path: inset(0 0 0 0);
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	&.animate-soft-glow-in {
+		background-image: linear-gradient(108deg, rgba(255, 255, 255, 0) 18%, rgba(255, 255, 255, 0.62) 50%, rgba(255, 255, 255, 0) 82%);
+		background-position: -250% 0;
+		background-repeat: no-repeat;
+		background-size: 250% 100%;
+		filter: saturate(0.92);
+		transition: background-position calc(1.15s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), filter calc(0.9s / var(--inview-speed-factor, 1)) ease;
+	}
+
+	&.animate-soft-glow-in img {
+		opacity: 0;
+		filter: blur(12px) brightness(1.16) saturate(1.08);
+		transform: scale(1.09);
+		transition: transform calc(1s / var(--inview-speed-factor, 1)) cubic-bezier(0.22, 1, 0.36, 1), opacity calc(0.65s / var(--inview-speed-factor, 1)) ease, filter calc(1s / var(--inview-speed-factor, 1)) ease;
+	}
+
+	&.in-view.animate-soft-glow-in {
+		background-position: 130% 0;
+		filter: saturate(1);
+	}
+
+	&.in-view.animate-soft-glow-in img {
+		opacity: 1;
+		filter: blur(0) brightness(1) saturate(1);
+		transform: scale(1);
+	}
+
+	/* Guard: behoud Bootstrap ratio-spacer wanneer oudere pseudo-regels nog in cache zitten */
+	&.ratio.animate-soft-glow-in::before,
+	&.ratio.in-view.animate-soft-glow-in::before,
+	&.ratio.animate-shutter-slices::before,
+	&.ratio.in-view.animate-shutter-slices::before {
+		background: none !important;
+		content: '' !important;
+		display: block !important;
+		inset: auto !important;
+		opacity: 1 !important;
+		padding-top: var(--bs-aspect-ratio) !important;
+		pointer-events: none !important;
+		position: static !important;
+		transform: none !important;
+		transition: none !important;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	figure[class*='animate-'] {
+		clip-path: none !important;
+		transition: none !important;
+
+		img {
+			animation: none !important;
+			filter: none !important;
+			opacity: 1 !important;
+			transform: none !important;
+			transition: none !important;
+		}
+
+		&::after {
+			opacity: 0 !important;
+			transform: none !important;
+			transition: none !important;
+		}
+	}
+}
+
+@keyframes cinematic-tilt-settle {
+	0% {
+		transform: perspective(1200px) rotateX(14deg) rotateY(-12deg) translate3d(0, 22px, 0) scale(1.06);
+	}
+	60% {
+		transform: perspective(1200px) rotateX(-2.6deg) rotateY(2.2deg) translate3d(0, -2px, 0) scale(0.995);
+	}
+	100% {
+		transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0) scale(1);
+	}
+}
+
+@keyframes reveal-mask-sweep {
+	0% {
+		transform: scale(1.08);
+		-webkit-clip-path: inset(0 100% 0 0);
+		clip-path: inset(0 100% 0 0);
+	}
+	65% {
+		transform: scale(1.025);
+		-webkit-clip-path: inset(0 6% 0 0);
+		clip-path: inset(0 6% 0 0);
+	}
+	100% {
+		transform: scale(1);
+		-webkit-clip-path: inset(0 0 0 0);
+		clip-path: inset(0 0 0 0);
+	}
 }

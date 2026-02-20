@@ -23,10 +23,18 @@ Parameters:
 	- 'on-left': Op de afbeelding, linksonder (standaard).
 	- 'on-right': Op de afbeelding, rechtsonder.
   - inview_animation (string, optioneel): Animatie bij het in beeld komen van de afbeelding:
-	- 'animate-zoom-in'
-	- 'animate-zoom-out'
-	- 'animate-fade-in'
-	- 'animate-slide-in-zoom'
+	- 'zoom-in'
+	- 'zoom-out'
+	- 'fade-in'
+	- 'reveal-mask'
+	- 'depth-pop'
+	- 'frame-draw'
+	- 'cinematic-tilt'
+	- 'duotone-fade'
+	- 'shutter-slices'
+	- 'soft-glow-in'
+  - inview_animation_speed (float, optioneel): Snelheidsfactor voor de animatie. Standaard: 1.
+    Lager dan 1 = langzamer, hoger dan 1 = sneller.
 
 Voorbeelden:
 
@@ -43,11 +51,17 @@ Voorbeelden:
 	   style: 'max-width: 500px;',
 	   show_caption: true,
 	   caption_position: 'below-right',
-	   inview_animation: 'animate-zoom-in'
+	   inview_animation: 'zoom-in',
+	   inview_animation_speed: 1.2
    }) }}
 #}
 
-<figure class="position-relative {{ figure_class }} {{ ratio ? 'ratio ratio-' ~ ratio : '' }} {{ inview_animation }}" style="{% if style %}{{ style }}{% endif %}">
+<figure class="position-relative {{ figure_class }} {{ ratio ? 'ratio ratio-' ~ ratio : '' }}"{% include 'shared/inview-animation-attributes.twig' with {
+	animation_text: alt,
+	inview_animation: inview_animation,
+	inview_animation_speed: inview_animation_speed,
+	style: style
+} only %}>
 	<img src="{{ url }}" 
 		 alt="{{ alt }}" 
 		 class="{{ img_class }}" 

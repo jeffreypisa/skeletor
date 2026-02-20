@@ -9,14 +9,14 @@
 					ratio: '4x3',
 					object_fit: 'cover',
 					show_caption: false,
-					inview_animation: 'animate-zoom-in'
+					inview_animation: 'shutter-slices'
 				}) }}
 			</div>
 			{% endif %}
 			<div class="d-flex {% if item.afbeelding %}text-start text-md-start {{ item.afbeelding_positie == 'rechts' ? 'order-md-1' : 'order-md-2 offset-md-1' }} order-2 col-md-6{% else %}col-md-10 col-xxl-8{% endif %} align-items-start ">
 				<div class="content w-100 animate-slide-up">
 					{{ heading(item.titel, { level: 'h2' }) }}
-					{{ text(item.tekst, { class: 'mb-0', inview_animation: 'word-rise', inview_animation_speed: 1 }) }}
+					{{ text(item.tekst, { class: 'mb-0' }) }}
 					{% if item.link_primair or item.link_secundair %}
 						<div class="d-flex-inline flex-column justify-content-center justify-content-md-start gap-3 mt-4">
 							{{ button(item.link_primair) }}
