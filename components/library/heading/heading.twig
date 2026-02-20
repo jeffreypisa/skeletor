@@ -29,6 +29,10 @@ Voorbeelden:
 
 #}
 
-<{{ level }} class="{{ class }}" data-text="{{ text }}" {% if inview_animation == 'word-rise' %}data-word-rise-text="{{ text|striptags|trim }}"{% endif %}{% if inview_animation %} data-inview-speed="{{ inview_animation_speed|default(1) }}"{% endif %}{% if inview_animation %} style="--inview-speed-factor: {{ inview_animation_speed|default(1) }};"{% endif %}>
+<{{ level }} class="{{ class }}" data-text="{{ text }}"{% include 'shared/inview-animation-attributes.twig' with {
+	animation_text: text,
+	inview_animation: inview_animation,
+	inview_animation_speed: inview_animation_speed
+} only %}>
     {{ text }}
 </{{ level }}>

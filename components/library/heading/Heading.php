@@ -8,6 +8,8 @@ use Twig\TwigFunction;
  * Class Components_Heading
  */
 class Components_Heading extends Site {
+	use Components_InviewAnimationOptions;
+
 	public function __construct() {
 		add_filter('timber/twig', [$this, 'add_to_twig']);
 		parent::__construct();
@@ -30,15 +32,8 @@ class Components_Heading extends Site {
 			'inview_animation_speed' => 1
 		];
 		$settings = array_merge($defaults, $options);
-		$animation = trim((string) $settings['inview_animation']);
-		$speed = is_numeric($settings['inview_animation_speed']) ? (float) $settings['inview_animation_speed'] : 1;
-		$speed = max(0.1, min($speed, 10));
-
-		// Sta zowel "word-rise" als "animate-word-rise" en underscore-varianten toe.
-		if ($animation !== '') {
-			$animation = str_replace('_', '-', $animation);
-			$animation = preg_replace('/^animate-/', '', $animation);
-		}
+		$animation = $this->normalize_inview_animation($settings['inview_animation']);
+		$speed = $this->normalize_inview_animation_speed($settings['inview_animation_speed']);
 
 		return Timber::compile('heading/heading.twig', [
 			'text' => $text,

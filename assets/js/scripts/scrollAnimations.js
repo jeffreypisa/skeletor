@@ -14,27 +14,22 @@ export function scrollAnimations() {
 					entry.target.classList.add('in-view');
 					typewriterEffect(entry.target, () => releaseFixedHeight(entry.target));
 				} else if (entry.target.classList.contains('animate-word-rise')) {
-					setFixedHeight(entry.target);
 					wordRiseEffect(entry.target);
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'word-rise');
 				} else if (entry.target.classList.contains('animate-char-fade-soft')) {
-					setFixedHeight(entry.target);
 					charFadeSoftEffect(entry.target);
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'char-fade-soft');
 				} else if (entry.target.classList.contains('animate-line-reveal')) {
-					setFixedHeight(entry.target);
 					lineAnimationEffect(entry.target, 'line-reveal');
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'line-reveal');
 				} else if (entry.target.classList.contains('animate-stagger-lines')) {
-					setFixedHeight(entry.target);
 					lineAnimationEffect(entry.target, 'stagger-lines');
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'stagger-lines');
 				} else if (entry.target.classList.contains('animate-underline-draw')) {
-					setFixedHeight(entry.target);
 					underlineDrawEffect(entry.target);
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'underline-draw');
@@ -53,16 +48,13 @@ export function scrollAnimations() {
 }
 
 function setFixedHeight(element) {
-	const clone = element.cloneNode(true);
-	clone.style.visibility = 'hidden';
-	clone.style.position = 'absolute';
-	clone.style.whiteSpace = 'normal'; // Zorg dat het klopt met de originele tekstweergave
-	clone.style.width = `${element.offsetWidth}px`;
-	document.body.appendChild(clone);
+	const rectHeight = element.getBoundingClientRect().height;
+	const contentHeight = element.scrollHeight;
+	const height = Math.max(rectHeight, contentHeight);
 
-	const height = clone.offsetHeight;
-	element.style.minHeight = `${height}px`;
-	document.body.removeChild(clone);
+	if (height > 0) {
+		element.style.minHeight = `${Math.ceil(height)}px`;
+	}
 }
 
 function releaseFixedHeight(element) {
@@ -72,7 +64,9 @@ function releaseFixedHeight(element) {
 function schedulePostAnimationCleanup(element, animationType = '') {
 	const speedMultiplier = getAnimationSpeedMultiplier(element);
 	const baseDelay = animationType ? 1400 : 1200;
-	const delay = Math.max(120, Math.round(baseDelay / speedMultiplier));
+	const minDelay = Math.max(120, Math.round(baseDelay / speedMultiplier));
+	const animationDelay = getPostAnimationDelay(element, animationType);
+	const delay = Math.max(minDelay, animationDelay);
 	window.setTimeout(() => {
 		if (
 			animationType === 'line-reveal' ||
@@ -84,6 +78,62 @@ function schedulePostAnimationCleanup(element, animationType = '') {
 		}
 		releaseFixedHeight(element);
 	}, delay);
+}
+
+function getPostAnimationDelay(element, animationType = '') {
+	const animationTargets = {
+		'word-rise': '.word-rise-word',
+		'char-fade-soft': '.char-fade-soft-char',
+		'line-reveal': '.line-reveal-line-inner',
+		'stagger-lines': '.stagger-lines-line-inner'
+	};
+
+	const selector = animationTargets[animationType];
+	if (!selector) {
+		return 0;
+	}
+
+	const items = element.querySelectorAll(selector);
+	if (!items.length) {
+		return 0;
+	}
+
+	let maxDelay = 0;
+	items.forEach((item) => {
+		const inlineDelay = parseTimeToMs(item.style.transitionDelay || '0ms');
+		if (inlineDelay > maxDelay) {
+			maxDelay = inlineDelay;
+		}
+	});
+
+	const style = window.getComputedStyle(items[0]);
+	const duration = parseTimeListToMaxMs(style.transitionDuration);
+	const delay = parseTimeListToMaxMs(style.transitionDelay);
+	const settleBuffer = 140;
+
+	return Math.round(maxDelay + duration + delay + settleBuffer);
+}
+
+function parseTimeToMs(value = '0ms') {
+	const raw = `${value}`.trim();
+	if (!raw) return 0;
+	if (raw.endsWith('ms')) return Number.parseFloat(raw) || 0;
+	if (raw.endsWith('s')) return (Number.parseFloat(raw) || 0) * 1000;
+	return Number.parseFloat(raw) || 0;
+}
+
+function parseTimeListToMaxMs(value = '') {
+	const list = `${value}`.split(',');
+	let max = 0;
+
+	list.forEach((entry) => {
+		const parsed = parseTimeToMs(entry);
+		if (parsed > max) {
+			max = parsed;
+		}
+	});
+
+	return max;
 }
 
 function attachResizeCleanupListener(animatedElements) {

@@ -1,0 +1,5 @@
+{% set raw_text = animation_text|default('')|striptags|trim %}
+{% set speed = inview_animation_speed|default(1) %}
+{% set extra_style = style|default('') %}
+
+{% if inview_animation == 'word-rise' %} data-word-rise-text="{{ raw_text }}"{% endif %}{% if inview_animation %} data-inview-speed="{{ speed }}"{% endif %}{% if extra_style or inview_animation %} style="{% if extra_style %}{{ extra_style }}{% if extra_style|trim and extra_style|last != ';' %};{% endif %}{% endif %}{% if inview_animation %}--inview-speed-factor: {{ speed }};{% endif %}"{% endif %}
