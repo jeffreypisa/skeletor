@@ -80,8 +80,8 @@ footer {
 			margin-bottom: 15px;
 
 			a {
-				font-size: .95rem;
-				letter-spacing: .02em;
+				font-size: .8rem;
+				letter-spacing: .1em;
 				text-transform: uppercase;
 			}
 		}
@@ -114,8 +114,9 @@ footer {
 
 		.footer__copyright {
 			color: rgba($light, 0.62);
-			font-size: .95rem;
-			letter-spacing: .04em;
+			font-size: .8rem;
+			letter-spacing: .1em;
+			font-weight: 700;
 			text-transform: uppercase;
 		}
 	}

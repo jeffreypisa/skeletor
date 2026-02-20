@@ -1,23 +1,22 @@
 .loaded .strook-hero {
-        p, .btn {
-                opacity: 1;
-        }
+
 }
 
 body.header-transparent {
-        .strook-hero {
-                margin-top: calc(-1 * var(--header-total-height, 60px));
-        }
+	.strook-hero {
+		margin-top: calc(-1 * var(--header-total-height, 60px));
+	}
 }
 
 .strook-hero {
-        padding-top: 150px;
-        padding-bottom: 100px;
-        position: relative;
+	padding-top: 150px;
+	padding-bottom: 100px;
+	position: relative;
 	text-align: center;
 	min-height: 680px;
-	
-	h1, p {
+
+	h1,
+	p {
 		text-shadow: 0px 2px 8px rgba(41, 48, 101, 0.5);
 	}
 
@@ -25,35 +24,6 @@ body.header-transparent {
 		margin-bottom: 0;
 	}
 
-	&:after {
-		content: '';
-		position: absolute;
-		z-index: 0;
-		width: 100%;
-		height: 70%;
-		left: 0;
-		bottom: 0;
-		background: linear-gradient(180deg, rgba(64, 186, 236, 0) 0%, $primary 100%);
-		opacity: .4;
-	}
-
-	&:before {
-		content: '';
-		position: absolute;
-		z-index: 0;
-		width: 100%;
-		height: 100px;
-		top: 100%;
-		left: 0;
-		background: linear-gradient(0deg, rgba(64, 186, 236, 0) 0%, $primary 99.42%);
-	}
-	
-	p, .btn {
-		opacity: 0;
-		transition: opacity .4s $ease;
-		transition-delay: 2s;
-	}
-	
 	.achtergrond {
 		position: absolute;
 		top: 0;
@@ -61,23 +31,23 @@ body.header-transparent {
 		right: 0;
 		bottom: 0;
 		z-index: 0;
-		opacity: .7;
+		opacity: .5;
 		z-index: 0;
 		background-size: cover;
 		background-position: center;
 	}
-	
+
 	&.video-loaded {
 		.video-container {
 			opacity: 1; // Zichtbaar zodra de video geladen is
 		}
 	}
-	
+
 	.video-container {
 		overflow: hidden;
 		opacity: 0; // Start onzichtbaar
 		transition: opacity 1s $ease;
-		
+
 		iframe {
 			box-sizing: border-box;
 			height: 56.25vw;
@@ -102,13 +72,16 @@ body.header-transparent {
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 2;
+
 		svg {
 			fill: $light;
 			transition: .15s $ease;
 		}
-		&:hover, &:focus {
+
+		&:hover,
+		&:focus {
 			color: $primary;
-			box-shadow: 0px 0px 20px rgba(255,255,255,.5);
+			box-shadow: 0px 0px 20px rgba(255, 255, 255, .5);
 
 			svg {
 				fill: $dark;
