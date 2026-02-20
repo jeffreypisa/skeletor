@@ -26,10 +26,13 @@ class Components_Heading extends Site {
 		$defaults = [
 			'level' => 'h2',
 			'class' => '',
-			'inview_animation' => ''
+			'inview_animation' => '',
+			'inview_animation_speed' => 1
 		];
 		$settings = array_merge($defaults, $options);
 		$animation = trim((string) $settings['inview_animation']);
+		$speed = is_numeric($settings['inview_animation_speed']) ? (float) $settings['inview_animation_speed'] : 1;
+		$speed = max(0.1, min($speed, 10));
 
 		// Sta zowel "word-rise" als "animate-word-rise" en underscore-varianten toe.
 		if ($animation !== '') {
@@ -42,6 +45,7 @@ class Components_Heading extends Site {
 			'level' => $settings['level'],
 			'class' => trim($settings['class'] . ($animation ? ' animate-' . $animation : '')),
 			'inview_animation' => $animation,
+			'inview_animation_speed' => $speed,
 		]);
 	}
 }

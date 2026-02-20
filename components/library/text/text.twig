@@ -14,6 +14,8 @@ Parameters:
   - inview_animation (string, optioneel): Voegt een animatie toe wanneer het element in beeld komt.
     Mogelijke waarden:
     'fade-in', 'typewriter', 'word-rise', 'line-reveal', 'blur-up', 'stagger-lines', 'char-fade-soft', 'underline-draw', 'parallax-in'.
+  - inview_animation_speed (float, optioneel): Snelheidsfactor voor de animatie. Standaard: 1.
+    Lager dan 1 = langzamer, hoger dan 1 = sneller.
 
 Voorbeelden:
 
@@ -26,12 +28,13 @@ Voorbeelden:
      tag: 'p',
      style: 'font-size: 1.2rem; line-height: 1.5;',
      max_length: 20,
-     inview_animation: 'word-rise'
+     inview_animation: 'word-rise',
+     inview_animation_speed: 0.9
    }) }}
 
 #}
 
-<div{% if class %} class="{{ class }}"{% endif %} data-text="{{ text|striptags|trim }}"{% if inview_animation == 'word-rise' %} data-word-rise-text="{{ text|striptags|trim }}"{% endif %}{% if style %} style="{{ style }}"{% endif %}>
+<div{% if class %} class="{{ class }}"{% endif %} data-text="{{ text|striptags|trim }}"{% if inview_animation == 'word-rise' %} data-word-rise-text="{{ text|striptags|trim }}"{% endif %}{% if inview_animation %} data-inview-speed="{{ inview_animation_speed|default(1) }}"{% endif %}{% if style or inview_animation %} style="{% if style %}{{ style }}{% if style|trim and style|last != ';' %};{% endif %}{% endif %}{% if inview_animation %}--inview-speed-factor: {{ inview_animation_speed|default(1) }};{% endif %}"{% endif %}>
     {% if text|trim %}
         {% if is_html %}
             {{ text|raw }}

@@ -41,10 +41,13 @@ class Components_Text extends Site {
 			'tag' => 'p',
 			'style' => '',
 			'max_length' => null,
-			'inview_animation' => ''
+			'inview_animation' => '',
+			'inview_animation_speed' => 1
 		];
 		$settings = array_merge($defaults, $options);
 		$animation = trim((string) $settings['inview_animation']);
+		$speed = is_numeric($settings['inview_animation_speed']) ? (float) $settings['inview_animation_speed'] : 1;
+		$speed = max(0.1, min($speed, 10));
 
 		// Sta zowel "word-rise" als "animate-word-rise" en underscore-varianten toe.
 		if ($animation !== '') {
@@ -66,6 +69,7 @@ class Components_Text extends Site {
 			'tag' => $settings['tag'],
 			'style' => $settings['style'],
 			'inview_animation' => $animation,
+			'inview_animation_speed' => $speed,
 			'is_html' => preg_match('/<[^>]+>/', $text), // Controleer of de inhoud al HTML is
 		];
 

@@ -12,6 +12,8 @@ Parameters:
   - inview_animation (string, optioneel): Voegt een animatie toe wanneer de heading in beeld komt.
     Mogelijke waarden:
     'fade-in', 'typewriter', 'word-rise', 'line-reveal', 'blur-up', 'stagger-lines', 'char-fade-soft', 'underline-draw', 'parallax-in'.
+  - inview_animation_speed (float, optioneel): Snelheidsfactor voor de animatie. Standaard: 1.
+    Lager dan 1 = langzamer, hoger dan 1 = sneller.
 
 Voorbeelden:
 1. Standaard heading:
@@ -21,11 +23,12 @@ Voorbeelden:
    {{ heading(item.titel, {
        level: 'h2',
        class: 'mb-3',
-       inview_animation: 'word-rise'
+       inview_animation: 'word-rise',
+       inview_animation_speed: 0.9
    }) }}
 
 #}
 
-<{{ level }} class="{{ class }}" data-text="{{ text }}" {% if inview_animation == 'word-rise' %}data-word-rise-text="{{ text|striptags|trim }}"{% endif %}>
+<{{ level }} class="{{ class }}" data-text="{{ text }}" {% if inview_animation == 'word-rise' %}data-word-rise-text="{{ text|striptags|trim }}"{% endif %}{% if inview_animation %} data-inview-speed="{{ inview_animation_speed|default(1) }}"{% endif %}{% if inview_animation %} style="--inview-speed-factor: {{ inview_animation_speed|default(1) }};"{% endif %}>
     {{ text }}
 </{{ level }}>

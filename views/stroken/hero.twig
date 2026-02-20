@@ -30,11 +30,13 @@
 						{{ heading(post.hero_titel, {
 							   level: 'h1',
 							   class: 'mb-5',
-							   inview_animation: 'stagger-lines' 
+							   inview_animation: 'word-rise',
+							   inview_animation_speed: 1
 						   }) }}
 						{{ text(post.hero_tekst, {
 						   class: 'lead',
-						   inview_animation: 'fade-in'
+						   inview_animation: 'fade-in',
+						   inview_animation_speed: 0.5
 						}) }}
 						{{ button(post.hero_link, {
 						   style: 'primary',

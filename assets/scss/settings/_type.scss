@@ -146,9 +146,6 @@ body {
 	font-weight: map-get($heading-weights, $tag);
 	line-height: map-get($heading-lineheights, $tag);
 	margin-bottom: $headings-margin-bottom;
-    span {
-      vertical-align: text-top;
-    }
   }
 }
 

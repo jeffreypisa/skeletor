@@ -11,6 +11,7 @@ export function scrollAnimations() {
 			if (entry.isIntersecting) {
 				if (entry.target.classList.contains('animate-typewriter')) {
 					setFixedHeight(entry.target);
+					entry.target.classList.add('in-view');
 					typewriterEffect(entry.target, () => releaseFixedHeight(entry.target));
 				} else if (entry.target.classList.contains('animate-word-rise')) {
 					setFixedHeight(entry.target);
@@ -32,6 +33,11 @@ export function scrollAnimations() {
 					lineAnimationEffect(entry.target, 'stagger-lines');
 					addInViewWithDelay(entry.target);
 					schedulePostAnimationCleanup(entry.target, 'stagger-lines');
+				} else if (entry.target.classList.contains('animate-underline-draw')) {
+					setFixedHeight(entry.target);
+					underlineDrawEffect(entry.target);
+					addInViewWithDelay(entry.target);
+					schedulePostAnimationCleanup(entry.target, 'underline-draw');
 				} else {
 					entry.target.classList.add('in-view');
 				}
@@ -64,7 +70,9 @@ function releaseFixedHeight(element) {
 }
 
 function schedulePostAnimationCleanup(element, animationType = '') {
-	const delay = animationType ? 1400 : 1200;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const baseDelay = animationType ? 1400 : 1200;
+	const delay = Math.max(120, Math.round(baseDelay / speedMultiplier));
 	window.setTimeout(() => {
 		if (
 			animationType === 'line-reveal' ||
@@ -97,6 +105,16 @@ function attachResizeCleanupListener(animatedElements) {
 					restoreLineAnimationFlow(element);
 					releaseFixedHeight(element);
 				}
+
+				if (element.classList.contains('animate-underline-draw')) {
+					restoreLineAnimationFlow(element);
+					releaseFixedHeight(element);
+					const target = getAnimationTarget(element, 'wordRiseText');
+					if (target) {
+						delete target.dataset.underlineDrawReady;
+					}
+					underlineDrawEffect(element);
+				}
 			});
 		}, 120);
 	});
@@ -106,9 +124,11 @@ function typewriterEffect(element, onComplete) {
 	const text = element.getAttribute('data-text');
 	if (!text) return;
 
+	element.style.visibility = 'visible';
 	element.textContent = '';
 	let i = 0;
-	const speed = 50;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const speed = Math.max(8, Math.round(50 / speedMultiplier));
 
 	function type() {
 		if (i < text.length) {
@@ -129,6 +149,12 @@ function addInViewWithDelay(element) {
 			element.classList.add('in-view');
 		});
 	});
+}
+
+function getAnimationSpeedMultiplier(element) {
+	const value = Number.parseFloat(element?.dataset?.inviewSpeed || '1');
+	if (!Number.isFinite(value)) return 1;
+	return Math.max(0.1, Math.min(10, value));
 }
 
 function getAnimationTarget(element, dataAttribute = '') {
@@ -171,8 +197,10 @@ function wordRiseEffect(element) {
 	const rawText = getAnimationText(target, 'wordRiseText');
 	if (!rawText) return;
 	target.dataset.lineOriginalText = rawText;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const delayStep = Math.max(6, Math.round(55 / speedMultiplier));
 
-	writeSplitWords(target, rawText, 'word-rise-word', 55);
+	writeSplitWords(target, rawText, 'word-rise-word', delayStep);
 	target.dataset.wordRiseReady = '1';
 }
 
@@ -183,6 +211,8 @@ function charFadeSoftEffect(element) {
 	const rawText = getAnimationText(target, 'wordRiseText');
 	if (!rawText) return;
 	target.dataset.lineOriginalText = rawText;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const delayStep = Math.max(2, Math.round(22 / speedMultiplier));
 
 	clearTarget(target);
 
@@ -197,7 +227,7 @@ function charFadeSoftEffect(element) {
 
 		const span = document.createElement('span');
 		span.className = 'char-fade-soft-char';
-		span.style.transitionDelay = `${visibleIndex * 22}ms`;
+		span.style.transitionDelay = `${visibleIndex * delayStep}ms`;
 		span.textContent = char;
 		target.appendChild(span);
 		visibleIndex++;
@@ -209,6 +239,8 @@ function charFadeSoftEffect(element) {
 function lineAnimationEffect(element, animationType) {
 	const target = getAnimationTarget(element, 'wordRiseText');
 	if (!target) return;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const delayStep = Math.max(8, Math.round(85 / speedMultiplier));
 
 	const readyKey = animationType === 'line-reveal' ? 'lineRevealReady' : 'staggerLinesReady';
 	if (target.dataset[readyKey] === '1') return;
@@ -262,7 +294,7 @@ function lineAnimationEffect(element, animationType) {
 
 		const inner = document.createElement('span');
 		inner.className = `${animationType}-line-inner`;
-		inner.style.transitionDelay = `${index * 85}ms`;
+		inner.style.transitionDelay = `${index * delayStep}ms`;
 		inner.textContent = groupWords.join(' ');
 
 		line.appendChild(inner);
@@ -270,6 +302,71 @@ function lineAnimationEffect(element, animationType) {
 	});
 
 	target.dataset[readyKey] = '1';
+}
+
+function underlineDrawEffect(element) {
+	const target = getAnimationTarget(element, 'wordRiseText');
+	if (!target || target.dataset.underlineDrawReady === '1') return;
+	const speedMultiplier = getAnimationSpeedMultiplier(element);
+	const delayStep = Math.max(12, Math.round(180 / speedMultiplier));
+
+	const rawText = getAnimationText(target, 'wordRiseText');
+	if (!rawText) return;
+	target.dataset.lineOriginalText = rawText;
+
+	const words = rawText.split(' ');
+	if (words.length === 0) return;
+
+	clearTarget(target);
+
+	const tempWordSpans = [];
+	words.forEach((word, index) => {
+		const span = document.createElement('span');
+		span.className = 'line-measure-word';
+		span.textContent = word;
+		target.appendChild(span);
+		tempWordSpans.push(span);
+
+		if (index < words.length - 1) {
+			target.appendChild(document.createTextNode(' '));
+		}
+	});
+
+	const groups = [];
+	let currentGroup = [];
+	let previousTop = null;
+
+	tempWordSpans.forEach((span) => {
+		const top = Math.round(span.offsetTop);
+		if (previousTop === null || top === previousTop) {
+			currentGroup.push(span.textContent);
+		} else {
+			groups.push(currentGroup);
+			currentGroup = [span.textContent];
+		}
+		previousTop = top;
+	});
+
+	if (currentGroup.length > 0) {
+		groups.push(currentGroup);
+	}
+
+	clearTarget(target);
+
+	groups.forEach((groupWords, index) => {
+		const line = document.createElement('span');
+		line.className = 'underline-draw-line';
+		line.style.setProperty('--underline-delay', `${index * delayStep}ms`);
+
+		const inner = document.createElement('span');
+		inner.className = 'underline-draw-line-inner';
+		inner.textContent = groupWords.join(' ');
+
+		line.appendChild(inner);
+		target.appendChild(line);
+	});
+
+	target.dataset.underlineDrawReady = '1';
 }
 
 function restoreLineAnimationFlow(element) {
