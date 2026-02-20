@@ -11,23 +11,27 @@ export function scrollAnimations() {
 			if (entry.isIntersecting) {
 				if (entry.target.classList.contains('animate-typewriter')) {
 					setFixedHeight(entry.target);
-					typewriterEffect(entry.target);
+					typewriterEffect(entry.target, () => releaseFixedHeight(entry.target));
 				} else if (entry.target.classList.contains('animate-word-rise')) {
 					setFixedHeight(entry.target);
 					wordRiseEffect(entry.target);
 					addInViewWithDelay(entry.target);
+					schedulePostAnimationCleanup(entry.target, 'word-rise');
 				} else if (entry.target.classList.contains('animate-char-fade-soft')) {
 					setFixedHeight(entry.target);
 					charFadeSoftEffect(entry.target);
 					addInViewWithDelay(entry.target);
+					schedulePostAnimationCleanup(entry.target, 'char-fade-soft');
 				} else if (entry.target.classList.contains('animate-line-reveal')) {
 					setFixedHeight(entry.target);
 					lineAnimationEffect(entry.target, 'line-reveal');
 					addInViewWithDelay(entry.target);
+					schedulePostAnimationCleanup(entry.target, 'line-reveal');
 				} else if (entry.target.classList.contains('animate-stagger-lines')) {
 					setFixedHeight(entry.target);
 					lineAnimationEffect(entry.target, 'stagger-lines');
 					addInViewWithDelay(entry.target);
+					schedulePostAnimationCleanup(entry.target, 'stagger-lines');
 				} else {
 					entry.target.classList.add('in-view');
 				}
@@ -38,6 +42,8 @@ export function scrollAnimations() {
 
 	const animatedElements = document.querySelectorAll('[class*="animate-"]');
 	animatedElements.forEach(el => observer.observe(el));
+
+	attachResizeCleanupListener(animatedElements);
 }
 
 function setFixedHeight(element) {
@@ -53,7 +59,50 @@ function setFixedHeight(element) {
 	document.body.removeChild(clone);
 }
 
-function typewriterEffect(element) {
+function releaseFixedHeight(element) {
+	element.style.minHeight = '';
+}
+
+function schedulePostAnimationCleanup(element, animationType = '') {
+	const delay = animationType ? 1400 : 1200;
+	window.setTimeout(() => {
+		if (
+			animationType === 'line-reveal' ||
+			animationType === 'stagger-lines' ||
+			animationType === 'word-rise' ||
+			animationType === 'char-fade-soft'
+		) {
+			restoreLineAnimationFlow(element);
+		}
+		releaseFixedHeight(element);
+	}, delay);
+}
+
+function attachResizeCleanupListener(animatedElements) {
+	if (window.__scrollAnimationResizeCleanupAttached) return;
+	window.__scrollAnimationResizeCleanupAttached = true;
+
+	let resizeTimeout;
+	window.addEventListener('resize', () => {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = setTimeout(() => {
+			animatedElements.forEach((element) => {
+				if (
+					element.classList.contains('animate-word-rise') ||
+					element.classList.contains('animate-char-fade-soft') ||
+					element.classList.contains('animate-line-reveal') ||
+					element.classList.contains('animate-stagger-lines') ||
+					element.classList.contains('animate-typewriter')
+				) {
+					restoreLineAnimationFlow(element);
+					releaseFixedHeight(element);
+				}
+			});
+		}, 120);
+	});
+}
+
+function typewriterEffect(element, onComplete) {
 	const text = element.getAttribute('data-text');
 	if (!text) return;
 
@@ -66,6 +115,8 @@ function typewriterEffect(element) {
 			element.textContent += text.charAt(i);
 			i++;
 			setTimeout(type, speed);
+		} else if (typeof onComplete === 'function') {
+			onComplete();
 		}
 	}
 
@@ -81,6 +132,10 @@ function addInViewWithDelay(element) {
 }
 
 function getAnimationTarget(element, dataAttribute = '') {
+	if (element.children.length === 1 && element.children[0].children.length === 0) {
+		return element.children[0];
+	}
+
 	if (dataAttribute && element.dataset[dataAttribute] !== undefined) {
 		return element;
 	}
@@ -115,6 +170,7 @@ function wordRiseEffect(element) {
 
 	const rawText = getAnimationText(target, 'wordRiseText');
 	if (!rawText) return;
+	target.dataset.lineOriginalText = rawText;
 
 	writeSplitWords(target, rawText, 'word-rise-word', 55);
 	target.dataset.wordRiseReady = '1';
@@ -126,6 +182,7 @@ function charFadeSoftEffect(element) {
 
 	const rawText = getAnimationText(target, 'wordRiseText');
 	if (!rawText) return;
+	target.dataset.lineOriginalText = rawText;
 
 	clearTarget(target);
 
@@ -158,6 +215,7 @@ function lineAnimationEffect(element, animationType) {
 
 	const rawText = getAnimationText(target, 'wordRiseText');
 	if (!rawText) return;
+	target.dataset.lineOriginalText = rawText;
 
 	const words = rawText.split(' ');
 	if (words.length === 0) return;
@@ -212,6 +270,16 @@ function lineAnimationEffect(element, animationType) {
 	});
 
 	target.dataset[readyKey] = '1';
+}
+
+function restoreLineAnimationFlow(element) {
+	const target = getAnimationTarget(element, 'wordRiseText');
+	if (!target) return;
+
+	const rawText = target.dataset.lineOriginalText || getAnimationText(target, 'wordRiseText');
+	if (!rawText) return;
+
+	target.textContent = rawText;
 }
 
 function writeSplitWords(target, text, className, delayStep = 55) {
