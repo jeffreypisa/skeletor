@@ -3,7 +3,7 @@
 // Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
 
 // scss-docs-start input-btn-variables
-$input-btn-padding-y:         .5rem;
+$input-btn-padding-y:         .9rem;
 $input-btn-padding-x:         .75rem !default;
 $input-btn-font-family:       null !default;
 $input-btn-font-size:         $font-size-base !default;
@@ -34,9 +34,9 @@ $input-btn-border-width:      var(--#{$prefix}border-width) !default;
 // scss-docs-start btn-variables
 $btn-color:                   #fff;
 $btn-padding-y:               $input-btn-padding-y;
-$btn-padding-x:               20px;
-$btn-font-family:             50px;
-$btn-font-size:               18px;
+$btn-padding-x:               30px;
+$btn-font-family:             'SpaceGroteskMedium';
+$btn-font-size:               14px;
 $btn-line-height:             $input-btn-line-height !default;
 $btn-white-space:             null !default; // Set to `nowrap` to prevent text wrapping
 
@@ -48,9 +48,9 @@ $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
 $btn-padding-x-lg:            $input-btn-padding-x-lg !default;
 $btn-font-size-lg:            $input-btn-font-size-lg !default;
 
-$btn-border-width:            2px;
+$btn-border-width:            1px;
 
-$btn-font-weight:             600;
+$btn-font-weight:             500;
 $btn-box-shadow:              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075) !default;
 $btn-focus-width:             $input-btn-focus-width !default;
 $btn-focus-box-shadow:        $input-btn-focus-box-shadow !default;
