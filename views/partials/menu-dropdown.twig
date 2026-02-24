@@ -3,9 +3,9 @@
         {% for item in items %}
             {% set linkstijl = 'nav-link' %}
             {% if item.link_stijl == 'btn-primary' %}
-                {% set linkstijl = 'btn btn-primary text-white' %}
+                {% set linkstijl = 'btn btn-primary' %}
             {% elseif item.link_stijl == 'btn-secondary' %}
-                {% set linkstijl = 'btn btn-secondary text-white' %}
+                {% set linkstijl = 'btn btn-secondary' %}
             {% endif %}
         
             <li class="nav-item {{ item.children|length > 0 ? 'has-dropdown' }} {{ item.classes | join(' ') }} d-flex align-items-center">

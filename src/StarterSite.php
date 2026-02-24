@@ -40,7 +40,7 @@ class StarterSite extends Site {
 			};
 		}
 
-        $show_topbar = apply_filters('skeletor_show_topbar', true);
+        $show_topbar = apply_filters('skeletor_show_topbar', false);
         $context['show_topbar'] = $show_topbar;
 
         // Haal menu's op

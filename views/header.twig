@@ -12,11 +12,11 @@
 						{{ site.description }}
 					</div>
 					{% if servicemenu %}
-					<div class="col-auto d-flex align-items-center">
-						<nav aria-label="Service navigation">
-							{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
-						</nav>
-					</div>
+						<div class="col-auto d-flex align-items-center">
+							<nav aria-label="Service navigation">
+								{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
+							</nav>
+						</div>
 					{% endif %}
 				</div>
 			</div>
@@ -33,11 +33,11 @@
 					</a>
 				</div>
 				{% if headermenu %}
-				<div class="col-auto d-none d-{{ menu_breakpoint }}-flex align-items-center">
-					<nav class="primary-navigation" aria-label="Primary navigation">
-						{{ dropdown.nav(headermenu.get_items) }}
-					</nav>
-				</div>
+					<div class="col-auto d-none d-{{ menu_breakpoint }}-flex align-items-center">
+						<nav class="primary-navigation" aria-label="Primary navigation">
+							{{ dropdown.nav(headermenu.get_items) }}
+						</nav>
+					</div>
 				{% endif %}
 			</div>
 		</div>

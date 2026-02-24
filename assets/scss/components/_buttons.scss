@@ -9,23 +9,13 @@ select.btn {
 	}
 }
 
-.btn {
-	border-radius: 3px;
-	display: inline-flex;
-}
-
-.btn.btn-lg {
-	padding-left: 25px;
-	padding-right: 25px;
-}
-
 .btn.btn-primary {
-	color: #fff;
+
 
 	&:hover,
 	&:focus,
 	&:active {
-		color: #fff;
+
 	}
 }
 
@@ -33,8 +23,7 @@ select.btn {
 	&:hover,
 	&:focus,
 	&:active {
-		background-color: $primary;
-		color: #fff;
+
 	}
 }
 
@@ -42,8 +31,7 @@ select.btn {
 	&:hover,
 	&:focus,
 	&:active {
-		background-color: $secondary;
-		color: #fff;
+		
 	}
 }
 

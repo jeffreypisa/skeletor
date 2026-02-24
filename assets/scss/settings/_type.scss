@@ -7,29 +7,38 @@
 // ========================================
 
 @font-face {
-  font-family: 'DarkerGrotesque';
-  src: url('../assets/webfonts/DarkerGrotesque-Bold.woff2') format('woff2'),
-	   url('../assets/webfonts/DarkerGrotesque-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'WixMadeforText';
-  src: url('../assets/webfonts/WixMadeforText-Regular.woff2') format('woff2'),
-	   url('../assets/webfonts/WixMadeforText-Regular.woff') format('woff');
+  font-family: 'ZalandoSans';
+  src: url('../assets/webfonts/ZalandoSans-Regular.woff2') format('woff2'),
+	   url('../assets/webfonts/ZalandoSans-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'WixMadeforText';
-  src: url('../assets/webfonts/WixMadeforText-SemiBold.woff2') format('woff2'),
-	   url('../assets/webfonts/WixMadeforText-SemiBold.woff') format('woff');
-  font-weight: 600;
+  font-family: 'ZalandoSansExpanded';
+  src: url('../assets/webfonts/ZalandoSansExpanded-Medium.woff2') format('woff2'),
+	   url('../assets/webfonts/ZalandoSansExpanded-Medium.woff') format('woff');
+  font-weight: 500;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ZalandoSansExpanded';
+  src: url('../assets/webfonts/ZalandoSansExpanded-Italic.woff2') format('woff2'),
+	   url('../assets/webfonts/ZalandoSansExpanded-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SpaceGroteskMedium';
+  src: url('../assets/webfonts/SpaceGrotesk-Medium.woff2') format('woff2'),
+     url('../assets/webfonts/SpaceGrotesk-Medium.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -39,8 +48,9 @@
 
 $font-size-root: 16px;
 
-$font-family-base: 'WixMadeforText', sans-serif;
-$font-family-alt: 'DarkerGrotesque', sans-serif;
+$font-family-base: 'ZalandoSans', sans-serif;
+$font-family-heading: 'ZalandoSansExpanded', sans-serif;
+$font-family-alt: 'SpaceGroteskMedium', sans-serif;
 
 $font-size-base: 1rem; // 16px
 $font-size-sm: 0.875rem;
@@ -65,11 +75,11 @@ $headings-margin-bottom: 1.5rem;
 // ========================================
 
 $heading-px-sizes: (
-  h1: (48, 70),
-  h2: (38, 50),
-  h3: (32, 44),
-  h4: (22, 24),
-  h5: (20, 22),
+  h1: (48, 54),
+  h2: (26, 36),
+  h3: (21, 24),
+  h4: (18, 20),
+  h5: (18, 20),
   h6: (18, 20)
 );
 
@@ -92,27 +102,27 @@ $headings-clamp: ();
 }
 
 $heading-weights: (
-  h1: 700,
-  h2: 700,
-  h3: 700,
-  h4: 600,
-  h5: 600,
-  h6: 600
+  h1: 500,
+  h2: 500,
+  h3: 500,
+  h4: 500,
+  h5: 500,
+  h6: 500
 );
 
 $heading-fonts: (
-  h1: $font-family-alt,
-  h2: $font-family-alt,
-  h3: $font-family-alt,
-  h4: $font-family-base,
-  h5: $font-family-base,
-  h6: $font-family-base
+  h1: $font-family-heading,
+  h2: $font-family-heading,
+  h3: $font-family-heading,
+  h4: $font-family-heading,
+  h5: $font-family-heading,
+  h6: $font-family-heading
 );
 
 $heading-lineheights: (
-  h1: 1,
-  h2: 1,
-  h3: 1,
+  h1: 1.1,
+  h2: 1.2,
+  h3: 1.2,
   h4: 1.2,
   h5: 1.2,
   h6: 1.2
@@ -163,9 +173,9 @@ body {
 // ========================================
 
 .lead {
-  font-size: clamp(px-to-rem(20), 2vw, px-to-rem(24));
+  font-size: clamp(px-to-rem(18), 2vw, px-to-rem(18));
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-bottom: 1.875rem;
 }
 
