@@ -1,0 +1,52 @@
+{% macro inline(items) %}
+	{% if items %}
+		<ul class="header-inline-nav-list">
+			{% for item in items %}
+				<li class="header-inline-nav-item {{ item.classes | join(' ') }}">
+					<a class="header-inline-nav-link" href="{{ item.link }}" {% if item.current %}aria-current="page"{% endif %} {% if item.target %}target="{{ item.target }}"{% endif %}>
+						{{ item.title }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+
+{% macro primary(items) %}
+	{% if items %}
+		<ul class="takeover-primary-menu">
+			{% for item in items %}
+				<li class="takeover-primary-menu-item {{ item.classes | join(' ') }}">
+					<a class="takeover-primary-menu-link h2" href="{{ item.link }}" {% if item.current %}aria-current="page"{% endif %} {% if item.target %}target="{{ item.target }}"{% endif %}>
+						{{ item.title }}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+
+{% macro secondary(menus) %}
+	{% if menus %}
+		<div class="takeover-secondary-menu" style="--takeover-secondary-columns: {{ menus|length }};">
+			{% for menu in menus %}
+				{% set menu_items = menu.get_items %}
+				<div class="takeover-secondary-menu-column">
+					<span class="takeover-secondary-menu-heading">{{ menu.name|default(menu.title)|default('Navigatie') }}</span>
+
+					{% if menu_items %}
+						<ul class="takeover-secondary-menu-list">
+							{% for item in menu_items %}
+								<li class="takeover-secondary-menu-item {{ item.classes | join(' ') }}">
+									<a class="takeover-secondary-menu-link" href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>
+										{{ item.title }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endmacro %}

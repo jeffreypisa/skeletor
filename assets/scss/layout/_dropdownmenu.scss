@@ -1,4 +1,5 @@
-header {
+.header[data-menu-variant='mega_dropdown'],
+.header[data-menu-variant='dropdown'] {
 	.sub-nav {
 		position: relative;
 		z-index: 900;

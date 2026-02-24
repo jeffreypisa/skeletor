@@ -12,12 +12,12 @@
 	.lines {
 		display: flex;
 		flex-direction: column;
-		gap: 5px;
+		gap: 6px;
 
 		span {
 			display: block;
 			width: 25px;
-			height: 3px;
+			height: 2px;
 			background-color: $dark;
 			transition: transform 0.3s $ease, opacity 0.3s $ease;
 		}

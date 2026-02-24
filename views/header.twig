@@ -1,20 +1,39 @@
-{% set menu_breakpoint = 'lg' %}
-{# menu_breakpoint accepteert 'sm' | 'md' | 'lg' | 'xl' | 'xxl' #}
+{% set menu_breakpoint = header_menu_breakpoint|default('lg') %}
+{# header_menu_breakpoint accepteert 'sm' | 'md' | 'lg' | 'xl' | 'xxl' #}
+{% set menu_mode = header_menu_mode|default('normal') %}
+
+{% set is_takeover_menu = menu_mode == 'takeover' %}
+{% set is_mega_dropdown_menu = menu_mode == 'mega_dropdown' %}
+{% set is_normal_menu = menu_mode == 'normal' %}
+
+{% set topbar_visibility_class = is_takeover_menu ? 'd-flex' : 'd-none d-' ~ menu_breakpoint ~ '-flex' %}
 
 {% import "partials/menu-dropdown.twig" as dropdown %}
+{% import "partials/menu-takeover.twig" as takeover %}
 
-<header class="header" role="banner" data-menu-breakpoint="{{ menu_breakpoint }}">
+{% set header_items = header_menu ? header_menu.get_items : [] %}
+{% set takeover_primary_items = takeover_primary_menu ? takeover_primary_menu.get_items : [] %}
+{% set takeover_secondary_menus = takeover_secondary_menus|default([]) %}
+{% set takeover_button_variant = takeover_button_variant|default('auto') %}
+{% set takeover_button_class_on_light_header = takeover_button_class_on_light_header|default('btn-outline-dark') %}
+{% set takeover_button_class_on_dark_header = takeover_button_class_on_dark_header|default('btn-outline-light') %}
+{% set takeover_button_active_class_on_light_header = takeover_button_active_class_on_light_header|default(takeover_button_class_on_light_header) %}
+{% set takeover_button_active_class_on_dark_header = takeover_button_active_class_on_dark_header|default(takeover_button_class_on_dark_header) %}
+{% set takeover_button_class = takeover_button_variant == 'dark' ? takeover_button_class_on_dark_header : takeover_button_class_on_light_header %}
+{% set mobile_items = mobile_menu and mobile_menu.get_items|length > 0 ? mobile_menu.get_items : header_items %}
+
+<header class="header {{ is_takeover_menu ? 'header-takeover-mode' : '' }}" role="banner" data-menu-breakpoint="{{ menu_breakpoint }}" data-menu-variant="{{ menu_mode }}">
 	{% if show_topbar %}
-		<div class="topbar d-none d-{{ menu_breakpoint }}-flex align-items-center">
+		<div class="topbar {{ topbar_visibility_class }} align-items-center">
 			<div class="container-fluid container-{{ menu_breakpoint }}">
 				<div class="row w-100 g-2">
 					<div class="col d-flex align-items-center">
 						{{ site.description }}
 					</div>
-					{% if servicemenu %}
+					{% if service_menu %}
 						<div class="col-auto d-flex align-items-center">
 							<nav aria-label="Service navigation">
-								{% include "partials/menu-horizontal.twig" with {'items': servicemenu.get_items} %}
+								{% include "partials/menu-horizontal.twig" with {'items': service_menu.get_items} %}
 							</nav>
 						</div>
 					{% endif %}
@@ -32,25 +51,65 @@
 						<img height="30" src="{{ theme.link }}/assets/images/emonks-color.svg" alt="{{ site.name }}">
 					</a>
 				</div>
-				{% if headermenu %}
+				{% if header_menu and is_mega_dropdown_menu %}
 					<div class="col-auto d-none d-{{ menu_breakpoint }}-flex align-items-center">
 						<nav class="primary-navigation" aria-label="Primary navigation">
-							{{ dropdown.nav(headermenu.get_items) }}
+							{{ dropdown.nav(header_items) }}
 						</nav>
+					</div>
+				{% elseif header_menu and is_normal_menu %}
+					<div class="col-auto d-none d-{{ menu_breakpoint }}-flex align-items-center">
+						<nav class="primary-navigation" aria-label="Primary navigation">
+							{% include "partials/menu-horizontal.twig" with {'items': header_items} %}
+						</nav>
+					</div>
+				{% elseif is_takeover_menu and header_menu %}
+					<div class="col-auto d-flex align-items-center header-inline-nav">
+						<nav class="d-none d-{{ menu_breakpoint }}-block" aria-label="Snelle navigatie">
+							{{ takeover.inline(header_items) }}
+						</nav>
+
+						<button class="btn {{ takeover_button_class }} header-takeover-toggle" type="button" data-takeover-toggle data-takeover-button-variant="{{ takeover_button_variant }}" data-takeover-button-class-light="{{ takeover_button_class_on_light_header }}" data-takeover-button-class-dark="{{ takeover_button_class_on_dark_header }}" data-takeover-button-active-class-light="{{ takeover_button_active_class_on_light_header }}" data-takeover-button-active-class-dark="{{ takeover_button_active_class_on_dark_header }}" data-label-open="Menu" data-label-close="Close" aria-expanded="false" aria-controls="header-takeover-menu">
+							Menu
+						</button>
 					</div>
 				{% endif %}
 			</div>
 		</div>
 	</div>
 
-	{% if headermenu %}
+	{% if header_menu and is_mega_dropdown_menu %}
 		<div class="sub-nav" aria-hidden="true">
-			{{ dropdown.panels(headermenu.get_items) }}
+			{{ dropdown.panels(header_items) }}
 		</div>
 	{% endif %}
 </header>
 
-{% if headermenu %}
+{% if is_takeover_menu %}
+	<div class="header-takeover" id="header-takeover-menu" data-takeover-menu aria-hidden="true">
+		<div class="container-fluid container-{{ menu_breakpoint }} header-takeover-container">
+			<div class="header-takeover-main">
+				<div class="row g-4 g-xl-5 w-100">
+					<div class="col-lg-4">
+						<nav aria-label="Take-over primair menu">
+							{{ takeover.primary(takeover_primary_items) }}
+						</nav>
+					</div>
+
+					<div class="col-lg-8">
+						<nav aria-label="Take-over secundair menu">
+							{{ takeover.secondary(takeover_secondary_menus) }}
+						</nav>
+					</div>
+				</div>
+			</div>
+
+			{% include "partials/footer-meta.twig" with { show_policy_links: false } %}
+		</div>
+	</div>
+{% endif %}
+
+{% if header_menu and not is_takeover_menu %}
 	<!-- Hamburger menu button -->
 	<button id="mobilemenubtn" class="d-{{ menu_breakpoint }}-none" aria-label="Toggle navigation" aria-controls="mobilemenu" aria-expanded="false">
 		<span class="lines" aria-hidden="true">
@@ -62,6 +121,6 @@
 	
 	<!-- Mobile menu -->
 	<nav class="mobilemenu d-{{ menu_breakpoint }}-none" id="mobilemenu" aria-label="Mobile navigation" aria-hidden="true">
-		{% include "partials/mobile-menu.twig" with { 'items': mobielmenu.get_items } %}
+		{% include "partials/mobile-menu.twig" with { 'items': mobile_items } %}
 	</nav>
 {% endif %}

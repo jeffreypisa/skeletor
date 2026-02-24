@@ -9,7 +9,7 @@ footer {
 	.footer {
 		isolation: isolate;
 		overflow: hidden;
-		padding: $spacer-footer-main 0 $spacer-footer-meta;
+		padding: $spacer-footer-main 0 0;
 		font-size: 14px;
 		line-height: 22px;
 		position: relative;
@@ -66,9 +66,15 @@ footer {
 			height: 100%;
 		}
 
+		.footer-menu-grid {
+			--footer-menu-columns: 1;
+			display: grid;
+			grid-template-columns: repeat(var(--footer-menu-columns), minmax(0, 1fr));
+			gap: clamp(20px, 2.4vw, 36px);
+		}
+
 		.footer-meta {
 			border-top: 1px solid rgba($light, 0.1);
-			padding-top: $spacer-footer-meta;
 		}
 
 		.footer-meta-links {
@@ -122,9 +128,75 @@ footer {
 	}
 }
 
+.footer-meta {
+	border-top: 1px solid rgba($light, 0.1);
+	padding: $spacer-footer-meta 0;
+}
+
+.footer-meta-links {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px 28px;
+	justify-content: center;
+	margin-bottom: 15px;
+
+	a {
+		color: rgba($light, 0.78);
+		text-decoration: none;
+		font-size: .8rem;
+		letter-spacing: .1em;
+		text-transform: uppercase;
+		transition: color .15s $ease;
+
+		&:hover {
+			color: $primary;
+		}
+	}
+}
+
+.footer-social {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	margin: 0 0 20px;
+	padding: 0;
+
+	li {
+		margin: 0;
+	}
+
+	a,
+	.footer-social-link {
+		align-items: center;
+		color: rgba($light, 0.78);
+		display: inline-flex;
+		height: 40px;
+		justify-content: center;
+		width: 40px;
+		transition: color .15s $ease;
+
+		&:hover {
+			color: $primary;
+		}
+	}
+}
+
+.footer-copyright {
+	color: rgba($light, 0.62);
+	font-size: .8rem;
+	letter-spacing: .1em;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
 @include media-breakpoint-down(lg) {
 	footer {
 		.footer {
+			.footer-menu-grid {
+				grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+			}
+
 			.footer-address {
 				margin-inline: auto;
 			}
@@ -139,6 +211,10 @@ footer {
 @include media-breakpoint-down(sm) {
 	footer {
 		.footer {
+			.footer-menu-grid {
+				grid-template-columns: 1fr;
+			}
+
 			.footer-main {
 				.col-lg-8 .row {
 					row-gap: 1.5rem;

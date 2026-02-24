@@ -6,9 +6,12 @@ export function header() {
     const dropdownToggles = document.querySelectorAll('[data-dropdown-trigger]');
     const dropdownPanels = document.querySelectorAll('[data-dropdown-panel]');
     const subNav = document.querySelector('.sub-nav');
+    const takeoverToggle = document.querySelector('[data-takeover-toggle]');
+    const takeoverMenu = document.querySelector('[data-takeover-menu]');
     const panelTransition = 320;
     const stickyRevealOffset = 600;
     const menuBreakpoint = header?.dataset.menuBreakpoint || 'lg';
+    const menuVariant = header?.dataset.menuVariant || 'dropdown';
 
     let lastScrollTop = 0;
     let ticking = false;
@@ -19,6 +22,10 @@ export function header() {
     let menuBreakpointWidth = getBreakpointWidth();
 
     function getBreakpointWidth() {
+        if (menuBreakpoint === 'all') {
+            return 0;
+        }
+
         const breakpointVar = `--bs-breakpoint-${menuBreakpoint}`;
         const cssValue = getComputedStyle(document.documentElement)
             .getPropertyValue(breakpointVar)
@@ -29,6 +36,72 @@ export function header() {
     }
 
     const isDesktop = () => window.innerWidth >= menuBreakpointWidth;
+    const isTakeoverVariant = () => menuVariant === 'takeover';
+    const toggleLabelOpen = takeoverToggle?.dataset.labelOpen || 'Menu';
+    const toggleLabelClose = takeoverToggle?.dataset.labelClose || 'Close';
+    const configuredTakeoverButtonVariant =
+        takeoverToggle?.dataset.takeoverButtonVariant || 'auto';
+    const takeoverButtonClassLightHeader =
+        takeoverToggle?.dataset.takeoverButtonClassLight || 'btn-outline-dark';
+    const takeoverButtonClassDarkHeader =
+        takeoverToggle?.dataset.takeoverButtonClassDark || 'btn-outline-light';
+    const takeoverButtonActiveClassLightHeader =
+        takeoverToggle?.dataset.takeoverButtonActiveClassLight ||
+        takeoverButtonClassLightHeader;
+    const takeoverButtonActiveClassDarkHeader =
+        takeoverToggle?.dataset.takeoverButtonActiveClassDark ||
+        takeoverButtonClassDarkHeader;
+    const splitClassString = (value) =>
+        (value || '')
+            .split(/\s+/)
+            .map((token) => token.trim())
+            .filter(Boolean);
+
+    const syncTakeoverToggleVariant = () => {
+        if (!takeoverToggle || !isTakeoverVariant()) return;
+        const allManagedClasses = [
+            ...splitClassString(takeoverButtonClassLightHeader),
+            ...splitClassString(takeoverButtonClassDarkHeader),
+            ...splitClassString(takeoverButtonActiveClassLightHeader),
+            ...splitClassString(takeoverButtonActiveClassDarkHeader),
+        ];
+        const applyButtonClass = (classString) => {
+            if (allManagedClasses.length > 0) {
+                takeoverToggle.classList.remove(...allManagedClasses);
+            }
+
+            const nextClasses = splitClassString(classString);
+            if (nextClasses.length > 0) {
+                takeoverToggle.classList.add(...nextClasses);
+            }
+        };
+        const isActiveState = document.body.classList.contains('takeovermenu-open');
+        const classForTone = (tone) => {
+            if (tone === 'dark') {
+                return isActiveState
+                    ? takeoverButtonActiveClassDarkHeader
+                    : takeoverButtonClassDarkHeader;
+            }
+
+            return isActiveState
+                ? takeoverButtonActiveClassLightHeader
+                : takeoverButtonClassLightHeader;
+        };
+
+        if (configuredTakeoverButtonVariant === 'light' || configuredTakeoverButtonVariant === 'dark') {
+            applyButtonClass(classForTone(configuredTakeoverButtonVariant));
+            return;
+        }
+
+        const isTakeoverOpen = document.body.classList.contains('takeovermenu-open');
+        const isTransparentHeader = document.body.classList.contains('header-transparent');
+        const isHeaderScrolled = header?.classList.contains('scrolled');
+        const resolvedTone = isTakeoverOpen || !isTransparentHeader || isHeaderScrolled
+            ? 'light'
+            : 'dark';
+
+        applyButtonClass(classForTone(resolvedTone));
+    };
 
     const updateHeaderOffset = () => {
         const headerHeight = header?.offsetHeight || 0;
@@ -116,6 +189,31 @@ export function header() {
         subNav?.classList.remove('is-open');
     };
 
+    const closeTakeover = ({ returnFocus = false } = {}) => {
+        if (!takeoverMenu || !takeoverToggle) return;
+
+        document.body.classList.remove('takeovermenu-open');
+        takeoverToggle.setAttribute('aria-expanded', 'false');
+        takeoverMenu.setAttribute('aria-hidden', 'true');
+        takeoverToggle.textContent = toggleLabelOpen;
+        syncTakeoverToggleVariant();
+
+        if (returnFocus) {
+            takeoverToggle.focus();
+        }
+    };
+
+    const openTakeover = () => {
+        if (!takeoverMenu || !takeoverToggle) return;
+
+        closeOpenDropdowns();
+        document.body.classList.add('takeovermenu-open');
+        takeoverToggle.setAttribute('aria-expanded', 'true');
+        takeoverMenu.setAttribute('aria-hidden', 'false');
+        takeoverToggle.textContent = toggleLabelClose;
+        syncTakeoverToggleVariant();
+    };
+
     const transitionExistingPanel = (panel) => {
         if (!panel || !panel.classList.contains('show')) return;
 
@@ -173,9 +271,20 @@ export function header() {
     document.addEventListener('click', (event) => {
         const isToggle = event.target.closest('[data-dropdown-trigger]');
         const isPanel = event.target.closest('[data-dropdown-panel]');
+        const isTakeoverToggle = event.target.closest('[data-takeover-toggle]');
+        const isTakeoverMenu = event.target.closest('[data-takeover-menu]');
 
         if (!isToggle && !isPanel) {
             closeOpenDropdowns();
+        }
+
+        if (
+            isTakeoverVariant() &&
+            document.body.classList.contains('takeovermenu-open') &&
+            !isTakeoverToggle &&
+            !isTakeoverMenu
+        ) {
+            closeTakeover();
         }
     });
 
@@ -196,8 +305,11 @@ export function header() {
             header.classList.remove('scrolled');
         }
 
+        syncTakeoverToggleVariant();
+
         if (!desktopView) {
             setStickyState(false);
+            closeTakeover();
             lastScrollTop = scrollTop;
             ticking = false;
             return;
@@ -261,12 +373,35 @@ export function header() {
         menuBreakpointWidth = getBreakpointWidth();
         updateHeaderOffset();
         closeOpenDropdowns();
+        syncTakeoverToggleVariant();
 
         if (!isDesktop()) {
             setStickyState(false);
+            closeTakeover();
+        }
+    });
+
+    takeoverToggle?.addEventListener('click', () => {
+        if (!isTakeoverVariant()) return;
+
+        if (document.body.classList.contains('takeovermenu-open')) {
+            closeTakeover({ returnFocus: true });
+            return;
+        }
+
+        openTakeover();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+
+        closeOpenDropdowns();
+        if (document.body.classList.contains('takeovermenu-open')) {
+            closeTakeover({ returnFocus: true });
         }
     });
 
     header?.classList.add('visible');
     updateHeaderOffset();
+    syncTakeoverToggleVariant();
 }

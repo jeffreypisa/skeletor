@@ -29,5 +29,7 @@
 		</li>
 	{% endfor %}
 	
-	{% include "partials/menu-dropdown.twig" with {'items': servicemenu.get_items} %}
+	{% if service_menu %}
+		{% include "partials/menu-dropdown.twig" with {'items': service_menu.get_items} %}
+	{% endif %}
 </ul>

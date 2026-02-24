@@ -1,16 +1,33 @@
-<ul class="navbar-nav flex-row gap-2">
+<ul class="navbar-nav flex-row">
 	{% for item in items %}
 		<li class="nav-item {% if item.children|length > 0 %}dropdown{% endif %} {{ item.classes | join(' ') }} d-flex align-items-center">
-			<a class="{% if item.children|length > 0 %}dropdown-toggle{% endif %}" href="{{ item.link }}" {% if item.current %}aria-current="page" {% endif %} {% if item.target %}target="{{ item.target }}" {% endif %} {% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false" {% endif %}>
+			<a
+				class="nav-link{% if item.children|length > 0 %} dropdown-toggle{% endif %}"
+				href="{{ item.link }}"
+				{% if item.current %}aria-current="page"{% endif %}
+				{% if item.target %}target="{{ item.target }}"{% endif %}
+				{% if item.children|length > 0 %}data-bs-toggle="dropdown" aria-expanded="false"{% endif %}
+				{% if item.children|length > 0 %}data-bs-display="static"{% endif %}
+			>
 				{{ item.title }}
+				{% if item.children|length > 0 %}
+					{{ icon({
+						icon: 'chevron-down',
+						style: 'regular',
+						class: 'menu-chevron',
+						icon_wrapper_height: 10,
+						icon_wrapper_width: 10,
+						gap: 0
+					}) }}
+				{% endif %}
 			</a>
 	
 			{% if item.children|length > 0 %}
-				<ul class="">
+				<ul class="dropdown-menu">
 					{% for child in item.children %}
-					<li class="pl-4 text-sm {{ child.classes | join(' ') }}">
-						<a href="{{ child.link }}" {% if child.target %}target="{{ child.target }}" {% endif %}>{{ child.title }}</a>
-					</li>
+						<li class="{{ child.classes | join(' ') }}">
+							<a class="dropdown-item" href="{{ child.link }}" {% if child.target %}target="{{ child.target }}" {% endif %}>{{ child.title }}</a>
+						</li>
 					{% endfor %}
 				</ul>
 			{% endif %}

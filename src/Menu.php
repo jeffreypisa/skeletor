@@ -19,10 +19,34 @@ class Menu extends Site {
 	 * Registreer navigatiemenu's
 	 */
         public function register_nav_menus() {
-                register_nav_menu('headermenu', __('Header menu'));
-                register_nav_menu('servicemenu', __('Service menu'));
-                register_nav_menu('footermenu', __('Footer menu'));
-                register_nav_menu('mobielmenu', __('Mobiel menu'));
+                register_nav_menu('header_menu', __('Header menu'));
+                register_nav_menu('mobile_menu', __('Mobiel menu'));
+
+                $footer_menu_count = (int) apply_filters('skeletor_footer_menu_count', 1);
+                $footer_menu_count = max(1, min(8, $footer_menu_count));
+                for ($i = 1; $i <= $footer_menu_count; $i++) {
+                        register_nav_menu('footer_menu_' . $i, sprintf(__('Footer menu %d'), $i));
+                }
+
+                if ((bool) apply_filters('skeletor_show_topbar', false)) {
+                        register_nav_menu('service_menu', __('Service menu'));
+                }
+
+                $menu_mode = apply_filters('skeletor_header_menu_mode', 'normal');
+                $menu_mode = is_string($menu_mode) ? strtolower(trim($menu_mode)) : 'normal';
+                if ($menu_mode === 'dropdown') {
+                        $menu_mode = 'mega_dropdown';
+                }
+
+                if ($menu_mode === 'takeover') {
+                        register_nav_menu('takeover_primary_menu', __('Take-over primair menu'));
+                        $secondary_count = (int) apply_filters('skeletor_takeover_secondary_menu_count', 1);
+                        $secondary_count = max(1, min(8, $secondary_count));
+
+                        for ($i = 1; $i <= $secondary_count; $i++) {
+                                register_nav_menu('takeover_secondary_menu_' . $i, sprintf(__('Take-over secundair menu %d'), $i));
+                        }
+                }
         }
 }
 

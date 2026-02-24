@@ -1,0 +1,35 @@
+{% set privacy_url = function('get_privacy_policy_url') %}
+{% set cookie_page = function('get_page_by_path', 'cookieverklaring') ?: function('get_page_by_path', 'cookie-verklaring') %}
+{% set show_policy_links = show_policy_links is defined ? show_policy_links : true %}
+{% set meta_class = meta_class|default('') %}
+
+<div class="footer-meta text-center {{ meta_class }}">
+	<div class="footer-meta-links">
+		{% if show_policy_links and privacy_url %}
+			<a href="{{ privacy_url }}">Privacyverklaring</a>
+		{% endif %}
+		{% if show_policy_links and cookie_page %}
+			<a href="{{ function('get_permalink', cookie_page.ID) }}">Cookieverklaring</a>
+		{% endif %}
+		<a href="https://www.emonks.nl/" target="_blank" rel="noopener">Website door Emonks</a>
+	</div>
+
+	{% if options.facebook or options.instagram or options.linkedin or options.x %}
+		<ul class="footer-social list-unstyled">
+			{% if options.facebook %}
+				<li>{{ icon({ icon: 'facebook', style: 'brands', class: 'footer-social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'Facebook', title_position: 'right', title_class: 'visually-hidden', url: options.facebook, target: 'blank' }) }}</li>
+			{% endif %}
+			{% if options.instagram %}
+				<li>{{ icon({ icon: 'instagram', style: 'brands', class: 'footer-social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'Instagram', title_position: 'right', title_class: 'visually-hidden', url: options.instagram, target: 'blank' }) }}</li>
+			{% endif %}
+			{% if options.linkedin %}
+				<li>{{ icon({ icon: 'linkedin', style: 'brands', class: 'footer-social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'LinkedIn', title_position: 'right', title_class: 'visually-hidden', url: options.linkedin, target: 'blank' }) }}</li>
+			{% endif %}
+			{% if options.x %}
+				<li>{{ icon({ icon: 'x-twitter', style: 'brands', class: 'footer-social-link', icon_wrapper_height: 26, icon_wrapper_width: 26, title: 'X', title_position: 'right', title_class: 'visually-hidden', url: options.x, target: 'blank' }) }}</li>
+			{% endif %}
+		</ul>
+	{% endif %}
+
+	<div class="footer-copyright">© {{ "now"|date('Y') }} {{ site.title }}</div>
+</div>
