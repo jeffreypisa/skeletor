@@ -56,6 +56,36 @@ export function header() {
             .split(/\s+/)
             .map((token) => token.trim())
             .filter(Boolean);
+    const focusableSelector = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled]):not([type="hidden"])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+    ].join(', ');
+
+    const getTakeoverFocusableElements = () => {
+        if (!header || !takeoverMenu) return [];
+
+        const combined = [
+            ...Array.from(header.querySelectorAll(focusableSelector)),
+            ...Array.from(takeoverMenu.querySelectorAll(focusableSelector)),
+        ];
+
+        return Array.from(new Set(combined)).filter((element) => {
+            if (!(element instanceof HTMLElement)) return false;
+            if (element.closest('[hidden]')) return false;
+            if (element.closest('[aria-hidden="true"]')) return false;
+
+            const styles = window.getComputedStyle(element);
+            if (styles.display === 'none' || styles.visibility === 'hidden') {
+                return false;
+            }
+
+            return element.getClientRects().length > 0;
+        });
+    };
 
     const syncTakeoverToggleVariant = () => {
         if (!takeoverToggle || !isTakeoverVariant()) return;
@@ -393,6 +423,37 @@ export function header() {
     });
 
     document.addEventListener('keydown', (event) => {
+        if (
+            event.key === 'Tab' &&
+            isTakeoverVariant() &&
+            document.body.classList.contains('takeovermenu-open')
+        ) {
+            const focusableElements = getTakeoverFocusableElements();
+            if (!focusableElements.length) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            const activeElement = document.activeElement;
+
+            if (!focusableElements.includes(activeElement)) {
+                event.preventDefault();
+                (event.shiftKey ? lastElement : firstElement).focus();
+                return;
+            }
+
+            if (!event.shiftKey && activeElement === lastElement) {
+                event.preventDefault();
+                firstElement.focus();
+                return;
+            }
+
+            if (event.shiftKey && activeElement === firstElement) {
+                event.preventDefault();
+                lastElement.focus();
+                return;
+            }
+        }
+
         if (event.key !== 'Escape') return;
 
         closeOpenDropdowns();
