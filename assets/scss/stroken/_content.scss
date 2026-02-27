@@ -1,3 +1,51 @@
 .strook-content {
 
 }
+
+.strook-logos {
+	.logos-marquee {
+		overflow: visible;
+	}
+
+	.logos-marquee-track {
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: clamp(1rem, 2.5vw, 2rem);
+		width: max-content;
+		animation: logos-scroll-left var(--logos-marquee-speed, 48s) linear infinite;
+		will-change: transform;
+	}
+
+	.logos-marquee-item {
+		flex: 0 0 auto;
+		width: clamp(7rem, 14vw, 11rem);
+	}
+
+	.logos-marquee-item figure {
+		margin: 0;
+	}
+
+	.logos-marquee-item img {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.logos-marquee-track {
+			animation: none;
+			transform: translateX(0);
+		}
+	}
+}
+
+@keyframes logos-scroll-left {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}

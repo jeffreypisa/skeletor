@@ -6,19 +6,24 @@
 				{{ text(item.tekst) }}
 			</div>
 		</div>
-		{% if item.logos %}	
-			<div class="row pt-4">
-				{% for item in item.logos %}
-					<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-						{{ image(item.logo, {
-						   figure_class: '',
-						   img_class: '',
-						   ratio: '16x9',
-						   object_fit: 'contain',
-						   lazyload: true
-						}) }}
-					</div>
-				{% endfor %}
+		{% if item.logos %}
+			{% set marquee_speed = item.marquee_speed|default('100s') %}
+			<div class="logos-marquee pt-4" data-speed="{{ marquee_speed|e('html_attr') }}" style="--logos-marquee-speed: {{ marquee_speed|e('html_attr') }};">
+				<div class="logos-marquee-track">
+					{% for duplicate in 1..2 %}
+						{% for logo_item in item.logos %}
+							<div class="logos-marquee-item"{% if duplicate == 2 %} aria-hidden="true"{% endif %}>
+								{{ image(logo_item.logo, {
+								   figure_class: '',
+								   img_class: '',
+								   ratio: '16x9',
+								   object_fit: 'contain',
+								   lazyload: true
+								}) }}
+							</div>
+						{% endfor %}
+					{% endfor %}
+				</div>
 			</div>
 		{% endif %}
 	</div>
