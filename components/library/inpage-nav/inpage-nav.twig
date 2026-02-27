@@ -17,19 +17,42 @@ Voorbeeld (los plaatsen):
 Beschikbare opties:
 - title: string – titel boven de lijst
 - mode: 'all' (default), 'nav', 'mobile'
+- parent_links: array - parent links (bijv. andere posts in categorie)
+- current_parent_id: string|int - huidige parent item ID voor sublinks
+- parent_links_category: string - taxonomy naam, bv. 'category'
+- parent_icon: string - 'arrow' of 'chevron' (up/down op basis van current)
+- parent_icon_size: int|string - grootte icoon, bv. 12 of '0.875rem'
 
 De mobiele variant is altijd een select-element; gebruik `mode: 'mobile'` alleen
 als je deze los wilt positioneren.
 #}
 
+{% set icon_variant = parent_icon in ['arrow', 'chevron'] ? parent_icon : '' %}
+{% set icon_up_name = icon_variant ? icon_variant ~ '-up' : '' %}
+{% set icon_down_name = icon_variant ? icon_variant ~ '-down' : '' %}
+{% set parent_icon_up_markup = icon_up_name ? icon({
+	icon: icon_up_name,
+	style: 'light',
+	class: 'inpage-nav-parent-icon-svg',
+	icon_wrapper_height: parent_icon_size,
+	icon_wrapper_width: parent_icon_size
+}) : '' %}
+{% set parent_icon_down_markup = icon_down_name ? icon({
+	icon: icon_down_name,
+	style: 'light',
+	class: 'inpage-nav-parent-icon-svg',
+	icon_wrapper_height: parent_icon_size,
+	icon_wrapper_width: parent_icon_size
+}) : '' %}
+
 {% if mode in ['all', 'nav'] %}
-	<nav class="inpage-nav" data-inpage-nav>
+	<nav class="inpage-nav" data-inpage-nav data-inpage-nav-parent-links="{{ parent_links|default([])|json_encode|e('html_attr') }}" data-inpage-nav-current-parent-id="{{ current_parent_id }}" data-inpage-nav-parent-icon="{{ parent_icon }}" data-inpage-nav-parent-icon-size="{{ parent_icon_size }}" data-inpage-nav-icon-up="{{ parent_icon_up_markup|e('html_attr') }}" data-inpage-nav-icon-down="{{ parent_icon_down_markup|e('html_attr') }}">
 		<p class="inpage-nav-title">{{ title }}</p>
 		<ul class="inpage-nav-list" data-inpage-nav-list></ul>
 	</nav>
 {% endif %}
 {% if mode in ['all', 'mobile'] %}
-	<div class="inpage-nav-mobile" data-inpage-nav-mobile>
+	<div class="inpage-nav-mobile" data-inpage-nav-mobile data-inpage-nav-parent-links="{{ parent_links|default([])|json_encode|e('html_attr') }}" data-inpage-nav-current-parent-id="{{ current_parent_id }}" data-inpage-nav-parent-icon="{{ parent_icon }}" data-inpage-nav-parent-icon-size="{{ parent_icon_size }}">
 		<div class="container">
 			<label class="visually-hidden" for="inpage-nav-select-{{ id }}">Ga naar sectie</label>
 			<select class="form-select" id="inpage-nav-select-{{ id }}" data-inpage-nav-select></select>

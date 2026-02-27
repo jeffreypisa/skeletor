@@ -30,7 +30,7 @@
 	margin: 0;
 
 	li + li {
-		margin-top: 0.75rem;
+		margin-top: 0.5rem;
 	}
 
 	a {
@@ -48,6 +48,28 @@
 			font-weight: 600;
 		}
 	}
+}
+
+.inpage-nav-parent-item > a {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.inpage-nav-parent-item > a[data-nav-type="parent-toggle"] {
+	cursor: pointer;
+}
+
+.inpage-nav-sublist {
+	list-style: none;
+	padding-left: 1rem;
+	margin: 0.5rem 0 0;
+}
+
+.inpage-nav-parent-icon {
+	display: inline-block;
+	flex: 0 0 auto;
 }
 
 .inpage-nav-mobile {

@@ -29,10 +29,13 @@
 				<div class="container">
 					<div class="row justify-content-between">
 						<div class="col-lg-4">
-							{{ inpage_nav({
-								title: 'Inhoud',
-								mode: 'nav'
-							}) }}
+								{{ inpage_nav({
+									title: 'Inhoud',
+									mode: 'nav',
+									parent_links_category: 'catagorie',
+									parent_icon: 'chevron',
+									parent_icon_size: 14
+								}) }}
 						</div>
 						<div class="col-lg-7">
 							<div class="inpage-nav-content" data-inpage-nav-content>
@@ -41,10 +44,13 @@
 						</div>
 					</div>
 				</div>
-					{{ inpage_nav({
-						title: 'Inhoud',
-						mode: 'mobile'
-					}) }}
+						{{ inpage_nav({
+							title: 'Inhoud',
+							mode: 'mobile',
+							parent_links_category: 'catagorie',
+							parent_icon: 'chevron',
+							parent_icon_size: 14
+						}) }}
 			</section>
 		{% endif %}
 		{% include 'stroken.twig' %}
