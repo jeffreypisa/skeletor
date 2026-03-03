@@ -1,0 +1,34 @@
+{% set media_items = [] %}
+
+{% for media in item.media_items|default([]) %}
+	{% set raw_vimeo_id = media.vimeo_id|default('')|trim %}
+	{% set vimeo_parts = raw_vimeo_id|split('/') %}
+	{% set vimeo_resolved_id = vimeo_parts|last|split('?')|first|trim %}
+	{% set media_items = media_items|merge([media|merge({
+		vimeo_resolved_id: vimeo_resolved_id
+	})]) %}
+{% endfor %}
+
+<section id="{{ item.titel|default('strook-' ~ sectionno)|sanitize }}" class="strook-{{ item.acf_fc_layout }} strook-gallerij {{ item.achtergrond|default('bg-transparent') }}">
+	<div class="container js-lightgallery">
+		{% if item.titel %}
+			<div class="row">
+				<div class="col-md-10 col-lg-9 col-xl-8">
+					{{ heading(item.titel) }}
+				</div>
+			</div>
+		{% endif %}
+		{{ swiper(media_items, {
+			slidesPerView: 1.15,
+			spaceBetween: 20,
+			loop: false,
+			arrows: true,
+			dots: false,
+			class: 'strook-gallerij__swiper',
+			breakpoints: {
+				768: { slidesPerView: 2, spaceBetween: 24 },
+				1200: { slidesPerView: 3, spaceBetween: 28 }
+			}
+		}, 'stroken/partials/gallerij-item.twig') }}
+	</div>
+</section>

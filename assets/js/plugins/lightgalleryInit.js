@@ -3,30 +3,38 @@ import lightGallery from 'lightgallery';
 // Plugins
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
+import lgVideo from 'lightgallery/plugins/video';
 
 export function lightgalleryInit() {
-	const container = document.getElementById('gallery-container');
-	if (!container) return; // Veiligheidscontrole: Voorkomt fouten als de container niet bestaat.
+	const containers = document.querySelectorAll('.js-lightgallery');
+	if (!containers.length) {
+		return;
+	}
 
-	lightGallery(container, {
-		speed: 500,
-		plugins: [lgThumbnail, lgZoom]
-	});
-
-	const requestFullScreen = () => {
-		const el = document.documentElement;
-		if (el.requestFullscreen) {
-			el.requestFullscreen();
-		} else if (el.msRequestFullscreen) {
-			el.msRequestFullscreen();
-		} else if (el.mozRequestFullScreen) {
-			el.mozRequestFullScreen();
-		} else if (el.webkitRequestFullscreen) {
-			el.webkitRequestFullscreen();
-		}
+	const pauseAllVimeoIframes = () => {
+		const iframes = document.querySelectorAll('.lg-container iframe[src*="vimeo.com"]');
+		iframes.forEach((iframe) => {
+			if (iframe?.contentWindow) {
+				iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+			}
+		});
 	};
 
-	container.addEventListener('lgAfterOpen', () => {
-		requestFullScreen();
+	containers.forEach((container) => {
+		if (container.dataset.lgInitialized === '1') {
+			return;
+		}
+
+		lightGallery(container, {
+			selector: '.js-gallery-item',
+			speed: 500,
+			download: false,
+			counter: true,
+			plugins: [lgThumbnail, lgZoom, lgVideo]
+		});
+
+		container.dataset.lgInitialized = '1';
+		container.addEventListener('lgBeforeSlide', pauseAllVimeoIframes);
+		container.addEventListener('lgBeforeClose', pauseAllVimeoIframes);
 	});
 }

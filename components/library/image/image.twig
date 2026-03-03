@@ -56,27 +56,37 @@ Voorbeelden:
    }) }}
 #}
 
-<figure class="position-relative {{ figure_class }} {{ ratio ? 'ratio ratio-' ~ ratio : '' }}"{% include 'shared/inview-animation-attributes.twig' with {
-	animation_text: alt,
-	inview_animation: inview_animation,
-	inview_animation_speed: inview_animation_speed,
-	style: style
-} only %}>
-	<img src="{{ url }}" 
-		 alt="{{ alt }}" 
-		 class="{{ img_class }}" 
-		 {% if lazyload %}loading="lazy"{% endif %} 
-		 style="width: 100%; height: 100%; object-fit: {{ object_fit }};">
+{% set figure_markup %}
+	<figure class="position-relative {{ figure_class }} {{ ratio ? 'ratio ratio-' ~ ratio : '' }}"{% include 'shared/inview-animation-attributes.twig' with {
+		animation_text: alt,
+		inview_animation: inview_animation,
+		inview_animation_speed: inview_animation_speed,
+		style: style
+	} only %}>
+		<img src="{{ url }}" 
+			 alt="{{ alt }}" 
+			 class="{{ img_class }}" 
+			 {% if lazyload %}loading="lazy"{% endif %} 
+			 style="width: 100%; height: 100%; object-fit: {{ object_fit }};">
 
-	{# Bijschriften voor on-left en on-right worden absoluut gepositioneerd #}
-	{% if show_caption and caption %}
-		{% if caption_position == 'on-left' %}
-			<figcaption class="on-left position-absolute start-0 bottom-0 text-sm text-white">{{ caption }}</figcaption>
-		{% elseif caption_position == 'on-right' %}
-			<figcaption class="on-right position-absolute end-0 bottom-0 text-sm text-end text-white">{{ caption }}</figcaption>
+		{# Bijschriften voor on-left en on-right worden absoluut gepositioneerd #}
+		{% if show_caption and caption %}
+			{% if caption_position == 'on-left' %}
+				<figcaption class="on-left position-absolute start-0 bottom-0 text-sm text-white">{{ caption }}</figcaption>
+			{% elseif caption_position == 'on-right' %}
+				<figcaption class="on-right position-absolute end-0 bottom-0 text-sm text-end text-white">{{ caption }}</figcaption>
+			{% endif %}
 		{% endif %}
-	{% endif %}
-</figure>
+	</figure>
+{% endset %}
+
+{% if popup %}
+	<a href="{{ popup_url }}" class="d-block {{ popup_class }}" data-media-type="{{ popup_type|e('html_attr') }}" data-media-src="{{ popup_url|e('html_attr') }}" data-media-title="{{ popup_title|e('html_attr') }}"{% for key, value in popup_attrs %} {{ key|e('html_attr') }}="{{ value|e('html_attr') }}"{% endfor %}>
+		{{ figure_markup }}
+	</a>
+{% else %}
+	{{ figure_markup }}
+{% endif %}
 
 {# Bijschriften voor below-left en below-right staan buiten de afbeelding #}
 {% if show_caption and caption %}

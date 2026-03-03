@@ -27,13 +27,19 @@ class Components_Image extends Site {
 			'figure_class' => '', // Extra CSS-klassen voor de <figure>
 			'img_class' => 'w-100', // Extra CSS-klassen voor de <img>
 			'object_fit' => 'cover',
-                        'lazyload' => true,
+			'lazyload' => true,
 			'style' => null,
 			'show_caption' => false,
 			'caption_position' => 'on-left', // Standaard: linksonder op de afbeelding
 			'inview_animation' => '', // Animatie-optie
 			'inview_animation_speed' => 1,
-			'overlay_direction' => 'left' // Richting van de overlay-animatie
+			'overlay_direction' => 'left', // Richting van de overlay-animatie
+			'popup' => false,
+			'popup_url' => null,
+			'popup_type' => 'image',
+			'popup_title' => '',
+			'popup_class' => '',
+			'popup_attrs' => [],
 		];
 		$settings = array_merge($defaults, $options);
 		$animation = $this->normalize_inview_animation($settings['inview_animation']);
@@ -54,6 +60,12 @@ class Components_Image extends Site {
 			'inview_animation' => $animation,
 			'inview_animation_speed' => $speed,
 			'overlay_direction' => $settings['overlay_direction'],
+			'popup' => (bool) $settings['popup'],
+			'popup_url' => $settings['popup_url'] ?: $image_field['url'],
+			'popup_type' => $settings['popup_type'],
+			'popup_title' => $settings['popup_title'],
+			'popup_class' => trim((string) $settings['popup_class']),
+			'popup_attrs' => is_array($settings['popup_attrs']) ? $settings['popup_attrs'] : [],
 		];
 	
 		return Timber::compile('image/image.twig', $image_data);

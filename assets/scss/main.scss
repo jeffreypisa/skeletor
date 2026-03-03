@@ -80,6 +80,10 @@ Theme by Emonks
 
 // NoUISlider
 @import 'plugins/nouislider';
+@import "../node_modules/lightgallery/css/lightgallery.css";
+@import "../node_modules/lightgallery/css/lg-thumbnail.css";
+@import "../node_modules/lightgallery/css/lg-zoom.css";
+@import "../node_modules/lightgallery/css/lg-video.css";
 
 // ==========================================
 // 5. Custom Components
@@ -102,6 +106,7 @@ Theme by Emonks
 // 7. Stroken
 // ==========================================
 @import 'stroken/content';
+@import 'stroken/gallerij';
 @import 'stroken/hero';
 @import 'stroken/testimonials';
 

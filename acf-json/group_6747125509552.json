@@ -17,73 +17,6 @@
                 "id": ""
             },
             "layouts": {
-                "layout_6793bf1cafb4c": {
-                    "key": "layout_6793bf1cafb4c",
-                    "name": "afbeeldingen",
-                    "label": "Afbeeldingen",
-                    "display": "block",
-                    "sub_fields": [
-                        {
-                            "key": "field_67ebf75f39320",
-                            "label": "Achtergrond kleur",
-                            "name": "achtergrond",
-                            "aria-label": "",
-                            "type": "select",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "choices": {
-                                "bg-transparent": "Wit",
-                                "bg-greylight": "Lichtgrijs"
-                            },
-                            "default_value": false,
-                            "return_format": "value",
-                            "multiple": 0,
-                            "allow_null": 0,
-                            "allow_in_bindings": 0,
-                            "ui": 0,
-                            "ajax": 0,
-                            "placeholder": "",
-                            "create_options": 0,
-                            "save_options": 0
-                        },
-                        {
-                            "key": "field_6793bf23afb4d",
-                            "label": "Afbeeldingen",
-                            "name": "afbeeldingen",
-                            "aria-label": "",
-                            "type": "gallery",
-                            "instructions": "",
-                            "required": 0,
-                            "conditional_logic": 0,
-                            "wrapper": {
-                                "width": "",
-                                "class": "",
-                                "id": ""
-                            },
-                            "return_format": "array",
-                            "library": "all",
-                            "min": "",
-                            "max": "",
-                            "min_width": "",
-                            "min_height": "",
-                            "min_size": "",
-                            "max_width": "",
-                            "max_height": "",
-                            "max_size": "",
-                            "mime_types": "",
-                            "insert": "append",
-                            "preview_size": "medium"
-                        }
-                    ],
-                    "min": "",
-                    "max": ""
-                },
                 "layout_6747125b9a654": {
                     "key": "layout_6747125b9a654",
                     "name": "content",
@@ -837,6 +770,219 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_68b5f13b7a1f0": {
+                    "key": "layout_68b5f13b7a1f0",
+                    "name": "gallerij",
+                    "label": "Galerij",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_68b5f13b7a1f1",
+                            "label": "Achtergrond kleur",
+                            "name": "achtergrond",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "bg-transparent": "Wit",
+                                "bg-greylight": "Lichtgrijs"
+                            },
+                            "default_value": false,
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "allow_in_bindings": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "create_options": 0,
+                            "save_options": 0
+                        },
+                        {
+                            "key": "field_68b5f13b7a1f2",
+                            "label": "Titel",
+                            "name": "titel",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_68b5f13b7a1f3",
+                            "label": "Media items",
+                            "name": "media_items",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "row",
+                            "min": 0,
+                            "max": 0,
+                            "collapsed": "",
+                            "button_label": "Nieuw media item",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_68b5f13b7a1f4",
+                                    "label": "Type",
+                                    "name": "type",
+                                    "aria-label": "",
+                                    "type": "select",
+                                    "instructions": "",
+                                    "required": 1,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "20",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "choices": {
+                                        "image": "Afbeelding",
+                                        "video": "Video (Vimeo)"
+                                    },
+                                    "default_value": "image",
+                                    "return_format": "value",
+                                    "multiple": 0,
+                                    "allow_null": 0,
+                                    "allow_in_bindings": 0,
+                                    "ui": 0,
+                                    "ajax": 0,
+                                    "placeholder": "",
+                                    "create_options": 0,
+                                    "save_options": 0,
+                                    "parent_repeater": "field_68b5f13b7a1f3"
+                                },
+                                {
+                                    "key": "field_68b5f13b7a1f5",
+                                    "label": "Afbeelding",
+                                    "name": "afbeelding",
+                                    "aria-label": "",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_68b5f13b7a1f4",
+                                                "operator": "==",
+                                                "value": "image"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "40",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "array",
+                                    "library": "all",
+                                    "min_width": "",
+                                    "min_height": "",
+                                    "min_size": "",
+                                    "max_width": "",
+                                    "max_height": "",
+                                    "max_size": "",
+                                    "mime_types": "",
+                                    "allow_in_bindings": 0,
+                                    "preview_size": "medium",
+                                    "parent_repeater": "field_68b5f13b7a1f3"
+                                },
+                                {
+                                    "key": "field_68b5f13b7a1f6",
+                                    "label": "Vimeo ID of URL",
+                                    "name": "vimeo_id",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "Bijvoorbeeld 123456789 of https://vimeo.com/123456789",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_68b5f13b7a1f4",
+                                                "operator": "==",
+                                                "value": "video"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "40",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "allow_in_bindings": 0,
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_68b5f13b7a1f3"
+                                },
+                                {
+                                    "key": "field_68b5f13b7a1f7",
+                                    "label": "Video thumbnail",
+                                    "name": "video_thumbnail",
+                                    "aria-label": "",
+                                    "type": "image",
+                                    "instructions": "Optioneel, voor de klikbare preview van de video.",
+                                    "required": 0,
+                                    "conditional_logic": [
+                                        [
+                                            {
+                                                "field": "field_68b5f13b7a1f4",
+                                                "operator": "==",
+                                                "value": "video"
+                                            }
+                                        ]
+                                    ],
+                                    "wrapper": {
+                                        "width": "40",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "return_format": "array",
+                                    "library": "all",
+                                    "min_width": "",
+                                    "min_height": "",
+                                    "min_size": "",
+                                    "max_width": "",
+                                    "max_height": "",
+                                    "max_size": "",
+                                    "mime_types": "",
+                                    "allow_in_bindings": 0,
+                                    "preview_size": "medium",
+                                    "parent_repeater": "field_68b5f13b7a1f3"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_67ebf6453446e": {
                     "key": "layout_67ebf6453446e",
                     "name": "veelgestelde_vragen",
@@ -1003,7 +1149,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "filter"
+                "value": "post"
             }
         ]
     ],
@@ -1018,5 +1164,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1753193637
+    "modified": 1772538894
 }

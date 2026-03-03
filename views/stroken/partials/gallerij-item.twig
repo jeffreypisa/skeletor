@@ -1,0 +1,51 @@
+{% set is_video = item.type == 'video' %}
+{% set caption = is_video ? item.video_thumbnail.caption|default('') : item.afbeelding.caption|default('') %}
+{% set caption_html = caption ? '<p>' ~ caption|e('html') ~ '</p>' : '' %}
+{% set vimeo_url = item.vimeo_resolved_id ? ('https://vimeo.com/' ~ item.vimeo_resolved_id) : '' %}
+
+<article class="strook-gallerij__item">
+	<div class="strook-gallerij__media">
+		{% if is_video %}
+			{% if item.vimeo_resolved_id %}
+				<a href="{{ vimeo_url }}" class="strook-gallerij__trigger strook-gallerij__trigger--video js-gallery-item position-relative" data-src="{{ vimeo_url|e('html_attr') }}" data-sub-html="{{ caption_html|e('html_attr') }}"{% if item.video_thumbnail and item.video_thumbnail.url %} data-poster="{{ item.video_thumbnail.url|e('html_attr') }}"{% endif %} aria-label="Open video in galerij">
+					{% if item.video_thumbnail %}
+						{{ image(item.video_thumbnail, {
+							figure_class: 'rounded overflow-hidden',
+							img_class: 'rounded',
+							ratio: '4x3',
+							object_fit: 'cover',
+							lazyload: true
+						}) }}
+						<span class="strook-gallerij__video-play position-absolute top-50 start-50 translate-middle d-inline-flex align-items-center justify-content-center rounded-circle text-white" style="width:3.25rem;height:3.25rem;z-index:5;opacity:.95;background:transparent;border:2px solid #fff;text-shadow:0 0 4px rgba(0,0,0,.7);" aria-hidden="true">&#9658;</span>
+					{% else %}
+						<span class="strook-gallerij__video-fallback">
+							<span class="strook-gallerij__video-icon" aria-hidden="true">&#9658;</span>
+							<span class="strook-gallerij__video-label">Bekijk video</span>
+						</span>
+					{% endif %}
+				</a>
+			{% else %}
+				<span class="strook-gallerij__video-fallback" aria-disabled="true">
+					<span class="strook-gallerij__video-icon" aria-hidden="true">&#9658;</span>
+					<span class="strook-gallerij__video-label">Geen Vimeo ID ingevuld</span>
+				</span>
+			{% endif %}
+		{% else %}
+			{% if item.afbeelding and item.afbeelding.url %}
+				<a href="{{ item.afbeelding.url }}" class="strook-gallerij__trigger js-gallery-item" data-src="{{ item.afbeelding.url|e('html_attr') }}" data-sub-html="{{ caption_html|e('html_attr') }}" aria-label="Open afbeelding in galerij">
+					{{ image(item.afbeelding, {
+						figure_class: 'rounded overflow-hidden',
+						img_class: 'rounded',
+						ratio: '4x3',
+						object_fit: 'cover',
+						lazyload: true
+					}) }}
+				</a>
+			{% endif %}
+		{% endif %}
+	</div>
+
+	{% if caption %}
+		<p class="strook-gallerij__caption mb-0">{{ caption }}</p>
+	{% endif %}
+</article>
