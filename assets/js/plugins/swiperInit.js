@@ -31,8 +31,10 @@ export function swiperInit() {
 				pagination: settings.dots
 					? { el: container.querySelector('.swiper-pagination'), clickable: true }
 					: false,
-				on: {
+					on: {
                                         init: function () {
+						syncGridLayoutClass(container, this);
+
                                                 if (!this.params.loop) {
                                                         updateNavigation(this);
                                                 }
@@ -49,6 +51,8 @@ export function swiperInit() {
                                                 matchheightUpdate();
                                         },
                                         slideChange: function () {
+						syncGridLayoutClass(container, this);
+
                                                 if (!this.params.loop) {
                                                         updateNavigation(this);
                                                 }
@@ -59,12 +63,22 @@ export function swiperInit() {
                                                 matchheightUpdate();
                                         },
                                         resize: function () {
+						syncGridLayoutClass(container, this);
+
                                                 applyNextSlideVisible(container, settings, this);
                                                 togglePaginationClass(container, this);
                                                 togglePaginationVisibility(container, this);
 
                                                 matchheightUpdate();
                                         },
+					breakpoint: function () {
+						syncGridLayoutClass(container, this);
+						this.update();
+						applyNextSlideVisible(container, settings, this);
+						togglePaginationClass(container, this);
+						togglePaginationVisibility(container, this);
+						matchheightUpdate();
+					},
 					reachBeginning: function () {
 						updateNavigation(this);
 					},
@@ -86,6 +100,7 @@ export function swiperInit() {
                                 updateNavigation(swiperInstance);
                         }
 
+                        syncGridLayoutClass(container, swiperInstance);
                         applyNextSlideVisible(container, settings, swiperInstance);
                         togglePaginationClass(container, swiperInstance);
                         togglePaginationVisibility(container, swiperInstance);
@@ -99,10 +114,13 @@ export function swiperInit() {
 }
 
 function applyNextSlideVisible(container, settings, swiper) {
+	const gridRows = getGridRows(swiper);
+
 	if (
 		settings.nextSlideVisible &&
 		swiper.slides.length > 1 &&
-		swiper.params.slidesPerView === 1
+		swiper.params.slidesPerView === 1 &&
+		gridRows === 1
 	) {
 		container.style.maxWidth = '80%';
 		container.style.margin = '0 auto';
@@ -136,7 +154,7 @@ function updateNavigation(swiper) {
 }
 
 function togglePaginationClass(container, swiper) {
-	const allSlidesVisible = swiper.slides.length <= swiper.params.slidesPerView;
+	const allSlidesVisible = swiper.slides.length <= getVisibleSlideSlots(swiper);
 
 	if (swiper.pagination.el && !allSlidesVisible) {
 		container.classList.add('has-pagination');
@@ -146,10 +164,33 @@ function togglePaginationClass(container, swiper) {
 }
 
 function togglePaginationVisibility(container, swiper) {
-	const allSlidesVisible = swiper.slides.length <= swiper.params.slidesPerView;
+	const allSlidesVisible = swiper.slides.length <= getVisibleSlideSlots(swiper);
 	const paginationEl = container.querySelector('.swiper-pagination');
 
 	if (paginationEl) {
 		paginationEl.style.display = allSlidesVisible ? 'none' : 'flex';
 	}
-} 
+}
+
+function getGridRows(swiper) {
+	const rows = Number(swiper?.params?.grid?.rows || 1);
+	return Number.isFinite(rows) && rows > 0 ? rows : 1;
+}
+
+function getVisibleSlideSlots(swiper) {
+	const slidesPerView = Number(swiper?.params?.slidesPerView);
+
+	if (!Number.isFinite(slidesPerView) || slidesPerView <= 0) {
+		return 1;
+	}
+
+	return slidesPerView * getGridRows(swiper);
+}
+
+function syncGridLayoutClass(container, swiper) {
+	const isGrid = getGridRows(swiper) > 1;
+	const fillMode = swiper?.params?.grid?.fill;
+
+	container.classList.toggle('swiper-grid', isGrid);
+	container.classList.toggle('swiper-grid-column', isGrid && fillMode === 'column');
+}

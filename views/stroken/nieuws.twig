@@ -16,7 +16,14 @@
 			class: 'mb-5',
 			breakpoints: {
 				768: { slidesPerView: 2, spaceBetween: 20 },
-				1200: { slidesPerView: 3, spaceBetween: 20 },
+				1200: {
+					slidesPerView: 3,
+					spaceBetween: 20,
+					grid: {
+						rows: 2,
+						fill: 'row'
+					}
+				},
 			}
 		}, 'partials/tease.twig') }}
 

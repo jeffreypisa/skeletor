@@ -19,6 +19,7 @@
  *   // Alleen data-logica in PHP (géén presentatie):
  *   'sort_options'       => 'asc',      // 'asc', 'desc', 'count_asc', 'count_desc', 'none'
  *   'hide_empty_options' => true,       // verberg opties zonder resultaten
+ *   'url_sync' => true,                  // optioneel: URL-sync aan/uit
  * ];
  *
  * // Datumfilter (publicatiedatum of veld)
@@ -39,9 +40,16 @@ use Timber\Timber;
 use Twig\TwigFunction;
 
 class Components_Filter extends Site {
+private const ARCHIVE_FILTER_REWRITE_VERSION = '4';
+
 public function __construct() {
 add_filter('timber/twig', [$this, 'add_to_twig']);
 add_action('save_post', ['Components_Filter', 'clear_cache']);
+add_filter('query_vars', [$this, 'register_archive_filter_query_var']);
+add_filter('request', [$this, 'resolve_archive_filter_vs_single_conflict'], 9);
+add_action('init', [$this, 'register_archive_filter_rewrite']);
+add_action('init', [$this, 'maybe_flush_archive_filter_rewrite'], 20);
+add_action('after_switch_theme', [$this, 'flush_rewrite_rules_on_theme_switch']);
 parent::__construct();
 }
 
@@ -64,6 +72,194 @@ parent::__construct();
                        'source'          => 'search',
                        'value'           => sanitize_text_field(wp_unslash($value)),
                        'search_settings' => self::normalize_search_settings($settings),
+               ];
+       }
+
+       public function register_archive_filter_query_var($vars) {
+               $vars[] = 'archive_filter_term';
+               $vars[] = 'archive_filter_scope';
+               return $vars;
+       }
+
+       public function resolve_archive_filter_vs_single_conflict($query_vars) {
+               $scope = isset($query_vars['archive_filter_scope']) ? (int) $query_vars['archive_filter_scope'] : 0;
+               if ($scope !== 1) {
+                       return $query_vars;
+               }
+
+               $post_type = $query_vars['post_type'] ?? '';
+               if (is_array($post_type)) {
+                       $post_type = reset($post_type);
+               }
+               $post_type = sanitize_key((string) $post_type);
+               if ($post_type === '') {
+                       return $query_vars;
+               }
+
+               $candidate_slug = sanitize_title((string) ($query_vars['archive_filter_term'] ?? ''));
+               if ($candidate_slug === '') {
+                       return $query_vars;
+               }
+
+               // Prefer single posts when the slug exists as a post in this post type.
+               $candidate_post = get_page_by_path($candidate_slug, OBJECT, $post_type);
+               if ($candidate_post instanceof \WP_Post) {
+                       return [
+                               'post_type' => $post_type,
+                               'name' => $candidate_slug,
+                       ];
+               }
+
+               return $query_vars;
+       }
+
+       public function register_archive_filter_rewrite() {
+               $post_types = get_post_types([
+                       'public' => true,
+                       'has_archive' => true,
+               ], 'names');
+
+               foreach ($post_types as $post_type) {
+                       $archive_link = get_post_type_archive_link($post_type);
+                       if (!$archive_link) {
+                               continue;
+                       }
+
+                       $archive_path = trim((string) wp_parse_url($archive_link, PHP_URL_PATH), '/');
+                       if ($archive_path === '') {
+                               continue;
+                       }
+
+                       // Canonical route: /{archive}/{term}
+                       add_rewrite_rule(
+                               '^' . preg_quote($archive_path, '/') . '/([^/]+)/?$',
+                               'index.php?post_type=' . $post_type . '&archive_filter_scope=1&archive_filter_term=$matches[1]',
+                               'top'
+                       );
+               }
+       }
+
+       public function flush_rewrite_rules_on_theme_switch() {
+               $this->register_archive_filter_rewrite();
+               flush_rewrite_rules();
+               update_option('skeletor_filter_archive_rewrite_version', self::ARCHIVE_FILTER_REWRITE_VERSION);
+       }
+
+       public function maybe_flush_archive_filter_rewrite() {
+               $current_version = (string) get_option('skeletor_filter_archive_rewrite_version', '');
+               if ($current_version === self::ARCHIVE_FILTER_REWRITE_VERSION) {
+                       return;
+               }
+
+               flush_rewrite_rules(false);
+               update_option('skeletor_filter_archive_rewrite_version', self::ARCHIVE_FILTER_REWRITE_VERSION);
+       }
+
+       public static function resolve_url_sync_context(array &$filters, string $post_type): array {
+               $path_candidate = null;
+               $enabled_count = 0;
+               $primary_base_url = '';
+
+               foreach ($filters as $key => &$filter) {
+                       $source = (string) ($filter['source'] ?? 'field');
+                       $field_name = (string) ($filter['name'] ?? $key);
+                       $normalized = self::normalize_url_sync_setting(
+                               $filter['url_sync'] ?? false,
+                               $source,
+                               $post_type
+                       );
+
+                       $filter['url_sync'] = $normalized;
+
+                       if (!$normalized['enabled']) {
+                               continue;
+                       }
+
+                       $enabled_count++;
+                       if ($primary_base_url === '' && !empty($normalized['base_url'])) {
+                               $primary_base_url = (string) $normalized['base_url'];
+                       }
+
+                       if (
+                               $path_candidate === null &&
+                               $normalized['mode'] === 'path' &&
+                               $source === 'taxonomy' &&
+                               $field_name !== '' &&
+                               taxonomy_exists($field_name)
+                       ) {
+                               $path_candidate = $field_name;
+                       }
+               }
+               unset($filter);
+
+               if ($path_candidate !== null) {
+                       $is_filter_scope = (int) get_query_var('archive_filter_scope') === 1;
+                       $path_term = sanitize_title((string) get_query_var('archive_filter_term'));
+                       if ($is_filter_scope && $path_term !== '') {
+                               $_GET[$path_candidate] = $path_term;
+                       }
+               }
+
+               return [
+                       'enabled' => $enabled_count > 0,
+                       'path_field' => $path_candidate ?? '',
+                       'base_url' => $primary_base_url,
+               ];
+       }
+
+       private static function normalize_url_sync_setting($url_sync, string $source, string $post_type): array {
+               $base_url = '';
+               $archive_link = get_post_type_archive_link($post_type);
+               if ($archive_link) {
+                       $base_url = trailingslashit($archive_link);
+               }
+
+               if (is_bool($url_sync)) {
+                       return [
+                               'enabled' => $url_sync,
+                               'mode' => $source === 'taxonomy' ? 'path' : 'query',
+                               'base_url' => $base_url,
+                               'path_prefix' => '',
+                       ];
+               }
+
+               if (!is_array($url_sync)) {
+                       return [
+                               'enabled' => false,
+                               'mode' => 'query',
+                               'base_url' => $base_url,
+                               'path_prefix' => '',
+                       ];
+               }
+
+               $enabled = filter_var(
+                       $url_sync['enabled'] ?? false,
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? false;
+
+               $mode = isset($url_sync['mode']) ? sanitize_key((string) $url_sync['mode']) : ($source === 'taxonomy' ? 'path' : 'query');
+               if (!in_array($mode, ['query', 'path'], true)) {
+                       $mode = $source === 'taxonomy' ? 'path' : 'query';
+               }
+               if ($mode === 'path' && $source !== 'taxonomy') {
+                       $mode = 'query';
+               }
+
+               if (!empty($url_sync['base_url']) && is_string($url_sync['base_url'])) {
+                       $base_url = trailingslashit($url_sync['base_url']);
+               }
+
+               $path_prefix = '';
+               if (!empty($url_sync['path_prefix']) && is_string($url_sync['path_prefix'])) {
+                       $path_prefix = sanitize_title($url_sync['path_prefix']);
+               }
+
+               return [
+                       'enabled' => $enabled,
+                       'mode' => $mode,
+                       'base_url' => $base_url,
+                       'path_prefix' => $path_prefix,
                ];
        }
 
@@ -237,7 +433,22 @@ parent::__construct();
                        );
                }
 
-                return Timber::compile('filter.twig', array_merge($data, $args));
+               $compiled_data = array_merge($data, $args);
+               $current_post_type = get_query_var('post_type');
+               if (is_array($current_post_type)) {
+                       $current_post_type = reset($current_post_type);
+               }
+               if (!is_string($current_post_type) || $current_post_type === '') {
+                       $current_post_type = get_post_type();
+               }
+
+               $compiled_data['url_sync'] = self::normalize_url_sync_setting(
+                       $compiled_data['url_sync'] ?? false,
+                       (string) ($compiled_data['source'] ?? 'field'),
+                       is_string($current_post_type) ? $current_post_type : ''
+               );
+
+                return Timber::compile('filter.twig', $compiled_data);
         }
 	
 	public function render_sort_select($value = '', $args = []) {
@@ -246,14 +457,24 @@ parent::__construct();
 			'name'  => 'sort',
 			'label' => 'Sorteer op:',
 			'value' => $value,
+			'url_sync' => true,
 		];
 	
 		$data = array_merge($defaults, $args);
+		$data['url_sync'] = filter_var(
+			$data['url_sync'],
+			FILTER_VALIDATE_BOOLEAN,
+			FILTER_NULL_ON_FAILURE
+		) ?? true;
 	
 		return Timber::compile('sortselect.twig', $data);
 	}
 
        public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false, $as_tree = false) {
+               if (!is_string($taxonomy) || $taxonomy === '' || !taxonomy_exists($taxonomy)) {
+                       return [];
+               }
+
                $terms = get_terms([
                        'taxonomy'   => $taxonomy,
                        'hide_empty' => filter_var(
@@ -263,6 +484,10 @@ parent::__construct();
                        ) ?? false,
                        'orderby'    => $orderby,
                ]);
+
+               if (is_wp_error($terms) || !is_array($terms)) {
+                       return [];
+               }
 
                if ($as_tree) {
                        return self::build_taxonomy_tree($terms);

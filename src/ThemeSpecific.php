@@ -7,5 +7,4 @@ use Timber\Site;
  */
 class ThemeSpecific extends Site {
 
-
 }

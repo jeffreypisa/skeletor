@@ -267,7 +267,8 @@ class Components_FilterAjax {
                                if ($fsrc === 'field' || $fsrc === 'meta') {
                                        $def['options'] = Components_Filter::get_options_from_meta($key);
                                } elseif ($fsrc === 'taxonomy') {
-                                       $def['options'] = Components_Filter::get_options_from_taxonomy($key);
+                                       $taxonomy = $def['taxonomy'] ?? $def['name'] ?? $fname;
+                                       $def['options'] = Components_Filter::get_options_from_taxonomy($taxonomy);
                                } elseif ($fsrc === 'user') {
                                        $def['options'] = Components_Filter::get_user_options();
                                } elseif ($fsrc === 'author') {

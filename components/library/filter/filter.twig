@@ -37,6 +37,9 @@ Beschikbare presentatie-opties:
 - all_label: string – label voor 'alles'-knop (alleen voor type 'buttons')
 - show_all_button: true/false – toon 'alles'-knop (alleen voor type 'buttons')
 - show_hierarchy: true/false – toon taxonomieën hiërarchisch met subniveau's
+- url_sync: true/false – synchroniseer deze filter naar de URL
+  - taxonomy wordt automatisch als path behandeld (bijv. /resources/cao/)
+  - overige bronnen worden als querystring behandeld
 #}
 
 {% macro render_option_node(node, type, name, selected, show_option_counts, option_counts) %}
@@ -77,12 +80,29 @@ Beschikbare presentatie-opties:
 {% set date_format = date_format ?? 'd-m-Y' %}
 {% set layout = layout ?? null %}
 {% set show_hierarchy = show_hierarchy ?? true %}
+{% set active_value = active_value ?? value ?? '' %}
+{% set url_sync = url_sync ?? {} %}
+{% set url_sync_enabled = url_sync.enabled ?? false %}
+{% set url_sync_mode = url_sync.mode ?? 'query' %}
+{% set url_sync_base_url = url_sync.base_url ?? '' %}
+{% set url_sync_path_prefix = url_sync.path_prefix ?? '' %}
 
 {% if not name %}
   <pre>❌ Ongeldige filterdata ontvangen</pre>
 {% else %}
 
-<div class="mb-4">
+<div
+  class="mb-4"
+  data-filter-name="{{ name|e('html_attr') }}"
+  {% if url_sync_enabled %}
+    data-filter-url-sync-enabled="true"
+    data-filter-url-sync-mode="{{ url_sync_mode|e('html_attr') }}"
+    data-filter-url-path-prefix="{{ url_sync_path_prefix|e('html_attr') }}"
+    {% if url_sync_base_url %}
+      data-filter-url-base="{{ url_sync_base_url|e('html_attr') }}"
+    {% endif %}
+  {% endif %}
+>
         {# Single Select #}
         {% if type == 'select' %}
         {% set select_layout = layout ?? 'vertical' %}
@@ -159,16 +179,29 @@ Beschikbare presentatie-opties:
 		  {{ all_label }}
 		</button>
 	  {% endif %}
-	  {% for key, label in options %}
+	  {% for label, val in options %}
 		<button type="button"
-		  class="btn {{ button_class }}{{ active_value == key ? ' active' }}"
+		  class="btn {{ button_class }}{{ active_value == val ? ' active' }}"
 		  data-filter-button
-		  data-value="{{ key }}">
+		  data-value="{{ val }}">
 		  {{ label }}
 		</button>
 	  {% endfor %}
 	</div>
-        <input type="hidden" name="{{ name }}" value="{{ active_value }}">
+        <input
+          type="hidden"
+          name="{{ name }}"
+          value="{{ active_value }}"
+          {% if url_sync_enabled %}
+            data-filter-url-sync-input="true"
+            data-filter-name="{{ name|e('html_attr') }}"
+            data-filter-url-sync-mode="{{ url_sync_mode|e('html_attr') }}"
+            data-filter-url-path-prefix="{{ url_sync_path_prefix|e('html_attr') }}"
+            {% if url_sync_base_url %}
+              data-filter-url-base="{{ url_sync_base_url|e('html_attr') }}"
+            {% endif %}
+          {% endif %}
+        >
 
         {# Single Date Field #}
         {% elseif type == 'date' %}

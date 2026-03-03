@@ -28,6 +28,7 @@ Opties:
 - options: key => label array
 - show_label: true/false (default: true)
 - layout: 'vertical' (default) of 'horizontal'
+- url_sync: true/false (default: true) – neem deze sorteerwaarde mee in URL-sync
 #}
 
 {% set id = id|default('sort') %}
@@ -36,6 +37,7 @@ Opties:
 {% set label = label|default('Sorteer op:') %}
 {% set show_label = show_label is defined ? show_label : true %}
 {% set layout = layout|default('vertical') %}
+{% set url_sync = url_sync is defined ? url_sync : true %}
 {% set options = options|default({
   'relevance': 'Relevantie',
   'date_desc': 'Nieuwste eerst',
@@ -52,7 +54,7 @@ Opties:
 	  </div>
 	{% endif %}
 	<div class="col">
-	  <select name="{{ name }}" id="{{ id }}" class="form-select">
+	  <select name="{{ name }}" id="{{ id }}" class="form-select" data-filter-url-sync="{{ url_sync ? 'true' : 'false' }}">
 		{% for key, label in options %}
 		  <option value="{{ key }}" {{ value == key ? 'selected' }}>{{ label }}</option>
 		{% endfor %}
@@ -64,7 +66,7 @@ Opties:
 	{% if show_label %}
 	  <label for="{{ id }}" class="form-label">{{ label }}</label>
 	{% endif %}
-	<select name="{{ name }}" id="{{ id }}" class="form-select">
+	<select name="{{ name }}" id="{{ id }}" class="form-select" data-filter-url-sync="{{ url_sync ? 'true' : 'false' }}">
 	  {% for key, label in options %}
 		<option value="{{ key }}" {{ value == key ? 'selected' }}>{{ label }}</option>
 	  {% endfor %}

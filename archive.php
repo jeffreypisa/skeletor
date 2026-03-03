@@ -71,6 +71,15 @@ $context['filters']['provincies'] = [
   'hide_empty_options' => true
 ];
 
+$context['filters']['catagorie'] = [
+  'name'   => 'catagorie',
+  'label'  => 'catagorie',
+  'type'   => 'buttons',
+  'source' => 'taxonomy',
+  'hide_empty_options' => true,
+  'url_sync' => true,
+];
+
 $context['filters']['genres'] = [
   'name'   => 'genre',
   'label'  => 'Genres',
@@ -94,6 +103,8 @@ $context['filters']['author'] = [
   'type'   => 'checkbox',
   'source' => 'author',
 ];
+
+$context['filter_url'] = Components_Filter::resolve_url_sync_context($context['filters'], $post_type);
   
 /**
  * 🔎 Query bouwen

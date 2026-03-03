@@ -78,6 +78,90 @@ return data;
 		window.ajaxurl.url :
 		'/wp-admin/admin-ajax.php';
 
+        const updateBrowserUrlFromForm = () => {
+                if (!window.history?.replaceState) {
+                        return;
+                }
+
+                const syncTargets = Array.from(
+                        filterForm.querySelectorAll(
+                                '[data-filter-url-sync-enabled="true"][data-filter-name], [data-filter-url-sync-input="true"][data-filter-name]'
+                        )
+                );
+                if (!syncTargets.length) {
+                        return;
+                }
+
+                const pathFilter = syncTargets.find((el) => (el.dataset.filterUrlSyncMode || 'query') === 'path');
+                const primaryFilter = pathFilter || syncTargets[0];
+                const filterUrlPathField = pathFilter ? pathFilter.dataset.filterName : '';
+                const filterUrlPathPrefix = (pathFilter?.dataset.filterUrlPathPrefix || '').replace(/^\/+|\/+$/g, '');
+                const formBase = filterForm.dataset.filterUrlBase || '';
+                const targetBase = primaryFilter.dataset.filterUrlBase || '';
+                const fallbackBase = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*\/?$/, '/')}`;
+                const rawBase = (targetBase || formBase || fallbackBase);
+                let filterUrlBase;
+                try {
+                        const parsedBase = new URL(rawBase, window.location.href);
+                        // Always keep history updates same-origin.
+                        filterUrlBase = (parsedBase.pathname || '/').replace(/\/+$/, '');
+                } catch {
+                        filterUrlBase = window.location.pathname.replace(/\/+$/, '');
+                }
+
+                const excluded = new Set([
+                        'action',
+                        'nonce',
+                        'paged',
+                        'posts_per_page',
+                        'post_type',
+                        'col_class',
+                        'tease_template'
+                ]);
+                const noSyncFields = new Set(
+                        Array.from(filterForm.querySelectorAll('[data-filter-url-sync="false"][name]'))
+                                .map((el) => (el.getAttribute('name') || '').replace(/\[\]$/, ''))
+                                .filter(Boolean)
+                );
+                const params = new URLSearchParams();
+                let pathValue = '';
+                const formData = new FormData(filterForm);
+
+                for (const [rawKey, rawValue] of formData.entries()) {
+                        const key = rawKey.replace(/\[\]$/, '');
+                        const value = String(rawValue ?? '').trim();
+
+                        if (!key || excluded.has(key) || noSyncFields.has(key) || value === '') {
+                                continue;
+                        }
+
+                        if (key === filterUrlPathField) {
+                                if (!pathValue) {
+                                        pathValue = value;
+                                }
+                                continue;
+                        }
+
+                        params.append(key, value);
+                }
+
+                const baseUrl = filterUrlBase.replace(/\/+$/, '');
+                let encodedPath = '';
+                if (pathValue) {
+                        encodedPath = filterUrlPathPrefix
+                                ? `/${filterUrlPathPrefix}/${encodeURIComponent(pathValue)}`
+                                : `/${encodeURIComponent(pathValue)}`;
+                }
+                const queryString = params.toString();
+                const nextUrl = `${baseUrl}${encodedPath}/${queryString ? `?${queryString}` : ''}`;
+
+                try {
+                        window.history.replaceState({}, '', nextUrl);
+                } catch {
+                        // Never block filtering if history cannot be updated.
+                }
+        };
+
 	let currentPage = 1;
 	let maxPages = null;
 
@@ -290,6 +374,10 @@ return data;
 			.then(html => {
 				toggleLoader(false);
 
+                                if (!append) {
+                                        updateBrowserUrlFromForm();
+                                }
+
 				if (append) {
                                 resultContainer.insertAdjacentHTML('beforeend', html);
                         } else {
@@ -344,6 +432,7 @@ return data;
 	filterForm.addEventListener('change', debounce(() => {
 		currentPage = 1;
 		if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
+                updateBrowserUrlFromForm();
 		fetchFilteredResults(false);
 	}, 300));
 
