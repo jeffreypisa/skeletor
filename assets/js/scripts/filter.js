@@ -3,6 +3,7 @@ import flatpickr from 'flatpickr/dist/flatpickr.js';
 import rangePlugin from 'flatpickr/dist/plugins/rangePlugin.js';
 import { swiperInit } from '../plugins/swiperInit.js';
 import { matchheightUpdate } from '../plugins/matchheightInit.js';
+import { scrollAnimations } from './scrollAnimations.js';
 
 export function filter() {
         const filterForm = document.querySelector('[data-filter-form]');
@@ -385,6 +386,7 @@ return data;
                                 animateItems();
                         }
 
+                        scrollAnimations(resultContainer);
                         initSliders();
                         initDatePickers();
                         initOptionToggles();

@@ -918,7 +918,7 @@
                                     "name": "vimeo_id",
                                     "aria-label": "",
                                     "type": "text",
-                                    "instructions": "Bijvoorbeeld 123456789 of https://vimeo.com/123456789",
+                                    "instructions": "Bijvoorbeeld 123456789 of https:\/\/vimeo.com\/123456789",
                                     "required": 0,
                                     "conditional_logic": [
                                         [
@@ -1149,7 +1149,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "post"
+                "value": "resource"
             }
         ]
     ],
@@ -1164,5 +1164,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1772538894
+    "modified": 1773318128
 }

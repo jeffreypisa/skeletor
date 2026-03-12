@@ -1,12 +1,25 @@
 // JavaScript
-export function scrollAnimations() {
-	const observerOptions = {
-		root: null,
-		rootMargin: '0px',
-		threshold: 0.2
-	};
+let scrollAnimationObserver;
 
-	const observer = new IntersectionObserver((entries, observer) => {
+export function scrollAnimations(scope = document) {
+	const observer = getScrollAnimationObserver();
+	const animatedElements = getAnimatedElements(scope);
+
+	animatedElements.forEach((element) => {
+		if (element.dataset.scrollAnimationObserved === '1') return;
+		element.dataset.scrollAnimationObserved = '1';
+		observer.observe(element);
+	});
+
+	attachResizeCleanupListener();
+}
+
+function getScrollAnimationObserver() {
+	if (scrollAnimationObserver) {
+		return scrollAnimationObserver;
+	}
+
+	scrollAnimationObserver = new IntersectionObserver((entries, observer) => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
 				if (entry.target.classList.contains('animate-typewriter')) {
@@ -39,12 +52,30 @@ export function scrollAnimations() {
 				observer.unobserve(entry.target);
 			}
 		});
-	}, observerOptions);
+	}, {
+		root: null,
+		rootMargin: '0px',
+		threshold: 0.2
+	});
 
-	const animatedElements = document.querySelectorAll('[class*="animate-"]');
-	animatedElements.forEach(el => observer.observe(el));
+	return scrollAnimationObserver;
+}
 
-	attachResizeCleanupListener(animatedElements);
+function getAnimatedElements(scope) {
+	if (!scope) {
+		return [];
+	}
+
+	const elements = [];
+	if (typeof scope.matches === 'function' && scope.matches('[class*="animate-"]')) {
+		elements.push(scope);
+	}
+
+	if (typeof scope.querySelectorAll === 'function') {
+		elements.push(...scope.querySelectorAll('[class*="animate-"]'));
+	}
+
+	return elements;
 }
 
 function setFixedHeight(element) {
@@ -136,7 +167,7 @@ function parseTimeListToMaxMs(value = '') {
 	return max;
 }
 
-function attachResizeCleanupListener(animatedElements) {
+function attachResizeCleanupListener() {
 	if (window.__scrollAnimationResizeCleanupAttached) return;
 	window.__scrollAnimationResizeCleanupAttached = true;
 
@@ -144,7 +175,7 @@ function attachResizeCleanupListener(animatedElements) {
 	window.addEventListener('resize', () => {
 		clearTimeout(resizeTimeout);
 		resizeTimeout = setTimeout(() => {
-			animatedElements.forEach((element) => {
+			document.querySelectorAll('[class*="animate-"]').forEach((element) => {
 				if (
 					element.classList.contains('animate-word-rise') ||
 					element.classList.contains('animate-char-fade-soft') ||
