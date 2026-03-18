@@ -25,6 +25,12 @@
                         <input type="search" name="s" class="form-control" placeholder="Zoek producten" value="{{ search_query }}">
                     </div>
 
+                    {{ active_filters({
+                        max_visible: 4,
+                        show_count: true,
+                        search_label: 'Zoekopdracht'
+                    }) }}
+
                     {{ filter(filters.price) }}
                     {{ filter(filters.stock) }}
                     {{ filter(filters.stock_status, {

@@ -32,6 +32,11 @@
             </div>
 
             <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ search_query|e }}">
+            {{ active_filters({
+                max_visible: 4,
+                show_count: true,
+                search_label: 'Zoekopdracht'
+            }) }}
 
             {{ filter(filters.post_type, {
                 show_field_label: true,
@@ -63,4 +68,3 @@
     </div>
 </section>
 {% endblock %}
-

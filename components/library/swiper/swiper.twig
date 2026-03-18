@@ -17,9 +17,9 @@ Parameters:
   - autoplay (bool|object): Automatische weergave. Standaard: false.
   - arrows (bool): Pijlen tonen voor navigatie. Standaard: true.
   - dots (bool): Navigatiedots tonen. Standaard: false.
-  - arrowPrevIcon (string): Font Awesome-icoon voor de vorige-knop. Standaard: 'fa-chevron-left'.
-  - arrowNextIcon (string): Font Awesome-icoon voor de volgende-knop. Standaard: 'fa-chevron-right'.
-  - arrowIconStyle (string): Stijl voor Font Awesome-icoon ('light', 'solid', 'brands'). Standaard: 'light'.
+  - arrowPrevIcon (string): Icoonbestandsnaam voor de vorige-knop (zonder .svg), bv. 'arrow-left'.
+  - arrowNextIcon (string): Icoonbestandsnaam voor de volgende-knop (zonder .svg), bv. 'arrow-right'.
+  - arrowIconStyle (string): Icon-stijlmap binnen de library ('light', 'regular', 'brands'). Standaard: 'light'.
   - breakpoints (object): Responsieve instellingen op basis van schermgrootte.
 - template (string, optioneel): Twig-template voor individuele slides. Standaard: 'tease.twig'.
 
@@ -41,8 +41,8 @@ Voorbeelden:
 	   overflowHidden: false,
 	   nextSlideVisible: true,
 	   class: '',
-	   arrowPrevIcon: 'fa-chevron-left',
-	   arrowNextIcon: 'fa-chevron-right',
+	   arrowPrevIcon: 'arrow-left',
+	   arrowNextIcon: 'arrow-right',
 	   arrowIconStyle: 'light',
 	   breakpoints: {
 		   768: { slidesPerView: 3, spaceBetween: 10 }
@@ -50,18 +50,40 @@ Voorbeelden:
    }, 'tease.twig') }}
 #}
 
-<div class="swiper-container js-swiper {{ settings.class }}" data-swiper-id="{{ swiper_id }}" data-swiper-settings='{{ settings|json_encode|raw }}'>
+<div class="swiper-container js-swiper {{ settings.class }}" data-swiper-id="{{ swiper_id }}" data-swiper-settings='{{ settings|json_encode|raw }}'{% if mobile_list_gap %} style="--swiper-mobile-list-gap: {{ mobile_list_gap }};"{% endif %}>
 	<div class="swiper-wrapper">
 		{% for slide in slides %}
 			<div class="swiper-slide">{{ slide|raw }}</div>
 		{% endfor %}
 	</div>
 	{% if settings.arrows %}
+		{% set icon_style = settings.arrowIconStyle|default('light') %}
+		{% if icon_style == 'solid' %}
+			{% set icon_style = 'light' %}
+		{% endif %}
+		{% set prev_icon = settings.arrowPrevIcon|default('arrow-left')|trim|split(' ')|last|replace({'fa-': ''}) %}
+		{% set next_icon = settings.arrowNextIcon|default('arrow-right')|trim|split(' ')|last|replace({'fa-': ''}) %}
 		<div class="swiper-button-prev swiper-button-prev-{{ swiper_id }}">
-			<i class="fa{{ settings.arrowIconStyle[0] }} {{ settings.arrowPrevIcon }}"></i>
+			{{ icon({
+				icon: prev_icon,
+				style: icon_style,
+				library: 'fontawesome',
+				icon_wrapper_height: 20,
+				icon_wrapper_width: 20,
+				gap: 0,
+				class: 'swiper-nav-icon'
+			}) }}
 		</div>
 		<div class="swiper-button-next swiper-button-next-{{ swiper_id }}">
-			<i class="fa{{ settings.arrowIconStyle[0] }} {{ settings.arrowNextIcon }}"></i>
+			{{ icon({
+				icon: next_icon,
+				style: icon_style,
+				library: 'fontawesome',
+				icon_wrapper_height: 20,
+				icon_wrapper_width: 20,
+				gap: 0,
+				class: 'swiper-nav-icon'
+			}) }}
 		</div>
 	{% endif %}
 	{% if settings.dots %}

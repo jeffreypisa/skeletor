@@ -1,0 +1,52 @@
+{#
+🧩 Active Filters Component – active-filters.twig
+
+Gebruik dit component om actieve filters als wegklikbare chips te tonen.
+
+Voorbeeld:
+  {{ active_filters({
+    label: 'Actieve filters',
+    max_visible: 4,
+    show_count: true,
+    exclude_filters: ['sort', 'published'],
+    chip_class: 'btn btn-sm btn-outline-primary'
+  }) }}
+
+Opties:
+- max_visible: int – aantal direct zichtbare chips vóór "Toon meer" (default: 6)
+- show_clear_all: true/false – toon "Wis alles" (default: true)
+- show_count: true/false – toon "X actieve filters" (default: true)
+- show_more_label: string – label voor uitklappen met `%d` placeholder (default: '+%d meer')
+- show_less_label: string – label voor inklappen (default: 'Toon minder')
+- clear_all_label: string – label voor resetknop (default: 'Wis alles')
+- search_label: string – label voor zoekchip (default: 'Zoekterm')
+- label: string – optioneel label boven de chips (default: '')
+- exclude_filters: array|string – filter-namen die niet als chip getoond worden (default: [])
+  - Voorbeeld array: ['sort', 'published']
+  - Voorbeeld string: 'sort,published'
+- chip_class: string – extra class(es) per chip (default: 'btn btn-sm btn-outline-dark')
+#}
+
+<div
+  class="active-filter-chips d-none"
+  data-active-filter-chips
+  data-max-visible="{{ max_visible|default(6)|e('html_attr') }}"
+  data-show-clear-all="{{ show_clear_all|default(true) ? 'true' : 'false' }}"
+  data-show-count="{{ show_count|default(true) ? 'true' : 'false' }}"
+  data-show-more-label="{{ show_more_label|default('+%d meer')|e('html_attr') }}"
+  data-show-less-label="{{ show_less_label|default('Toon minder')|e('html_attr') }}"
+  data-clear-all-label="{{ clear_all_label|default('Wis alles')|e('html_attr') }}"
+  data-search-label="{{ search_label|default('Zoekterm')|e('html_attr') }}"
+  data-chip-class="{{ chip_class|default('btn btn-sm btn-outline-dark')|e('html_attr') }}"
+  data-exclude-filters="{{ exclude_filters|default([])|join(',')|e('html_attr') }}"
+>
+  {% if label is defined and label %}
+    <p class="active-filter-chips__label">{{ label }}</p>
+  {% endif %}
+  <div class="active-filter-chips__topline">
+    <div class="active-filter-chips__count" data-active-filter-count aria-live="polite"></div>
+    <button type="button" class="btn btn-sm btn-link p-0 d-none" data-active-filter-clear></button>
+  </div>
+  <div class="active-filter-chips__list" data-active-filter-chip-list></div>
+  <button type="button" class="btn btn-sm btn-link p-0 d-none" data-active-filter-toggle></button>
+</div>

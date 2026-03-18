@@ -266,6 +266,7 @@ parent::__construct();
         public function add_to_twig($twig) {
                 $twig->addFunction(new TwigFunction('filter', [$this, 'render_filter'], ['is_safe' => ['html']]));
                 $twig->addFunction(new TwigFunction('sort_select', [$this, 'render_sort_select'], ['is_safe' => ['html']]));
+                $twig->addFunction(new TwigFunction('active_filters', [$this, 'render_active_filters'], ['is_safe' => ['html']]));
                 return $twig;
         }
 
@@ -304,6 +305,11 @@ parent::__construct();
                        FILTER_VALIDATE_BOOLEAN,
                        FILTER_NULL_ON_FAILURE
                ) ?? true;
+               $data['default_value'] = '';
+               $data['default_from'] = '';
+               $data['default_to'] = '';
+               $data['default_min'] = null;
+               $data['default_max'] = null;
 
                 // ⛏ Verwerk waarde vanuit $_GET
                if ($type === 'range') {
@@ -332,15 +338,18 @@ parent::__construct();
 
                // 🗓 Vullen met oudste/nieuwste datum indien leeg
                if ($type === 'date') {
+                       $bounds = self::get_auto_date_bounds($name, $source);
+                       $data['default_value'] = $bounds['min'];
                        if (empty($data['value'])) {
-                               $bounds = self::get_auto_date_bounds($name, $source);
                                $data['value'] = $bounds['min'];
                        }
                } elseif ($type === 'date_range') {
+                       $bounds = self::get_auto_date_bounds($name, $source);
+                       $data['default_from'] = $bounds['min'];
+                       $data['default_to'] = $bounds['max'];
                        $needsFrom = empty($data['value']['from']);
                        $needsTo   = empty($data['value']['to']);
                        if ($needsFrom || $needsTo) {
-                               $bounds = self::get_auto_date_bounds($name, $source);
                                if ($needsFrom) $data['value']['from'] = $bounds['min'];
                                if ($needsTo)   $data['value']['to']   = $bounds['max'];
                        }
@@ -350,6 +359,10 @@ parent::__construct();
 		if ($type === 'range' && (!isset($data['options']['min']) || !isset($data['options']['max']))) {
 			$data['options'] = self::get_auto_min_max($name);
 		}
+               if ($type === 'range') {
+                       $data['default_min'] = $data['options']['min'] ?? null;
+                       $data['default_max'] = $data['options']['max'] ?? null;
+               }
 	
 		// 🧾 Opties ophalen indien leeg
                 if (!isset($data['options']) || empty($data['options'])) {
@@ -469,6 +482,52 @@ parent::__construct();
 	
 		return Timber::compile('sortselect.twig', $data);
 	}
+
+       public function render_active_filters($args = []) {
+               $defaults = [
+                       'max_visible' => 6,
+                       'show_clear_all' => true,
+                       'show_count' => true,
+                       'show_more_label' => '+%d meer',
+                       'show_less_label' => 'Toon minder',
+                       'clear_all_label' => 'Wis alles',
+                       'search_label' => 'Zoekterm',
+                       'label' => '',
+                       'exclude_filters' => [],
+                       'chip_class' => 'btn btn-sm btn-outline-dark',
+               ];
+
+               $data = array_merge($defaults, is_array($args) ? $args : []);
+               $data['max_visible'] = max(1, (int) $data['max_visible']);
+               $data['show_clear_all'] = filter_var(
+                       $data['show_clear_all'],
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? true;
+               $data['show_count'] = filter_var(
+                       $data['show_count'],
+                       FILTER_VALIDATE_BOOLEAN,
+                       FILTER_NULL_ON_FAILURE
+               ) ?? true;
+               $data['label'] = sanitize_text_field((string) ($data['label'] ?? ''));
+               $exclude = $data['exclude_filters'] ?? [];
+               if (is_string($exclude)) {
+                       $exclude = array_filter(array_map('trim', explode(',', $exclude)));
+               }
+               if (!is_array($exclude)) {
+                       $exclude = [];
+               }
+               $data['exclude_filters'] = array_values(array_unique(array_filter(array_map(
+                       static fn($key) => sanitize_key((string) $key),
+                       $exclude
+               ))));
+               $data['chip_class'] = trim((string) ($data['chip_class'] ?? ''));
+               if ($data['chip_class'] === '') {
+                       $data['chip_class'] = 'btn btn-sm btn-outline-dark';
+               }
+
+               return Timber::compile('active-filters.twig', $data);
+       }
 
        public static function get_options_from_taxonomy($taxonomy, $orderby = 'name', $hide_empty = false, $as_tree = false) {
                if (!is_string($taxonomy) || $taxonomy === '' || !taxonomy_exists($taxonomy)) {

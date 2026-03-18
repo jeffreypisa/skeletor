@@ -64,6 +64,11 @@
 
                         <input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
 
+                        {{ active_filters({
+                            max_visible: 4,
+                            show_count: true
+                        }) }}
+
                         {{ filter(filters.published) }}
 
                         {{ filter(filters.rating) }}

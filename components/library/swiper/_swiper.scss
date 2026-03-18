@@ -21,6 +21,16 @@
 		text-align: center;
 		font-size: 14px;
 		color: #000;
+		
+		// Always use our explicit icon markup instead of Swiper's default pseudo icon.
+		&::after {
+			display: none;
+		}
+
+		i {
+			font-size: inherit;
+			line-height: 1;
+		}
 
 		&:hover {
 			background: #000;
@@ -75,6 +85,101 @@
 				opacity: 1;
 				background-color: #000;
 				transform: scale(1.2);
+			}
+		}
+	}
+
+	&.swiper-nav-top-right {
+		padding-top: 92px;
+
+		.swiper-button-prev,
+		.swiper-button-next {
+			top: 18px;
+			transform: none;
+			height: 56px;
+			width: 56px;
+			border: 1px solid $primary;
+			border-radius: 50%;
+			background: transparent;
+			color: $dark;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: .2s $ease;
+			
+			font-size: 20px;
+
+			&:hover {
+				background: $primary;
+				color: $dark;
+			}
+		}
+
+		.swiper-button-prev {
+			left: auto;
+			right: 72px;
+		}
+
+		.swiper-button-next {
+			right: 0;
+		}
+
+		.swiper-button-prev.disabled-swiper-button,
+		.swiper-button-next.disabled-swiper-button {
+			display: flex;
+			opacity: .35;
+			pointer-events: none;
+		}
+
+		@include media-breakpoint-down(lg) {
+			padding-top: 68px;
+
+			.swiper-button-prev,
+			.swiper-button-next {
+				top: 12px;
+				height: 40px;
+				width: 40px;
+				font-size: 16px;
+			}
+
+			.swiper-button-prev {
+				right: 52px;
+			}
+
+			.swiper-button-next {
+				right: 0;
+			}
+		}
+	}
+
+	&.swiper-mobile-list-4 {
+		@include media-breakpoint-down(md) {
+			max-width: 100% !important;
+			margin: 0 !important;
+
+			.swiper-wrapper {
+				display: flex;
+				flex-direction: column;
+				gap: var(--swiper-mobile-list-gap, 1.5rem);
+				width: 100% !important;
+				max-width: 100% !important;
+				transform: none !important;
+			}
+
+			.swiper-slide {
+				width: 100% !important;
+				height: auto !important;
+				margin-bottom: 0;
+			}
+
+			.swiper-slide:nth-child(n + 5) {
+				display: none;
+			}
+
+			.swiper-button-prev,
+			.swiper-button-next,
+			.swiper-pagination {
+				display: none !important;
 			}
 		}
 	}

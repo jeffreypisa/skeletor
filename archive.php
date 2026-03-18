@@ -56,16 +56,11 @@ $context['filters']['s'] = Components_Filter::create_search_filter(
 
 // 🧩 Filter: 'provincies'
 
-$context['filters']['rating'] = [
-  'name'   => 'rating',
-  'label'  => 'Rating',
-  'type'   => 'range',
-  'source' => 'field'
-];
 
-$context['filters']['provincies'] = [
-  'name'   => 'provincies',
-  'label'  => 'Provincies',
+
+$context['filters']['kleuren'] = [
+  'name'   => 'kleuren',
+  'label'  => 'Kleuren',
   'type'   => 'checkbox',
   'source' => 'taxonomy',
   'hide_empty_options' => true

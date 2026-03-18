@@ -33,9 +33,10 @@ class Components_Swiper extends Site {
 			'autoplay' => false,
 			'arrows' => true,
 			'dots' => false,
-			'arrowPrevIcon' => 'fa-chevron-left',
-			'arrowNextIcon' => 'fa-chevron-right',
+			'arrowPrevIcon' => 'arrow-left',
+			'arrowNextIcon' => 'arrow-right',
 			'arrowIconStyle' => 'light',
+			'mobileListGap' => null,
 			'class' => '',
 			'swiper_id' => $unique_id,
 			'navigation' => [
@@ -45,6 +46,19 @@ class Components_Swiper extends Site {
 			],
 		];
 		$finalSettings = array_merge($defaults, $settings);
+		$mobileListGap = null;
+
+		if (!empty($finalSettings['mobileListGap'])) {
+			$mobileListGap = $finalSettings['mobileListGap'];
+
+			if (is_numeric($mobileListGap)) {
+				$mobileListGap .= 'px';
+			} else {
+				$mobileListGap = sanitize_text_field((string) $mobileListGap);
+			}
+		}
+
+		unset($finalSettings['mobileListGap']);
 	
 		if ($finalSettings['loop']) {
 			unset($finalSettings['navigation']['disabledClass']);
@@ -52,13 +66,26 @@ class Components_Swiper extends Site {
 		}
 	
 		$processedSlides = array_map(function ($post) use ($template) {
-			return Timber::compile($template, ['item' => $post]);
+			$item = $post;
+
+			// ACF relationship fields often return WP_Post objects.
+			// Normalize to Timber\Post so Twig methods like item.terms(...) are available.
+			if (!$post instanceof \Timber\Post) {
+				if ($post instanceof \WP_Post || is_numeric($post)) {
+					$item = Timber::get_post($post);
+				} elseif (is_array($post) && isset($post['ID'])) {
+					$item = Timber::get_post((int) $post['ID']);
+				}
+			}
+
+			return Timber::compile($template, ['item' => $item]);
 		}, $slides);
 	
 		return Timber::compile('swiper/swiper.twig', [
 			'slides' => $processedSlides,
 			'settings' => $finalSettings,
 			'swiper_id' => $unique_id,
+			'mobile_list_gap' => $mobileListGap,
 		]);
 	}
 }

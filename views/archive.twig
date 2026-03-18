@@ -47,6 +47,8 @@
 			
 			{{ filter(filters.catagorie) }}
 			
+			{{ filter(filters.kleuren) }}
+			
 			<div class="row mb-4">
 				<div class="col">
 					<h4 class="m-0"> {{ title }} </h4>
@@ -59,6 +61,10 @@
 			</div>
 
 			<input type="text" name="s" class="form-control mb-4" placeholder="Zoek op trefwoord..." value="{{ filters.s.value|e }}">
+			{{ active_filters({
+				max_visible: 4,
+				show_count: false
+			}) }}
 
 			<div class="position-relative">
 				<div id="filter-loader" data-filter-loader class="filter-overlay d-none">

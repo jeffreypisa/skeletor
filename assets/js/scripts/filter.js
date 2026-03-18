@@ -165,6 +165,7 @@ return data;
 
 	let currentPage = 1;
 	let maxPages = null;
+        let refreshActiveFilterChips = () => {};
 
         const toggleLoader = (show) => {
                 const results = document.querySelector('#filter-results');
@@ -258,6 +259,334 @@ return data;
 			});
 		});
 	};
+
+        const initActiveFilterChips = () => {
+                const chipContainers = Array.from(filterForm.querySelectorAll('[data-active-filter-chips]'));
+                if (!chipContainers.length) {
+                        return () => {};
+                }
+
+                const escapeSelector = (value) => {
+                        if (window.CSS && typeof window.CSS.escape === 'function') {
+                                return window.CSS.escape(value);
+                        }
+                        return value.replace(/([ #;?%&,.+*~':"!^$[\]()=>|/@])/g, '\\$1');
+                };
+
+                const normalizeText = (value) => String(value ?? '').replace(/\s+/g, ' ').trim();
+
+                const findFilterLabel = (name, fallback = '') => {
+                        const wrapper = filterForm.querySelector(`[data-filter-name="${escapeSelector(name)}"]`);
+                        const labelEl = wrapper?.querySelector('.form-label');
+                        const label = normalizeText(labelEl?.textContent || fallback || name);
+                        return label || name;
+                };
+
+                const removeOptionCountText = (label) => normalizeText(label).replace(/\(\d+\)$/, '').trim();
+
+                const getButtonLabel = (group, value) => {
+                        const btn = Array.from(group.querySelectorAll('[data-filter-button]')).find(
+                                (button) => button.dataset.value === value
+                        );
+                        return removeOptionCountText(btn?.textContent || value);
+                };
+
+                const setInputValue = (input, value) => {
+                        if (!input) return;
+                        input.value = value;
+                        if (input._flatpickr) {
+                                if (value) {
+                                        input._flatpickr.setDate(value, false);
+                                } else {
+                                        input._flatpickr.clear();
+                                }
+                        }
+                };
+
+                const buildChips = () => {
+                        const chips = [];
+                        const processedNames = new Set();
+                        const excludeFilters = new Set(
+                                (chipContainers[0].dataset.excludeFilters || '')
+                                        .split(',')
+                                        .map((name) => normalizeText(name).replace(/[^a-z0-9_-]/gi, '').toLowerCase())
+                                        .filter(Boolean)
+                        );
+                        const isExcluded = (name) => {
+                                const normalized = normalizeText(name).replace(/[^a-z0-9_-]/gi, '').toLowerCase();
+                                return excludeFilters.has(normalized);
+                        };
+
+                        filterForm.querySelectorAll('[data-filter-name]').forEach((wrapper) => {
+                                const name = wrapper.dataset.filterName;
+                                if (!name || processedNames.has(name)) return;
+                                processedNames.add(name);
+
+                                if (['sort', 'orderby', 'order'].includes(name)) {
+                                        return;
+                                }
+                                if (isExcluded(name)) {
+                                        return;
+                                }
+
+                                const label = findFilterLabel(name);
+                                const checkboxInputs = Array.from(wrapper.querySelectorAll(`input[type="checkbox"][name="${escapeSelector(name)}[]"]`));
+                                const radioInputs = Array.from(wrapper.querySelectorAll(`input[type="radio"][name="${escapeSelector(name)}"]`));
+                                const selectInput = wrapper.querySelector(`select[name="${escapeSelector(name)}"]`);
+                                const hiddenInput = wrapper.querySelector(`input[type="hidden"][name="${escapeSelector(name)}"]`);
+                                const textInput = wrapper.querySelector(`input[name="${escapeSelector(name)}"]:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])`);
+                                const minInput = wrapper.querySelector(`input[name="min_${escapeSelector(name)}"]`);
+                                const maxInput = wrapper.querySelector(`input[name="max_${escapeSelector(name)}"]`);
+                                const fromInput = wrapper.querySelector(`input[name="from_${escapeSelector(name)}"]`);
+                                const toInput = wrapper.querySelector(`input[name="to_${escapeSelector(name)}"]`);
+                                const buttonGroup = wrapper.querySelector('.filter-buttons');
+
+                                if (minInput || maxInput) {
+                                        const currentMin = normalizeText(minInput?.value || '');
+                                        const currentMax = normalizeText(maxInput?.value || '');
+                                        const defaultMin = normalizeText(minInput?.dataset.filterDefaultValue || '');
+                                        const defaultMax = normalizeText(maxInput?.dataset.filterDefaultValue || '');
+                                        if (currentMin === defaultMin && currentMax === defaultMax) {
+                                                return;
+                                        }
+                                        chips.push({
+                                                id: `range:${name}`,
+                                                text: `${label}: ${currentMin} - ${currentMax}`,
+                                                remove: () => {
+                                                        setInputValue(minInput, defaultMin);
+                                                        setInputValue(maxInput, defaultMax);
+                                                        const slider = wrapper.querySelector('[data-slider]');
+                                                        if (slider?.noUiSlider) {
+                                                                slider.noUiSlider.set([defaultMin, defaultMax]);
+                                                        }
+                                                }
+                                        });
+                                        return;
+                                }
+
+                                if (fromInput || toInput) {
+                                        const currentFrom = normalizeText(fromInput?.value || '');
+                                        const currentTo = normalizeText(toInput?.value || '');
+                                        const defaultFrom = normalizeText(fromInput?.dataset.filterDefaultValue || '');
+                                        const defaultTo = normalizeText(toInput?.dataset.filterDefaultValue || '');
+                                        if (currentFrom === defaultFrom && currentTo === defaultTo) {
+                                                return;
+                                        }
+                                        chips.push({
+                                                id: `date-range:${name}`,
+                                                text: `${label}: ${currentFrom} - ${currentTo}`,
+                                                remove: () => {
+                                                        setInputValue(fromInput, defaultFrom);
+                                                        setInputValue(toInput, defaultTo);
+                                                        if (fromInput?._flatpickr) {
+                                                                fromInput._flatpickr.setDate([defaultFrom, defaultTo].filter(Boolean), false);
+                                                        }
+                                                }
+                                        });
+                                        return;
+                                }
+
+                                if (checkboxInputs.length) {
+                                        checkboxInputs.forEach((input) => {
+                                                if (!input.checked) return;
+                                                const optionLabel = removeOptionCountText(input.closest('label')?.textContent || input.value);
+                                                chips.push({
+                                                        id: `checkbox:${name}:${input.value}`,
+                                                        text: `${label}: ${optionLabel}`,
+                                                        remove: () => {
+                                                                input.checked = false;
+                                                        }
+                                                });
+                                        });
+                                        return;
+                                }
+
+                                if (radioInputs.length) {
+                                        const checked = radioInputs.find((input) => input.checked && normalizeText(input.value) !== '');
+                                        if (!checked) return;
+                                        const optionLabel = removeOptionCountText(checked.closest('label')?.textContent || checked.value);
+                                        chips.push({
+                                                id: `radio:${name}:${checked.value}`,
+                                                text: `${label}: ${optionLabel}`,
+                                                remove: () => {
+                                                        checked.checked = false;
+                                                }
+                                        });
+                                        return;
+                                }
+
+                                if (selectInput) {
+                                        const selectedValue = normalizeText(selectInput.value || '');
+                                        if (!selectedValue) return;
+                                        const selectedOption = selectInput.options[selectInput.selectedIndex];
+                                        const optionLabel = removeOptionCountText(selectedOption?.textContent || selectedValue);
+                                        chips.push({
+                                                id: `select:${name}:${selectedValue}`,
+                                                text: `${label}: ${optionLabel}`,
+                                                remove: () => {
+                                                        selectInput.value = '';
+                                                }
+                                        });
+                                        return;
+                                }
+
+                                if (buttonGroup && hiddenInput) {
+                                        const selectedValue = normalizeText(hiddenInput.value || '');
+                                        if (!selectedValue) return;
+                                        chips.push({
+                                                id: `button:${name}:${selectedValue}`,
+                                                text: `${label}: ${getButtonLabel(buttonGroup, selectedValue)}`,
+                                                remove: () => {
+                                                        hiddenInput.value = '';
+                                                        buttonGroup.querySelectorAll('[data-filter-button]').forEach((button) => {
+                                                                button.classList.toggle('active', (button.dataset.value || '') === '');
+                                                        });
+                                                }
+                                        });
+                                        return;
+                                }
+
+                                if (textInput) {
+                                        const currentValue = normalizeText(textInput.value || '');
+                                        const defaultValue = normalizeText(textInput.dataset.filterDefaultValue || '');
+                                        if (!currentValue || currentValue === defaultValue) return;
+                                        chips.push({
+                                                id: `text:${name}`,
+                                                text: `${label}: ${currentValue}`,
+                                                remove: () => {
+                                                        setInputValue(textInput, defaultValue);
+                                                }
+                                        });
+                                }
+                        });
+
+                        const searchInputInForm = filterForm.querySelector('input[name="s"]');
+                        if (searchInputInForm && !processedNames.has('s') && !isExcluded('s')) {
+                                const searchValue = normalizeText(searchInputInForm.value || '');
+                                if (searchValue) {
+                                        const searchLabel = chipContainers[0].dataset.searchLabel || 'Zoekterm';
+                                        chips.push({
+                                                id: 'search:s',
+                                                text: `${searchLabel}: ${searchValue}`,
+                                                remove: () => {
+                                                        searchInputInForm.value = '';
+                                                }
+                                        });
+                                }
+                        }
+
+                        return chips;
+                };
+
+                const renderChips = () => {
+                        const chips = buildChips();
+
+                        chipContainers.forEach((container) => {
+                                const list = container.querySelector('[data-active-filter-chip-list]');
+                                const clearBtn = container.querySelector('[data-active-filter-clear]');
+                                const toggleBtn = container.querySelector('[data-active-filter-toggle]');
+                                const countEl = container.querySelector('[data-active-filter-count]');
+                                if (!list || !clearBtn || !toggleBtn) return;
+
+                                list.innerHTML = '';
+
+                                if (!chips.length) {
+                                        container.classList.add('d-none');
+                                        clearBtn.classList.add('d-none');
+                                        toggleBtn.classList.add('d-none');
+                                        if (countEl) countEl.textContent = '';
+                                        return;
+                                }
+
+                                container.classList.remove('d-none');
+
+                                const maxVisible = Math.max(1, parseInt(container.dataset.maxVisible || '6', 10));
+                                const showClearAll = container.dataset.showClearAll !== 'false';
+                                const showCount = container.dataset.showCount !== 'false';
+                                const showMoreLabel = container.dataset.showMoreLabel || '+%d meer';
+                                const showLessLabel = container.dataset.showLessLabel || 'Toon minder';
+                                const clearAllLabel = container.dataset.clearAllLabel || 'Wis alles';
+                                const chipClass = normalizeText(container.dataset.chipClass || 'btn btn-sm btn-outline-dark');
+
+                                let expanded = container.dataset.expanded === 'true';
+                                if (chips.length <= maxVisible) {
+                                        expanded = false;
+                                        container.dataset.expanded = 'false';
+                                }
+
+                                const visibleChips = expanded ? chips : chips.slice(0, maxVisible);
+
+                                visibleChips.forEach((chip) => {
+                                        const item = document.createElement('button');
+                                        item.type = 'button';
+                                        item.className = `active-filter-chip ${chipClass}`.trim();
+                                        item.dataset.chipId = chip.id;
+                                        item.setAttribute('aria-label', `Verwijder filter ${chip.text}`);
+                                        item.innerHTML = `<span>${chip.text}</span><span class="active-filter-chip__close" aria-hidden="true">&times;</span>`;
+                                        item.addEventListener('click', () => {
+                                                chip.remove();
+                                                renderChips();
+                                                filterForm.dispatchEvent(new Event('change', { bubbles: true }));
+                                        });
+                                        list.appendChild(item);
+                                });
+
+                                if (showCount && countEl) {
+                                        countEl.textContent = `${chips.length} actieve filters`;
+                                } else if (countEl) {
+                                        countEl.textContent = '';
+                                }
+
+                                if (showClearAll) {
+                                        clearBtn.textContent = clearAllLabel;
+                                        clearBtn.classList.toggle('d-none', chips.length === 0);
+                                } else {
+                                        clearBtn.classList.add('d-none');
+                                }
+
+                                if (chips.length > maxVisible) {
+                                        const hiddenCount = chips.length - maxVisible;
+                                        toggleBtn.classList.remove('d-none');
+                                        toggleBtn.textContent = expanded
+                                                ? showLessLabel
+                                                : showMoreLabel.replace('%d', String(hiddenCount));
+                                        toggleBtn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                                } else {
+                                        toggleBtn.classList.add('d-none');
+                                }
+                        });
+                };
+
+                chipContainers.forEach((container) => {
+                        const clearBtn = container.querySelector('[data-active-filter-clear]');
+                        const toggleBtn = container.querySelector('[data-active-filter-toggle]');
+
+                        if (clearBtn && !clearBtn.dataset.initialized) {
+                                clearBtn.addEventListener('click', () => {
+                                        const resetButton = filterForm.querySelector('[data-filter-reset]');
+                                        if (resetButton) {
+                                                resetButton.click();
+                                        } else {
+                                                filterForm.reset();
+                                                filterForm.dispatchEvent(new Event('change', { bubbles: true }));
+                                        }
+                                });
+                                clearBtn.dataset.initialized = 'true';
+                        }
+
+                        if (toggleBtn && !toggleBtn.dataset.initialized) {
+                                toggleBtn.addEventListener('click', () => {
+                                        const expanded = container.dataset.expanded === 'true';
+                                        container.dataset.expanded = expanded ? 'false' : 'true';
+                                        renderChips();
+                                });
+                                toggleBtn.dataset.initialized = 'true';
+                        }
+                });
+
+                renderChips();
+                return renderChips;
+        };
 
 	// Flatpickr initialiseren op datumvelden
 	// Gebruik data-date-picker voor een enkel veld of
@@ -428,6 +757,7 @@ return data;
                                                 });
                                         }
                                 }
+                                refreshActiveFilterChips();
                         });
         };
 
@@ -435,6 +765,7 @@ return data;
 		currentPage = 1;
 		if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
                 updateBrowserUrlFromForm();
+                refreshActiveFilterChips();
 		fetchFilteredResults(false);
 	}, 300));
 
@@ -442,6 +773,7 @@ return data;
                 searchInput.addEventListener('input', debounce(() => {
                         currentPage = 1;
                         if (loadMoreBtn) loadMoreBtn.classList.add('d-none');
+                        refreshActiveFilterChips();
                         fetchFilteredResults(false);
                 }, 400));
 
@@ -523,6 +855,7 @@ return data;
                         }
 
                         // Resultaten verversen
+                        refreshActiveFilterChips();
                         fetchFilteredResults(false);
                 });
         }
@@ -531,4 +864,6 @@ return data;
         initDatePickers();
         initOptionToggles();
         initFilterButtons();
+        refreshActiveFilterChips = initActiveFilterChips();
+        refreshActiveFilterChips();
 }
