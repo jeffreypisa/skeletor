@@ -26,132 +26,425 @@
 <li><code>views/</code> – Twig-sjablonen voor de WordPress template hierarchy.</li>
 </ul>
 
-<h2 id="customcomponenten">Custom componenten</h2>
+<h2 id="componenten">Componenten</h2>
 
-<p>De componenten in <code>components/</code> worden automatisch geladen en zijn beschikbaar als Twig-functies. Hieronder een overzicht van de beschikbare componenten met voorbeeldgebruik.</p>
+<p>De componenten in <code>components/</code> worden automatisch geregistreerd als Twig-functies.</p>
 
-<h3 id="accordion">Accordion</h3>
+<p>Beschikbare functies:</p>
+
+<ul>
+<li><code>accordion()</code></li>
+<li><code>breadcrumbs()</code></li>
+<li><code>button()</code></li>
+<li><code>filter()</code></li>
+<li><code>sort_select()</code></li>
+<li><code>active_filters()</code></li>
+<li><code>heading()</code></li>
+<li><code>icon()</code></li>
+<li><code>image()</code></li>
+<li><code>inpage_nav()</code></li>
+<li><code>swiper()</code></li>
+<li><code>text()</code></li>
+</ul>
+
+<h3 id="accordionaccordionitemsargs">Accordion (<code>accordion(items, args = {})</code>)</h3>
+
+<p>Gebruik voor FAQ’s en uitklapcontent.</p>
 
 <pre><code class="twig">{{ accordion(item.accordion_items, {
-  id_prefix: 'acc',
+  id_prefix: 'faq',
   icon: 'plus',
+  icon_position: 'before',
+  heading_level: 'h3',
+  heading_class: 'mb-0',
+  icon_weight: 'solid',
   first_item_open: true
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Items: array met <code>titel</code> en <code>tekst</code>.</li>
-<li>Opties: <code>id_prefix</code>, <code>icon</code>, <code>icon_position</code>, <code>heading_level</code>, <code>heading_class</code>, <code>icon_weight</code>, <code>first_item_open</code>.</li>
+<li><code>items</code>: array met <code>titel</code> en <code>tekst</code> (mag ook WP/Timber posts bevatten).</li>
+<li><code>id_prefix</code> (default <code>accordion</code>)</li>
+<li><code>icon</code>: <code>chevron</code> of <code>plus</code></li>
+<li><code>icon_position</code>: <code>before</code> of <code>after</code></li>
+<li><code>heading_level</code>: <code>h1</code> t/m <code>h6</code></li>
+<li><code>heading_class</code>: extra class(es)</li>
+<li><code>icon_weight</code>: icon style map (bijv. <code>light</code>, <code>solid</code>)</li>
+<li><code>first_item_open</code>: eerste item open bij load</li>
 </ul>
 
-<h3 id="button">Button</h3>
+<h3 id="breadcrumbsbreadcrumbs">Breadcrumbs (<code>breadcrumbs()</code>)</h3>
+
+<p>Automatische kruimelpadnavigatie op basis van huidige pagina.</p>
+
+<pre><code class="twig">{{ breadcrumbs() }}
+</code></pre>
+
+<p>Mogelijkheden:</p>
+
+<ul>
+<li>Geen argumenten nodig.</li>
+<li>Werkt voor home, archives, search en singular pagina’s.</li>
+<li>Is ook beschikbaar in context als <code>breadcrumbs</code>.</li>
+</ul>
+
+<h3 id="buttonbuttonbutton_fieldparams">Button (<code>button(button_field, params = {})</code>)</h3>
+
+<p>Rendert een knop op basis van een ACF Link veld (<code>url</code>, <code>title</code>, <code>target</code>).</p>
 
 <pre><code class="twig">{{ button(item.link, {
+  title: 'Meer informatie',
   style: 'outline-primary',
   size: 'lg',
   icon: 'arrow-right',
-  icon_position: 'after'
+  icon_position: 'after',
+  icon_style: 'solid',
+  target: '_blank',
+  class: 'mt-3'
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Werkt met een ACF link‑veld.</li>
-<li>Opties: <code>title</code>, <code>url</code>, <code>style</code>, <code>size</code>, <code>target</code>, <code>icon</code>, <code>icon_position</code>, <code>icon_style</code>, <code>class</code>.</li>
+<li><code>params</code> mag ook een string zijn: <code>{{ button(item.link, 'primary') }}</code>.</li>
+<li><code>title</code> (default ACF title of <code>Klik hier</code>)</li>
+<li><code>url</code> (default ACF url)</li>
+<li><code>style</code> (default <code>primary</code>)</li>
+<li><code>size</code> (<code>sm</code>, <code>lg</code>, &#8230;)</li>
+<li><code>target</code> (default ACF target of <code>_self</code>)</li>
+<li><code>icon</code> (Font Awesome naam zonder <code>fa-</code>)</li>
+<li><code>icon_position</code>: <code>before</code> of <code>after</code></li>
+<li><code>icon_style</code>: <code>solid</code>, <code>regular</code>, <code>light</code>, <code>brands</code></li>
+<li><code>class</code>: extra class(es)</li>
 </ul>
 
-<h3 id="filter">Filter</h3>
+<h3 id="filterfilterdataargs">Filter (<code>filter(data, args = {})</code>)</h3>
 
-<p>Definieer filters in PHP en render ze in Twig:</p>
+<p>Filtercomponent voor taxonomy/meta/date/post type/author.</p>
 
-<pre><code class="twig">{{ filter(filters.uren, {
-  limit_options: 3,
+<pre><code class="php">$context['filters']['topic'] = [
+  'name' =&gt; 'category',
+  'label' =&gt; 'Onderwerp',
+  'type' =&gt; 'checkbox',
+  'source' =&gt; 'taxonomy',
+  'show_hierarchy' =&gt; true,
+  'sort_options' =&gt; 'count_desc',
+  'hide_empty_options' =&gt; true,
+  'url_sync' =&gt; ['enabled' =&gt; true, 'mode' =&gt; 'path'],
+];
+</code></pre>
+
+<pre><code class="twig">{{ filter(filters.topic, {
+  layout: 'vertical',
+  show_field_label: true,
+  show_option_counts: true,
+  limit_options: 6,
   option_list_expand_label: 'Meer opties',
   option_list_collapse_label: 'Minder opties',
   placeholder: 'Maak een keuze',
-  layout: 'horizontal',
-  show_field_label: true,
-  show_option_counts: true
+  date_format: 'd-m-Y'
 }) }}
-{{ sort_select(filters.sort) }}
 </code></pre>
 
+<p>Mogelijkheden (data):</p>
+
 <ul>
-<li>Ondersteunt <code>select</code>, <code>checkbox</code>, <code>radio</code>, <code>buttons</code>, <code>range</code>, <code>date</code> en <code>date_range</code>.</li>
-<li>Data-opties per filter: <code>name</code>, <code>label</code>, <code>type</code>, <code>source</code>, <code>options</code>, <code>value</code>, <code>sort_options</code>, <code>hide_empty_options</code>.</li>
-<li><code>sort_options</code> ondersteunt <code>asc</code>, <code>desc</code>, <code>count_asc</code>, <code>count_desc</code> en <code>none</code> om op label of aantal resultaten te sorteren.</li>
-<li>Presentatie-opties: <code>limit_options</code>, <code>option_list_expand_label</code>, <code>option_list_collapse_label</code>, <code>placeholder</code>, <code>layout</code>, <code>show_field_label</code>, <code>show_option_counts</code>, <code>date_format</code>.</li>
-<li><code>sort_select</code> accepteert <code>id</code>, <code>name</code>, <code>label</code>, <code>value</code> en voegt een standaard sorteermenu toe.</li>
-<li>Hiërarchische taxonomie-opties: zet <code>show_hierarchy</code> op <code>true</code> (standaard) om subniveaus te tonen.</li>
+<li><code>name</code>: veldnaam/taxonomy/inputnaam</li>
+<li><code>label</code>: labeltekst</li>
+<li><code>type</code>: <code>select</code>, <code>checkbox</code>, <code>radio</code>, <code>buttons</code>, <code>range</code>, <code>date</code>, <code>date_range</code></li>
+<li><code>source</code>: <code>field</code>, <code>meta</code>, <code>taxonomy</code>, <code>post_date</code>, <code>post_type</code>, <code>user</code>, <code>author</code></li>
+<li><code>options</code>: handmatige opties (<code>label =&gt; value</code>), anders auto-ophalen</li>
+<li><code>sort_options</code>: <code>asc</code>, <code>desc</code>, <code>count_asc</code>, <code>count_desc</code>, <code>none</code></li>
+<li><code>hide_empty_options</code>: alleen opties met resultaten</li>
+<li><code>show_hierarchy</code>: taxonomy als boomstructuur</li>
+<li><code>date_format</code>: datum output/input formaat (default <code>d-m-Y</code>)</li>
+<li><code>url_sync</code>:</li>
+<li> <code>true/false</code></li>
+<li> of array met <code>enabled</code>, <code>mode</code> (<code>query</code>/<code>path</code>), <code>base_url</code>, <code>path_prefix</code></li>
 </ul>
 
-<p>Mogelijke waardes voor <code>source</code> zijn <code>field</code>, <code>meta</code>, <code>taxonomy</code>, <code>post_date</code>, <code>post_type</code>, <code>user</code> en <code>author</code>.</p>
+<p>Mogelijkheden (presentatie via <code>args</code>):</p>
 
-<h3 id="heading">Heading</h3>
+<ul>
+<li><code>layout</code>: <code>vertical</code> of <code>horizontal</code></li>
+<li><code>show_field_label</code>: label tonen/verbergen</li>
+<li><code>show_option_counts</code>: aantallen per optie tonen</li>
+<li><code>limit_options</code>: eerst X tonen met toggle knop</li>
+<li><code>option_list_expand_label</code> / <code>option_list_collapse_label</code></li>
+<li><code>placeholder</code>: select placeholder</li>
+<li><code>date_format</code>: datumweergave</li>
+<li>Extra voor <code>buttons</code>: <code>button_class</code>, <code>all_label</code>, <code>show_all_button</code></li>
+</ul>
+
+<p>Belangrijk gedrag:</p>
+
+<ul>
+<li><code>range</code> krijgt automatisch <code>min/max</code> op basis van data als niet meegegeven.</li>
+<li><code>date</code> en <code>date_range</code> vullen automatisch oudste/nieuwste datum in als GET-waarden ontbreken.</li>
+</ul>
+
+<h3 id="sortselectsort_selectvalueargs">Sort Select (<code>sort_select(value, args = {})</code>)</h3>
+
+<p>Gestandaardiseerde sorteer-dropdown.</p>
+
+<pre><code class="twig">{{ sort_select(filters.sort.value, {
+  id: 'sort',
+  name: 'sort',
+  label: 'Sorteer op',
+  show_label: true,
+  layout: 'horizontal',
+  url_sync: true,
+  options: {
+    relevance: 'Relevantie',
+    date_desc: 'Nieuwste eerst',
+    date_asc: 'Oudste eerst',
+    title_asc: 'Titel A-Z',
+    title_desc: 'Titel Z-A'
+  }
+}) }}
+</code></pre>
+
+<p>Mogelijkheden:</p>
+
+<ul>
+<li><code>id</code>, <code>name</code>, <code>label</code>, <code>value</code></li>
+<li><code>options</code> (key =&gt; label)</li>
+<li><code>show_label</code></li>
+<li><code>layout</code>: <code>vertical</code> of <code>horizontal</code></li>
+<li><code>url_sync</code>: neem sortering mee in URL</li>
+</ul>
+
+<h3 id="activefiltersactive_filtersargs">Active Filters (<code>active_filters(args = {})</code>)</h3>
+
+<p>Toont actieve filters als chips met “wis alles” en “toon meer”.</p>
+
+<pre><code class="twig">{{ active_filters({
+  label: 'Actieve filters',
+  max_visible: 5,
+  show_count: true,
+  show_clear_all: true,
+  show_more_label: '+%d meer',
+  show_less_label: 'Toon minder',
+  clear_all_label: 'Wis alles',
+  search_label: 'Zoekterm',
+  exclude_filters: ['sort'],
+  chip_class: 'btn btn-sm btn-outline-primary'
+}) }}
+</code></pre>
+
+<p>Mogelijkheden:</p>
+
+<ul>
+<li><code>max_visible</code></li>
+<li><code>show_clear_all</code></li>
+<li><code>show_count</code></li>
+<li><code>show_more_label</code></li>
+<li><code>show_less_label</code></li>
+<li><code>clear_all_label</code></li>
+<li><code>search_label</code></li>
+<li><code>label</code></li>
+<li><code>exclude_filters</code> (array of comma-separated string)</li>
+<li><code>chip_class</code></li>
+</ul>
+
+<h3 id="headingheadingtextoptions">Heading (<code>heading(text, options = {})</code>)</h3>
+
+<p>Heading component met optionele in-view animaties.</p>
 
 <pre><code class="twig">{{ heading(item.titel, {
   level: 'h2',
   class: 'mb-3',
-  inview_animation: 'typewriter'
+  inview_animation: 'word-rise',
+  inview_animation_speed: 0.9
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Opties: <code>level</code>, <code>class</code>, <code>inview_animation</code>.</li>
+<li><code>level</code> (default <code>h2</code>)</li>
+<li><code>class</code></li>
+<li><code>inview_animation</code> (bijv. <code>fade-in</code>, <code>typewriter</code>, <code>word-rise</code>, etc.)</li>
+<li><code>inview_animation_speed</code> (0.1 - 10)</li>
 </ul>
 
-<h3 id="image">Image</h3>
+<h3 id="iconiconargs">Icon (<code>icon(args)</code>)</h3>
+
+<p>SVG icon component op basis van <code>components/library/icon/library/...</code>.</p>
+
+<pre><code class="twig">{{ icon({
+  icon: 'arrow-right',
+  style: 'light',
+  library: 'fontawesome',
+  class: 'my-icon',
+  icon_wrapper_height: 20,
+  icon_wrapper_width: 20,
+  icon_class: 'text-primary',
+  title: 'Meer info',
+  title_position: 'right',
+  title_level: 'span',
+  title_class: 'small',
+  gap: 8,
+  url: '/contact',
+  target: 'self',
+  color_primary: '#0d6efd',
+  color_secondary: '#6c757d'
+}) }}
+</code></pre>
+
+<p>Mogelijkheden:</p>
+
+<ul>
+<li><code>icon</code> (vereist, bestandsnaam zonder <code>.svg</code>)</li>
+<li><code>style</code> (bijv. <code>light</code>, <code>solid</code>, <code>regular</code>, <code>brands</code>, <code>duotone</code> als aanwezig)</li>
+<li><code>library</code> (default <code>fontawesome</code>)</li>
+<li><code>class</code></li>
+<li><code>icon_wrapper_height</code>, <code>icon_wrapper_width</code> (<code>int</code>, <code>px</code>, <code>rem</code>, <code>auto</code>)</li>
+<li><code>icon_wrapper_class</code>, <code>icon_class</code></li>
+<li><code>title</code>, <code>title_position</code> (<code>left/right/top/bottom</code>), <code>title_level</code>, <code>title_class</code></li>
+<li><code>gap</code></li>
+<li><code>url</code> + <code>target</code> (<code>self</code> of <code>blank</code>)</li>
+<li><code>color_primary</code>, <code>color_secondary</code> (voor duotone varianten)</li>
+</ul>
+
+<h3 id="imageimageimage_fieldoptions">Image (<code>image(image_field, options = {})</code>)</h3>
+
+<p>Afbeelding met ratio, caption, animatie en optionele popup-link.</p>
 
 <pre><code class="twig">{{ image(item.afbeelding, {
   ratio: '16x9',
-  figure_class: 'rounded shadow',
+  figure_class: 'rounded overflow-hidden',
+  img_class: 'rounded',
+  object_fit: 'cover',
+  lazyload: true,
+  style: 'max-width: 720px;',
   show_caption: true,
-  caption_position: 'below-right'
+  caption_position: 'below-right',
+  inview_animation: 'zoom-in',
+  inview_animation_speed: 1.1,
+  popup: true,
+  popup_type: 'image',
+  popup_title: item.afbeelding.caption,
+  popup_class: 'gallery-item',
+  popup_attrs: {
+    'data-gallery': 'project'
+  }
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Opties: <code>ratio</code>, <code>figure_class</code>, <code>img_class</code>, <code>object_fit</code>, <code>lazyload</code>, <code>style</code>, <code>show_caption</code>, <code>caption_position</code>, <code>inview_animation</code>, <code>overlay_direction</code>.</li>
+<li><code>ratio</code> (bijv. <code>16x9</code>, <code>4x3</code>)</li>
+<li><code>figure_class</code>, <code>img_class</code></li>
+<li><code>object_fit</code> (<code>cover</code>, <code>contain</code>, &#8230;)</li>
+<li><code>lazyload</code> (default <code>true</code>)</li>
+<li><code>style</code> (inline style)</li>
+<li><code>show_caption</code></li>
+<li><code>caption_position</code>: <code>on-left</code>, <code>on-right</code>, <code>below-left</code>, <code>below-right</code></li>
+<li><code>inview_animation</code> + <code>inview_animation_speed</code></li>
+<li><code>overlay_direction</code> (voor animatie/CSS hook)</li>
+<li>Popupopties: <code>popup</code>, <code>popup_url</code>, <code>popup_type</code>, <code>popup_title</code>, <code>popup_class</code>, <code>popup_attrs</code></li>
 </ul>
 
-<h3 id="socialmedialinks">Social media links</h3>
+<h3 id="inpagenavinpage_navargs">Inpage Nav (<code>inpage_nav(args = {})</code>)</h3>
 
-<pre><code class="twig">{{ social_media_links({
-  facebook: { url: 'https://facebook.com', suffix: 'f' },
-  instagram: { url: 'https://instagram.com' }
+<p>Auto in-page navigatie (desktop + mobiel select) op basis van headings en optioneel parent links.</p>
+
+<pre><code class="twig">{{ inpage_nav({
+  id: post.id,
+  title: 'Inhoud',
+  mode: 'all',
+  parent_links_mode: 'taxonomy',
+  parent_links_category: 'category',
+  parent_icon: 'chevron',
+  parent_icon_size: 12
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Opties: <code>show_icons</code>, <code>class</code>.</li>
-<li>Elke link vereist <code>url</code> en optionele <code>suffix</code> voor een alternatieve iconvariant.</li>
+<li><code>id</code> (default current post id)</li>
+<li><code>title</code> (default <code>Inhoud</code>)</li>
+<li><code>mode</code>: <code>all</code>, <code>nav</code>, <code>mobile</code></li>
+<li><code>parent_links</code>: handmatige array met <code>{id,title,url,is_current}</code></li>
+<li><code>parent_links_mode</code>: <code>taxonomy</code> of <code>siblings</code></li>
+<li><code>current_parent_id</code></li>
+<li><code>parent_links_category</code>: taxonomy naam voor auto-parent-links</li>
+<li><code>parent_icon</code>: <code>arrow</code> of <code>chevron</code></li>
+<li><code>parent_icon_size</code></li>
 </ul>
 
-<h3 id="swiper">Swiper</h3>
+<h3 id="swiperswiperslidessettingstemplatetease.twig">Swiper (<code>swiper(slides, settings = {}, template = 'tease.twig')</code>)</h3>
+
+<p>Wrapper voor <a href="https://swiperjs.com/swiper-api">Swiper.js</a> met sensible defaults.</p>
 
 <pre><code class="twig">{{ swiper(posts, {
-  slidesPerView: 3,
-  spaceBetween: 10,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  loop: false,
+  autoplay: false,
   arrows: true,
-  dots: false
+  dots: true,
+  arrowPrevIcon: 'arrow-left',
+  arrowNextIcon: 'arrow-right',
+  arrowIconStyle: 'light',
+  class: 'my-swiper',
+  mobileListGap: '1rem',
+  breakpoints: {
+    768: { slidesPerView: 2, spaceBetween: 20 },
+    1200: { slidesPerView: 3, spaceBetween: 24 }
+  }
 }, 'tease.twig') }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Opties: <code>direction</code>, <code>loop</code>, <code>slidesPerView</code>, <code>spaceBetween</code>, <code>loopAdditionalSlides</code>, <code>centeredSlides</code>, <code>speed</code>, <code>autoplay</code>, <code>arrows</code>, <code>dots</code>, <code>arrowPrevIcon</code>, <code>arrowNextIcon</code>, <code>arrowIconStyle</code>, <code>class</code>, <code>swiper_id</code>, <code>navigation.nextEl</code>, <code>navigation.prevEl</code>, <code>navigation.disabledClass</code>.</li>
-<li>Extra <a href="https://swiperjs.com/swiper-api">Swiper.js</a> instellingen zoals <code>breakpoints</code> kunnen worden meegegeven in de <code>settings</code> array.</li>
+<li><code>direction</code>, <code>loop</code>, <code>slidesPerView</code>, <code>spaceBetween</code>, <code>loopAdditionalSlides</code></li>
+<li><code>centeredSlides</code>, <code>speed</code>, <code>autoplay</code></li>
+<li><code>arrows</code>, <code>dots</code></li>
+<li><code>arrowPrevIcon</code>, <code>arrowNextIcon</code>, <code>arrowIconStyle</code></li>
+<li><code>mobileListGap</code> (CSS variable voor mobiele lijstweergave)</li>
+<li><code>class</code></li>
+<li><code>swiper_id</code> en <code>navigation</code> (overschrijfbaar, standaard automatisch gegenereerd)</li>
+<li>Alle extra native Swiper settings (zoals <code>breakpoints</code>)</li>
 </ul>
 
-<h3 id="text">Text</h3>
+<h3 id="texttexttextoptions">Text (<code>text(text, options = {})</code>)</h3>
+
+<p>Tekstcomponent met optionele truncatie, HTML-ondersteuning en animatie.</p>
 
 <pre><code class="twig">{{ text(item.tekst, {
   tag: 'p',
-  class: 'lead',
-  max_length: 120
+  class: 'lead mb-3',
+  style: 'max-width: 65ch;',
+  max_length: 220,
+  inview_animation: 'line-reveal',
+  inview_animation_speed: 1
 }) }}
 </code></pre>
 
+<p>Mogelijkheden:</p>
+
 <ul>
-<li>Opties: <code>class</code>, <code>tag</code>, <code>style</code>, <code>max_length</code>, <code>inview_animation</code>.</li>
+<li><code>class</code></li>
+<li><code>tag</code> (default <code>p</code>, alleen gebruikt als input geen HTML bevat)</li>
+<li><code>style</code></li>
+<li><code>max_length</code> (voegt <code>...</code> toe)</li>
+<li><code>inview_animation</code></li>
+<li><code>inview_animation_speed</code> (0.1 - 10)</li>
+</ul>
+
+<p>Opmerking:</p>
+
+<ul>
+<li>Wanneer <code>text</code> al HTML bevat, wordt die HTML direct gerenderd.</li>
+<li>Lege <code>&lt;p&gt;</code> tags worden automatisch verwijderd.</li>
 </ul>
 
 <h2 id="tests">Tests</h2>
