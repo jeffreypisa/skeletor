@@ -71,7 +71,7 @@
 <li><code>icon_position</code>: <code>before</code> of <code>after</code></li>
 <li><code>heading_level</code>: <code>h1</code> t/m <code>h6</code></li>
 <li><code>heading_class</code>: extra class(es)</li>
-<li><code>icon_weight</code>: icon style map (bijv. <code>light</code>, <code>solid</code>)</li>
+<li><code>icon_weight</code>: <code>brands</code>, <code>duotone</code>, <code>light</code>, <code>regular</code>, <code>solid</code>, <code>thin</code></li>
 <li><code>first_item_open</code>: eerste item open bij load</li>
 </ul>
 
@@ -113,7 +113,7 @@
 <li><code>title</code> (default ACF title of <code>Klik hier</code>)</li>
 <li><code>url</code> (default ACF url)</li>
 <li><code>style</code> (default <code>primary</code>)</li>
-<li><code>size</code> (<code>sm</code>, <code>lg</code>, &#8230;)</li>
+<li><code>size</code>: vrije suffix voor Bootstrap (<code>sm</code> en <code>lg</code> zijn de gangbare waarden)</li>
 <li><code>target</code> (default ACF target of <code>_self</code>)</li>
 <li><code>icon</code> (Font Awesome naam zonder <code>fa-</code>)</li>
 <li><code>icon_position</code>: <code>before</code> of <code>after</code></li>
@@ -267,13 +267,22 @@
 <ul>
 <li><code>level</code> (default <code>h2</code>)</li>
 <li><code>class</code></li>
-<li><code>inview_animation</code> (bijv. <code>fade-in</code>, <code>typewriter</code>, <code>word-rise</code>, etc.)</li>
+<li><code>inview_animation</code>:</li>
+<li> <code>fade-in</code></li>
+<li> <code>typewriter</code></li>
+<li> <code>word-rise</code></li>
+<li> <code>parallax-in</code></li>
+<li> <code>blur-up</code></li>
+<li> <code>line-reveal</code></li>
+<li> <code>stagger-lines</code></li>
+<li> <code>char-fade-soft</code></li>
+<li> <code>underline-draw</code></li>
 <li><code>inview_animation_speed</code> (0.1 - 10)</li>
 </ul>
 
 <h3 id="iconiconargs">Icon (<code>icon(args)</code>)</h3>
 
-<p>SVG icon component op basis van <code>components/library/icon/library/...</code>.</p>
+<p>SVG icon component op basis van <code>components/library/icon/library/fontawesome/</code>.</p>
 
 <pre><code class="twig">{{ icon({
   icon: 'arrow-right',
@@ -299,7 +308,7 @@
 
 <ul>
 <li><code>icon</code> (vereist, bestandsnaam zonder <code>.svg</code>)</li>
-<li><code>style</code> (bijv. <code>light</code>, <code>solid</code>, <code>regular</code>, <code>brands</code>, <code>duotone</code> als aanwezig)</li>
+<li><code>style</code>: <code>brands</code>, <code>duotone</code>, <code>light</code>, <code>regular</code>, <code>solid</code>, <code>thin</code></li>
 <li><code>library</code> (default <code>fontawesome</code>)</li>
 <li><code>class</code></li>
 <li><code>icon_wrapper_height</code>, <code>icon_wrapper_width</code> (<code>int</code>, <code>px</code>, <code>rem</code>, <code>auto</code>)</li>
@@ -338,14 +347,25 @@
 <p>Mogelijkheden:</p>
 
 <ul>
-<li><code>ratio</code> (bijv. <code>16x9</code>, <code>4x3</code>)</li>
+<li><code>ratio</code>: <code>1x1</code>, <code>4x3</code>, <code>16x9</code>, <code>21x9</code></li>
 <li><code>figure_class</code>, <code>img_class</code></li>
-<li><code>object_fit</code> (<code>cover</code>, <code>contain</code>, &#8230;)</li>
+<li><code>object_fit</code>: <code>fill</code>, <code>contain</code>, <code>cover</code>, <code>none</code>, <code>scale-down</code></li>
 <li><code>lazyload</code> (default <code>true</code>)</li>
 <li><code>style</code> (inline style)</li>
 <li><code>show_caption</code></li>
 <li><code>caption_position</code>: <code>on-left</code>, <code>on-right</code>, <code>below-left</code>, <code>below-right</code></li>
-<li><code>inview_animation</code> + <code>inview_animation_speed</code></li>
+<li><code>inview_animation</code>:</li>
+<li> <code>zoom-in</code></li>
+<li> <code>zoom-out</code></li>
+<li> <code>fade-in</code></li>
+<li> <code>reveal-mask</code></li>
+<li> <code>depth-pop</code></li>
+<li> <code>frame-draw</code></li>
+<li> <code>cinematic-tilt</code></li>
+<li> <code>duotone-fade</code></li>
+<li> <code>shutter-slices</code></li>
+<li> <code>soft-glow-in</code></li>
+<li><code>inview_animation_speed</code> (0.1 - 10)</li>
 <li><code>overlay_direction</code> (voor animatie/CSS hook)</li>
 <li>Popupopties: <code>popup</code>, <code>popup_url</code>, <code>popup_type</code>, <code>popup_title</code>, <code>popup_class</code>, <code>popup_attrs</code></li>
 </ul>
@@ -412,7 +432,7 @@
 <li><code>mobileListGap</code> (CSS variable voor mobiele lijstweergave)</li>
 <li><code>class</code></li>
 <li><code>swiper_id</code> en <code>navigation</code> (overschrijfbaar, standaard automatisch gegenereerd)</li>
-<li>Alle extra native Swiper settings (zoals <code>breakpoints</code>)</li>
+<li>Ondersteunt daarnaast alle overige Swiper API keys doordat de <code>settings</code> array als JSON naar Swiper wordt doorgegeven.</li>
 </ul>
 
 <h3 id="texttexttextoptions">Text (<code>text(text, options = {})</code>)</h3>
@@ -435,7 +455,7 @@
 <li><code>class</code></li>
 <li><code>tag</code> (default <code>p</code>, alleen gebruikt als input geen HTML bevat)</li>
 <li><code>style</code></li>
-<li><code>max_length</code> (voegt <code>...</code> toe)</li>
+<li><code>max_length</code> (kapt af en voegt drie puntjes toe)</li>
 <li><code>inview_animation</code></li>
 <li><code>inview_animation_speed</code> (0.1 - 10)</li>
 </ul>

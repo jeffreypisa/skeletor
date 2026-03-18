@@ -54,7 +54,7 @@ Mogelijkheden:
 - `icon_position`: `before` of `after`
 - `heading_level`: `h1` t/m `h6`
 - `heading_class`: extra class(es)
-- `icon_weight`: icon style map (bijv. `light`, `solid`)
+- `icon_weight`: `brands`, `duotone`, `light`, `regular`, `solid`, `thin`
 - `first_item_open`: eerste item open bij load
 
 ### Breadcrumbs (`breadcrumbs()`)
@@ -90,7 +90,7 @@ Mogelijkheden:
 - `title` (default ACF title of `Klik hier`)
 - `url` (default ACF url)
 - `style` (default `primary`)
-- `size` (`sm`, `lg`, ...)
+- `size`: vrije suffix voor Bootstrap (`sm` en `lg` zijn de gangbare waarden)
 - `target` (default ACF target of `_self`)
 - `icon` (Font Awesome naam zonder `fa-`)
 - `icon_position`: `before` of `after`
@@ -227,11 +227,20 @@ Heading component met optionele in-view animaties.
 Mogelijkheden:
 - `level` (default `h2`)
 - `class`
-- `inview_animation` (bijv. `fade-in`, `typewriter`, `word-rise`, etc.)
+- `inview_animation`:
+  - `fade-in`
+  - `typewriter`
+  - `word-rise`
+  - `parallax-in`
+  - `blur-up`
+  - `line-reveal`
+  - `stagger-lines`
+  - `char-fade-soft`
+  - `underline-draw`
 - `inview_animation_speed` (0.1 - 10)
 
 ### Icon (`icon(args)`)
-SVG icon component op basis van `components/library/icon/library/...`.
+SVG icon component op basis van `components/library/icon/library/fontawesome/`.
 
 ```twig
 {{ icon({
@@ -256,7 +265,7 @@ SVG icon component op basis van `components/library/icon/library/...`.
 
 Mogelijkheden:
 - `icon` (vereist, bestandsnaam zonder `.svg`)
-- `style` (bijv. `light`, `solid`, `regular`, `brands`, `duotone` als aanwezig)
+- `style`: `brands`, `duotone`, `light`, `regular`, `solid`, `thin`
 - `library` (default `fontawesome`)
 - `class`
 - `icon_wrapper_height`, `icon_wrapper_width` (`int`, `px`, `rem`, `auto`)
@@ -292,14 +301,25 @@ Afbeelding met ratio, caption, animatie en optionele popup-link.
 ```
 
 Mogelijkheden:
-- `ratio` (bijv. `16x9`, `4x3`)
+- `ratio`: `1x1`, `4x3`, `16x9`, `21x9`
 - `figure_class`, `img_class`
-- `object_fit` (`cover`, `contain`, ...)
+- `object_fit`: `fill`, `contain`, `cover`, `none`, `scale-down`
 - `lazyload` (default `true`)
 - `style` (inline style)
 - `show_caption`
 - `caption_position`: `on-left`, `on-right`, `below-left`, `below-right`
-- `inview_animation` + `inview_animation_speed`
+- `inview_animation`:
+  - `zoom-in`
+  - `zoom-out`
+  - `fade-in`
+  - `reveal-mask`
+  - `depth-pop`
+  - `frame-draw`
+  - `cinematic-tilt`
+  - `duotone-fade`
+  - `shutter-slices`
+  - `soft-glow-in`
+- `inview_animation_speed` (0.1 - 10)
 - `overlay_direction` (voor animatie/CSS hook)
 - Popupopties: `popup`, `popup_url`, `popup_type`, `popup_title`, `popup_class`, `popup_attrs`
 
@@ -360,7 +380,7 @@ Mogelijkheden:
 - `mobileListGap` (CSS variable voor mobiele lijstweergave)
 - `class`
 - `swiper_id` en `navigation` (overschrijfbaar, standaard automatisch gegenereerd)
-- Alle extra native Swiper settings (zoals `breakpoints`)
+- Ondersteunt daarnaast alle overige Swiper API keys doordat de `settings` array als JSON naar Swiper wordt doorgegeven.
 
 ### Text (`text(text, options = {})`)
 Tekstcomponent met optionele truncatie, HTML-ondersteuning en animatie.
@@ -380,7 +400,7 @@ Mogelijkheden:
 - `class`
 - `tag` (default `p`, alleen gebruikt als input geen HTML bevat)
 - `style`
-- `max_length` (voegt `...` toe)
+- `max_length` (kapt af en voegt drie puntjes toe)
 - `inview_animation`
 - `inview_animation_speed` (0.1 - 10)
 
